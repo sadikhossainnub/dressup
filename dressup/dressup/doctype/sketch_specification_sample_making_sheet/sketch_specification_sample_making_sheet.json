@@ -1,0 +1,525 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "item_name",
+  "designer",
+  "design_no",
+  "seson",
+  "column_break_nxfb",
+  "category",
+  "cut_fit",
+  "start_date",
+  "submission_date",
+  "sewing_finish_section",
+  "sewing_finish",
+  "column_break_ayyt",
+  "image",
+  "attach_image",
+  "workstations_section",
+  "cutting",
+  "fb",
+  "sewing",
+  "me",
+  "hand_embroidery",
+  "column_break_rpkv",
+  "hand_work",
+  "sp",
+  "bp",
+  "td",
+  "karchupi",
+  "measurements_section",
+  "column_break_eghr",
+  "full_length",
+  "cf_length",
+  "cb_length",
+  "waist_circumstance",
+  "bust",
+  "upper_hip",
+  "lower_hip",
+  "front_neck_depth",
+  "back_neck_depth",
+  "shoulder_tip_to_side_waist",
+  "column_break_wtxg",
+  "front_neck_depth_s",
+  "back_neck_depth_s",
+  "collar_width_height",
+  "button_placket_length",
+  "button_placket_width",
+  "hem",
+  "shoulder_drop",
+  "shoulder",
+  "armhole",
+  "full_length_arm",
+  "pocket_placket",
+  "column_break_lvwn",
+  "armhole_arm",
+  "biceps",
+  "elbow",
+  "sleeve",
+  "cuff_length",
+  "cuff_width",
+  "cuff_opening",
+  "pocket_length",
+  "pocket_width",
+  "pocket_opening",
+  "shoulder_tip_to_pocket_starting",
+  "bottom_section",
+  "full_length_bottom",
+  "rise",
+  "column_break_zzpu",
+  "thigh",
+  "leg_opening",
+  "column_break_csyg",
+  "rubber_width",
+  "belt_width",
+  "column_break_caqg",
+  "waist_to_pocket_starting_point",
+  "note_section",
+  "text_editor_noaa"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Tech Pack No.",
+   "options": ".DD.-.MM.-.YY.-.#####",
+   "reqd": 1
+  },
+  {
+   "fieldname": "designer",
+   "fieldtype": "Link",
+   "label": "Designer",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "designer.employee_number",
+   "fieldname": "design_no",
+   "fieldtype": "Data",
+   "label": "Design No",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_nxfb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Category",
+   "options": "Item Group"
+  },
+  {
+   "fieldname": "cut_fit",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Cut/ Fit",
+   "options": "Cut Fit"
+  },
+  {
+   "default": "Today",
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "submission_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Submission Date"
+  },
+  {
+   "fieldname": "sewing_finish_section",
+   "fieldtype": "Section Break",
+   "label": "Sewing Finish"
+  },
+  {
+   "fieldname": "sewing_finish",
+   "fieldtype": "Select",
+   "label": "Sewing Finish",
+   "options": "Kaktarua\nUnstitched\nReady to Wear\nSemi\nPatch"
+  },
+  {
+   "fieldname": "workstations_section",
+   "fieldtype": "Section Break",
+   "label": "Workstations"
+  },
+  {
+   "default": "0",
+   "fieldname": "cutting",
+   "fieldtype": "Check",
+   "label": "Cutting"
+  },
+  {
+   "default": "0",
+   "fieldname": "sp",
+   "fieldtype": "Check",
+   "label": "Screen Print"
+  },
+  {
+   "default": "0",
+   "fieldname": "me",
+   "fieldtype": "Check",
+   "label": "Machine Embroidery "
+  },
+  {
+   "default": "0",
+   "fieldname": "bp",
+   "fieldtype": "Check",
+   "label": "Block Print"
+  },
+  {
+   "default": "0",
+   "fieldname": "td",
+   "fieldtype": "Check",
+   "label": "Tie & Dye"
+  },
+  {
+   "fieldname": "measurements_section",
+   "fieldtype": "Section Break",
+   "label": "Measurements"
+  },
+  {
+   "fieldname": "full_length",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "1. Full Length"
+  },
+  {
+   "fieldname": "cf_length",
+   "fieldtype": "Float",
+   "label": "2. C.F Length"
+  },
+  {
+   "fieldname": "cb_length",
+   "fieldtype": "Float",
+   "label": "3. C.B Length"
+  },
+  {
+   "fieldname": "waist_circumstance",
+   "fieldtype": "Float",
+   "label": "4. Waist circumstance"
+  },
+  {
+   "fieldname": "bust",
+   "fieldtype": "Float",
+   "label": "5. Bust"
+  },
+  {
+   "fieldname": "upper_hip",
+   "fieldtype": "Float",
+   "label": "6. Upper hip"
+  },
+  {
+   "fieldname": "lower_hip",
+   "fieldtype": "Float",
+   "label": "7. Lower hip"
+  },
+  {
+   "fieldname": "front_neck_depth",
+   "fieldtype": "Float",
+   "label": "8. Front Neck Depth"
+  },
+  {
+   "fieldname": "back_neck_depth",
+   "fieldtype": "Float",
+   "label": "9. Back Neck Depth"
+  },
+  {
+   "fieldname": "shoulder_tip_to_side_waist",
+   "fieldtype": "Float",
+   "label": "10. Shoulder Tip to side waist"
+  },
+  {
+   "fieldname": "front_neck_depth_s",
+   "fieldtype": "Float",
+   "label": "11. Front Neck Depth (S)"
+  },
+  {
+   "fieldname": "back_neck_depth_s",
+   "fieldtype": "Float",
+   "label": "12. Back Neck Depth (S)"
+  },
+  {
+   "fieldname": "collar_width_height",
+   "fieldtype": "Float",
+   "label": "13. Collar width / height"
+  },
+  {
+   "fieldname": "button_placket_length",
+   "fieldtype": "Float",
+   "label": "14. Button placket Length"
+  },
+  {
+   "fieldname": "button_placket_width",
+   "fieldtype": "Float",
+   "label": "15. Button placket width"
+  },
+  {
+   "fieldname": "hem",
+   "fieldtype": "Float",
+   "label": "16. Hem"
+  },
+  {
+   "fieldname": "shoulder_drop",
+   "fieldtype": "Float",
+   "label": "17. Shoulder Drop"
+  },
+  {
+   "fieldname": "shoulder",
+   "fieldtype": "Float",
+   "label": "18. Shoulder"
+  },
+  {
+   "fieldname": "armhole",
+   "fieldtype": "Float",
+   "label": "19. Armhole"
+  },
+  {
+   "fieldname": "full_length_arm",
+   "fieldtype": "Float",
+   "label": "20. Full Length"
+  },
+  {
+   "fieldname": "armhole_arm",
+   "fieldtype": "Float",
+   "label": "21. Armhole"
+  },
+  {
+   "fieldname": "biceps",
+   "fieldtype": "Float",
+   "label": "22. Biceps"
+  },
+  {
+   "fieldname": "elbow",
+   "fieldtype": "Float",
+   "label": "23. Elbow"
+  },
+  {
+   "fieldname": "sleeve",
+   "fieldtype": "Float",
+   "label": "24. Sleeve"
+  },
+  {
+   "fieldname": "cuff_length",
+   "fieldtype": "Float",
+   "label": "25. Cuff length"
+  },
+  {
+   "fieldname": "cuff_width",
+   "fieldtype": "Float",
+   "label": "26. Cuff Width"
+  },
+  {
+   "fieldname": "cuff_opening",
+   "fieldtype": "Float",
+   "label": "27. Cuff Opening"
+  },
+  {
+   "fieldname": "pocket_length",
+   "fieldtype": "Float",
+   "label": "28. Pocket length"
+  },
+  {
+   "fieldname": "pocket_width",
+   "fieldtype": "Float",
+   "label": "29. pocket width"
+  },
+  {
+   "fieldname": "pocket_opening",
+   "fieldtype": "Float",
+   "label": "30. Pocket opening"
+  },
+  {
+   "fieldname": "pocket_placket",
+   "fieldtype": "Float",
+   "label": "31. Pocket - placket"
+  },
+  {
+   "fieldname": "shoulder_tip_to_pocket_starting",
+   "fieldtype": "Float",
+   "label": "32. Shoulder tip to pocket starting"
+  },
+  {
+   "fieldname": "bottom_section",
+   "fieldtype": "Section Break",
+   "label": "BOTTOM"
+  },
+  {
+   "fieldname": "full_length_bottom",
+   "fieldtype": "Float",
+   "label": "1. Full length"
+  },
+  {
+   "fieldname": "rise",
+   "fieldtype": "Float",
+   "label": "2. Rise"
+  },
+  {
+   "fieldname": "thigh",
+   "fieldtype": "Float",
+   "label": "3. Thigh"
+  },
+  {
+   "fieldname": "leg_opening",
+   "fieldtype": "Float",
+   "label": "4. Leg opening"
+  },
+  {
+   "fieldname": "rubber_width",
+   "fieldtype": "Float",
+   "label": "5. Rubber width"
+  },
+  {
+   "fieldname": "belt_width",
+   "fieldtype": "Float",
+   "label": "6. Belt width"
+  },
+  {
+   "fieldname": "waist_to_pocket_starting_point",
+   "fieldtype": "Float",
+   "label": "7. Waist to pocket starting Point"
+  },
+  {
+   "default": "0",
+   "fieldname": "karchupi",
+   "fieldtype": "Check",
+   "label": "Karchupi"
+  },
+  {
+   "fieldname": "column_break_rpkv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "sewing",
+   "fieldtype": "Check",
+   "label": "Sewing"
+  },
+  {
+   "fieldname": "column_break_eghr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Design Image"
+  },
+  {
+   "fieldname": "attach_image",
+   "fieldtype": "Image",
+   "label": "Attach Image"
+  },
+  {
+   "fieldname": "seson",
+   "fieldtype": "Select",
+   "label": "Seson",
+   "options": "\nEID\nMONSOON\nPOHELA BOISHAKH\nPUJA\nSPRING\nSUMMER\nWINTER"
+  },
+  {
+   "fieldname": "column_break_ayyt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_wtxg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_lvwn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_zzpu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_csyg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_caqg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "note_section",
+   "fieldtype": "Section Break",
+   "label": "Note"
+  },
+  {
+   "fieldname": "text_editor_noaa",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "default": "0",
+   "fieldname": "hand_embroidery",
+   "fieldtype": "Check",
+   "label": "Hand Embroidery "
+  },
+  {
+   "default": "0",
+   "fieldname": "fb",
+   "fieldtype": "Check",
+   "label": "Fusing & Bundling"
+  },
+  {
+   "default": "0",
+   "fieldname": "hand_work",
+   "fieldtype": "Check",
+   "label": "Hand Work"
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name"
+  }
+ ],
+ "image_field": "image",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-11-13 19:17:45.051531",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Sketch Specification Sample Making Sheet",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Projects Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

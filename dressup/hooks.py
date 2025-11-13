@@ -1,6 +1,6 @@
 app_name = "dressup"
 app_title = "DressUp"
-app_publisher = "Prime Technology of Banladesh"
+app_publisher = "Prime Technology of Bangladesh"
 app_description = "DressUp Manufacturing"
 app_email = "info@primetechbd.xyz"
 app_license = "gpl-3.0"

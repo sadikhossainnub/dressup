@@ -1,0 +1,79 @@
+{
+ "actions": [],
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "size_36",
+  "size_38",
+  "size_40",
+  "size_42",
+  "size_44",
+  "size_46",
+  "size_48",
+  "size_50"
+ ],
+ "fields": [
+  {
+   "fieldname": "size_36",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "36"
+  },
+  {
+   "fieldname": "size_38",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "38"
+  },
+  {
+   "fieldname": "size_40",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "40"
+  },
+  {
+   "fieldname": "size_42",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "42"
+  },
+  {
+   "fieldname": "size_44",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "44"
+  },
+  {
+   "fieldname": "size_46",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "46"
+  },
+  {
+   "fieldname": "size_48",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "48"
+  },
+  {
+   "fieldname": "size_50",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "50"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Pre Production Sample Size Chart",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

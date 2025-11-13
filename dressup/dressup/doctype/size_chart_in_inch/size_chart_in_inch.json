@@ -1,0 +1,82 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-11-13 01:46:01.946990",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "size_chart_in_inch",
+  "length",
+  "bust",
+  "column_break_jxaf",
+  "waist",
+  "bottom_length",
+  "bottom_waist",
+  "leg_opening"
+ ],
+ "fields": [
+  {
+   "fieldname": "size_chart_in_inch",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Size Chart in Inch",
+   "options": "\n32\n34\n36\n38\n40\n42\n44\n46\n48\n50",
+   "reqd": 1
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Length"
+  },
+  {
+   "fieldname": "bust",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bust"
+  },
+  {
+   "fieldname": "column_break_jxaf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "waist",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Waist"
+  },
+  {
+   "fieldname": "bottom_length",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bottom Length"
+  },
+  {
+   "fieldname": "bottom_waist",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bottom Waist"
+  },
+  {
+   "fieldname": "leg_opening",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Leg Opening"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-11-13 01:49:12.838766",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Size Chart in Inch",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

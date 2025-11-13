@@ -1,0 +1,230 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "product_name",
+  "column_break_vvqc",
+  "tp_no",
+  "finish_section",
+  "fabric_details",
+  "section_break_csqx",
+  "collar_neck",
+  "column_break_iqbp",
+  "cut_fit",
+  "column_break_xraj",
+  "side_cut",
+  "size_chart_section",
+  "table_ctvo",
+  "washing_instruction_section",
+  "hand_wash",
+  "machine_wash",
+  "tumble_drying_allowed",
+  "column_break_zkgl",
+  "do_not_bleach",
+  "dry_clean_only",
+  "do_not_wring",
+  "column_break_cuan",
+  "hang_to_dry",
+  "do_not_tumble_dry",
+  "wash_cold",
+  "wash_warm_max_40c"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Series",
+   "options": "PD-.YYYY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "product_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Product Name",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "finish_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "tp_no",
+   "fieldtype": "Data",
+   "label": "TP NO"
+  },
+  {
+   "fieldname": "collar_neck",
+   "fieldtype": "Data",
+   "label": "Collar/ Neck"
+  },
+  {
+   "fieldname": "cut_fit",
+   "fieldtype": "Link",
+   "label": "Cut/ Fit",
+   "options": "Cut Fit"
+  },
+  {
+   "fieldname": "side_cut",
+   "fieldtype": "Data",
+   "label": "Side Cut"
+  },
+  {
+   "fieldname": "size_chart_section",
+   "fieldtype": "Section Break",
+   "label": "Size Chart"
+  },
+  {
+   "fieldname": "washing_instruction_section",
+   "fieldtype": "Section Break",
+   "label": "Washing Instruction"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "hand_wash",
+   "fieldtype": "Check",
+   "label": "Hand Wash"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "machine_wash",
+   "fieldtype": "Check",
+   "label": "Machine Wash"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "dry_clean_only",
+   "fieldtype": "Check",
+   "label": "Dry Clean Only"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "do_not_bleach",
+   "fieldtype": "Check",
+   "label": "Do Not Bleach"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "tumble_drying_allowed",
+   "fieldtype": "Check",
+   "label": "Tumble Drying Allowed"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "do_not_wring",
+   "fieldtype": "Check",
+   "label": "Do Not Wring"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "hang_to_dry",
+   "fieldtype": "Check",
+   "label": "Hang to Dry"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "do_not_tumble_dry",
+   "fieldtype": "Check",
+   "label": "Do Not Tumble Dry"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "wash_cold",
+   "fieldtype": "Check",
+   "label": "Wash Cold"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "wash_warm_max_40c",
+   "fieldtype": "Check",
+   "label": "Wash Warm Max 40\u00b0C"
+  },
+  {
+   "fieldname": "column_break_zkgl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_cuan",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "table_ctvo",
+   "fieldtype": "Table",
+   "label": "Size Chart in Inch",
+   "options": "Size Chart in Inch"
+  },
+  {
+   "fieldname": "column_break_vvqc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_csqx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_iqbp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_xraj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fabric_details",
+   "fieldtype": "Table",
+   "label": "Fabric Details",
+   "options": "Fabric Details"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-11-13 02:01:32.485755",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Product Details",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Manufacturing User",
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

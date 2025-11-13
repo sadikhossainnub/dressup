@@ -1,0 +1,219 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "tech_pack_no",
+  "column_break_1",
+  "date",
+  "designer",
+  "design_no",
+  "materials_section",
+  "materials",
+  "total_fabric",
+  "accessories_section",
+  "accessories",
+  "value_addition_section",
+  "cutting",
+  "sewing",
+  "hand_work_estimation",
+  "total_tailoring",
+  "finishing_section",
+  "wash_iron",
+  "qc_packaging",
+  "transportation",
+  "producer_profit",
+  "total_finishing",
+  "overhead_section",
+  "overhead_markup_71",
+  "overhead_markup_custom",
+  "tailoring_only_oh_mu"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Series",
+   "options": "CE-.DD.-.MM.-.YY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tech_pack_no",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Tech Pack No:",
+   "options": "Sketch Specification Sample Making Sheet",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date:",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "tech_pack_no.design_no",
+   "fieldname": "design_no",
+   "fieldtype": "Data",
+   "label": "Design No:"
+  },
+  {
+   "fetch_from": "tech_pack_no.designer",
+   "fieldname": "designer",
+   "fieldtype": "Data",
+   "label": "Designer:"
+  },
+  {
+   "fieldname": "materials_section",
+   "fieldtype": "Section Break",
+   "label": "Materials"
+  },
+  {
+   "fieldname": "materials",
+   "fieldtype": "Table",
+   "label": "Particulars",
+   "options": "Cost Estimation Material"
+  },
+  {
+   "fieldname": "total_fabric",
+   "fieldtype": "Currency",
+   "label": "Total Fabric",
+   "read_only": 1
+  },
+  {
+   "fieldname": "accessories_section",
+   "fieldtype": "Section Break",
+   "label": "Accessories"
+  },
+  {
+   "fieldname": "accessories",
+   "fieldtype": "Table",
+   "label": "Accessories",
+   "options": "Cost Estimation Accessory"
+  },
+  {
+   "fieldname": "value_addition_section",
+   "fieldtype": "Section Break",
+   "label": "Total Value Addition"
+  },
+  {
+   "fieldname": "cutting",
+   "fieldtype": "Currency",
+   "label": "Cutting Estimation"
+  },
+  {
+   "fieldname": "sewing",
+   "fieldtype": "Currency",
+   "label": "Sewing Estimation"
+  },
+  {
+   "fieldname": "total_tailoring",
+   "fieldtype": "Currency",
+   "label": "Total Tailoring",
+   "read_only": 1
+  },
+  {
+   "fieldname": "finishing_section",
+   "fieldtype": "Section Break",
+   "label": "Total Finishing"
+  },
+  {
+   "fieldname": "wash_iron",
+   "fieldtype": "Currency",
+   "label": "Wash & Iron"
+  },
+  {
+   "fieldname": "qc_packaging",
+   "fieldtype": "Currency",
+   "label": "QC & Packaging"
+  },
+  {
+   "fieldname": "transportation",
+   "fieldtype": "Currency",
+   "label": "Transportation"
+  },
+  {
+   "fieldname": "producer_profit",
+   "fieldtype": "Currency",
+   "label": "Producer Profit"
+  },
+  {
+   "fieldname": "total_finishing",
+   "fieldtype": "Currency",
+   "label": "Total Finishing",
+   "read_only": 1
+  },
+  {
+   "fieldname": "overhead_section",
+   "fieldtype": "Section Break",
+   "label": "Overhead + Markup"
+  },
+  {
+   "default": "71",
+   "fieldname": "overhead_markup_71",
+   "fieldtype": "Percent",
+   "label": "Overhead + Markup"
+  },
+  {
+   "fieldname": "overhead_markup_custom",
+   "fieldtype": "Currency",
+   "label": "Overhead + Markup",
+   "read_only": 1
+  },
+  {
+   "default": "52",
+   "fieldname": "tailoring_only_oh_mu",
+   "fieldtype": "Percent",
+   "label": "Tailoring Only OH + MU"
+  },
+  {
+   "fieldname": "hand_work_estimation",
+   "fieldtype": "Data",
+   "label": "Hand Work Estimation"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-11-13 17:59:19.993134",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Cost Estimation",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Manufacturing User",
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
