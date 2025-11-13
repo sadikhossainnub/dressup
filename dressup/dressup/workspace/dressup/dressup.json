@@ -1,0 +1,87 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"B3ZBbzHt_T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">DressUP</span>\",\"col\":12}},{\"id\":\"JJ30H5rrBP\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Monthly Sketch Specification Sample\",\"col\":3}},{\"id\":\"7DJI0Um_DM\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Daily Sketch Specification Sample\",\"col\":3}},{\"id\":\"ZNAzlGtEQx\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"mQ2qmjwU8-\",\"type\":\"card\",\"data\":{\"card_name\":\"Designer\",\"col\":4}}]",
+ "creation": "2025-11-05 17:24:33.874729",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "DressUP",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Designer",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sketch Specification Sample Making Sheet",
+   "link_count": 0,
+   "link_to": "Sketch Specification Sample Making Sheet",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Cost Estimation",
+   "link_count": 0,
+   "link_to": "Cost Estimation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Product Details",
+   "link_count": 0,
+   "link_to": "Product Details",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Pre Production Sample",
+   "link_count": 0,
+   "link_to": "Pre Production Sample",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2025-11-13 22:11:57.175972",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "DressUP",
+ "number_cards": [
+  {
+   "label": "Monthly Sketch Specification Sample",
+   "number_card_name": "Monthly Sketch Specification Sample"
+  },
+  {
+   "label": "Daily Sketch Specification Sample",
+   "number_card_name": "Daily Sketch Specification Sample"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 44.0,
+ "shortcuts": [],
+ "title": "DressUP"
+}
