@@ -6,4 +6,8 @@ from frappe.model.document import Document
 
 
 class SketchSpecificationSampleMakingSheet(Document):
-	pass
+	def before_insert(self):
+		if not self.designer:
+			employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
+			if employee:
+				self.designer = employee

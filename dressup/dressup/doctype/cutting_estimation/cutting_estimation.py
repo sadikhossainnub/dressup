@@ -5,6 +5,5 @@
 from frappe.model.document import Document
 
 
-class SizeChartinInch(Document):
-	"""Size Chart in Inch for product specifications"""
+class CuttingEstimation(Document):
 	pass

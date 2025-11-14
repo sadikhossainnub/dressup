@@ -8,7 +8,7 @@ on:
   pull_request:
 
 concurrency:
-  group: develop-dressup-${{ github.event.number }}
+  group: develop-dressup-${{ github.event.number || github.run_id }}
   cancel-in-progress: true
 
 env:
@@ -17,8 +17,6 @@ env:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
     name: Server
 
     services:
@@ -44,12 +42,11 @@ jobs:
 
       - name: Find tests
         run: |
-          echo "Finding tests"
-          if ! grep -rn "def test" . > /dev/null 2>&1; then
+          if grep -rn "def test" . > /dev/null 2>&1; then
+            echo "Tests found successfully"
+          else
             echo "Warning: No test functions found"
-            exit 0
           fi
-          echo "Tests found successfully"
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -84,10 +81,13 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install MariaDB Client
-        run: sudo apt-get install mariadb-client-10.6
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mariadb-client-10.6
 
       - name: Setup
         run: |
+          set -e
           pip install frappe-bench
           bench init --skip-redis-config-generation --skip-assets --python "$(which python)" ~/frappe-bench
           mariadb --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL character_set_server = 'utf8mb4'"
@@ -96,6 +96,7 @@ jobs:
       - name: Install
         working-directory: /home/runner/frappe-bench
         run: |
+          set -e
           bench get-app dressup $GITHUB_WORKSPACE
           bench setup requirements --dev
           bench new-site --db-root-password root --admin-password admin test_site
@@ -107,7 +108,8 @@ jobs:
       - name: Run Tests
         working-directory: /home/runner/frappe-bench
         run: |
+          set -e
           bench --site test_site set-config allow_tests true
-          bench --site test_site run-tests --app dressup
+          bench --site test_site run-tests --app dressup || exit 1
         env:
           TYPE: server

@@ -19,8 +19,11 @@
   "accessories",
   "value_addition_section",
   "cutting",
+  "total_cutting",
   "sewing",
+  "total_sewing",
   "hand_work_estimation",
+  "total_hand_work",
   "total_tailoring",
   "finishing_section",
   "wash_iron",
@@ -76,12 +79,12 @@
   {
    "fieldname": "materials_section",
    "fieldtype": "Section Break",
-   "label": "Materials"
+   "label": "Raw Materials"
   },
   {
    "fieldname": "materials",
    "fieldtype": "Table",
-   "label": "Particulars",
+   "label": "Raw Material",
    "options": "Cost Estimation Material"
   },
   {
@@ -108,13 +111,15 @@
   },
   {
    "fieldname": "cutting",
-   "fieldtype": "Currency",
-   "label": "Cutting Estimation"
+   "fieldtype": "Table",
+   "label": "Cutting Estimation",
+   "options": "Cutting Estimation"
   },
   {
    "fieldname": "sewing",
-   "fieldtype": "Currency",
-   "label": "Sewing Estimation"
+   "fieldtype": "Table",
+   "label": "Sewing Estimation",
+   "options": "Sewing Estimation"
   },
   {
    "fieldname": "total_tailoring",
@@ -177,14 +182,33 @@
    "label": "Tailoring Only OH + MU"
   },
   {
+   "fieldname": "total_cutting",
+   "fieldtype": "Currency",
+   "label": "Total Cutting",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_sewing",
+   "fieldtype": "Currency",
+   "label": "Total Sewing",
+   "read_only": 1
+  },
+  {
    "fieldname": "hand_work_estimation",
-   "fieldtype": "Data",
-   "label": "Hand Work Estimation"
+   "fieldtype": "Table",
+   "label": "Hand Work Estimation",
+   "options": "Hand Work Estimation"
+  },
+  {
+   "fieldname": "total_hand_work",
+   "fieldtype": "Currency",
+   "label": "Total Hand Work",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-13 17:59:19.993134",
+ "modified": "2025-11-14 01:06:52.040743",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Cost Estimation",

@@ -31,6 +31,7 @@ jobs:
 
       - name: Run Semgrep rules
         run: |
+          set -e
           pip install semgrep
           semgrep ci --config ./frappe-semgrep-rules/rules --config r/python.lang.correctness
 
@@ -56,6 +57,7 @@ jobs:
 
       - name: Install and run pip-audit
         run: |
+          set -e
           pip install pip-audit
-          cd ${GITHUB_WORKSPACE}
+          cd "${GITHUB_WORKSPACE}"
           pip-audit --desc on .

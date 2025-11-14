@@ -1,27 +1,21 @@
 {
  "actions": [],
- "creation": "2024-01-01 00:00:00",
+ "allow_rename": 1,
+ "creation": "2025-01-01 00:00:00",
  "doctype": "DocType",
+ "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "item_code",
   "item_name",
-  "qty",
+  "quantity",
   "rate",
   "amount",
-  "column_break_yhjp",
+  "column_break_fffy",
   "item_group",
-  "uom",
-  "stock_in_hand"
+  "uom"
  ],
  "fields": [
-  {
-   "fieldname": "amount",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Amount",
-   "read_only": 1
-  },
   {
    "fieldname": "item_code",
    "fieldtype": "Link",
@@ -38,6 +32,25 @@
    "label": "Item Name"
   },
   {
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Rate"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "read_only": 1
+  },
+  {
    "fetch_from": "item_code.item_group",
    "fieldname": "item_group",
    "fieldtype": "Data",
@@ -50,40 +63,22 @@
    "label": "UOM"
   },
   {
-   "fieldname": "column_break_yhjp",
+   "fieldname": "column_break_fffy",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "stock_in_hand",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Stock in Hand"
-  },
-  {
-   "fieldname": "qty",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Quantity"
-  },
-  {
-   "fieldname": "rate",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Rate"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-11-14 00:23:11.436436",
+ "modified": "2025-01-01 00:00:00",
  "modified_by": "Administrator",
  "module": "DressUp",
- "name": "Cost Estimation Material",
+ "name": "Hand Work Estimation",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "track_changes": 1
+ "states": []
 }

@@ -235,6 +235,20 @@ app_license = "gpl-3.0"
 # 	"dressup.auth.validate"
 # ]
 
+# Custom Fields
+# --------------
+# Add custom fields to existing doctypes
+custom_fields = {
+	"Employee": [
+		{
+			"fieldname": "design_no",
+			"label": "Design No",
+			"fieldtype": "Data",
+			"insert_after": "employee_number"
+		}
+	]
+}
+
 # Automatically update python controller files with type annotations for this app.
 # export_python_type_annotations = True
 

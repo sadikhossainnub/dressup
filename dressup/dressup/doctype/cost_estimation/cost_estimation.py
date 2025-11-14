@@ -7,21 +7,41 @@ from frappe.model.document import Document
 
 class CostEstimation(Document):
 	def validate(self):
+		self._calculate_all_amounts()
 		self.calculate_totals()
 	
+	def _calculate_all_amounts(self):
+		"""Calculate amounts for all estimation tables"""
+		table_configs = [
+			('materials', 'qty', 'rate'),
+			('accessories', 'qty', 'unit_price'),
+			('cutting', 'quantity', 'rate'),
+			('sewing', 'quantity', 'rate'),
+			('hand_work_estimation', 'quantity', 'rate')
+		]
+		
+		for table_name, qty_field, rate_field in table_configs:
+			table = getattr(self, table_name, None)
+			if table:
+				for item in table:
+					qty = getattr(item, qty_field, 0) or 0
+					rate = getattr(item, rate_field, 0) or 0
+					item.amount = qty * rate if qty and rate else 0
+	
+	def _calculate_table_total(self, table_name):
+		"""Calculate total amount for a table"""
+		table = getattr(self, table_name, None)
+		return sum(item.amount or 0 for item in table) if table else 0
+	
 	def calculate_totals(self):
-		# Calculate total fabric
-		total_fabric = 0
-		if self.materials:
-			for item in self.materials:
-				if item.amount:
-					total_fabric += item.amount
-		self.total_fabric = total_fabric
+		# Calculate table totals
+		self.total_fabric = self._calculate_table_total('materials')
+		self.total_cutting = self._calculate_table_total('cutting')
+		self.total_sewing = self._calculate_table_total('sewing')
+		self.total_hand_work = self._calculate_table_total('hand_work_estimation')
 		
 		# Calculate total tailoring
-		cutting = self.cutting or 0
-		sewing = self.sewing or 0
-		self.total_tailoring = cutting + sewing
+		self.total_tailoring = self.total_cutting + self.total_sewing + self.total_hand_work
 		
 		# Calculate total finishing
 		wash_iron = self.wash_iron or 0
