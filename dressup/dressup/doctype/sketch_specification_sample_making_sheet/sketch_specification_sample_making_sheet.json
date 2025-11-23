@@ -191,7 +191,7 @@
    "default": "0",
    "fieldname": "me",
    "fieldtype": "Check",
-   "label": "Machine Embroidery "
+   "label": "Machine Embroidery"
   },
   {
    "default": "0",
@@ -434,7 +434,7 @@
    "default": "0",
    "fieldname": "hand_embroidery",
    "fieldtype": "Check",
-   "label": "Hand Embroidery "
+   "label": "Hand Embroidery"
   },
   {
    "default": "0",
@@ -543,6 +543,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval:doc.sp == \"1\"",
    "fieldname": "workstation_screen_print",
    "fieldtype": "Section Break",
    "label": "Workstation - Screen Print"
@@ -567,6 +568,7 @@
    "label": "New Frame / SKU"
   },
   {
+   "depends_on": "eval:doc.sp == \"1\"",
    "fieldname": "screen_print_cost_details",
    "fieldtype": "Section Break",
    "label": "Screen Print Cost & Details"
@@ -654,7 +656,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-11-23 08:41:06.971053",
+ "modified": "2025-11-23 17:00:14.254641",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification Sample Making Sheet",

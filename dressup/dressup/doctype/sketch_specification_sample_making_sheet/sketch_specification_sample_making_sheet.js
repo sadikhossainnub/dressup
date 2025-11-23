@@ -11,5 +11,18 @@ frappe.ui.form.on('Sketch Specification Sample Making Sheet', {
 				});
 			}, __('Create'));
 		}
+	},
+	designer: function(frm) {
+		if (frm.doc.designer && !frm.doc.design_no) {
+			frappe.call({
+				method: 'dressup.dressup.doctype.sketch_specification_sample_making_sheet.sketch_specification_sample_making_sheet.generate_design_no',
+				args: { designer: frm.doc.designer },
+				callback: function(r) {
+					if (r.message) {
+						frm.set_value('design_no', r.message);
+					}
+				}
+			});
+		}
 	}
 });

@@ -53,6 +53,14 @@ class SketchSpecificationSampleMakingSheet(Document):
 				self.design_no = f"{abbr}{random_num}"
 
 @frappe.whitelist()
+def generate_design_no(designer):
+	abbr = frappe.db.get_value("Employee", designer, "abbr")
+	if abbr:
+		random_num = random.randint(1000, 9999)
+		return f"{abbr}{random_num}"
+	return None
+
+@frappe.whitelist()
 def make_cost_estimation(source_name, target_doc=None):
 	from frappe.model.mapper import get_mapped_doc  # type: ignore
 
