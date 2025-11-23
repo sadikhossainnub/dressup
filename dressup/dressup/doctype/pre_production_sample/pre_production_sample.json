@@ -7,71 +7,48 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "pattern_master",
-  "handler",
+  "tech_pack_no",
   "received_date",
   "column_break_1",
-  "sample_man",
+  "pattern_master",
   "start_time_date",
+  "sample_man",
+  "handler",
   "finish_time_date",
   "production_section",
-  "fabric_1",
-  "fabric_2",
-  "fabric_3",
-  "f4",
-  "f5",
-  "column_break_2",
-  "pant_f1",
-  "pf2_dupatta_f1",
-  "dupatta_f2",
-  "d3",
-  "lace_1",
-  "column_break_3",
-  "lace_2",
-  "lace_3",
-  "l4",
-  "b1",
-  "b2",
+  "fabrics",
+  "trim_accessories",
+  "section_break_xgdz",
+  "fabric_dupatta",
+  "size_chart_section",
+  "size_chart_in_inch",
   "pattern_master_note_section",
   "pattern_master_note",
-  "ec_of_cutting",
-  "ec_of_sewing",
-  "ec_of_handwork",
-  "column_break_4",
-  "pattern_master_sign_date",
+  "other_tests_section",
+  "link_nsnp",
+  "washing_instruction",
+  "dry_clean_only",
+  "wash_separately",
+  "wash_warm_iron_inside_out",
+  "hand_wash_only",
+  "note_section",
+  "note_or_instructions",
+  "section_break_vvjb",
+  "read_confirm_carefully",
+  "pps_image_and_links_section",
+  "pps_front",
+  "pps_back",
+  "pps_side",
+  "pps_image_link_if_any",
   "hand_embroider_section",
   "hand_embroider",
   "sample",
+  "column_break_xbfy",
   "quarter",
   "half",
   "full",
   "time",
-  "rate",
-  "checklist_section",
-  "checklist_items",
-  "other_tests_section",
-  "fabric_color",
-  "piping_border_fabric_color",
-  "lace_color",
-  "beads_color",
-  "sip_color",
-  "block_color",
-  "thread_color",
-  "pps_wash_check",
-  "design_check_as_per_spec_sheet",
-  "shrinkage_test",
-  "shrinkage_allowance",
-  "instruction",
-  "details_section",
-  "fabrics",
-  "trims",
-  "accessories",
-  "tech_pack_no",
-  "note_section",
-  "note_test_results",
-  "fashion_designer_sign_date",
-  "size_chart_section",
-  "size_chart_table"
+  "rate"
  ],
  "fields": [
   {
@@ -121,90 +98,7 @@
   {
    "fieldname": "production_section",
    "fieldtype": "Section Break",
-   "label": "PRODUCTION - Fabric Required in INCH"
-  },
-  {
-   "fieldname": "fabric_1",
-   "fieldtype": "Data",
-   "label": "Fabric 1"
-  },
-  {
-   "fieldname": "fabric_2",
-   "fieldtype": "Data",
-   "label": "Fabric 2"
-  },
-  {
-   "fieldname": "fabric_3",
-   "fieldtype": "Data",
-   "label": "Fabric 3"
-  },
-  {
-   "fieldname": "f4",
-   "fieldtype": "Data",
-   "label": "F4"
-  },
-  {
-   "fieldname": "f5",
-   "fieldtype": "Data",
-   "label": "F5"
-  },
-  {
-   "fieldname": "column_break_2",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "pant_f1",
-   "fieldtype": "Data",
-   "label": "Pant F1"
-  },
-  {
-   "fieldname": "pf2_dupatta_f1",
-   "fieldtype": "Data",
-   "label": "PF2 Dupatta F1"
-  },
-  {
-   "fieldname": "dupatta_f2",
-   "fieldtype": "Data",
-   "label": "Dupatta F2"
-  },
-  {
-   "fieldname": "d3",
-   "fieldtype": "Data",
-   "label": "D3"
-  },
-  {
-   "fieldname": "lace_1",
-   "fieldtype": "Data",
-   "label": "Lace 1"
-  },
-  {
-   "fieldname": "column_break_3",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "lace_2",
-   "fieldtype": "Data",
-   "label": "Lace 2"
-  },
-  {
-   "fieldname": "lace_3",
-   "fieldtype": "Data",
-   "label": "Lace 3"
-  },
-  {
-   "fieldname": "l4",
-   "fieldtype": "Data",
-   "label": "L4"
-  },
-  {
-   "fieldname": "b1",
-   "fieldtype": "Data",
-   "label": "B1"
-  },
-  {
-   "fieldname": "b2",
-   "fieldtype": "Data",
-   "label": "B2"
+   "label": "Actual Raw Material Required"
   },
   {
    "fieldname": "pattern_master_note_section",
@@ -213,59 +107,39 @@
   },
   {
    "fieldname": "pattern_master_note",
-   "fieldtype": "Text",
-   "label": "Pattern Master Note:"
-  },
-  {
-   "fieldname": "ec_of_cutting",
-   "fieldtype": "Data",
-   "label": "EC of Cutting"
-  },
-  {
-   "fieldname": "ec_of_sewing",
-   "fieldtype": "Data",
-   "label": "EC of Sewing"
-  },
-  {
-   "fieldname": "ec_of_handwork",
-   "fieldtype": "Data",
-   "label": "EC of Handwork"
-  },
-  {
-   "fieldname": "column_break_4",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "pattern_master_sign_date",
-   "fieldtype": "Data",
-   "label": "Pattern Master Sign & Date"
+   "fieldtype": "Text Editor",
+   "label": "Pattern Master Note:",
+   "reqd": 1
   },
   {
    "fieldname": "hand_embroider_section",
    "fieldtype": "Section Break",
-   "label": "Hand Embroider"
+   "label": "Sample Hand Embroider"
   },
   {
    "fieldname": "hand_embroider",
    "fieldtype": "Data",
-   "label": "Hand Embroider:"
+   "label": "Hand Embroider"
   },
   {
    "fieldname": "sample",
    "fieldtype": "Data",
-   "label": "Sample:"
+   "label": "Sample"
   },
   {
+   "default": "0",
    "fieldname": "quarter",
    "fieldtype": "Check",
    "label": "Quarter"
   },
   {
+   "default": "0",
    "fieldname": "half",
    "fieldtype": "Check",
    "label": "Half"
   },
   {
+   "default": "0",
    "fieldname": "full",
    "fieldtype": "Check",
    "label": "Full"
@@ -281,106 +155,9 @@
    "label": "Rate:"
   },
   {
-   "fieldname": "checklist_section",
-   "fieldtype": "Section Break",
-   "label": "DESIGNERS USE ONLY / AUTHORITY USE ONLY - CHECK LIST"
-  },
-  {
-   "fieldname": "checklist_items",
-   "fieldtype": "Table",
-   "label": "Check List Items",
-   "options": "Pre Production Sample Checklist"
-  },
-  {
    "fieldname": "other_tests_section",
    "fieldtype": "Section Break",
-   "label": "OTHER TESTS/CHECK (All Colors)"
-  },
-  {
-   "fieldname": "fabric_color",
-   "fieldtype": "Select",
-   "label": "Fabric Color",
-   "options": "YES\nNO"
-  },
-  {
-   "fieldname": "piping_border_fabric_color",
-   "fieldtype": "Data",
-   "label": "Piping/ Border Fabric Color"
-  },
-  {
-   "fieldname": "lace_color",
-   "fieldtype": "Data",
-   "label": "Lace Color"
-  },
-  {
-   "fieldname": "beads_color",
-   "fieldtype": "Data",
-   "label": "Beads Color"
-  },
-  {
-   "fieldname": "sip_color",
-   "fieldtype": "Data",
-   "label": "S/P Color"
-  },
-  {
-   "fieldname": "block_color",
-   "fieldtype": "Data",
-   "label": "Block Color"
-  },
-  {
-   "fieldname": "thread_color",
-   "fieldtype": "Data",
-   "label": "Thread Color"
-  },
-  {
-   "fieldname": "pps_wash_check",
-   "fieldtype": "Data",
-   "label": "PPS Wash Check"
-  },
-  {
-   "fieldname": "design_check_as_per_spec_sheet",
-   "fieldtype": "Data",
-   "label": "Design Check As Per Spec Sheet"
-  },
-  {
-   "fieldname": "shrinkage_test",
-   "fieldtype": "Select",
-   "label": "Shrinkage Test:",
-   "options": "NO\nYES"
-  },
-  {
-   "fieldname": "shrinkage_allowance",
-   "fieldtype": "Data",
-   "label": "YES (............... inch allowance)"
-  },
-  {
-   "fieldname": "instruction",
-   "fieldtype": "Text",
-   "label": "Instruction:"
-  },
-  {
-   "fieldname": "details_section",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "fabrics",
-   "fieldtype": "Text",
-   "label": "Fabrics:"
-  },
-  {
-   "fieldname": "trims",
-   "fieldtype": "Text",
-   "label": "Trims:"
-  },
-  {
-   "fieldname": "accessories",
-   "fieldtype": "Text",
-   "label": "Accessories:"
-  },
-  {
-   "fieldname": "tech_pack_no",
-   "fieldtype": "Data",
-   "label": "Tech Pack No"
+   "label": "PPS Quality Inspection"
   },
   {
    "fieldname": "note_section",
@@ -388,31 +165,133 @@
    "label": "NOTE & TEST RESULTS:"
   },
   {
-   "fieldname": "note_test_results",
-   "fieldtype": "Text",
-   "label": "Note & Test Results"
-  },
-  {
-   "fieldname": "fashion_designer_sign_date",
-   "fieldtype": "Data",
-   "label": "Fashion Designer Seal, Signature & Date"
-  },
-  {
    "fieldname": "size_chart_section",
    "fieldtype": "Section Break",
    "label": "Size Chart"
   },
   {
-   "fieldname": "size_chart_table",
+   "fieldname": "column_break_xbfy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_xgdz",
+   "fieldtype": "Section Break",
+   "label": "Fabric - Dupatta"
+  },
+  {
+   "fieldname": "fabric_dupatta",
    "fieldtype": "Table",
-   "label": "Size Chart",
-   "options": "Pre Production Sample Size Chart"
+   "label": "Fabric - Dupatta",
+   "options": "Item Default"
+  },
+  {
+   "fieldname": "fabrics",
+   "fieldtype": "Table",
+   "label": "Fabrics",
+   "options": "Item Default"
+  },
+  {
+   "fieldname": "trim_accessories",
+   "fieldtype": "Table",
+   "label": "Trim & Accessories",
+   "options": "Item Default"
+  },
+  {
+   "fieldname": "size_chart_in_inch",
+   "fieldtype": "Table",
+   "label": "Size Chart in Inch",
+   "options": "Size Chart in Inch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tech_pack_no",
+   "fieldtype": "Data",
+   "label": "Tech Pack No",
+   "reqd": 1
+  },
+  {
+   "fieldname": "link_nsnp",
+   "fieldtype": "Link",
+   "options": "Quality Inspection Template",
+   "reqd": 1
+  },
+  {
+   "fieldname": "washing_instruction",
+   "fieldtype": "Section Break",
+   "label": "Washing Instruction"
+  },
+  {
+   "default": "0",
+   "fieldname": "wash_separately",
+   "fieldtype": "Check",
+   "label": "Wash Separately"
+  },
+  {
+   "default": "0",
+   "fieldname": "dry_clean_only",
+   "fieldtype": "Check",
+   "label": "Dry Clean Only"
+  },
+  {
+   "default": "0",
+   "fieldname": "wash_warm_iron_inside_out",
+   "fieldtype": "Check",
+   "label": "Wash & warm iron inside out, Do not rub"
+  },
+  {
+   "default": "0",
+   "fieldname": "hand_wash_only",
+   "fieldtype": "Check",
+   "label": "Hand Wash Only"
+  },
+  {
+   "fieldname": "note_or_instructions",
+   "fieldtype": "Text Editor",
+   "label": "Note or Instructions"
+  },
+  {
+   "fieldname": "section_break_vvjb",
+   "fieldtype": "Section Break",
+   "label": "Designer's Disclaimer"
+  },
+  {
+   "fieldname": "read_confirm_carefully",
+   "fieldtype": "Read Only",
+   "label": "Read and Confirm Carefully",
+   "reqd": 1
+  },
+  {
+   "fieldname": "pps_image_and_links_section",
+   "fieldtype": "Section Break",
+   "label": "PPS Image and Links"
+  },
+  {
+   "fieldname": "pps_front",
+   "fieldtype": "Attach Image",
+   "label": "PPS Front",
+   "reqd": 1
+  },
+  {
+   "fieldname": "pps_back",
+   "fieldtype": "Attach Image",
+   "label": "PPS Back",
+   "reqd": 1
+  },
+  {
+   "fieldname": "pps_side",
+   "fieldtype": "Attach Image",
+   "label": "PPS Side"
+  },
+  {
+   "fieldname": "pps_image_link_if_any",
+   "fieldtype": "Data",
+   "label": "PPS Image Link (if any)"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-01-01 00:00:00",
- "modified_by": "Administrator",
+ "modified": "2025-11-21 00:36:40.609099",
+ "modified_by": "asif.expo@gmail.com",
  "module": "DressUp",
  "name": "Pre Production Sample",
  "naming_rule": "By \"Naming Series\" field",
@@ -438,6 +317,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],

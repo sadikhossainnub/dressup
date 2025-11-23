@@ -1,0 +1,20 @@
+[
+ {
+  "doctype": "Custom Field",
+  "name": "Employee-design_no",
+  "dt": "Employee",
+  "fieldname": "design_no",
+  "fieldtype": "Data",
+  "label": "Designer Code",
+  "insert_after": "employee_number"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Employee-abbr",
+  "dt": "Employee",
+  "fieldname": "abbr",
+  "fieldtype": "Data",
+  "label": "Abbr",
+  "insert_after": "design_no"
+ }
+]

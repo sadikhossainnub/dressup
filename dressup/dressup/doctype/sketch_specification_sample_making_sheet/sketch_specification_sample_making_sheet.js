@@ -2,17 +2,14 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Sketch Specification Sample Making Sheet', {
-	refresh(frm) {
-		if (frm.is_new() && !frm.doc.designer) {
-			frappe.db.get_value('Employee', {'user_id': frappe.session.user}, 'name')
-				.then(r => {
-					if (r.message?.name) {
-						frm.set_value('designer', r.message.name);
-					}
-				})
-				.catch(err => {
-					console.warn('Could not fetch employee data:', err);
+	refresh: function(frm) {
+		if (frm.doc.docstatus === 1) {
+			frm.add_custom_button(__('Cost Estimation'), function() {
+				frappe.model.open_mapped_doc({
+					method: 'dressup.dressup.doctype.sketch_specification_sample_making_sheet.sketch_specification_sample_making_sheet.make_cost_estimation',
+					frm: frm
 				});
+			}, __('Create'));
 		}
 	}
 });

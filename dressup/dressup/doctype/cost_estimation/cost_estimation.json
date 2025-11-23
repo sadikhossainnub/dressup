@@ -8,33 +8,55 @@
  "field_order": [
   "naming_series",
   "tech_pack_no",
+  "item_name",
   "column_break_1",
   "date",
   "designer",
   "design_no",
+  "category",
   "materials_section",
   "materials",
   "total_fabric",
   "accessories_section",
   "accessories",
+  "total_trim_and_accessories",
   "value_addition_section",
   "cutting",
-  "total_cutting",
   "sewing",
-  "total_sewing",
   "hand_work_estimation",
-  "total_hand_work",
+  "column_break_nxdh",
+  "machine_embroidery",
+  "hand_embroidery",
+  "karchupi",
+  "column_break_lntb",
+  "screen_print",
+  "block_print",
+  "tiedye",
+  "section_break_zbnn",
   "total_tailoring",
+  "section_break_xmnq",
+  "important_note",
   "finishing_section",
   "wash_iron",
+  "column_break_miob",
   "qc_packaging",
+  "column_break_uglg",
   "transportation",
-  "producer_profit",
+  "column_break_svkd",
   "total_finishing",
-  "overhead_section",
-  "overhead_markup_71",
-  "overhead_markup_custom",
-  "tailoring_only_oh_mu"
+  "margin_section",
+  "pattern_variation",
+  "column_break_lnyo",
+  "screen_print_machine_emb_65",
+  "column_break_dvhv",
+  "hand_embroidery_75",
+  "suggested_selling_price_section",
+  "column_break_tjnu",
+  "for_pattern_variation_only",
+  "column_break_gpdc",
+  "screen_print_machine_emb_only",
+  "column_break_xivu",
+  "hand_embroidery_only"
  ],
  "fields": [
   {
@@ -68,23 +90,25 @@
    "fetch_from": "tech_pack_no.design_no",
    "fieldname": "design_no",
    "fieldtype": "Data",
-   "label": "Design No:"
+   "label": "Design No:",
+   "reqd": 1
   },
   {
    "fetch_from": "tech_pack_no.designer",
    "fieldname": "designer",
    "fieldtype": "Data",
-   "label": "Designer:"
+   "label": "Designer:",
+   "reqd": 1
   },
   {
    "fieldname": "materials_section",
    "fieldtype": "Section Break",
-   "label": "Raw Materials"
+   "label": "Fabrics"
   },
   {
    "fieldname": "materials",
    "fieldtype": "Table",
-   "label": "Raw Material",
+   "label": "Raw Material Items",
    "options": "Cost Estimation Material"
   },
   {
@@ -96,30 +120,28 @@
   {
    "fieldname": "accessories_section",
    "fieldtype": "Section Break",
-   "label": "Accessories"
+   "label": "Trims & Accessories"
   },
   {
    "fieldname": "accessories",
    "fieldtype": "Table",
-   "label": "Accessories",
+   "label": "Trims & Accessories",
    "options": "Cost Estimation Accessory"
   },
   {
    "fieldname": "value_addition_section",
    "fieldtype": "Section Break",
-   "label": "Total Value Addition"
+   "label": "Workstation Charges"
   },
   {
    "fieldname": "cutting",
-   "fieldtype": "Table",
-   "label": "Cutting Estimation",
-   "options": "Cutting Estimation"
+   "fieldtype": "Currency",
+   "label": "Cutting Estimation"
   },
   {
    "fieldname": "sewing",
-   "fieldtype": "Table",
-   "label": "Sewing Estimation",
-   "options": "Sewing Estimation"
+   "fieldtype": "Currency",
+   "label": "Sewing Estimation"
   },
   {
    "fieldname": "total_tailoring",
@@ -148,67 +170,164 @@
    "label": "Transportation"
   },
   {
-   "fieldname": "producer_profit",
-   "fieldtype": "Currency",
-   "label": "Producer Profit"
-  },
-  {
    "fieldname": "total_finishing",
    "fieldtype": "Currency",
    "label": "Total Finishing",
    "read_only": 1
   },
   {
-   "fieldname": "overhead_section",
-   "fieldtype": "Section Break",
-   "label": "Overhead + Markup"
-  },
-  {
-   "default": "71",
-   "fieldname": "overhead_markup_71",
-   "fieldtype": "Percent",
-   "label": "Overhead + Markup"
-  },
-  {
-   "fieldname": "overhead_markup_custom",
-   "fieldtype": "Currency",
-   "label": "Overhead + Markup",
-   "read_only": 1
-  },
-  {
-   "default": "52",
-   "fieldname": "tailoring_only_oh_mu",
-   "fieldtype": "Percent",
-   "label": "Tailoring Only OH + MU"
-  },
-  {
-   "fieldname": "total_cutting",
-   "fieldtype": "Currency",
-   "label": "Total Cutting",
-   "read_only": 1
-  },
-  {
-   "fieldname": "total_sewing",
-   "fieldtype": "Currency",
-   "label": "Total Sewing",
-   "read_only": 1
-  },
-  {
    "fieldname": "hand_work_estimation",
-   "fieldtype": "Table",
-   "label": "Hand Work Estimation",
-   "options": "Hand Work Estimation"
+   "fieldtype": "Data",
+   "label": "Hand Work"
   },
   {
-   "fieldname": "total_hand_work",
-   "fieldtype": "Currency",
-   "label": "Total Hand Work",
+   "fieldname": "column_break_nxdh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_lntb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_miob",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_uglg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_svkd",
+   "fieldtype": "Column Break",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_lnyo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "screen_print_machine_emb_65",
+   "fieldtype": "Data",
+   "label": "Screen Print/ Machine Emb 65%"
+  },
+  {
+   "fieldname": "column_break_dvhv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hand_embroidery_75",
+   "fieldtype": "Data",
+   "label": "Hand Embroidery 75%"
+  },
+  {
+   "fieldname": "suggested_selling_price_section",
+   "fieldtype": "Section Break",
+   "label": "Suggested Selling Price",
+   "read_only": 1
+  },
+  {
+   "fieldname": "for_pattern_variation_only",
+   "fieldtype": "Currency",
+   "label": "For Pattern Variation Only"
+  },
+  {
+   "fieldname": "column_break_gpdc",
+   "fieldtype": "Column Break",
+   "read_only": 1
+  },
+  {
+   "fieldname": "screen_print_machine_emb_only",
+   "fieldtype": "Currency",
+   "label": "Screen Print/ Machine Emb only"
+  },
+  {
+   "fieldname": "column_break_xivu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hand_embroidery_only",
+   "fieldtype": "Currency",
+   "label": "Hand Embroidery Only",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_trim_and_accessories",
+   "fieldtype": "Data",
+   "label": "Total Trim and Accessories",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tjnu",
+   "fieldtype": "Column Break",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_xmnq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "important_note",
+   "fieldtype": "Small Text",
+   "label": "Important Note"
+  },
+  {
+   "fieldname": "machine_embroidery",
+   "fieldtype": "Data",
+   "label": "Machine Embroidery"
+  },
+  {
+   "fieldname": "hand_embroidery",
+   "fieldtype": "Data",
+   "label": " Hand Embroidery"
+  },
+  {
+   "fieldname": "karchupi",
+   "fieldtype": "Data",
+   "label": "Karchupi"
+  },
+  {
+   "fieldname": "screen_print",
+   "fieldtype": "Data",
+   "label": "Screen Print"
+  },
+  {
+   "fieldname": "block_print",
+   "fieldtype": "Data",
+   "label": "Block Print"
+  },
+  {
+   "fieldname": "tiedye",
+   "fieldtype": "Data",
+   "label": " Tie & Dye"
+  },
+  {
+   "fieldname": "section_break_zbnn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "margin_section",
+   "fieldtype": "Section Break",
+   "label": "Margin"
+  },
+  {
+   "fieldname": "pattern_variation",
+   "fieldtype": "Percent",
+   "label": "Pattern Variation 52%"
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Data",
+   "label": "Category"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-14 01:06:52.040743",
+ "modified": "2025-11-15 21:59:58.320558",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Cost Estimation",
