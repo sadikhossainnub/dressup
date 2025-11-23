@@ -20,18 +20,30 @@
   "accessories_section",
   "accessories",
   "total_trim_and_accessories",
-  "value_addition_section",
+  "workstation_section",
   "cutting",
+  "fusing_bundling",
   "sewing",
-  "hand_work_estimation",
-  "column_break_nxdh",
   "machine_embroidery",
   "hand_embroidery",
-  "karchupi",
-  "column_break_lntb",
+  "column_break_oweg",
+  "hand_work",
   "screen_print",
   "block_print",
   "tiedye",
+  "karchupi",
+  "value_addition_section",
+  "cutting_f",
+  "sewing_f",
+  "hand_work_estimation",
+  "column_break_nxdh",
+  "machine_embroidery_f",
+  "hand_embroidery_f",
+  "karchupi_f",
+  "column_break_lntb",
+  "screen_print_f",
+  "block_print_f",
+  "tie_dye",
   "section_break_zbnn",
   "total_tailoring",
   "section_break_xmnq",
@@ -134,14 +146,16 @@
    "label": "Workstation Charges"
   },
   {
+   "default": "0",
    "fieldname": "cutting",
-   "fieldtype": "Currency",
-   "label": "Cutting Estimation"
+   "fieldtype": "Check",
+   "label": "Cutting"
   },
   {
+   "default": "0",
    "fieldname": "sewing",
-   "fieldtype": "Currency",
-   "label": "Sewing Estimation"
+   "fieldtype": "Check",
+   "label": "Sewing"
   },
   {
    "fieldname": "total_tailoring",
@@ -176,6 +190,7 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:doc.hand_work == \"1\"",
    "fieldname": "hand_work_estimation",
    "fieldtype": "Data",
    "label": "Hand Work"
@@ -271,34 +286,40 @@
    "label": "Important Note"
   },
   {
+   "default": "0",
    "fieldname": "machine_embroidery",
-   "fieldtype": "Data",
+   "fieldtype": "Check",
    "label": "Machine Embroidery"
   },
   {
+   "default": "0",
    "fieldname": "hand_embroidery",
-   "fieldtype": "Data",
-   "label": " Hand Embroidery"
+   "fieldtype": "Check",
+   "label": "Hand Embroidery"
   },
   {
+   "default": "0",
    "fieldname": "karchupi",
-   "fieldtype": "Data",
+   "fieldtype": "Check",
    "label": "Karchupi"
   },
   {
+   "default": "0",
    "fieldname": "screen_print",
-   "fieldtype": "Data",
+   "fieldtype": "Check",
    "label": "Screen Print"
   },
   {
+   "default": "0",
    "fieldname": "block_print",
-   "fieldtype": "Data",
+   "fieldtype": "Check",
    "label": "Block Print"
   },
   {
+   "default": "0",
    "fieldname": "tiedye",
-   "fieldtype": "Data",
-   "label": " Tie & Dye"
+   "fieldtype": "Check",
+   "label": "Tie & Dye"
   },
   {
    "fieldname": "section_break_zbnn",
@@ -323,11 +344,81 @@
    "fieldname": "category",
    "fieldtype": "Data",
    "label": "Category"
+  },
+  {
+   "fieldname": "workstation_section",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Workstation "
+  },
+  {
+   "default": "0",
+   "fieldname": "fusing_bundling",
+   "fieldtype": "Check",
+   "label": "Fusing & Bundling"
+  },
+  {
+   "fieldname": "column_break_oweg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "hand_work",
+   "fieldtype": "Check",
+   "label": "Hand Work"
+  },
+  {
+   "depends_on": "eval:doc.cutting == \"1\"",
+   "fieldname": "cutting_f",
+   "fieldtype": "Currency",
+   "label": "Cutting Estimation"
+  },
+  {
+   "depends_on": "eval:doc.sewing == \"1\"",
+   "fieldname": "sewing_f",
+   "fieldtype": "Currency",
+   "label": "Sewing Estimation"
+  },
+  {
+   "depends_on": "eval:doc.machine_embroidery == \"1\"",
+   "fieldname": "machine_embroidery_f",
+   "fieldtype": "Data",
+   "label": "Machine Embroidery"
+  },
+  {
+   "depends_on": "eval:doc.hand_embroidery == \"1\"",
+   "fieldname": "hand_embroidery_f",
+   "fieldtype": "Data",
+   "label": " Hand Embroidery"
+  },
+  {
+   "depends_on": "eval:doc.karchupi == \"1\"",
+   "fieldname": "karchupi_f",
+   "fieldtype": "Data",
+   "label": "Karchupi"
+  },
+  {
+   "depends_on": "eval:doc.screen_print == \"1\"",
+   "fieldname": "screen_print_f",
+   "fieldtype": "Data",
+   "label": "Screen Print"
+  },
+  {
+   "depends_on": "eval:doc.block_print == \"1\"",
+   "fieldname": "block_print_f",
+   "fieldtype": "Data",
+   "label": "Block Print"
+  },
+  {
+   "depends_on": "eval:doc.tiedye == \"1\"",
+   "fieldname": "tie_dye",
+   "fieldtype": "Data",
+   "label": " Tie & Dye"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-15 21:59:58.320558",
+ "modified": "2025-11-23 15:48:51.521209",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Cost Estimation",

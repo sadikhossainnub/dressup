@@ -1,8 +1,8 @@
 # Copyright (c) 2024, DressUp and contributors
 # For license information, please see license.txt
 
-import frappe
-from frappe.model.document import Document
+import frappe  # type: ignore
+from frappe.model.document import Document  # type: ignore
 import random
 
 
@@ -18,7 +18,7 @@ class SketchSpecificationSampleMakingSheet(Document):
 		self.create_cost_estimation()
 
 	def create_cost_estimation(self):
-		from frappe.model.mapper import get_mapped_doc
+		from frappe.model.mapper import get_mapped_doc  # type: ignore
 
 		def set_missing_values(source, target):
 			pass
@@ -54,7 +54,7 @@ class SketchSpecificationSampleMakingSheet(Document):
 
 @frappe.whitelist()
 def make_cost_estimation(source_name, target_doc=None):
-	from frappe.model.mapper import get_mapped_doc
+	from frappe.model.mapper import get_mapped_doc  # type: ignore
 
 	cost_est = get_mapped_doc(
 		"Sketch Specification Sample Making Sheet",
