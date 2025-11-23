@@ -46,11 +46,11 @@ class SketchSpecificationSampleMakingSheet(Document):
 		frappe.msgprint(f"Cost Estimation {cost_est.name} created successfully")
 
 	def before_save(self):
-		if self.designer:
-			employee = frappe.get_doc("Employee", self.designer)
-			abbr = employee.get("abbr") or ""
-			random_num = random.randint(1000, 9999)
-			self.design_no = f"{abbr}{random_num}"
+		if self.designer and not self.design_no:
+			abbr = frappe.db.get_value("Employee", self.designer, "abbr")
+			if abbr:
+				random_num = random.randint(1000, 9999)
+				self.design_no = f"{abbr}{random_num}"
 
 @frappe.whitelist()
 def make_cost_estimation(source_name, target_doc=None):
