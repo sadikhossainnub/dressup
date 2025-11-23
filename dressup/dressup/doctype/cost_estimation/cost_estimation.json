@@ -68,7 +68,8 @@
   "column_break_gpdc",
   "screen_print_machine_emb_only",
   "column_break_xivu",
-  "hand_embroidery_only"
+  "hand_embroidery_only",
+  "amended_from"
  ],
  "fields": [
   {
@@ -414,11 +415,22 @@
    "fieldname": "tie_dye",
    "fieldtype": "Data",
    "label": " Tie & Dye"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Cost Estimation",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2025-11-23 15:48:51.521209",
+ "modified": "2025-11-23 17:57:46.900209",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Cost Estimation",
@@ -449,5 +461,7 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
 }

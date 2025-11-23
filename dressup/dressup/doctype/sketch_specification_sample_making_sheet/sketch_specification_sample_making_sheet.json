@@ -428,7 +428,8 @@
   },
   {
    "fieldname": "text_editor_noaa",
-   "fieldtype": "Text Editor"
+   "fieldtype": "Text Editor",
+   "set_only_once": 1
   },
   {
    "default": "0",
@@ -576,22 +577,26 @@
   {
    "fieldname": "cost_for_30_unit",
    "fieldtype": "Data",
-   "label": "Cost for 30 Unit"
+   "label": "Cost for 30 Unit",
+   "read_only": 1
   },
   {
    "fieldname": "cost_for_50_unit",
    "fieldtype": "Data",
-   "label": "Cost for 50 Unit"
+   "label": "Cost for 50 Unit",
+   "read_only": 1
   },
   {
    "fieldname": "cost_for_70_unit",
    "fieldtype": "Data",
-   "label": "Cost for 70 Unit"
+   "label": "Cost for 70 Unit",
+   "read_only": 1
   },
   {
    "fieldname": "cost_for_100_unit",
    "fieldtype": "Data",
-   "label": "Cost for 100 Unit"
+   "label": "Cost for 100 Unit",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_rqjd",
@@ -656,7 +661,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-11-23 17:00:14.254641",
+ "modified": "2025-11-23 17:53:09.228123",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification Sample Making Sheet",
