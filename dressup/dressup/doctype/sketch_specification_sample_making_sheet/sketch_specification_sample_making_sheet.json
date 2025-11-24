@@ -40,6 +40,33 @@
   "bp",
   "td",
   "karchupi",
+  "section_break_fulh",
+  "color_units",
+  "section_break_qgzt",
+  "color",
+  "data_xmgl",
+  "color_2",
+  "data_ryzm",
+  "color_3",
+  "data_muzc",
+  "color_4",
+  "data_lfwb",
+  "column_break_oqxe",
+  "color_5",
+  "data_hnjh",
+  "color_6",
+  "data_zsdd",
+  "color_7",
+  "data_uxrz",
+  "color_8",
+  "data_mnat",
+  "column_break_kzbm",
+  "color_9",
+  "data_wptw",
+  "color_10",
+  "data_znsh",
+  "section_break_snwy",
+  "color_description",
   "workstation_screen_print",
   "pigments_dye",
   "column_break_qhgw",
@@ -56,6 +83,15 @@
   "cost_for_50_unit",
   "cost_for_70_unit",
   "cost_for_100_unit",
+  "sample_hand_embroider_section",
+  "hand_embroider",
+  "sample",
+  "column_break_matv",
+  "quarter",
+  "half",
+  "full",
+  "time",
+  "rate",
   "measurements_section",
   "column_break_eghr",
   "full_length",
@@ -577,26 +613,22 @@
   {
    "fieldname": "cost_for_30_unit",
    "fieldtype": "Data",
-   "label": "Cost for 30 Unit",
-   "read_only": 1
+   "label": "Cost for 30 Unit"
   },
   {
    "fieldname": "cost_for_50_unit",
    "fieldtype": "Data",
-   "label": "Cost for 50 Unit",
-   "read_only": 1
+   "label": "Cost for 50 Unit"
   },
   {
    "fieldname": "cost_for_70_unit",
    "fieldtype": "Data",
-   "label": "Cost for 70 Unit",
-   "read_only": 1
+   "label": "Cost for 70 Unit"
   },
   {
    "fieldname": "cost_for_100_unit",
    "fieldtype": "Data",
-   "label": "Cost for 100 Unit",
-   "read_only": 1
+   "label": "Cost for 100 Unit"
   },
   {
    "fieldname": "column_break_rqjd",
@@ -655,13 +687,182 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "depends_on": "eval:doc.hand_embroidery == \"1\"",
+   "fieldname": "sample_hand_embroider_section",
+   "fieldtype": "Section Break",
+   "label": "Sample Hand Embroider"
+  },
+  {
+   "fieldname": "hand_embroider",
+   "fieldtype": "Data",
+   "label": "Hand Embroider"
+  },
+  {
+   "fieldname": "sample",
+   "fieldtype": "Data",
+   "label": "Sample"
+  },
+  {
+   "fieldname": "column_break_matv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "quarter",
+   "fieldtype": "Check",
+   "label": "Quarter"
+  },
+  {
+   "default": "0",
+   "fieldname": "half",
+   "fieldtype": "Check",
+   "label": "Half"
+  },
+  {
+   "default": "0",
+   "fieldname": "full",
+   "fieldtype": "Check",
+   "label": "Full"
+  },
+  {
+   "fieldname": "time",
+   "fieldtype": "Data",
+   "label": "Time"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Data",
+   "label": "Rate"
+  },
+  {
+   "fieldname": "section_break_qgzt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Color",
+   "label": "Color"
+  },
+  {
+   "fieldname": "color_description",
+   "fieldtype": "Small Text",
+   "label": "Color Description"
+  },
+  {
+   "fieldname": "section_break_fulh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "color_units",
+   "fieldtype": "Select",
+   "label": "Color Units",
+   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
+  },
+  {
+   "fieldname": "color_2",
+   "fieldtype": "Color",
+   "label": "Color 2"
+  },
+  {
+   "fieldname": "color_3",
+   "fieldtype": "Color",
+   "label": "Color 3"
+  },
+  {
+   "fieldname": "color_4",
+   "fieldtype": "Color",
+   "label": "Color 4"
+  },
+  {
+   "fieldname": "column_break_kzbm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "color_5",
+   "fieldtype": "Color",
+   "label": "Color 5"
+  },
+  {
+   "fieldname": "color_6",
+   "fieldtype": "Color",
+   "label": "Color 6"
+  },
+  {
+   "fieldname": "color_7",
+   "fieldtype": "Color",
+   "label": "Color 7"
+  },
+  {
+   "fieldname": "color_8",
+   "fieldtype": "Color",
+   "label": "Color 8"
+  },
+  {
+   "fieldname": "color_9",
+   "fieldtype": "Color",
+   "label": "Color 9"
+  },
+  {
+   "fieldname": "color_10",
+   "fieldtype": "Color",
+   "label": "Color 10"
+  },
+  {
+   "fieldname": "section_break_snwy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "data_xmgl",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "data_ryzm",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "data_muzc",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "data_lfwb",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "column_break_oqxe",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "data_hnjh",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "data_zsdd",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "data_uxrz",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "data_mnat",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "data_wptw",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "data_znsh",
+   "fieldtype": "Data"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-11-23 17:53:09.228123",
+ "modified": "2025-11-24 08:19:51.100116",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification Sample Making Sheet",

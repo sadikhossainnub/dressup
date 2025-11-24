@@ -15,7 +15,6 @@ class SketchSpecificationSampleMakingSheet(Document):
 
 	def on_submit(self):
 		self.db_set("submission_date", frappe.utils.now_datetime())
-		self.create_cost_estimation()
 
 	def create_cost_estimation(self):
 		from frappe.model.mapper import get_mapped_doc  # type: ignore
@@ -51,15 +50,6 @@ class SketchSpecificationSampleMakingSheet(Document):
 			if abbr:
 				random_num = random.randint(1000, 9999)
 				self.design_no = f"{abbr}{random_num}"
-		
-		if self.frame_cost:
-			self.cost_for_30_unit = self.frame_cost * 30
-		if self.process_cost:
-			self.cost_for_50_unit = self.process_cost * 50
-		if self.chemical_cost:
-			self.cost_for_70_unit = self.chemical_cost * 70
-		if self.print_cost:
-			self.cost_for_100_unit = self.print_cost * 100
 
 @frappe.whitelist()
 def generate_design_no(designer):

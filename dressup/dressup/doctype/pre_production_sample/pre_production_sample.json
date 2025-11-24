@@ -39,16 +39,7 @@
   "pps_front",
   "pps_back",
   "pps_side",
-  "pps_image_link_if_any",
-  "hand_embroider_section",
-  "hand_embroider",
-  "sample",
-  "column_break_xbfy",
-  "quarter",
-  "half",
-  "full",
-  "time",
-  "rate"
+  "pps_image_link_if_any"
  ],
  "fields": [
   {
@@ -112,49 +103,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "hand_embroider_section",
-   "fieldtype": "Section Break",
-   "label": "Sample Hand Embroider"
-  },
-  {
-   "fieldname": "hand_embroider",
-   "fieldtype": "Data",
-   "label": "Hand Embroider"
-  },
-  {
-   "fieldname": "sample",
-   "fieldtype": "Data",
-   "label": "Sample"
-  },
-  {
-   "default": "0",
-   "fieldname": "quarter",
-   "fieldtype": "Check",
-   "label": "Quarter"
-  },
-  {
-   "default": "0",
-   "fieldname": "half",
-   "fieldtype": "Check",
-   "label": "Half"
-  },
-  {
-   "default": "0",
-   "fieldname": "full",
-   "fieldtype": "Check",
-   "label": "Full"
-  },
-  {
-   "fieldname": "time",
-   "fieldtype": "Data",
-   "label": "Time:"
-  },
-  {
-   "fieldname": "rate",
-   "fieldtype": "Currency",
-   "label": "Rate:"
-  },
-  {
    "fieldname": "other_tests_section",
    "fieldtype": "Section Break",
    "label": "PPS Quality Inspection"
@@ -168,10 +116,6 @@
    "fieldname": "size_chart_section",
    "fieldtype": "Section Break",
    "label": "Size Chart"
-  },
-  {
-   "fieldname": "column_break_xbfy",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "section_break_xgdz",
@@ -290,8 +234,8 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-21 00:36:40.609099",
- "modified_by": "asif.expo@gmail.com",
+ "modified": "2025-11-24 01:11:58.059307",
+ "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Pre Production Sample",
  "naming_rule": "By \"Naming Series\" field",

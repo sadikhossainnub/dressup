@@ -46,8 +46,6 @@
   "tie_dye",
   "section_break_zbnn",
   "total_tailoring",
-  "section_break_xmnq",
-  "important_note",
   "finishing_section",
   "wash_iron",
   "column_break_miob",
@@ -69,7 +67,10 @@
   "screen_print_machine_emb_only",
   "column_break_xivu",
   "hand_embroidery_only",
-  "amended_from"
+  "section_break_stcm",
+  "amended_from",
+  "section_break_xmnq",
+  "important_note"
  ],
  "fields": [
   {
@@ -283,7 +284,7 @@
   },
   {
    "fieldname": "important_note",
-   "fieldtype": "Small Text",
+   "fieldtype": "Text Editor",
    "label": "Important Note"
   },
   {
@@ -425,12 +426,16 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "section_break_stcm",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-11-23 17:57:46.900209",
+ "modified": "2025-11-24 00:51:30.225834",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Cost Estimation",
