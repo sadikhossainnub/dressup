@@ -17,12 +17,9 @@ frappe.ui.form.on('Barcode Label Print', {
     },
     item_code: function (frm) {
         if (frm.doc.item_code) {
-            frappe.db.get_value('Item', frm.doc.item_code, ['item_name', 'garment_size'], function (r) {
+            frappe.db.get_value('Item', frm.doc.item_code, ['item_name'], function (r) {
                 if (r) {
                     frm.set_value('item_name', r.item_name);
-                    if (r.garment_size) {
-                        frm.set_value('garment_size', r.garment_size);
-                    }
                 }
             });
         }
