@@ -15,7 +15,6 @@
         "column_break_1",
         "include_item_code",
         "include_item_name",
-        "include_garment_size",
         "include_batch_no",
         "include_serial_no",
         "include_expiry_date",
@@ -72,13 +71,6 @@
             "fieldname": "include_item_name",
             "fieldtype": "Check",
             "label": "Include Item Name"
-        },
-        {
-            "default": "0",
-            "fieldname": "include_garment_size",
-            "fieldtype": "Check",
-            "label": "Include Garment Size",
-            "description": "Print Item Size if available"
         },
         {
             "default": "0",

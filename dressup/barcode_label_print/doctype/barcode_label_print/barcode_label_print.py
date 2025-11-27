@@ -29,7 +29,6 @@ class BarcodeLabelPrint(Document):
 		data = {
 			"item_code": self.item_code,
 			"item_name": self.item_name,
-			"garment_size": self.garment_size,
 			"batch_no": self.batch_no,
 			"serial_no": self.serial_no,
 			"expiry_date": self.expiry_date,
@@ -69,8 +68,7 @@ class BarcodeLabelPrint(Document):
 		if template.include_item_code and data.get("item_code"):
 			html += f"<div>{data['item_code']}</div>"
 			
-		if template.include_garment_size and data.get("garment_size"):
-			html += f"<div>Size: {data['garment_size']}</div>"
+
 			
 		if barcode_image:
 			html += f"<img src='{barcode_image}' style='max-width: 100%; max-height: 50%; margin: 2px 0;' />"
