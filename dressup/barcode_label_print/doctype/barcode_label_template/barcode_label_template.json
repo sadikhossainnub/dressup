@@ -1,0 +1,132 @@
+{
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "field:template_name",
+    "creation": "2024-05-22 12:00:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "template_name",
+        "label_width",
+        "label_height",
+        "font_size",
+        "barcode_type",
+        "column_break_1",
+        "include_item_code",
+        "include_item_name",
+        "include_garment_size",
+        "include_batch_no",
+        "include_serial_no",
+        "include_expiry_date",
+        "include_company_name"
+    ],
+    "fields": [
+        {
+            "fieldname": "template_name",
+            "fieldtype": "Data",
+            "label": "Template Name",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "fieldname": "label_width",
+            "fieldtype": "Float",
+            "label": "Width (mm)",
+            "reqd": 1,
+            "description": "Width of the physical label"
+        },
+        {
+            "fieldname": "label_height",
+            "fieldtype": "Float",
+            "label": "Height (mm)",
+            "reqd": 1,
+            "description": "Height of the physical label"
+        },
+        {
+            "default": "10",
+            "fieldname": "font_size",
+            "fieldtype": "Int",
+            "label": "Font Size"
+        },
+        {
+            "default": "Code128",
+            "fieldname": "barcode_type",
+            "fieldtype": "Select",
+            "label": "Barcode Type",
+            "options": "Code128\nCode39\nEAN13\nEAN8\nUPC-A\nJAN\nISBN\nQR Code",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "0",
+            "fieldname": "include_item_code",
+            "fieldtype": "Check",
+            "label": "Include Item Code"
+        },
+        {
+            "default": "0",
+            "fieldname": "include_item_name",
+            "fieldtype": "Check",
+            "label": "Include Item Name"
+        },
+        {
+            "default": "0",
+            "fieldname": "include_garment_size",
+            "fieldtype": "Check",
+            "label": "Include Garment Size",
+            "description": "Print Item Size if available"
+        },
+        {
+            "default": "0",
+            "fieldname": "include_batch_no",
+            "fieldtype": "Check",
+            "label": "Include Batch No"
+        },
+        {
+            "default": "0",
+            "fieldname": "include_serial_no",
+            "fieldtype": "Check",
+            "label": "Include Serial No"
+        },
+        {
+            "default": "0",
+            "fieldname": "include_expiry_date",
+            "fieldtype": "Check",
+            "label": "Include Expiry Date"
+        },
+        {
+            "default": "0",
+            "fieldname": "include_company_name",
+            "fieldtype": "Check",
+            "label": "Include Company Name"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2024-05-22 12:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Barcode Label Print",
+    "name": "Barcode Label Template",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}

@@ -1,0 +1,119 @@
+{
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "format:BLP-{MM}-{YY}-{#####}",
+    "creation": "2024-05-22 12:00:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "item_code",
+        "item_name",
+        "garment_size",
+        "column_break_1",
+        "batch_no",
+        "serial_no",
+        "expiry_date",
+        "section_break_1",
+        "label_template",
+        "print_qty",
+        "preview_html"
+    ],
+    "fields": [
+        {
+            "fieldname": "item_code",
+            "fieldtype": "Link",
+            "label": "Item Code",
+            "options": "Item",
+            "reqd": 1
+        },
+        {
+            "fieldname": "item_name",
+            "fieldtype": "Data",
+            "label": "Item Name",
+            "read_only": 1,
+            "fetch_from": "item_code.item_name"
+        },
+        {
+            "fieldname": "garment_size",
+            "fieldtype": "Data",
+            "label": "Garment Size",
+            "read_only": 1,
+            "fetch_from": "item_code.garment_size"
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "batch_no",
+            "fieldtype": "Link",
+            "label": "Batch No",
+            "options": "Batch",
+            "link_filters": "[[\"Batch\",\"item\",\"=\",\"item_code\"]]"
+        },
+        {
+            "fieldname": "serial_no",
+            "fieldtype": "Link",
+            "label": "Serial No",
+            "options": "Serial No",
+            "link_filters": "[[\"Serial No\",\"item_code\",\"=\",\"item_code\"]]"
+        },
+        {
+            "fieldname": "expiry_date",
+            "fieldtype": "Date",
+            "label": "Expiry Date",
+            "read_only": 1,
+            "fetch_from": "batch_no.expiry_date"
+        },
+        {
+            "fieldname": "section_break_1",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "label_template",
+            "fieldtype": "Link",
+            "label": "Label Template",
+            "options": "Barcode Label Template",
+            "reqd": 1,
+            "description": "Select the physical label size template"
+        },
+        {
+            "default": "1",
+            "fieldname": "print_qty",
+            "fieldtype": "Int",
+            "label": "Print Qty",
+            "reqd": 1
+        },
+        {
+            "fieldname": "preview_html",
+            "fieldtype": "HTML",
+            "label": "Preview HTML",
+            "read_only": 1
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2024-05-22 12:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Barcode Label Print",
+    "name": "Barcode Label Print",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}

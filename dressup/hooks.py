@@ -74,10 +74,10 @@ app_license = "gpl-3.0"
 # ----------
 
 # add methods and filters to jinja environment
-# jinja = {
-# 	"methods": "dressup.utils.jinja_methods",
+jinja = {
+	"methods": ["dressup.dressup.barcode_label_print.utils.get_barcode_base64"],
 # 	"filters": "dressup.utils.jinja_filters"
-# }
+}
 
 # Installation
 # ------------
