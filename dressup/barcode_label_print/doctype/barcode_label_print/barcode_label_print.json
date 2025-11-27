@@ -37,9 +37,7 @@
         {
             "fieldname": "garment_size",
             "fieldtype": "Data",
-            "label": "Garment Size",
-            "read_only": 1,
-            "fetch_from": "item_code.garment_size"
+            "label": "Garment Size"
         },
         {
             "fieldname": "column_break_1",
