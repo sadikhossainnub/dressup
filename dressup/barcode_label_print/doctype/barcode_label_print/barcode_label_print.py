@@ -3,7 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
-from dressup.dressup.barcode_label_print.utils import get_barcode_base64
+from dressup.barcode_label_print.utils import get_barcode_base64
 
 class BarcodeLabelPrint(Document):
 	def validate(self):

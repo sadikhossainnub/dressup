@@ -3,6 +3,7 @@ from io import BytesIO
 import barcode
 from barcode.writer import ImageWriter
 import qrcode
+import frappe
 
 def get_barcode_base64(code_type, code_value):
     """
@@ -11,24 +12,34 @@ def get_barcode_base64(code_type, code_value):
     :param code_value: The value to encode.
     :return: Base64 encoded string of the image.
     """
+    if not code_value:
+        return None
+        
     try:
-        # Map ERPNext/User friendly names to python-barcode names if necessary
+        # Map ERPNext/User friendly names to python-barcode names
         # python-barcode supports: code128, code39, ean, ean13, ean8, gs1, gtinean, isbn, isbn10, isbn13, issn, jan, pzn, upc, upca
         
-        code_type = code_type.lower().replace("-", "").replace(" ", "")
+        code_type_map = {
+            "upc-a": "upca",
+            "jan": "ean13", # JAN is EAN13 with specific prefix
+        }
         
-        if code_type == "qrcode":
+        normalized_type = code_type.lower().replace(" ", "")
+        barcode_format = code_type_map.get(normalized_type, normalized_type)
+        
+        if barcode_format == "qrcode":
             return get_qr_base64(code_value)
 
-        # Special handling for some types if needed, but python-barcode is quite flexible
-        
         rv = BytesIO()
-        # writer_options = {"write_text": False} # Optional: hide text if handled by template
         
         # Create barcode class
-        BarcodeClass = barcode.get_barcode_class(code_type)
+        try:
+            BarcodeClass = barcode.get_barcode_class(barcode_format)
+        except barcode.errors.BarcodeNotFoundError:
+             frappe.throw(f"Barcode type '{code_type}' is not supported.")
         
         # Generate barcode
+        # writer_options = {"write_text": False} # Optional: hide text if handled by template
         my_barcode = BarcodeClass(code_value, writer=ImageWriter())
         
         # Write to stream
@@ -39,8 +50,8 @@ def get_barcode_base64(code_type, code_value):
         return f"data:image/png;base64,{img_str}"
         
     except Exception as e:
-        # Fallback or error handling
-        print(f"Error generating barcode: {e}")
+        frappe.log_error(f"Error generating barcode ({code_type}, {code_value}): {str(e)}", "Barcode Generation Error")
+        # Return None so the label can still print without the barcode if it fails
         return None
 
 def get_qr_base64(data):
@@ -49,6 +60,9 @@ def get_qr_base64(data):
     :param data: The data to encode.
     :return: Base64 encoded string of the image.
     """
+    if not data:
+        return None
+        
     try:
         qr = qrcode.QRCode(
             version=1,
@@ -67,5 +81,5 @@ def get_qr_base64(data):
         img_str = base64.b64encode(rv.getvalue()).decode("utf-8")
         return f"data:image/png;base64,{img_str}"
     except Exception as e:
-        print(f"Error generating QR code: {e}")
+        frappe.log_error(f"Error generating QR code ({data}): {str(e)}", "QR Code Generation Error")
         return None
