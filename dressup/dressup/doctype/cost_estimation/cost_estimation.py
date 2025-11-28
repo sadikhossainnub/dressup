@@ -65,23 +65,15 @@ class CostEstimation(Document):
 			flt(self.total_finishing)
 		)
 		
-		# Pattern Variation: 52% margin
-		# If margin is 52%, then cost is 48% of selling price
-		# Selling Price = Cost / 0.48
-		if flt(self.pattern_variation):
-			margin_percent = flt(self.pattern_variation) / 100
-			self.for_pattern_variation_only = total_cost / (1 - margin_percent) if margin_percent < 1 else 0
-		else:
-			# Default 52% margin
-			self.for_pattern_variation_only = total_cost / 0.48
+		# Pattern Variation: Total Cost + 52% markup
+		markup_percent = flt(self.pattern_variation) if flt(self.pattern_variation) else 52
+		self.for_pattern_variation_only = total_cost * (1 + markup_percent / 100)
 		
-		# Screen Print/Machine Embroidery: 65% margin
-		# Selling Price = Cost / 0.35
-		self.screen_print_machine_emb_only = total_cost / 0.35
+		# Screen Print/Machine Embroidery: Total Cost + 65% markup
+		self.screen_print_machine_emb_only = total_cost * 1.65
 		
-		# Hand Embroidery: 75% margin
-		# Selling Price = Cost / 0.25
-		self.hand_embroidery_only = total_cost / 0.25
+		# Hand Embroidery: Total Cost + 75% markup
+		self.hand_embroidery_only = total_cost * 1.75
 	
 	def before_submit(self):
 		"""Validation before submission"""
