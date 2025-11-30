@@ -9,6 +9,7 @@
  "field_order": [
   "naming_series",
   "item_name",
+  "status",
   "designer",
   "designer_name",
   "design_no",
@@ -490,6 +491,15 @@
    "fieldtype": "Data",
    "label": "Item Name",
    "reqd": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Draft\nSubmitted\nCancelled",
+   "read_only": 1
   },
   {
    "fieldname": "pocket_wid",

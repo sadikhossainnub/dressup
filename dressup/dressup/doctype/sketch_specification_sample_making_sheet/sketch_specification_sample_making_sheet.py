@@ -12,9 +12,14 @@ class SketchSpecificationSampleMakingSheet(Document):
 			employee = frappe.get_value("Employee", {"user_id": frappe.session.user}, "name")
 			if employee:
 				self.designer = employee
+		self.status = "Draft"
 
 	def on_submit(self):
 		self.db_set("submission_date", frappe.utils.now_datetime())
+		self.db_set("status", "Submitted")
+
+	def on_cancel(self):
+		self.db_set("status", "Cancelled")
 
 	def create_cost_estimation(self):
 		from frappe.model.mapper import get_mapped_doc  # type: ignore
@@ -50,6 +55,8 @@ class SketchSpecificationSampleMakingSheet(Document):
 			if abbr:
 				random_num = random.randint(1000, 9999)
 				self.design_no = f"{abbr}{random_num}"
+		if self.docstatus == 0:
+			self.status = "Draft"
 
 @frappe.whitelist()
 def generate_design_no(designer):

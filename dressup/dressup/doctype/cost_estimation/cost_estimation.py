@@ -65,15 +65,20 @@ class CostEstimation(Document):
 			flt(self.total_finishing)
 		)
 		
-		# Pattern Variation: Total Cost + 52% markup
-		markup_percent = flt(self.pattern_variation) if flt(self.pattern_variation) else 52
-		self.for_pattern_variation_only = total_cost * (1 + markup_percent / 100)
-		
-		# Screen Print/Machine Embroidery: Total Cost + 65% markup
-		self.screen_print_machine_emb_only = total_cost * 1.65
-		
-		# Hand Embroidery: Total Cost + 75% markup
-		self.hand_embroidery_only = total_cost * 1.75
+		# Check if Screen Print or Machine Embroidery is selected
+		if self.screen_print or self.machine_embroidery:
+			# Screen Print/Machine Embroidery: Total Cost + 65% markup
+			self.screen_print_machine_emb_only = total_cost * 1.65
+			self.for_pattern_variation_only = 0
+			self.hand_embroidery_only = 0
+		else:
+			# Pattern Variation: Total Cost + markup
+			if flt(self.pattern_variation):
+				self.for_pattern_variation_only = total_cost * (1 + flt(self.pattern_variation) / 100)
+			else:
+				self.for_pattern_variation_only = 0
+			self.screen_print_machine_emb_only = 0
+			self.hand_embroidery_only = total_cost * 1.75
 	
 	def before_submit(self):
 		"""Validation before submission"""

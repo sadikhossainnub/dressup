@@ -245,6 +245,7 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:doc.pattern_variation",
    "fieldname": "for_pattern_variation_only",
    "fieldtype": "Currency",
    "label": "For Pattern Variation Only"
@@ -255,6 +256,7 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:doc.screen_print || doc.machine_embroidery",
    "fieldname": "screen_print_machine_emb_only",
    "fieldtype": "Currency",
    "label": "Screen Print/ Machine Emb only"
