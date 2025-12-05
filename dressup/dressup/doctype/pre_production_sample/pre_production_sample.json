@@ -24,8 +24,6 @@
   "size_chart_in_inch",
   "pattern_master_note_section",
   "pattern_master_note",
-  "other_tests_section",
-  "link_nsnp",
   "washing_instruction",
   "dry_clean_only",
   "wash_separately",
@@ -39,7 +37,10 @@
   "pps_front",
   "pps_back",
   "pps_side",
-  "pps_image_link_if_any"
+  "pps_image_link_if_any",
+  "quality_tab",
+  "other_tests_section",
+  "link_nsnp"
  ],
  "fields": [
   {
@@ -63,6 +64,7 @@
    "label": "Handler:"
   },
   {
+   "default": "Today",
    "fieldname": "received_date",
    "fieldtype": "Date",
    "label": "Received Date:"
@@ -77,14 +79,18 @@
    "label": "Sample Man"
   },
   {
+   "default": "Now",
    "fieldname": "start_time_date",
    "fieldtype": "Datetime",
    "label": "Start Time & Date:"
   },
   {
+   "default": "Now",
+   "depends_on": "eval:doc.docstatus==1",
    "fieldname": "finish_time_date",
    "fieldtype": "Datetime",
-   "label": "Finish Time & Date:"
+   "label": "Finish Time & Date:",
+   "read_only": 1
   },
   {
    "fieldname": "production_section",
@@ -105,7 +111,7 @@
   {
    "fieldname": "other_tests_section",
    "fieldtype": "Section Break",
-   "label": "PPS Quality Inspection"
+   "label": "Quality Inspection"
   },
   {
    "fieldname": "note_section",
@@ -126,19 +132,19 @@
    "fieldname": "fabric_dupatta",
    "fieldtype": "Table",
    "label": "Fabric - Dupatta",
-   "options": "Item Default"
+   "options": "Fabric Dupatta"
   },
   {
    "fieldname": "fabrics",
    "fieldtype": "Table",
    "label": "Fabrics",
-   "options": "Item Default"
+   "options": "PPS Fabric Item"
   },
   {
    "fieldname": "trim_accessories",
    "fieldtype": "Table",
    "label": "Trim & Accessories",
-   "options": "Item Default"
+   "options": "PPS Trim Accessories Item"
   },
   {
    "fieldname": "size_chart_in_inch",
@@ -156,6 +162,7 @@
   {
    "fieldname": "link_nsnp",
    "fieldtype": "Link",
+   "label": "Quality Inspection Template",
    "options": "Quality Inspection Template",
    "reqd": 1
   },
@@ -230,11 +237,16 @@
    "fieldname": "pps_image_link_if_any",
    "fieldtype": "Data",
    "label": "PPS Image Link (if any)"
+  },
+  {
+   "fieldname": "quality_tab",
+   "fieldtype": "Tab Break",
+   "label": "Quality"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-24 01:11:58.059307",
+ "modified": "2025-12-06 04:23:30.855424",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Pre Production Sample",

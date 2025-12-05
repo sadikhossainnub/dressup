@@ -1,9 +1,10 @@
 # Copyright (c) 2024, DressUp and contributors
 # For license information, please see license.txt
 
-import frappe
-from frappe.model.document import Document
-from frappe.utils import flt
+import frappe  # type: ignore
+from frappe.model.document import Document  # type: ignore
+from frappe.utils import flt, now  # type: ignore
+from frappe.model.mapper import get_mapped_doc  # type: ignore
 
 
 class CostEstimation(Document):
@@ -87,3 +88,58 @@ class CostEstimation(Document):
 		
 		if flt(self.total_fabric) == 0 and flt(self.total_trim_and_accessories) == 0:
 			frappe.throw("Total cost cannot be zero")
+
+
+@frappe.whitelist()
+def make_pre_production_sample(source_name, target_doc=None):
+	"""Create Pre Production Sample from Cost Estimation"""
+	
+	def set_missing_values(source, target):
+		target.start_time_date = now()
+		target.read_confirm_carefully = "I confirm that all measurements, materials, and specifications have been reviewed and are accurate."
+		
+		# Get first Quality Inspection Template
+		quality_templates = frappe.get_all("Quality Inspection Template", limit=1)
+		if quality_templates:
+			target.link_nsnp = quality_templates[0].name
+		
+		# Add default size chart rows
+		for size in ['36', '38', '40', '42']:
+			target.append('size_chart_in_inch', {'size_chart_in_inch': size})
+	
+	def update_fabric_item(source, target, source_parent):
+		target.quantity = source.qty
+		target.default_unit_of_measurement = source.uom
+	
+	def update_accessory_item(source, target, source_parent):
+		target.item_code = source.itemcode
+		target.quantity = source.qty
+	
+	doclist = get_mapped_doc(
+		"Cost Estimation",
+		source_name,
+		{
+			"Cost Estimation": {
+				"doctype": "Pre Production Sample",
+				"validation": {"docstatus": ["=", 1]}
+			},
+			"Cost Estimation Material": {
+				"doctype": "PPS Fabric Item",
+				"field_map": {
+					"item_name": "item_name"
+				},
+				"postprocess": update_fabric_item
+			},
+			"Cost Estimation Accessory": {
+				"doctype": "PPS Trim Accessories Item",
+				"field_map": {
+					"item_name": "item_name"
+				},
+				"postprocess": update_accessory_item
+			}
+		},
+		target_doc,
+		set_missing_values
+	)
+	
+	return doclist

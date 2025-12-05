@@ -73,6 +73,16 @@ frappe.ui.form.on("Cost Estimation Material", {
 });
 
 frappe.ui.form.on("Cost Estimation", {
+	refresh(frm) {
+		if (frm.doc.docstatus === 1) {
+			frm.add_custom_button(__('Pre Production Sample'), function() {
+				frappe.model.open_mapped_doc({
+					method: 'dressup.dressup.doctype.cost_estimation.cost_estimation.make_pre_production_sample',
+					frm: frm
+				});
+			}, __('Create'));
+		}
+	},
 	calculate_total_fabric(frm) {
 		let total = 0;
 		frm.doc.materials.forEach(row => {
