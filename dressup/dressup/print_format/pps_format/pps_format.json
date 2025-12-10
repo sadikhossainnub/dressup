@@ -1,0 +1,9 @@
+{
+    "doc_type": "Pre Production Sample",
+    "module": "DressUp",
+    "name": "PPS Format",
+    "print_format_name": "PPS Format",
+    "standard": "Yes",
+    "print_format_type": "Jinja",
+    "raw_printing": 0
+}

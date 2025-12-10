@@ -1,0 +1,177 @@
+<div class="print-format-gutter">
+    <div class="print-heading">
+        <h2>Sketch Specification Sample Making Sheet</h2>
+        <h4 class="text-muted">{{ doc.name }}</h4>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Design No</label></div>
+                <div class="col-xs-7">{{ doc.design_no or '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Season</label></div>
+                <div class="col-xs-7">{{ doc.seson or '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Designer</label></div>
+                <div class="col-xs-7">{{ doc.designer_name or doc.designer or '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Category</label></div>
+                <div class="col-xs-7">{{ doc.category or '' }}</div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Date</label></div>
+                <div class="col-xs-7">{{ doc.start_date or '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Submission Date</label></div>
+                <div class="col-xs-7">{{ doc.submission_date or '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Status</label></div>
+                <div class="col-xs-7">{{ doc.status or '' }}</div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            {% if doc.image %}
+            <img src="{{ doc.image }}" style="max-width: 100%; max-height: 500px;">
+            {% endif %}
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Workstations</h4>
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Workstation</th>
+                        <th>Value</th>
+                        <th>Workstation</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cutting</td>
+                        <td>{{ doc.cutting or '' }}</td>
+                        <td>FB</td>
+                        <td>{{ doc.fb or '' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Sewing</td>
+                        <td>{{ doc.sewing or '' }}</td>
+                        <td>ME</td>
+                        <td>{{ doc.me or '' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Hand Embroidery</td>
+                        <td>{{ doc.hand_embroidery or '' }}</td>
+                        <td>Hand Work</td>
+                        <td>{{ doc.hand_work or '' }}</td>
+                    </tr>
+                    <tr>
+                        <td>SP</td>
+                        <td>{{ doc.sp or '' }}</td>
+                        <td>BP</td>
+                        <td>{{ doc.bp or '' }}</td>
+                    </tr>
+                    <tr>
+                        <td>TD</td>
+                        <td>{{ doc.td or '' }}</td>
+                        <td>Karchupi</td>
+                        <td>{{ doc.karchupi or '' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Colors & Details</h4>
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Color</th>
+                        <th>Detail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set colors = [
+                        (doc.color, doc.data_xmgl),
+                        (doc.color_2, doc.data_ryzm),
+                        (doc.color_3, doc.data_muzc),
+                        (doc.color_4, doc.data_lfwb),
+                        (doc.color_5, doc.data_hnjh),
+                        (doc.color_6, doc.data_zsdd),
+                        (doc.color_7, doc.data_uxrz),
+                        (doc.color_8, doc.data_mnat),
+                        (doc.color_9, doc.data_wptw),
+                        (doc.color_10, doc.data_znsh)
+                    ] %}
+                    {% for color, detail in colors %}
+                    {% if color or detail %}
+                    <tr>
+                        <td style="background-color: {{ color }}; width: 50px;">{{ color or '' }}</td>
+                        <td>{{ detail or '' }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% if doc.screen_print_cost_details %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Screen Print Cost Details</h4>
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>Old Frame SKU:</label> {{ doc.old_frame__sku or '' }}<br>
+                    <label>New Frame SKU:</label> {{ doc.new_frame__sku or '' }}
+                </div>
+                <div class="col-xs-6">
+                    <table class="table table-bordered table-condensed">
+                        <tr><td>Frame Cost</td><td>{{ doc.frame_cost or '' }}</td></tr>
+                        <tr><td>Process Cost</td><td>{{ doc.process_cost or '' }}</td></tr>
+                        <tr><td>Chemical Cost</td><td>{{ doc.chemical_cost or '' }}</td></tr>
+                        <tr><td>Print Cost</td><td>{{ doc.print_cost or '' }}</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Measurements</h4>
+            <table class="table table-bordered table-condensed">
+                <tbody>
+                    <tr>
+                        <td>Full Length</td><td>{{ doc.full_length or '' }}</td>
+                        <td>CF Length</td><td>{{ doc.cf_length or '' }}</td>
+                    </tr>
+                    <tr>
+                        <td>CB Length</td><td>{{ doc.cb_length or '' }}</td>
+                        <!-- Add more measurement fields as needed, based on the DocType definition -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

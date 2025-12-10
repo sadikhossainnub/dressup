@@ -1,0 +1,9 @@
+{
+ "doc_type": "Sketch Specification Sample Making Sheet",
+ "module": "DressUp",
+ "name": "Sketch Specification Format",
+ "print_format_name": "Sketch Specification Format",
+ "standard": "Yes",
+ "print_format_type": "Jinja",
+ "raw_printing": 0
+}

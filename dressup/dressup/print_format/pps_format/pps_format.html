@@ -1,0 +1,240 @@
+<div class="print-format-gutter">
+    <div class="print-heading">
+        <h2>Pre Production Sample</h2>
+        <h4 class="text-muted">{{ doc.name }}</h4>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Tech Pack No</label></div>
+                <div class="col-xs-7">{{ doc.tech_pack_no or '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Received Date</label></div>
+                <div class="col-xs-7">{{ doc.get_formatted('received_date') or '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Pattern Master</label></div>
+                <div class="col-xs-7">{{ doc.pattern_master or '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Sample Man</label></div>
+                <div class="col-xs-7">{{ doc.sample_man or '' }}</div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Handler</label></div>
+                <div class="col-xs-7">{{ doc.handler or '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Start Time</label></div>
+                <div class="col-xs-7">{{ doc.get_formatted('start_time_date') or '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-right"><label>Finish Time</label></div>
+                <div class="col-xs-7">{{ doc.get_formatted('finish_time_date') or '' }}</div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    {% if doc.fabrics %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Fabrics</h4>
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Item Code</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>UOM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in doc.fabrics %}
+                    {% set item_image = frappe.db.get_value("Item", item.item_code, "image") %}
+                    <tr>
+                        <td>
+                            {% if item_image %}
+                            <img src="{{ item_image }}" style="max-width: 50px; max-height: 50px;">
+                            {% endif %}
+                        </td>
+                        <td>{{ item.item_code }}</td>
+                        <td>{{ item.item_name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.default_unit_of_measurement }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if doc.trim_accessories %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Trim & Accessories</h4>
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Item Code</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>UOM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in doc.trim_accessories %}
+                    {% set item_image = frappe.db.get_value("Item", item.item_code, "image") %}
+                    <tr>
+                        <td>
+                            {% if item_image %}
+                            <img src="{{ item_image }}" style="max-width: 50px; max-height: 50px;">
+                            {% endif %}
+                        </td>
+                        <td>{{ item.item_code }}</td>
+                        <td>{{ item.item_name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.default_unit_of_measurement }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if doc.fabric_dupatta %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Fabric - Dupatta</h4>
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Item Code</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>UOM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in doc.fabric_dupatta %}
+                    {% set item_image = frappe.db.get_value("Item", item.item_code, "image") %}
+                    <tr>
+                        <td>
+                            {% if item_image %}
+                            <img src="{{ item_image }}" style="max-width: 50px; max-height: 50px;">
+                            {% endif %}
+                        </td>
+                        <td>{{ item.item_code }}</td>
+                        <td>{{ item.item_name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.default_unit_of_measurement }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if doc.size_chart_in_inch %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Size Chart (Inch)</h4>
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Size</th>
+                        <th>Length</th>
+                        <th>Bust</th>
+                        <th>Waist</th>
+                        <th>Bottom Length</th>
+                        <th>Bottom Waist</th>
+                        <th>Leg Opening</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in doc.size_chart_in_inch %}
+                    <tr>
+                        <td>{{ item.size_chart_in_inch }}</td>
+                        <td>{{ item.length or '' }}</td>
+                        <td>{{ item.bust or '' }}</td>
+                        <td>{{ item.waist or '' }}</td>
+                        <td>{{ item.bottom_length or '' }}</td>
+                        <td>{{ item.bottom_waist or '' }}</td>
+                        <td>{{ item.leg_opening or '' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Pattern Master Note</h4>
+            <div>{{ doc.pattern_master_note or 'None' }}</div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Washing Instructions</h4>
+            <ul class="list-inline">
+                {% if doc.wash_separately %}<li><span class="glyphicon glyphicon-ok"></span> Wash Separately</li>{% endif %}
+                {% if doc.dry_clean_only %}<li><span class="glyphicon glyphicon-ok"></span> Dry Clean Only</li>{% endif %}
+                {% if doc.wash_warm_iron_inside_out %}<li><span class="glyphicon glyphicon-ok"></span> Wash & Warm Iron Inside Out</li>{% endif %}
+                {% if doc.hand_wash_only %}<li><span class="glyphicon glyphicon-ok"></span> Hand Wash Only</li>{% endif %}
+            </ul>
+        </div>
+    </div>
+
+    {% if doc.note_or_instructions %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Note / Instructions</h4>
+            <div>{{ doc.note_or_instructions }}</div>
+        </div>
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>PPS Images</h4>
+            <div class="row">
+                {% if doc.pps_front %}
+                <div class="col-xs-4">
+                    <label>Front</label><br>
+                    <img src="{{ doc.pps_front }}" class="img-responsive" style="max-height: 300px;">
+                </div>
+                {% endif %}
+                {% if doc.pps_back %}
+                <div class="col-xs-4">
+                    <label>Back</label><br>
+                    <img src="{{ doc.pps_back }}" class="img-responsive" style="max-height: 300px;">
+                </div>
+                {% endif %}
+                {% if doc.pps_side %}
+                <div class="col-xs-4">
+                    <label>Side</label><br>
+                    <img src="{{ doc.pps_side }}" class="img-responsive" style="max-height: 300px;">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
