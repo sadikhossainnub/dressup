@@ -11,7 +11,7 @@
     }
 
     .sketch-print-container {
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-size: 10pt;
         color: var(--primary);
         width: 100%;
@@ -23,18 +23,22 @@
         padding: 5mm 0;
     }
 
-    .header-custom {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+    .header-table {
+        width: 100%;
+        border-collapse: collapse;
         border-bottom: 4px solid var(--primary);
-        padding-bottom: 10px;
         margin-bottom: 20px;
+    }
+
+    .header-table td {
+        vertical-align: bottom;
+        padding-bottom: 10px;
+        border: none;
     }
 
     .header-custom h1 {
         margin: 0;
-        font-size: 18pt;
+        font-size: 20pt;
         font-weight: 700;
         color: var(--primary);
         text-transform: uppercase;
@@ -45,14 +49,17 @@
         text-align: right;
         font-size: 9pt;
         color: #000;
-        min-width: 150px;
     }
 
-    .blueprint-grid {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 20px;
+    .blueprint-table {
+        width: 100%;
+        border-collapse: collapse;
         margin-bottom: 20px;
+    }
+
+    .blueprint-table td {
+        vertical-align: top;
+        border: none;
     }
 
     .specs-panel {
@@ -60,13 +67,20 @@
         padding: 12px;
         border: 1.5pt solid var(--primary);
         border-radius: 4px;
+        margin-right: 10px;
     }
 
-    .spec-row {
-        display: flex;
-        justify-content: space-between;
+    .spec-row-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .spec-row-table td {
         padding: 5px 0;
         border-bottom: 1px solid #ddd;
+        border-top: none;
+        border-left: none;
+        border-right: none;
     }
 
     .spec-label {
@@ -74,32 +88,34 @@
         color: #444;
         text-transform: uppercase;
         font-size: 8pt;
+        text-align: left;
     }
 
     .spec-value {
         font-weight: 700;
         font-size: 9pt;
+        text-align: right;
     }
 
     .sketch-box {
         border: 2pt solid var(--primary);
         border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
         background: #fff;
         min-height: 350px;
+        text-align: center;
+        margin-left: 10px;
     }
 
     .sketch-box img {
         max-width: 100%;
         max-height: 480px;
-        object-fit: contain;
+        display: block;
+        margin: auto;
     }
 
     .data-section {
         margin-bottom: 15px;
+        clear: both;
     }
 
     .section-title {
@@ -114,13 +130,13 @@
         text-transform: uppercase;
     }
 
-    table {
+    .standard-table {
         width: 100%;
         border-collapse: collapse;
         font-size: 9pt;
     }
 
-    th {
+    .standard-table th {
         background: #eceff1;
         padding: 6px;
         text-align: left;
@@ -128,29 +144,35 @@
         font-weight: 700;
     }
 
-    td {
+    .standard-table td {
         padding: 5px 6px;
         border: 1px solid var(--border);
     }
 
-    .color-swatch {
-        width: 30px;
-        height: 12px;
-        border: 1px solid #ddd;
-        border-radius: 2px;
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 5px;
+    .grid-like-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1pt solid #ddd;
     }
 
-    .footer-custom {
+    .grid-like-table td {
+        padding: 10px;
+        border: 1pt solid #ddd;
+        width: 25%;
+        vertical-align: top;
+    }
+
+    .footer-table {
+        width: 100%;
         margin-top: 20px;
         border-top: 1px solid var(--border);
         padding-top: 10px;
         font-size: 8pt;
         color: #90a4ae;
-        display: flex;
-        justify-content: space-between;
+    }
+
+    .footer-table td {
+        border: none;
     }
 </style>
 
@@ -162,143 +184,182 @@
     {% endif %}
 
     <div class="sketch-content">
-        <div class="header-custom">
-            <div>
-                <h1>SKETCH SPECIFICATION</h1>
-                <div style="font-size: 10pt; color: #666; font-weight: 600;">Sample Making Instruction Sheet</div>
-            </div>
-            <div class="header-meta">
-                <div>DOC ID: <strong>{{ doc.name }}</strong></div>
-                <div>DATE: {{ doc.start_date or frappe.utils.formatdate(frappe.utils.nowdate()) }}</div>
-            </div>
-        </div>
+        <table class="header-table">
+            <tr>
+                <td>
+                    <h1>SKETCH SPECIFICATION</h1>
+                    <div style="font-size: 10pt; color: #666; font-weight: 600;">Sample Making Instruction Sheet</div>
+                </td>
+                <td class="header-meta">
+                    <div>DOC ID: <strong>{{ doc.name }}</strong></div>
+                    <div>DATE: {{ doc.start_date or frappe.utils.formatdate(frappe.utils.nowdate()) }}</div>
+                </td>
+            </tr>
+        </table>
 
-        <div class="blueprint-grid">
-            <div class="specs-panel">
-                <div class="spec-row"><span class="spec-label">Design No</span><span class="spec-value">{{ doc.design_no or '-' }}</span></div>
-                <div class="spec-row"><span class="spec-label">Season</span><span class="spec-value">{{ doc.seson or '-' }}</span></div>
-                <div class="spec-row"><span class="spec-label">Designer</span><span class="spec-value">{{ doc.designer_name or doc.designer or '-' }}</span></div>
-                <div class="spec-row"><span class="spec-label">Category</span><span class="spec-value">{{ doc.category or '-' }}</span></div>
-                <div class="spec-row"><span class="spec-label">Sub. Date</span><span class="spec-value">{{ doc.submission_date or '-' }}</span></div>
-                <div class="spec-row"><span class="spec-label">Status</span><span class="spec-value" style="text-decoration: underline;">{{ doc.status or 'PENDING' }}</span></div>
-                
-                <div style="margin-top: 20px;">
-                    <div class="section-title">Key Measurements</div>
-                    <table style="background: white;">
-                        {% if doc.full_length %}<tr><td>Full Length</td><td class="spec-value">{{ doc.full_length }}</td></tr>{% endif %}
-                        {% if doc.cf_length %}<tr><td>CF Length</td><td class="spec-value">{{ doc.cf_length }}</td></tr>{% endif %}
-                        {% if doc.cb_length %}<tr><td>Bust/Chest</td><td class="spec-value">{{ doc.cb_length }}</td></tr>{% endif %}
-                        {% if doc.waist_circumstance %}<tr><td>Waist</td><td class="spec-value">{{ doc.waist_circumstance }}</td></tr>{% endif %}
-                        {% if doc.shoulder %}<tr><td>Sleeve Len.</td><td class="spec-value">{{ doc.shoulder }}</td></tr>{% endif %}
-                        {% if doc.armhole %}<tr><td>Biceps/Arm</td><td class="spec-value">{{ doc.armhole }}</td></tr>{% endif %}
-                        {% if doc.neck_width %}<tr><td>Neck Width</td><td class="spec-value">{{ doc.neck_width }}</td></tr>{% endif %}
-                    </table>
-                </div>
-            </div>
-
-            <div class="sketch-box">
-                {% if doc.image %}
-                    <img src="{{ doc.image }}">
-                {% else %}
-                    <div style="color: #90a4ae; font-weight: 500;">NO SKETCH ATTACHED</div>
-                {% endif %}
-            </div>
-        </div>
+        <table class="blueprint-table">
+            <tr>
+                <td style="width: 35%;">
+                    <div class="specs-panel">
+                        <table class="spec-row-table">
+                            <tr><td class="spec-label">Design No</td><td class="spec-value">{{ doc.design_no or '-' }}</td></tr>
+                            <tr><td class="spec-label">Season</td><td class="spec-value">{{ doc.seson or '-' }}</td></tr>
+                            <tr><td class="spec-label">Designer</td><td class="spec-value">{{ doc.designer_name or doc.designer or '-' }}</td></tr>
+                            <tr><td class="spec-label">Category</td><td class="spec-value">{{ doc.category or '-' }}</td></tr>
+                            <tr><td class="spec-label">Sub. Date</td><td class="spec-value">{{ doc.submission_date or '-' }}</td></tr>
+                            <tr><td class="spec-label">Status</td><td class="spec-value" style="text-decoration: underline;">{{ doc.status or 'PENDING' }}</td></tr>
+                        </table>
+                        
+                        <div style="margin-top: 20px;">
+                            <div class="section-title">Key Measurements</div>
+                            <table class="standard-table" style="background: white;">
+                                {% if doc.full_length %}<tr><td>Full Length</td><td class="spec-value">{{ doc.full_length }}</td></tr>{% endif %}
+                                {% if doc.cf_length %}<tr><td>CF Length</td><td class="spec-value">{{ doc.cf_length }}</td></tr>{% endif %}
+                                {% if doc.cb_length %}<tr><td>Bust/Chest</td><td class="spec-value">{{ doc.cb_length }}</td></tr>{% endif %}
+                                {% if doc.waist_circumstance %}<tr><td>Waist</td><td class="spec-value">{{ doc.waist_circumstance }}</td></tr>{% endif %}
+                                {% if doc.shoulder %}<tr><td>Sleeve Len.</td><td class="spec-value">{{ doc.shoulder }}</td></tr>{% endif %}
+                                {% if doc.armhole %}<tr><td>Biceps/Arm</td><td class="spec-value">{{ doc.armhole }}</td></tr>{% endif %}
+                                {% if doc.neck_width %}<tr><td>Neck Width</td><td class="spec-value">{{ doc.neck_width }}</td></tr>{% endif %}
+                            </table>
+                        </div>
+                    </div>
+                </td>
+                <td style="width: 65%;">
+                    <div class="sketch-box">
+                        {% if doc.image %}
+                            <img src="{{ doc.image }}">
+                        {% else %}
+                            <div style="color: #90a4ae; font-weight: 500; padding-top: 150px;">NO SKETCH ATTACHED</div>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        </table>
 
         <div class="data-section">
             <div class="section-title">Additional Body & Fit Specifications</div>
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; border: 1pt solid #ddd; padding: 10px; border-radius: 4px;">
-                {% if doc.upper_hip %}<div><div class="spec-label">Upper Hip</div><div class="spec-value">{{ doc.upper_hip }}</div></div>{% endif %}
-                {% if doc.lower_hip %}<div><div class="spec-label">Lower Hip</div><div class="spec-value">{{ doc.lower_hip }}</div></div>{% endif %}
-                {% if doc.front_neck_depth %}<div><div class="spec-label">F. Neck Drop</div><div class="spec-value">{{ doc.front_neck_depth }}</div></div>{% endif %}
-                {% if doc.back_neck_depth %}<div><div class="spec-label">B. Neck Drop</div><div class="spec-value">{{ doc.back_neck_depth }}</div></div>{% endif %}
-                {% if doc.shoulder_tip_to_side_waist %}<div><div class="spec-label">Neck Width</div><div class="spec-value">{{ doc.shoulder_tip_to_side_waist }}</div></div>{% endif %}
-                {% if doc.hem %}<div><div class="spec-label">Button Placket Len.</div><div class="spec-value">{{ doc.hem }}</div></div>{% endif %}
-                {% if doc.shoulder_drop %}<div><div class="spec-label">Button Placket Wid.</div><div class="spec-value">{{ doc.shoulder_drop }}</div></div>{% endif %}
-                {% if doc.pocket_length %}<div><div class="spec-label">Pocket Length</div><div class="spec-value">{{ doc.pocket_length }}</div></div>{% endif %}
-                {% if doc.pocket_width %}<div><div class="spec-label">Pocket Width</div><div class="spec-value">{{ doc.pocket_width }}</div></div>{% endif %}
-                {% if doc.cuff_opening %}<div><div class="spec-label">Outseam</div><div class="spec-value">{{ doc.cuff_opening }}</div></div>{% endif %}
-            </div>
+            <table class="grid-like-table">
+                <tr>
+                    <td><div class="spec-label">Upper Hip</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.upper_hip or '-' }}</div></td>
+                    <td><div class="spec-label">Lower Hip</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.lower_hip or '-' }}</div></td>
+                    <td><div class="spec-label">F. Neck Drop</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.front_neck_depth or '-' }}</div></td>
+                    <td><div class="spec-label">B. Neck Drop</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.back_neck_depth or '-' }}</div></td>
+                </tr>
+                <tr>
+                    <td><div class="spec-label">Neck Width</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.shoulder_tip_to_side_waist or '-' }}</div></td>
+                    <td><div class="spec-label">Button Placket Len.</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.hem or '-' }}</div></td>
+                    <td><div class="spec-label">Button Placket Wid.</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.shoulder_drop or '-' }}</div></td>
+                    <td><div class="spec-label">Pocket Length</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.pocket_length or '-' }}</div></td>
+                </tr>
+                <tr>
+                    <td><div class="spec-label">Pocket Width</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.pocket_width or '-' }}</div></td>
+                    <td><div class="spec-label">Outseam</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.cuff_opening or '-' }}</div></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
         </div>
         
         <div class="data-section">
             <div class="section-title">Bottom Specifications</div>
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; border: 1pt solid #ddd; padding: 10px; border-radius: 4px; background: #fafafa;">
-                {% if doc.length_bottom %}<div><div class="spec-label">Bottom Length</div><div class="spec-value">{{ doc.length_bottom }}</div></div>{% endif %}
-                {% if doc.pocket_wid %}<div><div class="spec-label">Front Rise</div><div class="spec-value">{{ doc.pocket_wid }}</div></div>{% endif %}
-                {% if doc.shoulder_tip_to_pocket_starting %}<div><div class="spec-label">Waist Relaxed</div><div class="spec-value">{{ doc.shoulder_tip_to_pocket_starting }}</div></div>{% endif %}
-                {% if doc.komor %}<div><div class="spec-label">Waist Stretched</div><div class="spec-value">{{ doc.komor }}</div></div>{% endif %}
-                {% if doc.high_hip %}<div><div class="spec-label">High Hip (x2)</div><div class="spec-value">{{ doc.high_hip }}</div></div>{% endif %}
-                {% if doc.low_hip %}<div><div class="spec-label">Low Hip (x2)</div><div class="spec-value">{{ doc.low_hip }}</div></div>{% endif %}
-                {% if doc.thigh_uru %}<div><div class="spec-label">Thigh (x2)</div><div class="spec-value">{{ doc.thigh_uru }}</div></div>{% endif %}
-                {% if doc.knee_x2 %}<div><div class="spec-label">Knee (x2)</div><div class="spec-value">{{ doc.knee_x2 }}</div></div>{% endif %}
-                {% if doc.leg_opening_x2 %}<div><div class="spec-label">Leg Opening (x2)</div><div class="spec-value">{{ doc.leg_opening_x2 }}</div></div>{% endif %}
-                {% if doc.elasticrubber_width %}<div><div class="spec-label">Elastic Width</div><div class="spec-value">{{ doc.elasticrubber_width }}</div></div>{% endif %}
-                {% if doc.wb_to_pocket_opening %}<div><div class="spec-label">WB to Pocket</div><div class="spec-value">{{ doc.wb_to_pocket_opening }}</div></div>{% endif %}
-                {% if doc.beltloop_width %}<div><div class="spec-label">Belt/Loop Wid.</div><div class="spec-value">{{ doc.beltloop_width }}</div></div>{% endif %}
-                {% if doc.pocket_depth %}<div><div class="spec-label">Pocket Depth</div><div class="spec-value">{{ doc.pocket_depth }}</div></div>{% endif %}
-            </div>
+            <table class="grid-like-table" style="background: #fafafa;">
+                <tr>
+                    <td><div class="spec-label">Bottom Length</div><div class="spec-value" style="text-align: left;">{{ doc.length_bottom or '-' }}</div></td>
+                    <td><div class="spec-label">Front Rise</div><div class="spec-value" style="text-align: left;">{{ doc.pocket_wid or '-' }}</div></td>
+                    <td><div class="spec-label">Waist Relaxed</div><div class="spec-value" style="text-align: left;">{{ doc.shoulder_tip_to_pocket_starting or '-' }}</div></td>
+                    <td><div class="spec-label">Waist Stretched</div><div class="spec-value" style="text-align: left;">{{ doc.komor or '-' }}</div></td>
+                </tr>
+                <tr>
+                    <td><div class="spec-label">High Hip (x2)</div><div class="spec-value" style="text-align: left;">{{ doc.high_hip or '-' }}</div></td>
+                    <td><div class="spec-label">Low Hip (x2)</div><div class="spec-value" style="text-align: left;">{{ doc.low_hip or '-' }}</div></td>
+                    <td><div class="spec-label">Thigh (x2)</div><div class="spec-value" style="text-align: left;">{{ doc.thigh_uru or '-' }}</div></td>
+                    <td><div class="spec-label">Knee (x2)</div><div class="spec-value" style="text-align: left;">{{ doc.knee_x2 or '-' }}</div></td>
+                </tr>
+                <tr>
+                    <td><div class="spec-label">Leg Opening (x2)</div><div class="spec-value" style="text-align: left;">{{ doc.leg_opening_x2 or '-' }}</div></td>
+                    <td><div class="spec-label">Elastic Width</div><div class="spec-value" style="text-align: left;">{{ doc.elasticrubber_width or '-' }}</div></td>
+                    <td><div class="spec-label">WB to Pocket</div><div class="spec-value" style="text-align: left;">{{ doc.wb_to_pocket_opening or '-' }}</div></td>
+                    <td><div class="spec-label">Belt/Loop Wid.</div><div class="spec-value" style="text-align: left;">{{ doc.beltloop_width or '-' }}</div></td>
+                </tr>
+            </table>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-            <div class="data-section">
-                <div class="section-title">Workstation Workflow</div>
-                <table>
-                    <thead>
-                        <tr><th>Workstation</th><th>Value</th><th>Workstation</th><th>Value</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Cutting</td><td>{{ 'Yes' if doc.cutting else 'No' }}</td><td>Sewing</td><td>{{ 'Yes' if doc.sewing else 'No' }}</td></tr>
-                        <tr><td>Hand Emb.</td><td>{{ 'Yes' if doc.hand_embroidery else 'No' }}</td><td>Hand Work</td><td>{{ 'Yes' if doc.hand_work else 'No' }}</td></tr>
-                        <tr><td>Screen Print</td><td>{{ 'Yes' if doc.sp else 'No' }}</td><td>Block Print</td><td>{{ 'Yes' if doc.bp else 'No' }}</td></tr>
-                        <tr><td>Tie Dye</td><td>{{ 'Yes' if doc.td else 'No' }}</td><td>Karchupi</td><td>{{ 'Yes' if doc.karchupi else 'No' }}</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="data-section">
-                <div class="section-title">Colors & Details</div>
-                <table>
-                    <thead>
-                        <tr><th style="width: 80px;">Color</th><th>Specific Instructions</th></tr>
-                    </thead>
-                    <tbody>
-                        {% set colors = [
-                            (doc.color, doc.data_xmgl), (doc.color_2, doc.data_ryzm),
-                            (doc.color_3, doc.data_muzc), (doc.color_4, doc.data_lfwb),
-                            (doc.color_5, doc.data_hnjh), (doc.color_6, doc.data_zsdd)
-                        ] %}
-                        {% for color, detail in colors %}
-                            {% if color or detail %}
-                            <tr>
-                                <td>
-                                    {% if color %}<div class="color-swatch" style="background-color: {{ color }};"></div>{% endif %}
-                                    {{ color or '' }}
-                                </td>
-                                <td>{{ detail or '' }}</td>
-                            </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <tr>
+                <td style="width: 50%; vertical-align: top; padding-right: 10px;">
+                    <div class="data-section">
+                        <div class="section-title">Workstation Workflow</div>
+                        <table class="standard-table">
+                            <thead>
+                                <tr><th>Workstation</th><th>Value</th><th>Workstation</th><th>Value</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Cutting</td><td>{{ 'Yes' if doc.cutting else 'No' }}</td><td>Sewing</td><td>{{ 'Yes' if doc.sewing else 'No' }}</td></tr>
+                                <tr><td>Hand Emb.</td><td>{{ 'Yes' if doc.hand_embroidery else 'No' }}</td><td>Hand Work</td><td>{{ 'Yes' if doc.hand_work else 'No' }}</td></tr>
+                                <tr><td>Screen Print</td><td>{{ 'Yes' if doc.sp else 'No' }}</td><td>Block Print</td><td>{{ 'Yes' if doc.bp else 'No' }}</td></tr>
+                                <tr><td>Tie Dye</td><td>{{ 'Yes' if doc.td else 'No' }}</td><td>Karchupi</td><td>{{ 'Yes' if doc.karchupi else 'No' }}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+                <td style="width: 50%; vertical-align: top; padding-left: 10px;">
+                    <div class="data-section">
+                        <div class="section-title">Colors & Details</div>
+                        <table class="standard-table">
+                            <thead>
+                                <tr><th style="width: 80px;">Color</th><th>Specific Instructions</th></tr>
+                            </thead>
+                            <tbody>
+                                {% set colors = [
+                                    (doc.color, doc.data_xmgl), (doc.color_2, doc.data_ryzm),
+                                    (doc.color_3, doc.data_muzc), (doc.color_4, doc.data_lfwb),
+                                    (doc.color_5, doc.data_hnjh), (doc.color_6, doc.data_zsdd)
+                                ] %}
+                                {% set found = [] %}
+                                {% for color, detail in colors %}
+                                    {% if color or detail %}
+                                    <tr>
+                                        <td>
+                                            {% if color %}
+                                                <div style="width: 30px; height: 12px; border: 1px solid #ddd; border-radius: 2px; display: inline-block; vertical-align: middle; margin-right: 5px; background-color: {{ color }};"></div>
+                                            {% endif %}
+                                            {{ color or '' }}
+                                        </td>
+                                        <td>{{ detail or '' }}</td>
+                                    </tr>
+                                    {% do found.append(1) %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if not found %}
+                                    <tr><td colspan="2" style="text-align: center; color: #999;">No details provided</td></tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
 
         {% if doc.screen_print_cost_details %}
         <div class="data-section">
             <div class="section-title">Screen Print Technical Specs</div>
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #fff; border: 1pt solid #000; padding: 10px; border-radius: 4px;">
-                <div><div class="spec-label" style="font-size: 7pt;">Process Cost</div><div class="spec-value">{{ doc.process_cost or '0.00' }}</div></div>
-                <div><div class="spec-label" style="font-size: 7pt;">Chemical Cost</div><div class="spec-value">{{ doc.chemical_cost or '0.00' }}</div></div>
-                <div><div class="spec-label" style="font-size: 7pt;">Print Cost</div><div class="spec-value">{{ doc.print_cost or '0.00' }}</div></div>
-                <div><div class="spec-label" style="font-size: 7pt;">Frame Cost</div><div class="spec-value">{{ doc.frame_cost or '0.00' }}</div></div>
-            </div>
+            <table class="grid-like-table" style="background: #fff; border: 1pt solid #000;">
+                <tr>
+                    <td><div class="spec-label" style="font-size: 7pt;">Process Cost</div><div class="spec-value" style="text-align: left;">{{ doc.process_cost or '0.00' }}</div></td>
+                    <td><div class="spec-label" style="font-size: 7pt;">Chemical Cost</div><div class="spec-value" style="text-align: left;">{{ doc.chemical_cost or '0.00' }}</div></td>
+                    <td><div class="spec-label" style="font-size: 7pt;">Print Cost</div><div class="spec-value" style="text-align: left;">{{ doc.print_cost or '0.00' }}</div></td>
+                    <td><div class="spec-label" style="font-size: 7pt;">Frame Cost</div><div class="spec-value" style="text-align: left;">{{ doc.frame_cost or '0.00' }}</div></td>
+                </tr>
+            </table>
         </div>
         {% endif %}
 
-        <div class="footer-custom">
-            <span>DRESSUP ERP SYSTEM | DESIGN MODULE</span>
-            <span>PRINTED ON {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</span>
-        </div>
+        <table class="footer-table">
+            <tr>
+                <td>DRESSUP ERP SYSTEM | DESIGN MODULE</td>
+                <td style="text-align: right;">PRINTED ON {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</td>
+            </tr>
+        </table>
     </div>
 </div>
+
