@@ -183,11 +183,15 @@
                 <div class="spec-row"><span class="spec-label">Status</span><span class="spec-value" style="text-decoration: underline;">{{ doc.status or 'PENDING' }}</span></div>
                 
                 <div style="margin-top: 20px;">
-                    <div class="section-title">Measurements</div>
+                    <div class="section-title">Key Measurements</div>
                     <table style="background: white;">
-                        <tr><td>Full Length</td><td class="spec-value">{{ doc.full_length or '-' }}</td></tr>
-                        <tr><td>CF Length</td><td class="spec-value">{{ doc.cf_length or '-' }}</td></tr>
-                        <tr><td>CB Length</td><td class="spec-value">{{ doc.cb_length or '-' }}</td></tr>
+                        {% if doc.full_length %}<tr><td>Full Length</td><td class="spec-value">{{ doc.full_length }}</td></tr>{% endif %}
+                        {% if doc.cf_length %}<tr><td>CF Length</td><td class="spec-value">{{ doc.cf_length }}</td></tr>{% endif %}
+                        {% if doc.cb_length %}<tr><td>Bust/Chest</td><td class="spec-value">{{ doc.cb_length }}</td></tr>{% endif %}
+                        {% if doc.waist_circumstance %}<tr><td>Waist</td><td class="spec-value">{{ doc.waist_circumstance }}</td></tr>{% endif %}
+                        {% if doc.shoulder %}<tr><td>Sleeve Len.</td><td class="spec-value">{{ doc.shoulder }}</td></tr>{% endif %}
+                        {% if doc.armhole %}<tr><td>Biceps/Arm</td><td class="spec-value">{{ doc.armhole }}</td></tr>{% endif %}
+                        {% if doc.neck_width %}<tr><td>Neck Width</td><td class="spec-value">{{ doc.neck_width }}</td></tr>{% endif %}
                     </table>
                 </div>
             </div>
@@ -198,6 +202,41 @@
                 {% else %}
                     <div style="color: #90a4ae; font-weight: 500;">NO SKETCH ATTACHED</div>
                 {% endif %}
+            </div>
+        </div>
+
+        <div class="data-section">
+            <div class="section-title">Additional Body & Fit Specifications</div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; border: 1pt solid #ddd; padding: 10px; border-radius: 4px;">
+                {% if doc.upper_hip %}<div><div class="spec-label">Upper Hip</div><div class="spec-value">{{ doc.upper_hip }}</div></div>{% endif %}
+                {% if doc.lower_hip %}<div><div class="spec-label">Lower Hip</div><div class="spec-value">{{ doc.lower_hip }}</div></div>{% endif %}
+                {% if doc.front_neck_depth %}<div><div class="spec-label">F. Neck Drop</div><div class="spec-value">{{ doc.front_neck_depth }}</div></div>{% endif %}
+                {% if doc.back_neck_depth %}<div><div class="spec-label">B. Neck Drop</div><div class="spec-value">{{ doc.back_neck_depth }}</div></div>{% endif %}
+                {% if doc.shoulder_tip_to_side_waist %}<div><div class="spec-label">Neck Width</div><div class="spec-value">{{ doc.shoulder_tip_to_side_waist }}</div></div>{% endif %}
+                {% if doc.hem %}<div><div class="spec-label">Button Placket Len.</div><div class="spec-value">{{ doc.hem }}</div></div>{% endif %}
+                {% if doc.shoulder_drop %}<div><div class="spec-label">Button Placket Wid.</div><div class="spec-value">{{ doc.shoulder_drop }}</div></div>{% endif %}
+                {% if doc.pocket_length %}<div><div class="spec-label">Pocket Length</div><div class="spec-value">{{ doc.pocket_length }}</div></div>{% endif %}
+                {% if doc.pocket_width %}<div><div class="spec-label">Pocket Width</div><div class="spec-value">{{ doc.pocket_width }}</div></div>{% endif %}
+                {% if doc.cuff_opening %}<div><div class="spec-label">Outseam</div><div class="spec-value">{{ doc.cuff_opening }}</div></div>{% endif %}
+            </div>
+        </div>
+        
+        <div class="data-section">
+            <div class="section-title">Bottom Specifications</div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; border: 1pt solid #ddd; padding: 10px; border-radius: 4px; background: #fafafa;">
+                {% if doc.length_bottom %}<div><div class="spec-label">Bottom Length</div><div class="spec-value">{{ doc.length_bottom }}</div></div>{% endif %}
+                {% if doc.pocket_wid %}<div><div class="spec-label">Front Rise</div><div class="spec-value">{{ doc.pocket_wid }}</div></div>{% endif %}
+                {% if doc.shoulder_tip_to_pocket_starting %}<div><div class="spec-label">Waist Relaxed</div><div class="spec-value">{{ doc.shoulder_tip_to_pocket_starting }}</div></div>{% endif %}
+                {% if doc.komor %}<div><div class="spec-label">Waist Stretched</div><div class="spec-value">{{ doc.komor }}</div></div>{% endif %}
+                {% if doc.high_hip %}<div><div class="spec-label">High Hip (x2)</div><div class="spec-value">{{ doc.high_hip }}</div></div>{% endif %}
+                {% if doc.low_hip %}<div><div class="spec-label">Low Hip (x2)</div><div class="spec-value">{{ doc.low_hip }}</div></div>{% endif %}
+                {% if doc.thigh_uru %}<div><div class="spec-label">Thigh (x2)</div><div class="spec-value">{{ doc.thigh_uru }}</div></div>{% endif %}
+                {% if doc.knee_x2 %}<div><div class="spec-label">Knee (x2)</div><div class="spec-value">{{ doc.knee_x2 }}</div></div>{% endif %}
+                {% if doc.leg_opening_x2 %}<div><div class="spec-label">Leg Opening (x2)</div><div class="spec-value">{{ doc.leg_opening_x2 }}</div></div>{% endif %}
+                {% if doc.elasticrubber_width %}<div><div class="spec-label">Elastic Width</div><div class="spec-value">{{ doc.elasticrubber_width }}</div></div>{% endif %}
+                {% if doc.wb_to_pocket_opening %}<div><div class="spec-label">WB to Pocket</div><div class="spec-value">{{ doc.wb_to_pocket_opening }}</div></div>{% endif %}
+                {% if doc.beltloop_width %}<div><div class="spec-label">Belt/Loop Wid.</div><div class="spec-value">{{ doc.beltloop_width }}</div></div>{% endif %}
+                {% if doc.pocket_depth %}<div><div class="spec-label">Pocket Depth</div><div class="spec-value">{{ doc.pocket_depth }}</div></div>{% endif %}
             </div>
         </div>
 
