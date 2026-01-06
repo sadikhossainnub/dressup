@@ -1,85 +1,210 @@
-<style>
-    .pps-container {
-        font-family: sans-serif;
-        font-size: 12px;
-        color: #000;
-    }
-    .header-box {
-        border: 1px solid #000;
-        padding: 10px;
-        margin-bottom: 20px;
-    }
-    .item-box {
-        border: 1px solid #000;
-        height: 350px;
-        padding: 5px;
-        margin-bottom: 5px;
-        position: relative;
-    }
-    .item-image-container {
-        height: 250px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 10px;
-    }
-    .item-image-container img {
-        max-width: 100%;
-        max-height: 100%;
-    }
-    .manual-swatch {
-        font-size: 18px;
-        font-weight: normal;
-        text-transform: uppercase;
-    }
-</style>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @media print {
+            @page { size: A4; margin: 8mm; }
+            body { -webkit-print-color-adjust: exact; }
+        }
+        
+        :root {
+            --primary: #000000;
+            --accent: #000000;
+            --border: #000000;
+            --bg-light: #f5f5f5;
+        }
 
-<div class="pps-container">
-    <div class="header-box">
-        <div class="row">
-            <div class="col-xs-4">
-                <strong>Style No:</strong> {{ doc.tech_pack_no or '' }}
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 10px;
+            color: var(--primary);
+            margin: 0;
+            background: #fff;
+        }
+
+        .pps-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .header-box {
+            background: #fff;
+            border: 2px solid var(--primary);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .header-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-label {
+            font-size: 8px;
+            font-weight: 700;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-value {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .swatch-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .swatch-card {
+            border: 1.5px solid var(--primary);
+            padding: 0;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            page-break-inside: avoid;
+        }
+
+        .swatch-info {
+            padding: 10px;
+            background: #000;
+            color: #fff;
+        }
+
+        .swatch-code {
+            font-weight: 700;
+            font-size: 11px;
+            color: #fff;
+        }
+
+        .swatch-name {
+            font-size: 9px;
+            color: #eee;
+        }
+
+        .swatch-qty {
+            font-size: 9px;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 2px;
+            border-top: 1px solid #444;
+            padding-top: 2px;
+        }
+
+        .image-container {
+            height: 180px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            position: relative;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .manual-placeholder {
+            border: 2px dashed #cfd8dc;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #90a4ae;
+            font-weight: 600;
+            font-size: 10px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 8px;
+            color: #90a4ae;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="pps-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: var(--primary);">PPS FORMAT <span style="font-weight: 300; font-size: 14px; color: #78909c;">| Component Sheet</span></h1>
+            <div style="font-size: 10px; font-weight: 600; color: var(--accent);">DATE: {{ frappe.utils.now_datetime().strftime("%d %b %Y") }}</div>
+        </div>
+
+        <div class="header-box">
+            <div class="header-item">
+                <span class="header-label">Style / Tech Pack</span>
+                <span class="header-value">{{ doc.tech_pack_no or 'N/A' }}</span>
             </div>
-            <div class="col-xs-4 text-center">
-                <strong>Category:</strong> {{ doc.category or '' }}
+            <div class="header-item" style="text-align: center;">
+                <span class="header-label">Category</span>
+                <span class="header-value">{{ doc.category or 'Generic' }}</span>
             </div>
-            <div class="col-xs-4 text-right">
-                <strong>Workstations:</strong> {{ doc.workstations or '' }}
+            <div class="header-item" style="text-align: right;">
+                <span class="header-label">Pattern Master / Designer</span>
+                <span class="header-value">{{ doc.pattern_master or doc.designer or 'Not Assigned' }}</span>
+            </div>
+            <div class="header-item">
+                <span class="header-label">Finish Requirement</span>
+                <span class="header-value">{{ doc.sewing_finish or 'Standard' }}</span>
+            </div>
+            <div class="header-item" style="text-align: center;">
+                <span class="header-label">Workstations</span>
+                <span class="header-value">{{ doc.workstations or 'Multi-Stage' }}</span>
+            </div>
+            <div class="header-item" style="text-align: right;">
+                <span class="header-label">Reference No</span>
+                <span class="header-value">{{ doc.name }}</span>
             </div>
         </div>
-        <div class="row" style="margin-top: 5px;">
-            <div class="col-xs-6">
-                <strong>Designer Name:</strong> {{ doc.pattern_master or '' }}
-            </div>
-            <div class="col-xs-6 text-center">
-                <strong>Sewing Finish:</strong> {{ doc.sewing_finish or '' }}
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        {% set all_items = (doc.fabrics or []) + (doc.trim_accessories or []) + (doc.fabric_dupatta or []) %}
-        {% for item in all_items %}
-            {% set item_image = frappe.db.get_value("Item", item.item_code, "image") %}
-            <div class="col-xs-4" style="padding-left: 2px; padding-right: 2px;">
-                <div class="item-box">
-                    <div><strong>Item Code:</strong> {{ item.item_code }}</div>
-                    <div><strong>Quantity:</strong> {{ item.quantity }} {{ item.default_unit_of_measurement }}</div>
-                    <div><strong>Item Name:</strong> {{ item.item_name }}</div>
-                    <div><strong>Item Group:</strong> {{ item.item_group }}</div>
-                    
-                    <div class="item-image-container">
+        <div class="swatch-grid">
+            {% set all_items = (doc.fabrics or []) + (doc.trim_accessories or []) + (doc.fabric_dupatta or []) %}
+            {% for item in all_items %}
+                {% set item_image = frappe.db.get_value("Item", item.item_code, "image") %}
+                <div class="swatch-card">
+                    <div class="swatch-info">
+                        <div class="swatch-code">{{ item.item_code }}</div>
+                        <div class="swatch-name">{{ item.item_name }}</div>
+                        <div class="swatch-qty">{{ "%.2f"|format(item.quantity or 0) }} {{ item.default_unit_of_measurement or item.uom }}</div>
+                    </div>
+                    <div class="image-container">
                         {% if item_image %}
                             <img src="{{ item_image }}">
                         {% else %}
-                            <div class="manual-swatch">MANUAL SWATCH</div>
+                            <div class="manual-placeholder">
+                                AFFIX PHYSICAL<br>SWATCH HERE
+                            </div>
                         {% endif %}
                     </div>
                 </div>
-            </div>
-            {% if loop.index % 3 == 0 %}
-                <div class="clearfix"></div>
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+        </div>
+
+        <div class="footer">
+            DRESSUP MANUFACTURING UTILITY | DOCUMENT GENERATED FOR QUALITY CONTROL AND COMPONENT VERIFICATION
+        </div>
     </div>
-</div>
+</body>
+</html>

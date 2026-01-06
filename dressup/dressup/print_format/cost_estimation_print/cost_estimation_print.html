@@ -3,540 +3,434 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         @media print {
             @page {
                 size: A4;
-                margin: 15mm;
+                margin: 10mm;
             }
+            .no-print { display: none; }
+            body { -webkit-print-color-adjust: exact; }
         }
         
+        :root {
+            --primary: #000000;
+            --primary-light: #333333;
+            --secondary: #666666;
+            --accent: #000000;
+            --bg-light: #f2f2f2;
+            --text-main: #000000;
+            --text-muted: #444444;
+            --border-color: #000000;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 11pt;
+            font-family: 'Poppins', sans-serif;
+            font-size: 10pt;
             line-height: 1.4;
-            color: #333;
+            color: var(--text-main);
+            background: #fff;
+            margin: 0;
+            padding: 0;
         }
         
         .print-format {
             max-width: 210mm;
             margin: 0 auto;
-            background: white;
-            padding: 20px;
+            padding: 15px;
         }
         
         .header {
-            text-align: center;
-            border-bottom: 3px solid #2c3e50;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2.5pt solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
         }
         
-        .header h1 {
+        .header-left h1 {
             margin: 0;
-            color: #2c3e50;
-            font-size: 24pt;
-            font-weight: 600;
+            color: var(--primary);
+            font-size: 22pt;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
         
-        .header .company-name {
-            font-size: 14pt;
-            color: #7f8c8d;
-            margin-top: 5px;
+        .header-right {
+            text-align: right;
+        }
+        
+        .company-name {
+            font-size: 12pt;
+            font-weight: 600;
+            color: var(--text-main);
         }
         
         .doc-info {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
-            padding: 15px;
-            background: #ecf0f1;
-            border-radius: 5px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 12px;
+            border: 1pt solid var(--border-color);
+            border-radius: 4px;
         }
         
         .info-group {
-            margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
         }
         
         .info-label {
+            font-size: 8pt;
             font-weight: 600;
-            color: #34495e;
-            display: inline-block;
-            min-width: 120px;
+            color: var(--text-muted);
+            text-transform: uppercase;
         }
         
         .info-value {
-            color: #2c3e50;
+            font-size: 10pt;
+            font-weight: 600;
+            color: var(--text-main);
         }
         
         .section {
-            margin-bottom: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
         }
         
         .section-title {
-            background: #34495e;
-            color: white;
-            padding: 10px 15px;
-            font-size: 13pt;
-            font-weight: 600;
-            margin-bottom: 10px;
-            border-radius: 3px;
+            font-size: 11pt;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            border-bottom: 1.5pt solid var(--primary);
+            display: inline-block;
+            margin-bottom: 8px;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 10px;
+            font-size: 9pt;
         }
         
-        table thead {
-            background: #95a5a6;
-            color: white;
-        }
-        
-        table th {
-            padding: 10px;
+        table thead th {
+            background: #000;
+            color: #fff;
+            padding: 8px;
             text-align: left;
             font-weight: 600;
-            font-size: 10pt;
         }
         
-        table td {
-            padding: 8px 10px;
-            border-bottom: 1px solid #ecf0f1;
+        table tbody td {
+            padding: 6px 8px;
+            border-bottom: 0.5pt solid #ddd;
         }
         
-        table tbody tr:hover {
+        .text-right { text-align: right; }
+        
+        .total-row {
             background: #f8f9fa;
+            font-weight: 700;
+            border-top: 1pt solid #000;
         }
         
-        .text-right {
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .card {
+            padding: 10px;
+            background: white;
+            border: 1pt solid var(--border-color);
+            border-radius: 4px;
+        }
+        
+        .card-label {
+            font-size: 8pt;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        
+        .card-value {
+            font-size: 10pt;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        
+        .summary-box {
+            background: #fff;
+            color: #000;
+            border: 2pt solid #000;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .summary-main {
             text-align: right;
         }
         
-        .total-row {
-            background: #e8f4f8 !important;
+        .summary-main .label {
+            font-size: 10pt;
             font-weight: 600;
-            border-top: 2px solid #34495e;
+            text-transform: uppercase;
         }
         
-        .workstation-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
+        .summary-main .value {
+            font-size: 24pt;
+            font-weight: 700;
+            line-height: 1;
         }
         
-        .workstation-item {
-            padding: 10px;
-            background: #f8f9fa;
-            border-left: 4px solid #3498db;
-            border-radius: 3px;
-        }
-        
-        .workstation-label {
-            font-size: 9pt;
-            color: #7f8c8d;
-            margin-bottom: 3px;
-        }
-        
-        .workstation-value {
-            font-size: 12pt;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        .summary-section {
-            background: #2c3e50;
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-            margin-top: 30px;
-        }
-        
-        .summary-grid {
+        .summary-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
+            flex-grow: 1;
+            margin-right: 30px;
         }
         
         .summary-item {
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
+            border-left: 3pt solid #000;
+            padding-left: 10px;
         }
         
-        .summary-label {
-            font-size: 10pt;
-            opacity: 0.9;
-            margin-bottom: 5px;
-        }
-        
-        .summary-value {
-            font-size: 16pt;
-            font-weight: 700;
-        }
-        
-        .selling-price-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        
-        .selling-price-grid {
+        .selling-prices {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             margin-top: 15px;
         }
         
-        .price-card {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px;
-            border-radius: 5px;
+        .price-chip {
+            background: white;
+            border: 1px solid var(--primary-light);
+            border-radius: 8px;
+            padding: 10px;
             text-align: center;
-            backdrop-filter: blur(10px);
         }
         
-        .price-label {
-            font-size: 9pt;
-            opacity: 0.9;
-            margin-bottom: 8px;
-        }
-        
-        .price-value {
-            font-size: 20pt;
-            font-weight: 700;
-        }
-        
-        .price-margin {
+        .price-chip label {
+            display: block;
             font-size: 8pt;
-            opacity: 0.8;
-            margin-top: 5px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
         }
         
-        .notes-section {
-            margin-top: 25px;
-            padding: 15px;
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            border-radius: 3px;
+        .price-chip .value {
+            font-size: 14pt;
+            font-weight: 700;
+            color: var(--primary);
         }
         
-        .notes-title {
-            font-weight: 600;
-            color: #856404;
-            margin-bottom: 10px;
+        .price-chip .margin {
+            font-size: 7pt;
+            background: var(--secondary);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 4px;
         }
         
         .footer {
-            margin-top: 40px;
-            padding-top: 15px;
-            border-top: 2px solid #ecf0f1;
-            text-align: center;
-            color: #7f8c8d;
-            font-size: 9pt;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            font-size: 8pt;
+            color: var(--text-muted);
+        }
+        
+        .notes {
+            font-size: 8pt;
+            color: #666;
+            font-style: italic;
+            margin-top: 10px;
+            padding: 8px;
+            background: #fff9c4;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
     <div class="print-format">
-        <!-- Header -->
         <div class="header">
-            <h1>COST ESTIMATION</h1>
-            <div class="company-name">{{ frappe.db.get_default("Company") or "DressUp" }}</div>
+            <div class="header-left">
+                <h1>COST ESTIMATION</h1>
+            </div>
+            <div class="header-right">
+                <div class="company-name">{{ frappe.db.get_default("Company") or "DressUp" }}</div>
+            </div>
         </div>
         
-        <!-- Document Information -->
         <div class="doc-info">
-            <div>
-                <div class="info-group">
-                    <span class="info-label">Estimation No:</span>
-                    <span class="info-value">{{ doc.name }}</span>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Tech Pack No:</span>
-                    <span class="info-value">{{ doc.tech_pack_no }}</span>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Design No:</span>
-                    <span class="info-value">{{ doc.design_no }}</span>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Item Name:</span>
-                    <span class="info-value">{{ doc.item_name or "-" }}</span>
-                </div>
+            <div class="info-group">
+                <span class="info-label">Doc No</span>
+                <span class="info-value">{{ doc.name }}</span>
             </div>
-            <div>
-                <div class="info-group">
-                    <span class="info-label">Date:</span>
-                    <span class="info-value">{{ frappe.utils.formatdate(doc.date, "dd-MM-yyyy") }}</span>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Designer:</span>
-                    <span class="info-value">{{ doc.designer }}</span>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Category:</span>
-                    <span class="info-value">{{ doc.category or "-" }}</span>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Status:</span>
-                    <span class="info-value">
-                        {% if doc.docstatus == 0 %}Draft
-                        {% elif doc.docstatus == 1 %}Submitted
-                        {% else %}Cancelled{% endif %}
-                    </span>
-                </div>
+            <div class="info-group">
+                <span class="info-label">Tech Pack</span>
+                <span class="info-value">{{ doc.tech_pack_no }}</span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">Design No</span>
+                <span class="info-value">{{ doc.design_no }}</span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">Date</span>
+                <span class="info-value">{{ frappe.utils.formatdate(doc.date, "dd MMM yyyy") }}</span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">Designer</span>
+                <span class="info-value">{{ doc.designer }}</span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">Category</span>
+                <span class="info-value">{{ doc.category or "-" }}</span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">Item</span>
+                <span class="info-value">{{ doc.item_name or "-" }}</span>
+            </div>
+            <div class="info-group">
+                <span class="info-label">Status</span>
+                <span class="info-value">{% if doc.docstatus == 1 %}SUBMITTED{% else %}DRAFT{% endif %}</span>
             </div>
         </div>
         
-        <!-- Materials Section -->
-        {% if doc.materials %}
         <div class="section">
-            <div class="section-title">Fabrics & Raw Materials</div>
+            <div class="section-title">Raw Materials & Accessories</div>
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 30%">Item Code</th>
-                        <th style="width: 30%">Item Name</th>
-                        <th style="width: 10%" class="text-right">Qty</th>
+                        <th style="width: 45%">Item Description</th>
+                        <th style="width: 15%" class="text-right">Qty</th>
                         <th style="width: 10%">UOM</th>
-                        <th style="width: 10%" class="text-right">Rate</th>
-                        <th style="width: 10%" class="text-right">Amount</th>
+                        <th style="width: 15%" class="text-right">Rate</th>
+                        <th style="width: 15%" class="text-right">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for row in doc.materials %}
                     <tr>
-                        <td>{{ row.item_code }}</td>
-                        <td>{{ row.item_name }}</td>
+                        <td><strong>{{ row.item_code }}</strong><br><small>{{ row.item_name }}</small></td>
                         <td class="text-right">{{ "%.2f"|format(row.qty or 0) }}</td>
                         <td>{{ row.uom }}</td>
                         <td class="text-right">{{ frappe.utils.fmt_money(row.rate, currency=doc.currency) }}</td>
                         <td class="text-right">{{ frappe.utils.fmt_money(row.amount, currency=doc.currency) }}</td>
                     </tr>
                     {% endfor %}
-                    <tr class="total-row">
-                        <td colspan="5" class="text-right"><strong>Total Fabric Cost:</strong></td>
-                        <td class="text-right"><strong>{{ frappe.utils.fmt_money(doc.total_fabric, currency=doc.currency) }}</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-        
-        <!-- Accessories Section -->
-        {% if doc.accessories %}
-        <div class="section">
-            <div class="section-title">Trims & Accessories</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 35%">Item Code</th>
-                        <th style="width: 35%">Item Name</th>
-                        <th style="width: 10%" class="text-right">Qty</th>
-                        <th style="width: 10%" class="text-right">Rate</th>
-                        <th style="width: 10%" class="text-right">Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
                     {% for row in doc.accessories %}
                     <tr>
-                        <td>{{ row.itemcode }}</td>
-                        <td>{{ row.item_name }}</td>
+                        <td><strong>{{ row.itemcode }}</strong><br><small>{{ row.item_name }}</small></td>
                         <td class="text-right">{{ "%.2f"|format(row.qty or 0) }}</td>
+                        <td>Nos</td>
                         <td class="text-right">{{ frappe.utils.fmt_money(row.rate, currency=doc.currency) }}</td>
                         <td class="text-right">{{ frappe.utils.fmt_money(row.amount, currency=doc.currency) }}</td>
                     </tr>
                     {% endfor %}
-                    <tr class="total-row">
-                        <td colspan="4" class="text-right"><strong>Total Accessories Cost:</strong></td>
-                        <td class="text-right"><strong>{{ frappe.utils.fmt_money(doc.total_trim_and_accessories, currency=doc.currency) }}</strong></td>
-                    </tr>
                 </tbody>
             </table>
         </div>
-        {% endif %}
         
-        <!-- Workstation Charges Section -->
-        <div class="section">
-            <div class="section-title">Workstation Charges</div>
-            <div class="workstation-grid">
-                {% if doc.cutting and doc.cutting_f %}
-                <div class="workstation-item">
-                    <div class="workstation-label">Cutting</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.cutting_f, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-                
-                {% if doc.sewing and doc.sewing_f %}
-                <div class="workstation-item">
-                    <div class="workstation-label">Sewing</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.sewing_f, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-                
-                {% if doc.machine_embroidery and doc.machine_embroidery_f %}
-                <div class="workstation-item">
-                    <div class="workstation-label">Machine Embroidery</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.machine_embroidery_f, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-                
-                {% if doc.hand_embroidery and doc.hand_embroidery_f %}
-                <div class="workstation-item">
-                    <div class="workstation-label">Hand Embroidery</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.hand_embroidery_f, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-                
-                {% if doc.hand_work and doc.hand_work_estimation %}
-                <div class="workstation-item">
-                    <div class="workstation-label">Hand Work</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.hand_work_estimation, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-                
-                {% if doc.karchupi and doc.karchupi_f %}
-                <div class="workstation-item">
-                    <div class="workstation-label">Karchupi</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.karchupi_f, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-                
-                {% if doc.screen_print and doc.screen_print_f %}
-                <div class="workstation-item">
-                    <div class="workstation-label">Screen Print</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.screen_print_f, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-                
-                {% if doc.block_print and doc.block_print_f %}
-                <div class="workstation-item">
-                    <div class="workstation-label">Block Print</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.block_print_f, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-                
-                {% if doc.tiedye and doc.tie_dye %}
-                <div class="workstation-item">
-                    <div class="workstation-label">Tie & Dye</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.tie_dye, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-            </div>
-            <table>
-                <tr class="total-row">
-                    <td class="text-right"><strong>Total Tailoring Cost:</strong></td>
-                    <td class="text-right" style="width: 150px"><strong>{{ frappe.utils.fmt_money(doc.total_tailoring, currency=doc.currency) }}</strong></td>
-                </tr>
-            </table>
-        </div>
-        
-        <!-- Finishing Section -->
-        <div class="section">
-            <div class="section-title">Finishing Charges</div>
-            <div class="workstation-grid">
-                {% if doc.wash_iron %}
-                <div class="workstation-item">
-                    <div class="workstation-label">Wash & Iron</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.wash_iron, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-                
-                {% if doc.qc_packaging %}
-                <div class="workstation-item">
-                    <div class="workstation-label">QC & Packaging</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.qc_packaging, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-                
-                {% if doc.transportation %}
-                <div class="workstation-item">
-                    <div class="workstation-label">Transportation</div>
-                    <div class="workstation-value">{{ frappe.utils.fmt_money(doc.transportation, currency=doc.currency) }}</div>
-                </div>
-                {% endif %}
-            </div>
-            <table>
-                <tr class="total-row">
-                    <td class="text-right"><strong>Total Finishing Cost:</strong></td>
-                    <td class="text-right" style="width: 150px"><strong>{{ frappe.utils.fmt_money(doc.total_finishing, currency=doc.currency) }}</strong></td>
-                </tr>
-            </table>
-        </div>
-        
-        <!-- Cost Summary -->
-        <div class="summary-section">
-            <h3 style="margin-top: 0; margin-bottom: 15px;">Cost Summary</h3>
-            <div class="summary-grid">
-                <div class="summary-item">
-                    <div class="summary-label">Total Fabric Cost</div>
-                    <div class="summary-value">{{ frappe.utils.fmt_money(doc.total_fabric, currency=doc.currency) }}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Total Accessories Cost</div>
-                    <div class="summary-value">{{ frappe.utils.fmt_money(doc.total_trim_and_accessories, currency=doc.currency) }}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Total Tailoring Cost</div>
-                    <div class="summary-value">{{ frappe.utils.fmt_money(doc.total_tailoring, currency=doc.currency) }}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Total Finishing Cost</div>
-                    <div class="summary-value">{{ frappe.utils.fmt_money(doc.total_finishing, currency=doc.currency) }}</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="section">
+                <div class="section-title">Tailoring Charges</div>
+                <div class="grid-container" style="grid-template-columns: 1fr 1fr;">
+                    {% if doc.cutting_f %}<div class="card"><div class="card-label">Cutting</div><div class="card-value">{{ frappe.utils.fmt_money(doc.cutting_f, currency=doc.currency) }}</div></div>{% endif %}
+                    {% if doc.sewing_f %}<div class="card"><div class="card-label">Sewing</div><div class="card-value">{{ frappe.utils.fmt_money(doc.sewing_f, currency=doc.currency) }}</div></div>{% endif %}
+                    {% if doc.machine_embroidery_f %}<div class="card"><div class="card-label">Machine Emb</div><div class="card-value">{{ frappe.utils.fmt_money(doc.machine_embroidery_f, currency=doc.currency) }}</div></div>{% endif %}
+                    {% if doc.hand_embroidery_f %}<div class="card"><div class="card-label">Hand Emb</div><div class="card-value">{{ frappe.utils.fmt_money(doc.hand_embroidery_f, currency=doc.currency) }}</div></div>{% endif %}
+                    {% if doc.hand_work_estimation %}<div class="card"><div class="card-label">Hand Work</div><div class="card-value">{{ frappe.utils.fmt_money(doc.hand_work_estimation, currency=doc.currency) }}</div></div>{% endif %}
+                    {% if doc.karchupi_f %}<div class="card"><div class="card-label">Karchupi</div><div class="card-value">{{ frappe.utils.fmt_money(doc.karchupi_f, currency=doc.currency) }}</div></div>{% endif %}
                 </div>
             </div>
-            <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid rgba(255,255,255,0.3);">
-                <div class="summary-item" style="background: rgba(255,255,255,0.2);">
-                    <div class="summary-label" style="font-size: 12pt;">TOTAL PRODUCTION COST</div>
-                    <div class="summary-value" style="font-size: 24pt;">
-                        {{ frappe.utils.fmt_money((doc.total_fabric or 0) + (doc.total_trim_and_accessories or 0) + (doc.total_tailoring or 0) + (doc.total_finishing or 0), currency=doc.currency) }}
+            
+            <div class="section">
+                <div class="section-title">Finishing Charges</div>
+                <div class="grid-container" style="grid-template-columns: 1fr;">
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;">
+                        <span>Wash & Iron</span><span>{{ frappe.utils.fmt_money(doc.wash_iron or 0, currency=doc.currency) }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;">
+                        <span>QC & Packaging</span><span>{{ frappe.utils.fmt_money(doc.qc_packaging or 0, currency=doc.currency) }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;">
+                        <span>Transportation</span><span>{{ frappe.utils.fmt_money(doc.transportation or 0, currency=doc.currency) }}</span>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Suggested Selling Prices -->
-        <div class="selling-price-section">
-            <h3 style="margin-top: 0; margin-bottom: 5px;">Suggested Selling Prices</h3>
-            <p style="margin-top: 0; font-size: 9pt; opacity: 0.9;">Based on different margin scenarios</p>
-            <div class="selling-price-grid">
-                <div class="price-card">
-                    <div class="price-label">Pattern Variation</div>
-                    <div class="price-value">{{ frappe.utils.fmt_money(doc.for_pattern_variation_only, currency=doc.currency) }}</div>
-                    <div class="price-margin">{{ doc.pattern_variation or 52 }}% Margin</div>
+        <div class="summary-box">
+            <div class="summary-details">
+                <div class="summary-item">
+                    <div style="font-size: 8pt; opacity: 0.8;">Material & Trims</div>
+                    <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money((doc.total_fabric or 0) + (doc.total_trim_and_accessories or 0), currency=doc.currency) }}</div>
                 </div>
-                <div class="price-card">
-                    <div class="price-label">Screen Print / Machine Emb</div>
-                    <div class="price-value">{{ frappe.utils.fmt_money(doc.screen_print_machine_emb_only, currency=doc.currency) }}</div>
-                    <div class="price-margin">65% Margin</div>
+                <div class="summary-item">
+                    <div style="font-size: 8pt; opacity: 0.8;">Labor & Process</div>
+                    <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money((doc.total_tailoring or 0) + (doc.total_finishing or 0), currency=doc.currency) }}</div>
                 </div>
-                <div class="price-card">
-                    <div class="price-label">Hand Embroidery</div>
-                    <div class="price-value">{{ frappe.utils.fmt_money(doc.hand_embroidery_only, currency=doc.currency) }}</div>
-                    <div class="price-margin">75% Margin</div>
+            </div>
+            <div class="summary-main">
+                <div class="label">TOTAL UNIT COST</div>
+                <div class="value">{{ frappe.utils.fmt_money((doc.total_fabric or 0) + (doc.total_trim_and_accessories or 0) + (doc.total_tailoring or 0) + (doc.total_finishing or 0), currency=doc.currency) }}</div>
+            </div>
+        </div>
+        
+        <div class="section" style="margin-top: 20px;">
+            <div class="section-title">Market Strategy (Suggested Selling)</div>
+            <div class="selling-prices">
+                <div class="price-chip">
+                    <label>Standard Variation</label>
+                    <div class="value">{{ frappe.utils.fmt_money(doc.for_pattern_variation_only, currency=doc.currency) }}</div>
+                    <div class="margin">{{ doc.pattern_variation or 52 }}% GP</div>
+                </div>
+                <div class="price-chip">
+                    <label>Screen Print/Emb</label>
+                    <div class="value">{{ frappe.utils.fmt_money(doc.screen_print_machine_emb_only, currency=doc.currency) }}</div>
+                    <div class="margin">65% GP</div>
+                </div>
+                <div class="price-chip">
+                    <label>Hand Embroidery</label>
+                    <div class="value">{{ frappe.utils.fmt_money(doc.hand_embroidery_only, currency=doc.currency) }}</div>
+                    <div class="margin">75% GP</div>
                 </div>
             </div>
         </div>
         
-        <!-- Important Notes -->
         {% if doc.important_note %}
-        <div class="notes-section">
-            <div class="notes-title">Important Notes:</div>
-            <div>{{ doc.important_note }}</div>
+        <div class="notes">
+            <strong>Notes:</strong> {{ doc.important_note }}
         </div>
         {% endif %}
         
-        <!-- Footer -->
         <div class="footer">
-            <p>This is a computer-generated document and does not require a signature.</p>
-            <p>Generated on {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %I:%M %p") }}</p>
+            <span>System Generated: {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</span>
+            <span>DressUp Costing Engine v2.0</span>
+            <span>Confidential Document</span>
         </div>
     </div>
 </body>
 </html>
+

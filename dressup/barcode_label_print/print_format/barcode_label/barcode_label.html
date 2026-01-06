@@ -5,12 +5,16 @@
 {% if doc.serial_no %}{% set code_value = doc.serial_no %}{% endif %}
 {% set barcode_image = get_barcode_base64(template.barcode_type, code_value) %}
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
 <div style="
     width: {{ template.label_width }}mm;
     height: {{ template.label_height }}mm;
-    border: 1px solid #000;
-    padding: 2mm;
-    font-family: sans-serif;
+    border: 1.5pt solid #000000;
+    padding: 1.5mm;
+    font-family: 'Poppins', sans-serif;
     font-size: {{ template.font_size }}px;
     display: flex;
     flex-direction: column;
@@ -20,34 +24,36 @@
     overflow: hidden;
     background: white;
     page-break-inside: avoid;
+    line-height: 1.1;
+    color: #000000;
 ">
     {% if template.include_company_name %}
-    <div style='font-weight: bold;'>{{ frappe.db.get_default("Company") }}</div>
+    <div style='font-weight: 600; text-transform: uppercase; margin-bottom: 2px;'>{{ frappe.db.get_default("Company") }}</div>
     {% endif %}
 
     {% if template.include_item_name and doc.item_name %}
-    <div>{{ doc.item_name }}</div>
+    <div style="font-weight: 400; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">{{ doc.item_name }}</div>
     {% endif %}
 
     {% if template.include_item_code and doc.item_code %}
-    <div>{{ doc.item_code }}</div>
+    <div style="font-weight: 600; font-size: 0.9em; border-top: 0.5pt solid #000; margin-top: 1px; padding-top: 1px;">#{{ doc.item_code }}</div>
     {% endif %}
-
-
 
     {% if barcode_image %}
-    <img src='{{ barcode_image }}' style='max-width: 100%; max-height: 50%; margin: 2px 0;' />
+    <img src='{{ barcode_image }}' style='max-width: 100%; max-height: 45%; margin: 3px 0; filter: grayscale(100%);' />
     {% endif %}
 
-    {% if template.include_batch_no and doc.batch_no %}
-    <div>Batch: {{ doc.batch_no }}</div>
-    {% endif %}
+    <div style="font-size: 0.85em; display: flex; flex-direction: column; gap: 1px; width: 100%;">
+        {% if template.include_batch_no and doc.batch_no %}
+        <div style="border-top: 0.5pt dashed #000; margin-top: 1px; padding-top: 1px;">BATCH: <strong>{{ doc.batch_no }}</strong></div>
+        {% endif %}
 
-    {% if template.include_serial_no and doc.serial_no %}
-    <div>SN: {{ doc.serial_no }}</div>
-    {% endif %}
+        {% if template.include_serial_no and doc.serial_no %}
+        <div>SN: <strong>{{ doc.serial_no }}</strong></div>
+        {% endif %}
 
-    {% if template.include_expiry_date and doc.expiry_date %}
-    <div>Exp: {{ doc.expiry_date }}</div>
-    {% endif %}
+        {% if template.include_expiry_date and doc.expiry_date %}
+        <div style="font-weight: 500;">EXP: {{ doc.expiry_date }}</div>
+        {% endif %}
+    </div>
 </div>
