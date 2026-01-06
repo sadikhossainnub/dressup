@@ -202,26 +202,28 @@
                 <td style="width: 35%;">
                     <div class="specs-panel">
                         <table class="spec-row-table">
-                            <tr><td class="spec-label">Design No</td><td class="spec-value">{{ doc.design_no or '-' }}</td></tr>
-                            <tr><td class="spec-label">Season</td><td class="spec-value">{{ doc.seson or '-' }}</td></tr>
-                            <tr><td class="spec-label">Designer</td><td class="spec-value">{{ doc.designer_name or doc.designer or '-' }}</td></tr>
-                            <tr><td class="spec-label">Category</td><td class="spec-value">{{ doc.category or '-' }}</td></tr>
-                            <tr><td class="spec-label">Sub. Date</td><td class="spec-value">{{ doc.submission_date or '-' }}</td></tr>
-                            <tr><td class="spec-label">Status</td><td class="spec-value" style="text-decoration: underline;">{{ doc.status or 'PENDING' }}</td></tr>
+                            {% if doc.design_no %}<tr><td class="spec-label">Design No / ডিজাইনের নম্বর</td><td class="spec-value">{{ doc.design_no }}</td></tr>{% endif %}
+                            {% if doc.seson %}<tr><td class="spec-label">Season / সিজন</td><td class="spec-value">{{ doc.seson }}</td></tr>{% endif %}
+                            {% if doc.designer_name or doc.designer %}<tr><td class="spec-label">Designer / ডিজাইনার</td><td class="spec-value">{{ doc.designer_name or doc.designer }}</td></tr>{% endif %}
+                            {% if doc.category %}<tr><td class="spec-label">Category / ক্যাটাগরি</td><td class="spec-value">{{ doc.category }}</td></tr>{% endif %}
+                            {% if doc.submission_date %}<tr><td class="spec-label">Sub. Date / জমার তারিখ</td><td class="spec-value">{{ doc.submission_date }}</td></tr>{% endif %}
+                            {% if doc.status %}<tr><td class="spec-label">Status / অবস্থা</td><td class="spec-value" style="text-decoration: underline;">{{ doc.status }}</td></tr>{% endif %}
                         </table>
                         
+                        {% if doc.full_length or doc.cf_length or doc.cb_length or doc.waist_circumstance or doc.shoulder or doc.armhole or doc.neck_width %}
                         <div style="margin-top: 20px;">
-                            <div class="section-title">Key Measurements</div>
+                            <div class="section-title">Key Measurements / প্রধান মাপসমূহ</div>
                             <table class="standard-table" style="background: white;">
-                                {% if doc.full_length %}<tr><td>Full Length</td><td class="spec-value">{{ doc.full_length }}</td></tr>{% endif %}
-                                {% if doc.cf_length %}<tr><td>CF Length</td><td class="spec-value">{{ doc.cf_length }}</td></tr>{% endif %}
-                                {% if doc.cb_length %}<tr><td>Bust/Chest</td><td class="spec-value">{{ doc.cb_length }}</td></tr>{% endif %}
-                                {% if doc.waist_circumstance %}<tr><td>Waist</td><td class="spec-value">{{ doc.waist_circumstance }}</td></tr>{% endif %}
-                                {% if doc.shoulder %}<tr><td>Sleeve Len.</td><td class="spec-value">{{ doc.shoulder }}</td></tr>{% endif %}
-                                {% if doc.armhole %}<tr><td>Biceps/Arm</td><td class="spec-value">{{ doc.armhole }}</td></tr>{% endif %}
-                                {% if doc.neck_width %}<tr><td>Neck Width</td><td class="spec-value">{{ doc.neck_width }}</td></tr>{% endif %}
+                                {% if doc.full_length %}<tr><td>Full Length / লম্বা</td><td class="spec-value">{{ doc.full_length }}</td></tr>{% endif %}
+                                {% if doc.cf_length %}<tr><td>CF Length / সামনের ঝুল</td><td class="spec-value">{{ doc.cf_length }}</td></tr>{% endif %}
+                                {% if doc.cb_length %}<tr><td>Bust/Chest / বডি</td><td class="spec-value">{{ doc.cb_length }}</td></tr>{% endif %}
+                                {% if doc.waist_circumstance %}<tr><td>Waist / কোমর</td><td class="spec-value">{{ doc.waist_circumstance }}</td></tr>{% endif %}
+                                {% if doc.shoulder %}<tr><td>Sleeve Len. / হাতার লম্বা</td><td class="spec-value">{{ doc.shoulder }}</td></tr>{% endif %}
+                                {% if doc.armhole %}<tr><td>Biceps/Arm / বাইসেপ</td><td class="spec-value">{{ doc.armhole }}</td></tr>{% endif %}
+                                {% if doc.neck_width %}<tr><td>Neck Width / গলার চওড়া</td><td class="spec-value">{{ doc.neck_width }}</td></tr>{% endif %}
                             </table>
                         </div>
+                        {% endif %}
                     </div>
                 </td>
                 <td style="width: 65%;">
@@ -236,53 +238,69 @@
             </tr>
         </table>
 
+        {% if doc.upper_hip or doc.lower_hip or doc.front_neck_depth or doc.back_neck_depth or doc.shoulder_tip_to_side_waist or doc.hem or doc.shoulder_drop or doc.pocket_length or doc.pocket_width or doc.cuff_opening %}
         <div class="data-section">
-            <div class="section-title">Additional Body & Fit Specifications</div>
+            <div class="section-title">Additional Body & Fit Specifications / অন্যান্য বডি ফিট স্পেসিফিকেশন</div>
             <table class="grid-like-table">
+                {% if doc.upper_hip or doc.lower_hip or doc.front_neck_depth or doc.back_neck_depth %}
                 <tr>
-                    <td><div class="spec-label">Upper Hip</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.upper_hip or '-' }}</div></td>
-                    <td><div class="spec-label">Lower Hip</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.lower_hip or '-' }}</div></td>
-                    <td><div class="spec-label">F. Neck Drop</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.front_neck_depth or '-' }}</div></td>
-                    <td><div class="spec-label">B. Neck Drop</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.back_neck_depth or '-' }}</div></td>
+                    <td>{% if doc.upper_hip %}<div class="spec-label">Upper Hip / উপরের হিপ</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.upper_hip }}</div>{% endif %}</td>
+                    <td>{% if doc.lower_hip %}<div class="spec-label">Lower Hip / নিচের হিপ</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.lower_hip }}</div>{% endif %}</td>
+                    <td>{% if doc.front_neck_depth %}<div class="spec-label">F. Neck Drop / সামনের গলার ড্রপ</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.front_neck_depth }}</div>{% endif %}</td>
+                    <td>{% if doc.back_neck_depth %}<div class="spec-label">B. Neck Drop / পিছনের গলার ড্রপ</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.back_neck_depth }}</div>{% endif %}</td>
                 </tr>
+                {% endif %}
+                {% if doc.shoulder_tip_to_side_waist or doc.hem or doc.shoulder_drop or doc.pocket_length %}
                 <tr>
-                    <td><div class="spec-label">Neck Width</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.shoulder_tip_to_side_waist or '-' }}</div></td>
-                    <td><div class="spec-label">Button Placket Len.</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.hem or '-' }}</div></td>
-                    <td><div class="spec-label">Button Placket Wid.</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.shoulder_drop or '-' }}</div></td>
-                    <td><div class="spec-label">Pocket Length</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.pocket_length or '-' }}</div></td>
+                    <td>{% if doc.shoulder_tip_to_side_waist %}<div class="spec-label">Neck Width / গলার চওড়া</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.shoulder_tip_to_side_waist }}</div>{% endif %}</td>
+                    <td>{% if doc.hem %}<div class="spec-label">B. Placket Len. / বোতাম প্লেট লম্বা</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.hem }}</div>{% endif %}</td>
+                    <td>{% if doc.shoulder_drop %}<div class="spec-label">B. Placket Wid. / বোতাম প্লেট চওড়া</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.shoulder_drop }}</div>{% endif %}</td>
+                    <td>{% if doc.pocket_length %}<div class="spec-label">Pocket Length / পকেট লম্বা</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.pocket_length }}</div>{% endif %}</td>
                 </tr>
+                {% endif %}
+                {% if doc.pocket_width or doc.cuff_opening %}
                 <tr>
-                    <td><div class="spec-label">Pocket Width</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.pocket_width or '-' }}</div></td>
-                    <td><div class="spec-label">Outseam</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.cuff_opening or '-' }}</div></td>
+                    <td>{% if doc.pocket_width %}<div class="spec-label">Pocket Width / পকেট চওড়া</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.pocket_width }}</div>{% endif %}</td>
+                    <td>{% if doc.cuff_opening %}<div class="spec-label">Outseam / সাইড লম্বা</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.cuff_opening }}</div>{% endif %}</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                 </tr>
+                {% endif %}
             </table>
         </div>
+        {% endif %}
         
+        {% if doc.length_bottom or doc.pocket_wid or doc.shoulder_tip_to_pocket_starting or doc.komor or doc.high_hip or doc.low_hip or doc.thigh_uru or doc.knee_x2 or doc.leg_opening_x2 or doc.elasticrubber_width or doc.wb_to_pocket_opening or doc.beltloop_width %}
         <div class="data-section">
-            <div class="section-title">Bottom Specifications</div>
+            <div class="section-title">Bottom Specifications / নিচের মাপসমূহ (বটম)</div>
             <table class="grid-like-table" style="background: #fafafa;">
+                {% if doc.length_bottom or doc.pocket_wid or doc.shoulder_tip_to_pocket_starting or doc.komor %}
                 <tr>
-                    <td><div class="spec-label">Bottom Length</div><div class="spec-value" style="text-align: left;">{{ doc.length_bottom or '-' }}</div></td>
-                    <td><div class="spec-label">Front Rise</div><div class="spec-value" style="text-align: left;">{{ doc.pocket_wid or '-' }}</div></td>
-                    <td><div class="spec-label">Waist Relaxed</div><div class="spec-value" style="text-align: left;">{{ doc.shoulder_tip_to_pocket_starting or '-' }}</div></td>
-                    <td><div class="spec-label">Waist Stretched</div><div class="spec-value" style="text-align: left;">{{ doc.komor or '-' }}</div></td>
+                    <td>{% if doc.length_bottom %}<div class="spec-label">Bottom Length / প্যান্ট লম্বা</div><div class="spec-value" style="text-align: left;">{{ doc.length_bottom }}</div>{% endif %}</td>
+                    <td>{% if doc.pocket_wid %}<div class="spec-label">Front Rise / হাই</div><div class="spec-value" style="text-align: left;">{{ doc.pocket_wid }}</div>{% endif %}</td>
+                    <td>{% if doc.shoulder_tip_to_pocket_starting %}<div class="spec-label">Waist Relaxed / কোমর (স্বাভাবিক)</div><div class="spec-value" style="text-align: left;">{{ doc.shoulder_tip_to_pocket_starting }}</div>{% endif %}</td>
+                    <td>{% if doc.komor %}<div class="spec-label">Waist Stretched / কোমর (টানা)</div><div class="spec-value" style="text-align: left;">{{ doc.komor }}</div>{% endif %}</td>
                 </tr>
+                {% endif %}
+                {% if doc.high_hip or doc.low_hip or doc.thigh_uru or doc.knee_x2 %}
                 <tr>
-                    <td><div class="spec-label">High Hip (x2)</div><div class="spec-value" style="text-align: left;">{{ doc.high_hip or '-' }}</div></td>
-                    <td><div class="spec-label">Low Hip (x2)</div><div class="spec-value" style="text-align: left;">{{ doc.low_hip or '-' }}</div></td>
-                    <td><div class="spec-label">Thigh (x2)</div><div class="spec-value" style="text-align: left;">{{ doc.thigh_uru or '-' }}</div></td>
-                    <td><div class="spec-label">Knee (x2)</div><div class="spec-value" style="text-align: left;">{{ doc.knee_x2 or '-' }}</div></td>
+                    <td>{% if doc.high_hip %}<div class="spec-label">High Hip (x2) / হাই হিপ</div><div class="spec-value" style="text-align: left;">{{ doc.high_hip }}</div>{% endif %}</td>
+                    <td>{% if doc.low_hip %}<div class="spec-label">Low Hip (x2) / লো হিপ</div><div class="spec-value" style="text-align: left;">{{ doc.low_hip }}</div>{% endif %}</td>
+                    <td>{% if doc.thigh_uru %}<div class="spec-label">Thigh (x2) / উরু</div><div class="spec-value" style="text-align: left;">{{ doc.thigh_uru }}</div>{% endif %}</td>
+                    <td>{% if doc.knee_x2 %}<div class="spec-label">Knee (x2) / হাঁটু</div><div class="spec-value" style="text-align: left;">{{ doc.knee_x2 }}</div>{% endif %}</td>
                 </tr>
+                {% endif %}
+                {% if doc.leg_opening_x2 or doc.elasticrubber_width or doc.wb_to_pocket_opening or doc.beltloop_width %}
                 <tr>
-                    <td><div class="spec-label">Leg Opening (x2)</div><div class="spec-value" style="text-align: left;">{{ doc.leg_opening_x2 or '-' }}</div></td>
-                    <td><div class="spec-label">Elastic Width</div><div class="spec-value" style="text-align: left;">{{ doc.elasticrubber_width or '-' }}</div></td>
-                    <td><div class="spec-label">WB to Pocket</div><div class="spec-value" style="text-align: left;">{{ doc.wb_to_pocket_opening or '-' }}</div></td>
-                    <td><div class="spec-label">Belt/Loop Wid.</div><div class="spec-value" style="text-align: left;">{{ doc.beltloop_width or '-' }}</div></td>
+                    <td>{% if doc.leg_opening_x2 %}<div class="spec-label">Leg Opening (x2) / পায়ের মুখ</div><div class="spec-value" style="text-align: left;">{{ doc.leg_opening_x2 }}</div>{% endif %}</td>
+                    <td>{% if doc.elasticrubber_width %}<div class="spec-label">Elastic Width / ইলাস্টিক চওড়া</div><div class="spec-value" style="text-align: left;">{{ doc.elasticrubber_width }}</div>{% endif %}</td>
+                    <td>{% if doc.wb_to_pocket_opening %}<div class="spec-label">WB to Pocket / কোমর থেকে পকেট</div><div class="spec-value" style="text-align: left;">{{ doc.wb_to_pocket_opening }}</div>{% endif %}</td>
+                    <td>{% if doc.beltloop_width %}<div class="spec-label">Belt/Loop Wid. / বেল্ট লুপ চওড়া</div><div class="spec-value" style="text-align: left;">{{ doc.beltloop_width }}</div>{% endif %}</td>
                 </tr>
+                {% endif %}
             </table>
         </div>
+        {% endif %}
 
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
             <tr>
@@ -353,12 +371,18 @@
         </div>
         {% endif %}
 
-        <table class="footer-table">
+        <table class="footer-table" style="color: #000;">
             <tr>
                 <td>DRESSUP ERP SYSTEM | DESIGN MODULE</td>
                 <td style="text-align: right;">PRINTED ON {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</td>
             </tr>
         </table>
     </div>
+
+    {% if footer %}
+    <div class="print-footer">
+        {{ footer }}
+    </div>
+    {% endif %}
 </div>
 

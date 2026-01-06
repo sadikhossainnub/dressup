@@ -162,7 +162,7 @@
         <table class="header-table">
             <tr>
                 <td>
-                    <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: var(--primary);">PPS FORMAT <span style="font-weight: 300; font-size: 14px; color: #78909c;">| Component Sheet</span></h1>
+                    <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: var(--primary);">PPS FORMAT / পিপিএস ফরম্যাট <span style="font-weight: 300; font-size: 14px; color: #78909c;">| Component Sheet / উপকরণের তালিকা</span></h1>
                 </td>
                 <td style="text-align: right; font-size: 10px; font-weight: 600;">
                     DATE: {{ frappe.utils.now_datetime().strftime("%d %b %Y") }}
@@ -172,30 +172,40 @@
 
         <table class="info-box-table">
             <tr>
+                {% if doc.tech_pack_no %}
                 <td>
-                    <span class="header-label">Style / Tech Pack</span>
-                    <span class="header-value">{{ doc.tech_pack_no or 'N/A' }}</span>
+                    <span class="header-label">Style / Tech Pack (স্টাইল)</span>
+                    <span class="header-value">{{ doc.tech_pack_no }}</span>
                 </td>
+                {% endif %}
+                {% if doc.category %}
                 <td style="text-align: center;">
-                    <span class="header-label">Category</span>
-                    <span class="header-value">{{ doc.category or 'Generic' }}</span>
+                    <span class="header-label">Category / ক্যাটাগরি</span>
+                    <span class="header-value">{{ doc.category }}</span>
                 </td>
+                {% endif %}
+                {% if doc.pattern_master or doc.designer %}
                 <td style="text-align: right;">
-                    <span class="header-label">Pattern Master / Designer</span>
-                    <span class="header-value">{{ doc.pattern_master or doc.designer or 'Not Assigned' }}</span>
+                    <span class="header-label">P. Master / Designer / ডিজাইনার</span>
+                    <span class="header-value">{{ doc.pattern_master or doc.designer }}</span>
                 </td>
+                {% endif %}
             </tr>
             <tr>
+                {% if doc.sewing_finish %}
                 <td>
-                    <span class="header-label">Finish Requirement</span>
-                    <span class="header-value">{{ doc.sewing_finish or 'Standard' }}</span>
+                    <span class="header-label">Finish Requirement / ফিনিশিং</span>
+                    <span class="header-value">{{ doc.sewing_finish }}</span>
                 </td>
+                {% endif %}
+                {% if doc.workstations %}
                 <td style="text-align: center;">
-                    <span class="header-label">Workstations</span>
-                    <span class="header-value">{{ doc.workstations or 'Multi-Stage' }}</span>
+                    <span class="header-label">Workstations / ধাপসমূহ</span>
+                    <span class="header-value">{{ doc.workstations }}</span>
                 </td>
-                <td style="text-align: right;">
-                    <span class="header-label">Reference No</span>
+                {% endif %}
+                <td>
+                    <span class="header-label">Ref No / রেফারেন্স নং</span>
                     <span class="header-value">{{ doc.name }}</span>
                 </td>
             </tr>
@@ -221,7 +231,7 @@
                                     <img src="{{ item_image }}">
                                 {% else %}
                                     <div class="manual-placeholder">
-                                        AFFIX PHYSICAL<br>SWATCH HERE
+                                        AFFIX PHYSICAL SWATCH HERE<br>এখানে স্যাম্পল কাপড় লাগান
                                     </div>
                                 {% endif %}
                             </div>
@@ -235,9 +245,15 @@
             {% endfor %}
         </table>
 
-        <div class="footer-box">
+        <div class="footer-box" style="color: #000; border-top: 2px solid #000;">
             DRESSUP MANUFACTURING UTILITY | DOCUMENT GENERATED FOR QUALITY CONTROL AND COMPONENT VERIFICATION
         </div>
     </div>
+
+    {% if footer %}
+    <div class="print-footer">
+        {{ footer }}
+    </div>
+    {% endif %}
 </div>
 

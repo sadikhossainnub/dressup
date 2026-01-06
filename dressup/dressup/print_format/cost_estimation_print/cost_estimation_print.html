@@ -264,7 +264,7 @@
             <tr>
                 <td>
                     <div class="header-left">
-                        <h1>COST ESTIMATION</h1>
+                        <h1>COST ESTIMATION / খরচের হিসাব</h1>
                     </div>
                 </td>
                 <td style="text-align: right;">
@@ -276,52 +276,63 @@
         <table class="doc-info-table">
             <tr>
                 <td>
-                    <span class="info-label">Doc No</span>
+                    <span class="info-label">Doc No / নথি নং</span>
                     <span class="info-value">{{ doc.name }}</span>
                 </td>
+                {% if doc.tech_pack_no %}
                 <td>
-                    <span class="info-label">Tech Pack</span>
-                    <span class="info-value">{{ doc.tech_pack_no or '-' }}</span>
+                    <span class="info-label">Tech Pack / টেক প্যাক</span>
+                    <span class="info-value">{{ doc.tech_pack_no }}</span>
                 </td>
+                {% endif %}
+                {% if doc.design_no %}
                 <td>
-                    <span class="info-label">Design No</span>
-                    <span class="info-value">{{ doc.design_no or '-' }}</span>
+                    <span class="info-label">Design No / ডিজাইনের নম্বর</span>
+                    <span class="info-value">{{ doc.design_no }}</span>
                 </td>
+                {% endif %}
                 <td>
-                    <span class="info-label">Date</span>
+                    <span class="info-label">Date / তারিখ</span>
                     <span class="info-value">{{ frappe.utils.formatdate(doc.date, "dd MMM yyyy") }}</span>
                 </td>
             </tr>
             <tr>
+                {% if doc.designer %}
                 <td>
-                    <span class="info-label">Designer</span>
-                    <span class="info-value">{{ doc.designer or '-' }}</span>
+                    <span class="info-label">Designer / ডিজাইনার</span>
+                    <span class="info-value">{{ doc.designer }}</span>
                 </td>
+                {% endif %}
+                {% if doc.category %}
                 <td>
-                    <span class="info-label">Category</span>
-                    <span class="info-value">{{ doc.category or "-" }}</span>
+                    <span class="info-label">Category / ক্যাটাগরি</span>
+                    <span class="info-value">{{ doc.category }}</span>
                 </td>
+                {% endif %}
+                {% if doc.item_name %}
                 <td>
-                    <span class="info-label">Item</span>
-                    <span class="info-value">{{ doc.item_name or "-" }}</span>
+                    <span class="info-label">Item / আইটেম</span>
+                    <span class="info-value">{{ doc.item_name }}</span>
                 </td>
+                {% endif %}
                 <td>
-                    <span class="info-label">Status</span>
-                    <span class="info-value">{% if doc.docstatus == 1 %}SUBMITTED{% else %}DRAFT{% endif %}</span>
+                    <span class="info-label">Status / অবস্থা</span>
+                    <span class="info-value">{% if doc.docstatus == 1 %}SUBMITTED / জমা হয়েছে{% else %}DRAFT / খসড়া{% endif %}</span>
                 </td>
             </tr>
         </table>
         
+        {% if doc.materials or doc.accessories %}
         <div class="section">
-            <div class="section-title">Raw Materials & Accessories</div>
+            <div class="section-title">Raw Materials & Accessories / কাঁচামাল ও এক্সেসরিজ</div>
             <table class="standard-table">
                 <thead>
                     <tr>
-                        <th style="width: 45%">Item Description</th>
-                        <th style="width: 15%" class="text-right">Qty</th>
+                        <th style="width: 45%">Item Description / আইটেমের বর্ণনা</th>
+                        <th style="width: 15%" class="text-right">Qty / পঃ</th>
                         <th style="width: 10%">UOM</th>
-                        <th style="width: 15%" class="text-right">Rate</th>
-                        <th style="width: 15%" class="text-right">Amount</th>
+                        <th style="width: 15%" class="text-right">Rate / দর</th>
+                        <th style="width: 15%" class="text-right">Amount / মোট</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -346,12 +357,13 @@
                 </tbody>
             </table>
         </div>
+        {% endif %}
         
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
             <tr>
                 <td style="width: 60%; vertical-align: top; padding-right: 15px; border: none;">
                     <div class="section">
-                        <div class="section-title">Tailoring Charges</div>
+                        <div class="section-title">Tailoring Charges / সেলাই খরচ</div>
                         <table style="width: 100%; border-collapse: collapse;">
                             <tr>
                                 <td style="width: 50%; padding-right: 5px; border: none; vertical-align: top;">
@@ -360,32 +372,40 @@
                                     {% if doc.machine_embroidery_f %}<div class="card"><div class="card-label">Machine Emb</div><div class="card-value">{{ frappe.utils.fmt_money(doc.machine_embroidery_f, currency=doc.currency) }}</div></div>{% endif %}
                                 </td>
                                 <td style="width: 50%; padding-left: 5px; border: none; vertical-align: top;">
-                                    {% if doc.hand_embroidery_f %}<div class="card"><div class="card-label">Hand Emb</div><div class="card-value">{{ frappe.utils.fmt_money(doc.hand_embroidery_f, currency=doc.currency) }}</div></div>{% endif %}
-                                    {% if doc.hand_work_estimation %}<div class="card"><div class="card-label">Hand Work</div><div class="card-value">{{ frappe.utils.fmt_money(doc.hand_work_estimation, currency=doc.currency) }}</div></div>{% endif %}
-                                    {% if doc.karchupi_f %}<div class="card"><div class="card-label">Karchupi</div><div class="card-value">{{ frappe.utils.fmt_money(doc.karchupi_f, currency=doc.currency) }}</div></div>{% endif %}
+                                    {% if doc.hand_embroidery_f %}<div class="card"><div class="card-label">Hand Emb / হাতের এমব্রয়ডারি</div><div class="card-value">{{ frappe.utils.fmt_money(doc.hand_embroidery_f, currency=doc.currency) }}</div></div>{% endif %}
+                                    {% if doc.hand_work_estimation %}<div class="card"><div class="card-label">Hand Work / হাতের কাজ</div><div class="card-value">{{ frappe.utils.fmt_money(doc.hand_work_estimation, currency=doc.currency) }}</div></div>{% endif %}
+                                    {% if doc.karchupi_f %}<div class="card"><div class="card-label">Karchupi / কারচুপি</div><div class="card-value">{{ frappe.utils.fmt_money(doc.karchupi_f, currency=doc.currency) }}</div></div>{% endif %}
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </td>
                 <td style="width: 40%; vertical-align: top; padding-left: 15px; border: none;">
+                    {% if doc.wash_iron or doc.qc_packaging or doc.transportation %}
                     <div class="section">
-                        <div class="section-title">Finishing Charges</div>
+                        <div class="section-title">Finishing Charges / ফিনিশিং খরচ</div>
                         <table style="width: 100%; border-collapse: collapse;">
+                            {% if doc.wash_iron %}
                             <tr>
-                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Wash & Iron</td>
-                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.wash_iron or 0, currency=doc.currency) }}</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Wash & Iron / ওয়াশ ও আয়রন</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.wash_iron, currency=doc.currency) }}</td>
                             </tr>
+                            {% endif %}
+                            {% if doc.qc_packaging %}
                             <tr>
-                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">QC & Packaging</td>
-                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.qc_packaging or 0, currency=doc.currency) }}</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">QC & Packaging / কিউসি ও প্যাকিং</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.qc_packaging, currency=doc.currency) }}</td>
                             </tr>
+                            {% endif %}
+                            {% if doc.transportation %}
                             <tr>
-                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Transportation</td>
-                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.transportation or 0, currency=doc.currency) }}</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Transportation / ট্রান্সপোর্ট</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.transportation, currency=doc.currency) }}</td>
                             </tr>
+                            {% endif %}
                         </table>
                     </div>
+                    {% endif %}
                 </td>
             </tr>
         </table>
@@ -404,17 +424,19 @@
                 </td>
                 <td style="width: 40%; text-align: right;">
                     <div class="summary-main">
-                        <div class="label">TOTAL UNIT COST</div>
+                        <div class="label">TOTAL UNIT COST / প্রতি পিসের খরচ</div>
                         <div class="value">{{ frappe.utils.fmt_money((doc.total_fabric or 0) + (doc.total_trim_and_accessories or 0) + (doc.total_tailoring or 0) + (doc.total_finishing or 0), currency=doc.currency) }}</div>
                     </div>
                 </td>
             </tr>
         </table>
         
+        {% if doc.for_pattern_variation_only or doc.screen_print_machine_emb_only or doc.hand_embroidery_only %}
         <div class="section" style="margin-top: 20px;">
             <div class="section-title">Market Strategy (Suggested Selling)</div>
             <table class="selling-prices-table">
                 <tr>
+                    {% if doc.for_pattern_variation_only %}
                     <td>
                         <div class="price-chip">
                             <label>Standard Variation</label>
@@ -422,6 +444,8 @@
                             <div class="margin">{{ doc.pattern_variation or 52 }}% GP</div>
                         </div>
                     </td>
+                    {% endif %}
+                    {% if doc.screen_print_machine_emb_only %}
                     <td>
                         <div class="price-chip">
                             <label>Screen Print/Emb</label>
@@ -429,6 +453,8 @@
                             <div class="margin">65% GP</div>
                         </div>
                     </td>
+                    {% endif %}
+                    {% if doc.hand_embroidery_only %}
                     <td>
                         <div class="price-chip">
                             <label>Hand Embroidery</label>
@@ -436,9 +462,11 @@
                             <div class="margin">75% GP</div>
                         </div>
                     </td>
+                    {% endif %}
                 </tr>
             </table>
         </div>
+        {% endif %}
         
         {% if doc.important_note %}
         <div class="notes">
@@ -446,7 +474,7 @@
         </div>
         {% endif %}
         
-        <table class="footer-table">
+        <table class="footer-table" style="color: #000; border-top: 1pt solid #000;">
             <tr>
                 <td>System Generated: {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</td>
                 <td style="text-align: center;">DressUp Costing Engine v2.0</td>
@@ -454,6 +482,12 @@
             </tr>
         </table>
     </div>
+
+    {% if footer %}
+    <div class="print-footer">
+        {{ footer }}
+    </div>
+    {% endif %}
 </div>
 
 
