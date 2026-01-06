@@ -59,6 +59,7 @@
         border-collapse: collapse;
         margin-bottom: 20px;
         border: 1pt solid var(--border-color);
+        table-layout: fixed;
     }
 
     .doc-info-table td {
@@ -135,9 +136,10 @@
     
     .card-label {
         font-size: 8pt;
-        font-weight: 600;
+        font-weight: 700;
         color: var(--text-muted);
         margin-bottom: 2px;
+        line-height: 1.1;
     }
     
     .card-value {
@@ -323,9 +325,9 @@
         </table>
         
         {% if doc.materials or doc.accessories %}
-        <div class="section">
+        <div class="section" style="page-break-inside: avoid;">
             <div class="section-title">Raw Materials & Accessories / কাঁচামাল ও এক্সেসরিজ</div>
-            <table class="standard-table">
+            <table class="standard-table" style="table-layout: fixed;">
                 <thead>
                     <tr>
                         <th style="width: 45%">Item Description / আইটেমের বর্ণনা</th>
@@ -360,10 +362,10 @@
         {% endif %}
         
         {% if doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or doc.hand_work_estimation or doc.karchupi_f or doc.screen_print_f or doc.block_print_f or doc.tie_dye or doc.wash_iron or doc.qc_packaging or doc.transportation %}
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; table-layout: fixed; page-break-inside: avoid;">
             <tr>
                 {% if doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or doc.hand_work_estimation or doc.karchupi_f or doc.screen_print_f or doc.block_print_f or doc.tie_dye %}
-                <td style="width: {{ '60%' if (doc.wash_iron or doc.qc_packaging or doc.transportation) else '100%' }}; vertical-align: top; padding-right: 15px; border: none;">
+                <td style="width: {{ '55%' if (doc.wash_iron or doc.qc_packaging or doc.transportation) else '100%' }}; vertical-align: top; padding-right: 15px; border: none;">
                     <div class="section">
                         <div class="section-title">Tailoring Charges / সেলাই খরচ</div>
                         <table style="width: 100%; border-collapse: collapse;">
@@ -388,7 +390,7 @@
                 {% endif %}
 
                 {% if doc.wash_iron or doc.qc_packaging or doc.transportation %}
-                <td style="width: {{ '40%' if (doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or doc.hand_work_estimation or doc.karchupi_f) else '100%' }}; vertical-align: top; padding-left: 15px; border: none;">
+                <td style="width: {{ '45%' if (doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or doc.hand_work_estimation or doc.karchupi_f or doc.screen_print_f or doc.block_print_f or doc.tie_dye) else '100%' }}; vertical-align: top; padding-left: 15px; border: none;">
                     <div class="section">
                         <div class="section-title">Finishing Charges / ফিনিশিং খরচ</div>
                         <table style="width: 100%; border-collapse: collapse;">
