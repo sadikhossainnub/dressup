@@ -14,9 +14,9 @@
 
     .pps-print-container {
         font-family: 'Inter', -apple-system, sans-serif;
-        font-size: 9.5pt;
+        font-size: 8.5pt;
         color: var(--primary);
-        line-height: 1.4;
+        line-height: 1.3;
     }
 
     .pps-header {
@@ -49,7 +49,7 @@
     }
 
     .cell-value {
-        font-size: 10pt;
+        font-size: 9pt;
         font-weight: 600;
         display: block;
     }
@@ -118,7 +118,7 @@
 
     .standard-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; border: 1.5px solid #000; table-layout: fixed; }
     .standard-table th { background: #f5f5f5; border: 1px solid #000; padding: 6px; font-size: 8pt; text-align: left; }
-    .standard-table td { border: 1px solid #000; padding: 6px; font-size: 9pt; vertical-align: top; }
+    .standard-table td { border: 1px solid #000; padding: 6px; font-size: 8pt; vertical-align: top; }
 
     .gallery-table {
         width: 100%;
@@ -143,14 +143,22 @@
 
 <div class="pps-print-container">
     {% if letter_head %}
-    <div style="margin-bottom: 10px;">{{ letter_head }}</div>
+    <div class="letter-head-container" style="width: 100%; text-align: center; margin-bottom: 10px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td style="text-align: center; padding: 0; border: none;">
+                    {{ letter_head }}
+                </td>
+            </tr>
+        </table>
+    </div>
     {% endif %}
 
     <div class="pps-header">
         <table style="width: 100%; border-collapse: collapse;">
             <tr>
                 <td>
-                    <h1 style="margin: 0; font-size: 18pt; font-weight: 900;">PPS FORMAT <span style="font-weight: 300; font-size: 11pt; color: #666;">/ পিপিএস ফরম্যাট</span></h1>
+                    <h1 style="margin: 0; font-size: 15pt; font-weight: 900;">PPS FORMAT <span style="font-weight: 300; font-size: 10pt; color: #666;">/ পিপিএস ফরম্যাট</span></h1>
                     <div style="font-size: 8pt; color: #555;">PRE-PRODUCTION SAMPLE & COMPONENT VERIFICATION SHEET</div>
                 </td>
                 <td style="text-align: right; font-size: 9pt; font-weight: 700; vertical-align: bottom;">
@@ -335,6 +343,14 @@
     </table>
 
     {% if footer %}
-    <div class="print-footer" style="margin-top: 10px; border-top: 1pt solid #000; padding-top: 5px;">{{ footer }}</div>
+    <div id="footer-html" class="visible-pdf">
+        <table style="width: 100%; border-top: 1px solid #000; margin-top: 5px;">
+            <tr>
+                <td style="padding: 5px 0; border: none; font-size: 8pt; text-align: center;">
+                    {{ footer }}
+                </td>
+            </tr>
+        </table>
+    </div>
     {% endif %}
 </div>
