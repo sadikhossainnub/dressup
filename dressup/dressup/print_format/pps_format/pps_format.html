@@ -5,255 +5,341 @@
     
     :root {
         --primary: #000000;
-        --accent: #000000;
+        --accent: #2c3e50;
         --border: #000000;
-        --bg-light: #f5f5f5;
+        --bg-light: #f9f9f9;
+        --text-muted: #666;
     }
 
     .pps-print-container {
-        font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 10pt;
+        font-family: 'Inter', -apple-system, sans-serif;
+        font-size: 9.5pt;
         color: var(--primary);
-        width: 100%;
-        margin: 0;
-        background: #fff;
+        line-height: 1.4;
     }
 
-    .pps-content {
-        padding: 5mm 0;
-    }
-
-    .header-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 15px;
-    }
-
-    .header-table td {
-        border: none;
-        vertical-align: middle;
-    }
-
-    .info-box-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: #fff;
-        border: 2px solid var(--primary);
-        border-radius: 4px;
+    .pps-header {
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
         margin-bottom: 20px;
     }
 
-    .info-box-table td {
-        padding: 15px;
-        border: 1px solid #ddd;
-        vertical-align: top;
-        width: 33.33%;
+    .info-grid {
+        display: table;
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
     }
 
-    .header-label {
-        font-size: 8px;
+    .info-row {
+        display: table-row;
+    }
+
+    .info-cell {
+        display: table-cell;
+        padding: 8px 12px;
+        border: 1px solid #eee;
+        width: 25%;
+    }
+
+    .cell-label {
+        font-size: 7pt;
         font-weight: 700;
-        color: #444;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        color: var(--text-muted);
         display: block;
-        margin-bottom: 3px;
     }
 
-    .header-value {
-        font-size: 12px;
-        font-weight: 700;
-        color: var(--primary);
+    .cell-value {
+        font-size: 10pt;
+        font-weight: 600;
         display: block;
+    }
+
+    .section-title {
+        background: #000;
+        color: #fff;
+        padding: 6px 12px;
+        font-size: 9pt;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-top: 20px;
+        margin-bottom: 10px;
     }
 
     .swatch-grid-table {
         width: 100%;
         border-collapse: separate;
-        border-spacing: 12px;
-        margin-left: -12px;
-    }
-
-    .swatch-grid-table td {
-        width: 33.33%;
-        vertical-align: top;
-        padding: 0;
-        border: none;
+        border-spacing: 10px;
+        margin-left: -10px;
     }
 
     .swatch-card {
-        border: 1.5px solid var(--primary);
+        border: 1px solid #000;
         border-radius: 4px;
-        overflow: hidden;
-        background: white;
+        background: #fff;
         page-break-inside: avoid;
     }
 
     .swatch-info {
-        padding: 10px;
-        background: #000;
-        color: #fff;
+        padding: 8px;
+        background: #f1f1f1;
+        border-bottom: 1px solid #ddd;
     }
 
-    .swatch-code {
-        font-weight: 700;
-        font-size: 11px;
-        color: #fff;
+    .swatch-code { font-weight: 800; font-size: 9pt; }
+    .swatch-name { font-size: 7.5pt; color: #444; }
+    .swatch-qty { font-weight: 700; color: #000; margin-top: 2px; font-size: 8pt; border-top: 1px solid #ccc; padding-top: 2px; }
+
+    .image-well {
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
     }
 
-    .swatch-name {
-        font-size: 9px;
-        color: #eee;
-    }
-
-    .swatch-qty {
-        font-size: 9px;
-        font-weight: 700;
-        color: #fff;
-        margin-top: 2px;
-        border-top: 1px solid #444;
-        padding-top: 2px;
-    }
-
-    .image-container {
-        height: 180px;
-        background: #fff;
-        padding: 10px;
-        text-align: center;
-    }
-
-    .image-container img {
-        max-width: 100%;
-        max-height: 100%;
-    }
+    .image-well img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
     .manual-placeholder {
-        border: 2px dashed #cfd8dc;
+        border: 1.5px dashed #ccc;
+        height: 140px;
         width: 100%;
-        height: 160px;
-        line-height: 1.5;
-        padding-top: 60px;
-        color: #90a4ae;
-        font-weight: 600;
-        font-size: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-size: 7pt;
         text-align: center;
-        border-radius: 4px;
-        box-sizing: border-box;
     }
 
-    .footer-box {
-        margin-top: 30px;
-        text-align: center;
-        font-size: 8px;
-        color: #90a4ae;
-        border-top: 1px solid var(--border);
-        padding-top: 10px;
+    .standard-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; border: 1px solid #000; }
+    .standard-table th { background: #f5f5f5; border: 1px solid #000; padding: 6px; font-size: 8pt; text-align: left; }
+    .standard-table td { border: 1px solid #000; padding: 6px; font-size: 9pt; }
+
+    .instruction-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-top: 5px;
     }
+
+    .instruction-item {
+        border: 1px solid #ddd;
+        padding: 8px;
+        font-size: 8pt;
+        text-align: center;
+        background: #fff;
+    }
+
+    .instruction-item.active {
+        border-color: #000;
+        background: #f0f0f0;
+        font-weight: 700;
+    }
+
+    .pps-gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 10px;
+    }
+
+    .gallery-img {
+        border: 1px solid #eee;
+        padding: 5px;
+        background: #fff;
+        text-align: center;
+    }
+
+    .gallery-img img { width: 100%; height: auto; border: 1px solid #ddd; }
+    .gallery-label { font-size: 7pt; font-weight: 700; margin-top: 5px; }
+
 </style>
 
 <div class="pps-print-container">
     {% if letter_head %}
-    <div class="letter-head-container">
-        {{ letter_head }}
-    </div>
+    <div style="margin-bottom: 10px;">{{ letter_head }}</div>
     {% endif %}
 
-    <div class="pps-content">
-        <table class="header-table">
-            <tr>
-                <td>
-                    <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: var(--primary);">PPS FORMAT / পিপিএস ফরম্যাট <span style="font-weight: 300; font-size: 14px; color: #78909c;">| Component Sheet / উপকরণের তালিকা</span></h1>
-                </td>
-                <td style="text-align: right; font-size: 10px; font-weight: 600;">
-                    DATE: {{ frappe.utils.now_datetime().strftime("%d %b %Y") }}
-                </td>
-            </tr>
-        </table>
-
-        <table class="info-box-table">
-            <tr>
-                {% if doc.tech_pack_no %}
-                <td>
-                    <span class="header-label">Style / Tech Pack (স্টাইল)</span>
-                    <span class="header-value">{{ doc.tech_pack_no }}</span>
-                </td>
-                {% endif %}
-                {% if doc.category %}
-                <td style="text-align: center;">
-                    <span class="header-label">Category / ক্যাটাগরি</span>
-                    <span class="header-value">{{ doc.category }}</span>
-                </td>
-                {% endif %}
-                {% if doc.pattern_master or doc.designer %}
-                <td style="text-align: right;">
-                    <span class="header-label">P. Master / Designer / ডিজাইনার</span>
-                    <span class="header-value">{{ doc.pattern_master or doc.designer }}</span>
-                </td>
-                {% endif %}
-            </tr>
-            <tr>
-                {% if doc.sewing_finish %}
-                <td>
-                    <span class="header-label">Finish Requirement / ফিনিশিং</span>
-                    <span class="header-value">{{ doc.sewing_finish }}</span>
-                </td>
-                {% endif %}
-                {% if doc.workstations %}
-                <td style="text-align: center;">
-                    <span class="header-label">Workstations / ধাপসমূহ</span>
-                    <span class="header-value">{{ doc.workstations }}</span>
-                </td>
-                {% endif %}
-                <td>
-                    <span class="header-label">Ref No / রেফারেন্স নং</span>
-                    <span class="header-value">{{ doc.name }}</span>
-                </td>
-            </tr>
-        </table>
-
-        <table class="swatch-grid-table">
-            {% set all_items = (doc.fabrics or []) + (doc.trim_accessories or []) + (doc.fabric_dupatta or []) %}
-            {% for i in range(0, all_items|length, 3) %}
-            <tr>
-                {% for j in range(0, 3) %}
-                {% if i + j < all_items|length %}
-                    {% set item = all_items[i + j] %}
-                    {% set item_image = frappe.db.get_value("Item", item.item_code, "image") %}
-                    <td>
-                        <div class="swatch-card">
-                            <div class="swatch-info">
-                                <div class="swatch-code">{{ item.item_code }}</div>
-                                <div class="swatch-name">{{ item.item_name }}</div>
-                                <div class="swatch-qty">{{ "%.2f"|format(item.quantity or 0) }} {{ item.default_unit_of_measurement or item.uom }}</div>
-                            </div>
-                            <div class="image-container">
-                                {% if item_image %}
-                                    <img src="{{ item_image }}">
-                                {% else %}
-                                    <div class="manual-placeholder">
-                                        AFFIX PHYSICAL SWATCH HERE<br>এখানে স্যাম্পল কাপড় লাগান
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </table>
-
-        <div class="footer-box" style="color: #000; border-top: 2px solid #000;">
-            DRESSUP MANUFACTURING UTILITY | DOCUMENT GENERATED FOR QUALITY CONTROL AND COMPONENT VERIFICATION
+    <div class="pps-header">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <h1 style="margin: 0; font-size: 18pt; font-weight: 900;">PPS FORMAT <span style="font-weight: 300; font-size: 11pt; color: #666;">/ পিপিএস ফরম্যাট</span></h1>
+                <div style="font-size: 8pt; color: #555;">PRE-PRODUCTION SAMPLE & COMPONENT VERIFICATION SHEET</div>
+            </div>
+            <div style="text-align: right; font-size: 9pt; font-weight: 700;">
+                REF: {{ doc.name }}<br>
+                DATE: {{ doc.received_date or frappe.utils.now_datetime().strftime("%d %b %Y") }}
+            </div>
         </div>
     </div>
 
-    {% if footer %}
-    <div class="print-footer">
-        {{ footer }}
+    <div class="info-grid">
+        <div class="info-row">
+            <div class="info-cell">
+                <span class="cell-label">Tech Pack No / টেক প্যাক নং</span>
+                <span class="cell-value">{{ doc.tech_pack_no }}</span>
+            </div>
+            <div class="info-cell">
+                <span class="cell-label">Pattern Master / প্যাটার্ন মাস্টার</span>
+                <span class="cell-value">{{ doc.pattern_master or '-' }}</span>
+            </div>
+            <div class="info-cell">
+                <span class="cell-label">Sample Man / স্যাম্পল ম্যান</span>
+                <span class="cell-value">{{ doc.sample_man or '-' }}</span>
+            </div>
+            <div class="info-cell">
+                <span class="cell-label">Handler / হ্যান্ডলার</span>
+                <span class="cell-value">{{ doc.handler or '-' }}</span>
+            </div>
+        </div>
+        <div class="info-row">
+            <div class="info-cell">
+                <span class="cell-label">Start Time / শুরুর সময়</span>
+                <span class="cell-value">{{ frappe.utils.format_datetime(doc.start_time_date) if doc.start_time_date else '-' }}</span>
+            </div>
+            <div class="info-cell">
+                <span class="cell-label">Finish Time / শেষ সময়</span>
+                <span class="cell-value">{{ frappe.utils.format_datetime(doc.finish_time_date) if doc.finish_time_date else '-' }}</span>
+            </div>
+            <div class="info-cell" colspan="2" style="background: #fafafa;">
+                <span class="cell-label">Status / বর্তমান অবস্থা</span>
+                <span class="cell-value" style="color: {{ 'green' if doc.docstatus == 1 else '#f39c12' }};">
+                    {{ 'SUBMITTED / এপ্রুভড' if doc.docstatus == 1 else 'DRAFT / খসড়া' }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    {% set all_items = (doc.fabrics or []) + (doc.trim_accessories or []) + (doc.fabric_dupatta or []) %}
+    {% if all_items %}
+    <div class="section-title">Component Requirement & Swatches / প্রয়োজনীয় উপকরণ ও সোয়াচ</div>
+    <table class="swatch-grid-table">
+        {% for i in range(0, all_items|length, 3) %}
+        <tr>
+            {% for j in range(0, 3) %}
+            {% if i + j < all_items|length %}
+                {% set item = all_items[i + j] %}
+                {% set item_image = frappe.db.get_value("Item", item.item_code, "image") %}
+                <td style="width: 33.3%;">
+                    <div class="swatch-card">
+                        <div class="swatch-info">
+                            <div class="swatch-code">{{ item.item_code }}</div>
+                            <div class="swatch-name">{{ item.item_name }}</div>
+                            <div class="swatch-qty">{{ "%.2f"|format(item.quantity or 0) }} {{ item.default_unit_of_measurement or item.uom }}</div>
+                        </div>
+                        <div class="image-well">
+                            {% if item_image %}
+                                <img src="{{ item_image }}">
+                            {% else %}
+                                <div class="manual-placeholder">
+                                    AFFIX SWATCH HERE<br><span style="font-size: 6.5pt;">এখানে সস্যাম্পল লাগান</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </td>
+            {% else %}<td style="border: none;">&nbsp;</td>{% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if doc.size_chart_in_inch %}
+    <div class="section-title">Actual Size Chart / সাইজ চার্ট</div>
+    <table class="standard-table">
+        <thead>
+            <tr>
+                {% if doc.size_chart_in_inch[0] %}
+                    <th>Measurement Point / মাপের জায়গা</th>
+                    <th>X-Small</th><th>Small</th><th>Medium</th><th>Large</th><th>X-Large</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in doc.size_chart_in_inch %}
+            <tr>
+                <td style="font-weight: 700;">{{ row.measurement_point }}</td>
+                <td>{{ row.x_small or '-' }}</td>
+                <td>{{ row.small or '-' }}</td>
+                <td>{{ row.medium or '-' }}</td>
+                <td>{{ row.large or '-' }}</td>
+                <td>{{ row.x_large or '-' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <div style="display: flex; gap: 20px; margin-top: 15px;">
+        <div style="flex: 1;">
+            <div class="section-title">Washing Guidelines / ধোয়ার নির্দেশবলী</div>
+            <div style="border: 1px solid #000; padding: 10px; background: #fafafa;">
+                <div style="column-count: 2; font-size: 8.5pt;">
+                    <div style="margin-bottom: 5px;">{{ '☑' if doc.wash_separately else '☐' }} Wash Separately</div>
+                    <div style="margin-bottom: 5px;">{{ '☑' if doc.dry_clean_only else '☐' }} Dry Clean Only</div>
+                    <div style="margin-bottom: 5px;">{{ '☑' if doc.wash_warm_iron_inside_out else '☐' }} Warm Iron inside out</div>
+                    <div style="margin-bottom: 5px;">{{ '☑' if doc.hand_wash_only else '☐' }} Hand Wash Only</div>
+                </div>
+                {% if doc.note_or_instructions %}
+                <div style="margin-top: 10px; border-top: 1px dotted #ccc; padding-top: 5px; font-size: 8pt;">
+                    <strong>Instructions:</strong> {{ doc.note_or_instructions|safe }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% if doc.pattern_master_note %}
+        <div style="flex: 1;">
+            <div class="section-title">Pattern Master Notes / প্যাটার্ন মাস্টার নোট</div>
+            <div style="border: 1px solid #000; padding: 10px; font-size: 8.5pt; height: 100px; overflow: hidden;">
+                {{ doc.pattern_master_note|safe }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if doc.pps_front or doc.pps_back or doc.pps_side %}
+    <div class="section-title">PPS Gallery / পিপিএস গ্যালারি</div>
+    <div class="pps-gallery">
+        {% if doc.pps_front %}
+        <div class="gallery-img">
+            <img src="{{ doc.pps_front }}">
+            <div class="gallery-label">FRONT VIEW</div>
+        </div>
+        {% endif %}
+        {% if doc.pps_back %}
+        <div class="gallery-img">
+            <img src="{{ doc.pps_back }}">
+            <div class="gallery-label">BACK VIEW</div>
+        </div>
+        {% endif %}
+        {% if doc.pps_side %}
+        <div class="gallery-img">
+            <img src="{{ doc.pps_side }}">
+            <div class="gallery-label">SIDE VIEW</div>
+        </div>
+        {% endif %}
     </div>
     {% endif %}
-</div>
 
+    <div style="margin-top: 20px; padding: 10px; border: 2px solid #000; background: #fff;">
+        <div style="font-size: 8pt; font-weight: 900; text-transform: uppercase;">Designer's Disclaimer:</div>
+        <div style="font-size: 7.5pt; line-height: 1.3;">
+            {{ doc.read_confirm_carefully or 'Please verify all components, sizing, and colors before moving to bulk production. Any deviation must be approved by the design head.' }}
+        </div>
+    </div>
+
+    <table style="width: 100%; margin-top: 10px; border: none;">
+        <tr style="border: none;">
+            <td style="border: none; text-align: left; font-size: 8pt; color: #999;">DRESSUP ERP | PPS MODULE</td>
+            <td style="border: none; text-align: right; font-size: 8pt; color: #999;">PRINTED: {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</td>
+        </tr>
+    </table>
+
+    {% if footer %}
+    <div class="print-footer">{{ footer }}</div>
+    {% endif %}
+</div>

@@ -209,21 +209,6 @@
                             {% if doc.submission_date %}<tr><td class="spec-label">Sub. Date / জমার তারিখ</td><td class="spec-value">{{ doc.submission_date }}</td></tr>{% endif %}
                             {% if doc.status %}<tr><td class="spec-label">Status / অবস্থা</td><td class="spec-value" style="text-decoration: underline;">{{ doc.status }}</td></tr>{% endif %}
                         </table>
-                        
-                        {% if doc.full_length or doc.cf_length or doc.cb_length or doc.waist_circumstance or doc.shoulder or doc.armhole or doc.neck_width %}
-                        <div style="margin-top: 20px;">
-                            <div class="section-title">Key Measurements / প্রধান মাপসমূহ</div>
-                            <table class="standard-table" style="background: white;">
-                                {% if doc.full_length %}<tr><td>Full Length / লম্বা</td><td class="spec-value">{{ doc.full_length }}</td></tr>{% endif %}
-                                {% if doc.cf_length %}<tr><td>CF Length / সামনের ঝুল</td><td class="spec-value">{{ doc.cf_length }}</td></tr>{% endif %}
-                                {% if doc.cb_length %}<tr><td>Bust/Chest / বডি</td><td class="spec-value">{{ doc.cb_length }}</td></tr>{% endif %}
-                                {% if doc.waist_circumstance %}<tr><td>Waist / কোমর</td><td class="spec-value">{{ doc.waist_circumstance }}</td></tr>{% endif %}
-                                {% if doc.shoulder %}<tr><td>Sleeve Len. / হাতার লম্বা</td><td class="spec-value">{{ doc.shoulder }}</td></tr>{% endif %}
-                                {% if doc.armhole %}<tr><td>Biceps/Arm / বাইসেপ</td><td class="spec-value">{{ doc.armhole }}</td></tr>{% endif %}
-                                {% if doc.neck_width %}<tr><td>Neck Width / গলার চওড়া</td><td class="spec-value">{{ doc.neck_width }}</td></tr>{% endif %}
-                            </table>
-                        </div>
-                        {% endif %}
                     </div>
                 </td>
                 <td style="width: 65%;">
@@ -238,104 +223,170 @@
             </tr>
         </table>
 
-        {% if doc.upper_hip or doc.lower_hip or doc.front_neck_depth or doc.back_neck_depth or doc.shoulder_tip_to_side_waist or doc.hem or doc.shoulder_drop or doc.pocket_length or doc.pocket_width or doc.cuff_opening %}
         <div class="data-section">
-            <div class="section-title">Additional Body & Fit Specifications / অন্যান্য বডি ফিট স্পেসিফিকেশন</div>
-            <table class="grid-like-table">
-                {% if doc.upper_hip or doc.lower_hip or doc.front_neck_depth or doc.back_neck_depth %}
-                <tr>
-                    <td>{% if doc.upper_hip %}<div class="spec-label">Upper Hip / উপরের হিপ</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.upper_hip }}</div>{% endif %}</td>
-                    <td>{% if doc.lower_hip %}<div class="spec-label">Lower Hip / নিচের হিপ</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.lower_hip }}</div>{% endif %}</td>
-                    <td>{% if doc.front_neck_depth %}<div class="spec-label">F. Neck Drop / সামনের গলার ড্রপ</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.front_neck_depth }}</div>{% endif %}</td>
-                    <td>{% if doc.back_neck_depth %}<div class="spec-label">B. Neck Drop / পিছনের গলার ড্রপ</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.back_neck_depth }}</div>{% endif %}</td>
-                </tr>
-                {% endif %}
-                {% if doc.shoulder_tip_to_side_waist or doc.hem or doc.shoulder_drop or doc.pocket_length %}
-                <tr>
-                    <td>{% if doc.shoulder_tip_to_side_waist %}<div class="spec-label">Neck Width / গলার চওড়া</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.shoulder_tip_to_side_waist }}</div>{% endif %}</td>
-                    <td>{% if doc.hem %}<div class="spec-label">B. Placket Len. / বোতাম প্লেট লম্বা</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.hem }}</div>{% endif %}</td>
-                    <td>{% if doc.shoulder_drop %}<div class="spec-label">B. Placket Wid. / বোতাম প্লেট চওড়া</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.shoulder_drop }}</div>{% endif %}</td>
-                    <td>{% if doc.pocket_length %}<div class="spec-label">Pocket Length / পকেট লম্বা</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.pocket_length }}</div>{% endif %}</td>
-                </tr>
-                {% endif %}
-                {% if doc.pocket_width or doc.cuff_opening %}
-                <tr>
-                    <td>{% if doc.pocket_width %}<div class="spec-label">Pocket Width / পকেট চওড়া</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.pocket_width }}</div>{% endif %}</td>
-                    <td>{% if doc.cuff_opening %}<div class="spec-label">Outseam / সাইড লম্বা</div><div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.cuff_opening }}</div>{% endif %}</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
+            <div class="section-title">Measurements/মাপসমূহ</div>
+            <table class="grid-like-table" style="background: #fff8f8;">
+                {% 
+                    set measurement_definitions = [
+                        ('full_length', 'Length / দৈর্ঘ্য (HPS → CF হেম)'),
+                        ('cf_length', 'CB Length / CB দৈর্ঘ্য (HPS → CB হেম)'),
+                        ('cb_length', 'Bust / বক্ষ'),
+                        ('waist_circumstance', 'Waist / কোমর'),
+                        ('bust', 'High Hip / উচ্চ হিপ'),
+                        ('upper_hip', 'Low Hip / নিম্ন হিপ'),
+                        ('lower_hip', 'Hem Sweep / হেম সুইপ'),
+                        ('front_neck_depth', 'F. Neck Drop / সামনের গলার ড্রপ'),
+                        ('back_neck_depth', 'B. Neck Drop / পিছনের গলার ড্রপ'),
+                        ('neck_width', 'Neck Width / গলার চওড়া'),
+                        ('shoulder_tip_to_side_waist', 'Neck Width Detail / গলার প্রস্থ'),
+                        ('front_neck_depth_s', 'Collar Width / কলারের প্রস্থ'),
+                        ('back_neck_depth_s', 'Collar Height / কলারের উচ্চতা'),
+                        ('collar_width_height', 'Shoulder to Shoulder / কাঁধ থেকে কাঁধের প্রস্থ'),
+                        ('button_placket_length', 'Shoulder Drop / কাঁধের ঢাল/ড্রপ'),
+                        ('button_placket_width', 'Armhole Depth / আর্মহোল গভীরতা'),
+                        ('hem', 'Placket Length / বাটন প্ল্যাকেটের দৈর্ঘ্য'),
+                        ('shoulder_drop', 'Placket Width / বাটন প্ল্যাকেটের প্রস্থ'),
+                        ('shoulder', 'Sleeve Length / স্লিভের দৈর্ঘ্য'),
+                        ('armhole', 'Bicep / বাইসেপ'),
+                        ('full_length_arm', 'Elbow / এলবো'),
+                        ('pocket_placket', 'Cuff Length / কাফের দৈর্ঘ্য'),
+                        ('biceps', 'Bicep (x2) / বাইসেপ (×2)'),
+                        ('elbow', 'Pocket Length / পকেটের দৈর্ঘ্য'),
+                        ('armhole_arm', 'Cuff Opening / কাফ ওপেনিং'),
+                        ('pocket_width', 'Pocket Width / পকেটের প্রস্থ'),
+                        ('cuff_length', 'Pocket Opening / পকেট ওপেনিং'),
+                        ('cuff_width', 'Pocket Position / পকেটের অবস্থান'),
+                        ('cuff_opening', 'Outseam / আউটসিম'),
+                        ('pocket_length', 'Inseam / ইনসিম')
+                    ]
+                %}
+                
+                {% set active_items = [] %}
+                {% for field, label in measurement_definitions %}
+                    {% if doc.get(field) %}
+                        {% set _v = active_items.append((field, label)) %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if active_items %}
+                    {% for i in range(0, active_items|length, 4) %}
+                    <tr>
+                        {% for j in range(i, i + 4) %}
+                        <td>
+                            {% if j < active_items|length %}
+                                <div class="spec-label">{{ active_items[j][1] }}</div>
+                                <div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.get(active_items[j][0]) }}</div>
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="4" style="text-align: center; color: #999; padding: 20px;">No body measurements recorded.</td></tr>
                 {% endif %}
             </table>
         </div>
-        {% endif %}
         
-        {% if doc.length_bottom or doc.pocket_wid or doc.shoulder_tip_to_pocket_starting or doc.komor or doc.high_hip or doc.low_hip or doc.thigh_uru or doc.knee_x2 or doc.leg_opening_x2 or doc.elasticrubber_width or doc.wb_to_pocket_opening or doc.beltloop_width %}
         <div class="data-section">
             <div class="section-title">Bottom Specifications / নিচের মাপসমূহ (বটম)</div>
             <table class="grid-like-table" style="background: #fafafa;">
-                {% if doc.length_bottom or doc.pocket_wid or doc.shoulder_tip_to_pocket_starting or doc.komor %}
-                <tr>
-                    <td>{% if doc.length_bottom %}<div class="spec-label">Bottom Length / প্যান্ট লম্বা</div><div class="spec-value" style="text-align: left;">{{ doc.length_bottom }}</div>{% endif %}</td>
-                    <td>{% if doc.pocket_wid %}<div class="spec-label">Front Rise / হাই</div><div class="spec-value" style="text-align: left;">{{ doc.pocket_wid }}</div>{% endif %}</td>
-                    <td>{% if doc.shoulder_tip_to_pocket_starting %}<div class="spec-label">Waist Relaxed / কোমর (স্বাভাবিক)</div><div class="spec-value" style="text-align: left;">{{ doc.shoulder_tip_to_pocket_starting }}</div>{% endif %}</td>
-                    <td>{% if doc.komor %}<div class="spec-label">Waist Stretched / কোমর (টানা)</div><div class="spec-value" style="text-align: left;">{{ doc.komor }}</div>{% endif %}</td>
-                </tr>
-                {% endif %}
-                {% if doc.high_hip or doc.low_hip or doc.thigh_uru or doc.knee_x2 %}
-                <tr>
-                    <td>{% if doc.high_hip %}<div class="spec-label">High Hip (x2) / হাই হিপ</div><div class="spec-value" style="text-align: left;">{{ doc.high_hip }}</div>{% endif %}</td>
-                    <td>{% if doc.low_hip %}<div class="spec-label">Low Hip (x2) / লো হিপ</div><div class="spec-value" style="text-align: left;">{{ doc.low_hip }}</div>{% endif %}</td>
-                    <td>{% if doc.thigh_uru %}<div class="spec-label">Thigh (x2) / উরু</div><div class="spec-value" style="text-align: left;">{{ doc.thigh_uru }}</div>{% endif %}</td>
-                    <td>{% if doc.knee_x2 %}<div class="spec-label">Knee (x2) / হাঁটু</div><div class="spec-value" style="text-align: left;">{{ doc.knee_x2 }}</div>{% endif %}</td>
-                </tr>
-                {% endif %}
-                {% if doc.leg_opening_x2 or doc.elasticrubber_width or doc.wb_to_pocket_opening or doc.beltloop_width %}
-                <tr>
-                    <td>{% if doc.leg_opening_x2 %}<div class="spec-label">Leg Opening (x2) / পায়ের মুখ</div><div class="spec-value" style="text-align: left;">{{ doc.leg_opening_x2 }}</div>{% endif %}</td>
-                    <td>{% if doc.elasticrubber_width %}<div class="spec-label">Elastic Width / ইলাস্টিক চওড়া</div><div class="spec-value" style="text-align: left;">{{ doc.elasticrubber_width }}</div>{% endif %}</td>
-                    <td>{% if doc.wb_to_pocket_opening %}<div class="spec-label">WB to Pocket / কোমর থেকে পকেট</div><div class="spec-value" style="text-align: left;">{{ doc.wb_to_pocket_opening }}</div>{% endif %}</td>
-                    <td>{% if doc.beltloop_width %}<div class="spec-label">Belt/Loop Wid. / বেল্ট লুপ চওড়া</div><div class="spec-value" style="text-align: left;">{{ doc.beltloop_width }}</div>{% endif %}</td>
-                </tr>
+                {% 
+                    set bottom_definitions = [
+                        ('length_bottom', 'Length / দৈর্ঘ্য'),
+                        ('pocket_wid', 'Front Rise / ফ্রন্ট রাইজ'),
+                        ('shoulder_tip_to_pocket_starting', 'Waist Relaxed (x2) / কোমর (রিল্যাক্সড ×2)'),
+                        ('pocket_opening', 'Back Rise / ব্যাক রাইজ'),
+                        ('komor', 'Waist Stretched (x2) / কোমর (স্ট্রেচড ×2)'),
+                        ('thigh_uru', 'Thigh (x2) / উরু (×2)'),
+                        ('high_hip', 'High Hip (x2) / উচ্চ হিপ (×2)'),
+                        ('low_hip', 'Low Hip (x2) / নিম্ন হিপ (×2)'),
+                        ('leg_opening_x2', 'Leg Opening (x2) / লেগ ওপেনিং (×2)'),
+                        ('knee_x2', 'Knee (x2) / হাঁটু (×2)'),
+                        ('elasticrubber_width', 'Elastic Width / ইলাস্টিক/রাবারের প্রস্থ'),
+                        ('wb_to_pocket_opening', 'WB to Pocket / ওয়েস্টব্যান্ড থেকে পকেট ওপেনিং'),
+                        ('beltloop_width', 'Belt/Loop Width / বেল্ট/লুপের প্রস্থ'),
+                        ('pocket_depth', 'Pocket Depth / পকেটের গভীরতা')
+                    ]
+                %}
+                
+                {% set active_bottom = [] %}
+                {% for field, label in bottom_definitions %}
+                    {% if doc.get(field) %}
+                        {% set _v = active_bottom.append((field, label)) %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if active_bottom %}
+                    {% for i in range(0, active_bottom|length, 4) %}
+                    <tr>
+                        {% for j in range(i, i + 4) %}
+                        <td>
+                            {% if j < active_bottom|length %}
+                                <div class="spec-label">{{ active_bottom[j][1] }}</div>
+                                <div class="spec-value" style="text-align: left; font-size: 11pt;">{{ doc.get(active_bottom[j][0]) }}</div>
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="4" style="text-align: center; color: #999; padding: 20px;">No bottom measurements recorded.</td></tr>
                 {% endif %}
             </table>
         </div>
-        {% endif %}
 
+        {% set active_workstations = [] %}
+        {% if doc.cutting %}{% set _v = active_workstations.append(('Cutting', 'কাটিং')) %}{% endif %}
+        {% if doc.sewing %}{% set _v = active_workstations.append(('Sewing', 'সেলাই')) %}{% endif %}
+        {% if doc.hand_embroidery %}{% set _v = active_workstations.append(('Hand Embroidery', 'হ্যান্ড এমব্রয়ডারি')) %}{% endif %}
+        {% if doc.hand_work %}{% set _v = active_workstations.append(('Hand Work', 'হাতের কাজ')) %}{% endif %}
+        {% if doc.sp %}{% set _v = active_workstations.append(('Screen Print', 'স্ক্রিন প্রিন্ট')) %}{% endif %}
+        {% if doc.bp %}{% set _v = active_workstations.append(('Block Print', 'ব্লক প্রিন্ট')) %}{% endif %}
+        {% if doc.td %}{% set _v = active_workstations.append(('Tie Dye', 'টাই ডাই')) %}{% endif %}
+        {% if doc.karchupi %}{% set _v = active_workstations.append(('Karchupi', 'কারচুপি')) %}{% endif %}
+
+        {% set colors_list = [] %}
+        {% if doc.color or doc.data_xmgl %}{% set _v = colors_list.append((doc.color, doc.data_xmgl)) %}{% endif %}
+        {% if doc.color_2 or doc.data_ryzm %}{% set _v = colors_list.append((doc.color_2, doc.data_ryzm)) %}{% endif %}
+        {% if doc.color_3 or doc.data_muzc %}{% set _v = colors_list.append((doc.color_3, doc.data_muzc)) %}{% endif %}
+        {% if doc.color_4 or doc.data_lfwb %}{% set _v = colors_list.append((doc.color_4, doc.data_lfwb)) %}{% endif %}
+        {% if doc.color_5 or doc.data_hnjh %}{% set _v = colors_list.append((doc.color_5, doc.data_hnjh)) %}{% endif %}
+        {% if doc.color_6 or doc.data_zsdd %}{% set _v = colors_list.append((doc.color_6, doc.data_zsdd)) %}{% endif %}
+
+        {% if active_workstations or colors_list %}
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
             <tr>
-                <td style="width: 50%; vertical-align: top; padding-right: 10px;">
+                {% if active_workstations %}
+                <td style="width: {{ '50%' if colors_list else '100%' }}; vertical-align: top; padding-right: 10px;">
                     <div class="data-section">
-                        <div class="section-title">Workstation Workflow</div>
+                        <div class="section-title">Workstation Workflow / কাজের ধাপসমূহ</div>
                         <table class="standard-table">
                             <thead>
-                                <tr><th>Workstation</th><th>Value</th><th>Workstation</th><th>Value</th></tr>
+                                <tr><th>Workstation / কাজের জায়গা</th><th>Status / অবস্থা</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>Cutting</td><td>{{ 'Yes' if doc.cutting else 'No' }}</td><td>Sewing</td><td>{{ 'Yes' if doc.sewing else 'No' }}</td></tr>
-                                <tr><td>Hand Emb.</td><td>{{ 'Yes' if doc.hand_embroidery else 'No' }}</td><td>Hand Work</td><td>{{ 'Yes' if doc.hand_work else 'No' }}</td></tr>
-                                <tr><td>Screen Print</td><td>{{ 'Yes' if doc.sp else 'No' }}</td><td>Block Print</td><td>{{ 'Yes' if doc.bp else 'No' }}</td></tr>
-                                <tr><td>Tie Dye</td><td>{{ 'Yes' if doc.td else 'No' }}</td><td>Karchupi</td><td>{{ 'Yes' if doc.karchupi else 'No' }}</td></tr>
+                                {% for ws, ws_bn in active_workstations %}
+                                    <tr><td>{{ ws }} / {{ ws_bn }}</td><td style="color: green; font-weight: bold;">YES</td></tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </td>
-                <td style="width: 50%; vertical-align: top; padding-left: 10px;">
+                {% endif %}
+                
+                {% if colors_list %}
+                <td style="width: {{ '50%' if active_workstations else '100%' }}; vertical-align: top; padding-left: 10px;">
                     <div class="data-section">
-                        <div class="section-title">Colors & Details</div>
+                        <div class="section-title">Colors & Details / রঙের বিবরণ</div>
                         <table class="standard-table">
                             <thead>
-                                <tr><th style="width: 80px;">Color</th><th>Specific Instructions</th></tr>
+                                <tr><th style="width: 80px;">Color / রং</th><th>Instructions / নির্দেশাবলী</th></tr>
                             </thead>
                             <tbody>
-                                {% set colors_list = [] %}
-                                {% if doc.color or doc.data_xmgl %}{% set _v = colors_list.append((doc.color, doc.data_xmgl)) %}{% endif %}
-                                {% if doc.color_2 or doc.data_ryzm %}{% set _v = colors_list.append((doc.color_2, doc.data_ryzm)) %}{% endif %}
-                                {% if doc.color_3 or doc.data_muzc %}{% set _v = colors_list.append((doc.color_3, doc.data_muzc)) %}{% endif %}
-                                {% if doc.color_4 or doc.data_lfwb %}{% set _v = colors_list.append((doc.color_4, doc.data_lfwb)) %}{% endif %}
-                                {% if doc.color_5 or doc.data_hnjh %}{% set _v = colors_list.append((doc.color_5, doc.data_hnjh)) %}{% endif %}
-                                {% if doc.color_6 or doc.data_zsdd %}{% set _v = colors_list.append((doc.color_6, doc.data_zsdd)) %}{% endif %}
-
                                 {% for color, detail in colors_list %}
                                     <tr>
                                         <td>
@@ -347,15 +398,14 @@
                                         <td>{{ detail or '' }}</td>
                                     </tr>
                                 {% endfor %}
-                                {% if not colors_list %}
-                                    <tr><td colspan="2" style="text-align: center; color: #999;">No details provided</td></tr>
-                                {% endif %}
                             </tbody>
                         </table>
                     </div>
                 </td>
+                {% endif %}
             </tr>
         </table>
+        {% endif %}
 
         {% if doc.screen_print_cost_details %}
         <div class="data-section">
@@ -373,7 +423,7 @@
 
         <table class="footer-table" style="color: #000;">
             <tr>
-                <td>DRESSUP ERP SYSTEM | DESIGN MODULE</td>
+                <td>DRESSUP SYSTEM | DESIGN MODULE</td>
                 <td style="text-align: right;">PRINTED ON {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</td>
             </tr>
         </table>
