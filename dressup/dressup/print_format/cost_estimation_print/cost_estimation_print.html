@@ -1,279 +1,259 @@
-<!-- This is a Jinja2 template file for ERPNext/Frappe. CSS linting disabled due to template syntax. -->
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        @media print {
-            @page {
-                size: A4 portrait;
-                margin: 10mm;
-            }
-            .no-print { display: none; }
-            body { -webkit-print-color-adjust: exact; }
+<style>
+    @media print {
+        @page {
+            size: A4 portrait;
+            margin: 10mm;
         }
-        
-        :root {
-            --primary: #000000;
-            --primary-light: #333333;
-            --secondary: #666666;
-            --accent: #000000;
-            --bg-light: #f2f2f2;
-            --text-main: #000000;
-            --text-muted: #444444;
-            --border-color: #000000;
-        }
+        .no-print { display: none; }
+    }
+    
+    :root {
+        --primary: #000000;
+        --primary-light: #333333;
+        --secondary: #666666;
+        --accent: #000000;
+        --bg-light: #f2f2f2;
+        --text-main: #000000;
+        --text-muted: #444444;
+        --border-color: #000000;
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            font-size: 10pt;
-            line-height: 1.4;
-            color: var(--text-main);
-            background: #fff;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .print-format {
-            max-width: 210mm;
-            margin: 0 auto;
-            padding: 15px;
-        }
-        
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            border-bottom: 2.5pt solid var(--primary);
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .header-left h1 {
-            margin: 0;
-            color: var(--primary);
-            font-size: 22pt;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        
-        .header-right {
-            text-align: right;
-        }
-        
-        .company-name {
-            font-size: 12pt;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-        
-        .doc-info {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-            padding: 12px;
-            border: 1pt solid var(--border-color);
-            border-radius: 4px;
-        }
-        
-        .info-group {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .info-label {
-            font-size: 8pt;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-        
-        .info-value {
-            font-size: 10pt;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-        
-        .section {
-            margin-bottom: 15px;
-        }
-        
-        .section-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        
-        .section-title {
-            font-size: 11pt;
-            font-weight: 700;
-            color: var(--text-main);
-            text-transform: uppercase;
-            border-bottom: 1.5pt solid var(--primary);
-            display: inline-block;
-            margin-bottom: 8px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 9pt;
-        }
-        
-        table thead th {
-            background: #000;
-            color: #fff;
-            padding: 8px;
-            text-align: left;
-            font-weight: 600;
-        }
-        
-        table tbody td {
-            padding: 6px 8px;
-            border-bottom: 0.5pt solid #ddd;
-        }
-        
-        .text-right { text-align: right; }
-        
-        .total-row {
-            background: #f8f9fa;
-            font-weight: 700;
-            border-top: 1pt solid #000;
-        }
-        
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-        
-        .card {
-            padding: 10px;
-            background: white;
-            border: 1pt solid var(--border-color);
-            border-radius: 4px;
-        }
-        
-        .card-label {
-            font-size: 8pt;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-        }
-        
-        .card-value {
-            font-size: 10pt;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-        
-        .summary-box {
-            background: #fff;
-            color: #000;
-            border: 2pt solid #000;
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .summary-main {
-            text-align: right;
-        }
-        
-        .summary-main .label {
-            font-size: 10pt;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .summary-main .value {
-            font-size: 24pt;
-            font-weight: 700;
-            line-height: 1;
-        }
-        
-        .summary-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            flex-grow: 1;
-            margin-right: 30px;
-        }
-        
-        .summary-item {
-            border-left: 3pt solid #000;
-            padding-left: 10px;
-        }
-        
-        .selling-prices {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .price-chip {
-            background: white;
-            border: 1px solid var(--primary-light);
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-        }
-        
-        .price-chip label {
-            display: block;
-            font-size: 8pt;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-        
-        .price-chip .value {
-            font-size: 14pt;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .price-chip .margin {
-            font-size: 7pt;
-            background: var(--secondary);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
-            display: inline-block;
-            margin-top: 4px;
-        }
-        
-        .footer {
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 1px dashed var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            font-size: 8pt;
-            color: var(--text-muted);
-        }
-        
-        .notes {
-            font-size: 8pt;
-            color: #666;
-            font-style: italic;
-            margin-top: 10px;
-            padding: 8px;
-            background: #fff9c4;
-            border-radius: 4px;
-        }
-    </style>
-</head>
-<body>
-    <div class="print-format">
-        <div class="header">
+    .print-format-container {
+        font-family: 'Poppins', sans-serif;
+        font-size: 10pt;
+        line-height: 1.4;
+        color: var(--text-main);
+        background: #fff;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .print-content {
+        padding: 5mm 0;
+    }
+    
+    .header-custom {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        border-bottom: 2.5pt solid var(--primary);
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .header-left h1 {
+        margin: 0;
+        color: var(--primary);
+        font-size: 22pt;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+    
+    .doc-info {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+        padding: 12px;
+        border: 1pt solid var(--border-color);
+        border-radius: 4px;
+    }
+    
+    .info-group {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .info-label {
+        font-size: 8pt;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+    }
+    
+    .info-value {
+        font-size: 10pt;
+        font-weight: 600;
+        color: var(--text-main);
+    }
+    
+    .section {
+        margin-bottom: 15px;
+    }
+    
+    .section-title {
+        font-size: 11pt;
+        font-weight: 700;
+        color: var(--text-main);
+        text-transform: uppercase;
+        border-bottom: 1.5pt solid var(--primary);
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9pt;
+    }
+    
+    table thead th {
+        background: #000;
+        color: #fff;
+        padding: 8px;
+        text-align: left;
+        font-weight: 600;
+    }
+    
+    table tbody td {
+        padding: 6px 8px;
+        border-bottom: 0.5pt solid #ddd;
+    }
+    
+    .text-right { text-align: right; }
+    
+    .total-row {
+        background: #f8f9fa;
+        font-weight: 700;
+        border-top: 1pt solid #000;
+    }
+    
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    .card {
+        padding: 10px;
+        background: white;
+        border: 1pt solid var(--border-color);
+        border-radius: 4px;
+    }
+    
+    .card-label {
+        font-size: 8pt;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 2px;
+    }
+    
+    .card-value {
+        font-size: 10pt;
+        font-weight: 600;
+        color: var(--text-main);
+    }
+    
+    .summary-box {
+        background: #fff;
+        color: #000;
+        border: 2pt solid #000;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .summary-main {
+        text-align: right;
+    }
+    
+    .summary-main .label {
+        font-size: 10pt;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    
+    .summary-main .value {
+        font-size: 24pt;
+        font-weight: 700;
+        line-height: 1;
+    }
+    
+    .summary-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        flex-grow: 1;
+        margin-right: 30px;
+    }
+    
+    .summary-item {
+        border-left: 3pt solid #000;
+        padding-left: 10px;
+    }
+    
+    .selling-prices {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 15px;
+    }
+    
+    .price-chip {
+        background: white;
+        border: 1px solid var(--primary-light);
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+    }
+    
+    .price-chip label {
+        display: block;
+        font-size: 8pt;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+    }
+    
+    .price-chip .value {
+        font-size: 14pt;
+        font-weight: 700;
+        color: var(--primary);
+    }
+    
+    .price-chip .margin {
+        font-size: 7pt;
+        background: var(--secondary);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 10px;
+        display: inline-block;
+        margin-top: 4px;
+    }
+    
+    .footer-custom {
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 1px dashed var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        font-size: 8pt;
+        color: var(--text-muted);
+    }
+    
+    .notes {
+        font-size: 8pt;
+        color: #666;
+        font-style: italic;
+        margin-top: 10px;
+        padding: 8px;
+        background: #fff9c4;
+        border-radius: 4px;
+    }
+</style>
+
+<div class="print-format-container">
+    {% if letter_head %}
+    <div class="letter-head-container">
+        {{ letter_head }}
+    </div>
+    {% endif %}
+
+    <div class="print-content">
+        <div class="header-custom">
             <div class="header-left">
                 <h1>COST ESTIMATION</h1>
             </div>
@@ -425,12 +405,11 @@
         </div>
         {% endif %}
         
-        <div class="footer">
+        <div class="footer-custom">
             <span>System Generated: {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</span>
             <span>DressUp Costing Engine v2.0</span>
             <span>Confidential Document</span>
         </div>
     </div>
-</body>
-</html>
+</div>
 
