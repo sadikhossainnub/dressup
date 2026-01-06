@@ -310,14 +310,15 @@
                                 <tr><th style="width: 80px;">Color</th><th>Specific Instructions</th></tr>
                             </thead>
                             <tbody>
-                                {% set colors = [
-                                    (doc.color, doc.data_xmgl), (doc.color_2, doc.data_ryzm),
-                                    (doc.color_3, doc.data_muzc), (doc.color_4, doc.data_lfwb),
-                                    (doc.color_5, doc.data_hnjh), (doc.color_6, doc.data_zsdd)
-                                ] %}
-                                {% set found = [] %}
-                                {% for color, detail in colors %}
-                                    {% if color or detail %}
+                                {% set colors_list = [] %}
+                                {% if doc.color or doc.data_xmgl %}{% set _v = colors_list.append((doc.color, doc.data_xmgl)) %}{% endif %}
+                                {% if doc.color_2 or doc.data_ryzm %}{% set _v = colors_list.append((doc.color_2, doc.data_ryzm)) %}{% endif %}
+                                {% if doc.color_3 or doc.data_muzc %}{% set _v = colors_list.append((doc.color_3, doc.data_muzc)) %}{% endif %}
+                                {% if doc.color_4 or doc.data_lfwb %}{% set _v = colors_list.append((doc.color_4, doc.data_lfwb)) %}{% endif %}
+                                {% if doc.color_5 or doc.data_hnjh %}{% set _v = colors_list.append((doc.color_5, doc.data_hnjh)) %}{% endif %}
+                                {% if doc.color_6 or doc.data_zsdd %}{% set _v = colors_list.append((doc.color_6, doc.data_zsdd)) %}{% endif %}
+
+                                {% for color, detail in colors_list %}
                                     <tr>
                                         <td>
                                             {% if color %}
@@ -327,10 +328,8 @@
                                         </td>
                                         <td>{{ detail or '' }}</td>
                                     </tr>
-                                    {% do found.append(1) %}
-                                    {% endif %}
                                 {% endfor %}
-                                {% if not found %}
+                                {% if not colors_list %}
                                     <tr><td colspan="2" style="text-align: center; color: #999;">No details provided</td></tr>
                                 {% endif %}
                             </tbody>
