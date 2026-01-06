@@ -209,10 +209,10 @@
                         <tr><th>Workstation</th><th>Value</th><th>Workstation</th><th>Value</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Cutting</td><td>{{ doc.cutting or '' }}</td><td>Sewing</td><td>{{ doc.sewing or '' }}</td></tr>
-                        <tr><td>Hand Emb.</td><td>{{ doc.hand_embroidery or '' }}</td><td>Hand Work</td><td>{{ doc.hand_work or '' }}</td></tr>
-                        <tr><td>Screen Print</td><td>{{ doc.sp or '' }}</td><td>Block Print</td><td>{{ doc.bp or '' }}</td></tr>
-                        <tr><td>Tie Dye</td><td>{{ doc.td or '' }}</td><td>Karchupi</td><td>{{ doc.karchupi or '' }}</td></tr>
+                        <tr><td>Cutting</td><td>{{ 'Yes' if doc.cutting else 'No' }}</td><td>Sewing</td><td>{{ 'Yes' if doc.sewing else 'No' }}</td></tr>
+                        <tr><td>Hand Emb.</td><td>{{ 'Yes' if doc.hand_embroidery else 'No' }}</td><td>Hand Work</td><td>{{ 'Yes' if doc.hand_work else 'No' }}</td></tr>
+                        <tr><td>Screen Print</td><td>{{ 'Yes' if doc.sp else 'No' }}</td><td>Block Print</td><td>{{ 'Yes' if doc.bp else 'No' }}</td></tr>
+                        <tr><td>Tie Dye</td><td>{{ 'Yes' if doc.td else 'No' }}</td><td>Karchupi</td><td>{{ 'Yes' if doc.karchupi else 'No' }}</td></tr>
                     </tbody>
                 </table>
             </div>
