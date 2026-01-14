@@ -12,6 +12,12 @@
         "label_height",
         "font_size",
         "barcode_type",
+        "include_price",
+        "labels_per_row",
+        "top_margin",
+        "left_margin",
+        "vertical_gap",
+        "horizontal_gap",
         "column_break_1",
         "include_item_code",
         "include_item_name",
@@ -55,6 +61,42 @@
             "label": "Barcode Type",
             "options": "Code128\nCode39\nEAN13\nEAN8\nUPC-A\nJAN\nISBN\nQR Code",
             "reqd": 1
+        },
+        {
+            "default": "0",
+            "fieldname": "include_price",
+            "fieldtype": "Check",
+            "label": "Include Price"
+        },
+        {
+            "default": "1",
+            "fieldname": "labels_per_row",
+            "fieldtype": "Int",
+            "label": "Labels Per Row"
+        },
+        {
+            "default": "0",
+            "fieldname": "top_margin",
+            "fieldtype": "Float",
+            "label": "Top Margin (mm)"
+        },
+        {
+            "default": "0",
+            "fieldname": "left_margin",
+            "fieldtype": "Float",
+            "label": "Left Margin (mm)"
+        },
+        {
+            "default": "0",
+            "fieldname": "vertical_gap",
+            "fieldtype": "Float",
+            "label": "Vertical Gap (mm)"
+        },
+        {
+            "default": "0",
+            "fieldname": "horizontal_gap",
+            "fieldtype": "Float",
+            "label": "Horizontal Gap (mm)"
         },
         {
             "fieldname": "column_break_1",

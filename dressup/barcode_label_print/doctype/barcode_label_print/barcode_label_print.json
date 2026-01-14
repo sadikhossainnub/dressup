@@ -7,61 +7,11 @@
     "editable_grid": 1,
     "engine": "InnoDB",
     "field_order": [
-        "item_code",
-        "item_name",
-        "column_break_1",
-        "batch_no",
-        "serial_no",
-        "expiry_date",
-        "section_break_1",
         "label_template",
-        "print_qty",
+        "items",
         "preview_html"
     ],
     "fields": [
-        {
-            "fieldname": "item_code",
-            "fieldtype": "Link",
-            "label": "Item Code",
-            "options": "Item",
-            "reqd": 1
-        },
-        {
-            "fieldname": "item_name",
-            "fieldtype": "Data",
-            "label": "Item Name",
-            "read_only": 1,
-            "fetch_from": "item_code.item_name"
-        },
-        {
-            "fieldname": "column_break_1",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "batch_no",
-            "fieldtype": "Link",
-            "label": "Batch No",
-            "options": "Batch",
-            "link_filters": "[[\"Batch\",\"item\",\"=\",\"item_code\"]]"
-        },
-        {
-            "fieldname": "serial_no",
-            "fieldtype": "Link",
-            "label": "Serial No",
-            "options": "Serial No",
-            "link_filters": "[[\"Serial No\",\"item_code\",\"=\",\"item_code\"]]"
-        },
-        {
-            "fieldname": "expiry_date",
-            "fieldtype": "Date",
-            "label": "Expiry Date",
-            "read_only": 1,
-            "fetch_from": "batch_no.expiry_date"
-        },
-        {
-            "fieldname": "section_break_1",
-            "fieldtype": "Section Break"
-        },
         {
             "fieldname": "label_template",
             "fieldtype": "Link",
@@ -71,11 +21,10 @@
             "description": "Select the physical label size template"
         },
         {
-            "default": "1",
-            "fieldname": "print_qty",
-            "fieldtype": "Int",
-            "label": "Print Qty",
-            "reqd": 1
+            "fieldname": "items",
+            "fieldtype": "Table",
+            "label": "Items",
+            "options": "Barcode Label Item"
         },
         {
             "fieldname": "preview_html",
