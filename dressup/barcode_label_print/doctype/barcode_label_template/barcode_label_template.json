@@ -24,9 +24,23 @@
         "include_batch_no",
         "include_serial_no",
         "include_expiry_date",
-        "include_company_name"
+        "include_company_name",
+        "section_break_design",
+        "design_data"
     ],
     "fields": [
+        {
+            "fieldname": "section_break_design",
+            "fieldtype": "Section Break",
+            "label": "Visual Designer"
+        },
+        {
+            "fieldname": "design_data",
+            "fieldtype": "Code",
+            "label": "Design JSON",
+            "options": "JSON",
+            "hidden": 1
+        },
         {
             "fieldname": "template_name",
             "fieldtype": "Data",
