@@ -194,6 +194,23 @@
     {% endif %}
 
     <div class="sketch-content">
+        {% set table_images_to_print = [] %}
+        {% for row in doc.additional_images %}
+            {% if row.image and row.print %}
+                {% set _v = table_images_to_print.append(row) %}
+            {% endif %}
+        {% endfor %}
+
+        {% set header_image = None %}
+        {% set other_images = [] %}
+        {% if doc.image and doc.print_main_image %}
+            {% set header_image = doc.image %}
+            {% set other_images = table_images_to_print %}
+        {% elif table_images_to_print %}
+            {% set header_image = table_images_to_print[0].image %}
+            {% set other_images = table_images_to_print[1:] %}
+        {% endif %}
+
         <table class="header-table">
             <tr>
                 <td>
@@ -223,10 +240,10 @@
                 </td>
                 <td style="width: 65%;">
                     <div class="sketch-box">
-                        {% if doc.image %}
-                            <img src="{{ doc.image }}">
+                        {% if header_image %}
+                            <img src="{{ header_image }}">
                         {% else %}
-                            <div style="color: #90a4ae; font-weight: 500; padding-top: 150px;">NO SKETCH ATTACHED</div>
+                            <div style="color: #90a4ae; font-weight: 500; padding-top: 150px;">NO SKETCH SELECTED</div>
                         {% endif %}
                     </div>
                 </td>
@@ -432,6 +449,25 @@
                     <td><div class="spec-label" style="font-size: 7pt;">Frame Cost</div><div class="spec-value" style="text-align: left;">{{ doc.frame_cost or '0.00' }}</div></td>
                 </tr>
             </table>
+        </div>
+        {% endif %}
+
+        {% if other_images %}
+        <div class="data-section" style="page-break-before: auto; margin-top: 20px;">
+            <div class="section-title">Additional Sketches / অতিরিক্ত স্কেচ</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                {% for row in other_images %}
+                    <div style="border: 1.5pt solid var(--primary); border-radius: 4px; padding: 5px; margin-bottom: 10px; width: 48%; text-align: center;">
+                        <img src="{{ row.image }}" style="max-width: 100%; max-height: 400px; display: block; margin: auto;">
+                        {% if row.description %}
+                            <div style="font-size: 8pt; font-weight: 600; padding-top: 5px; border-top: 1px solid #ddd; margin-top: 5px;">{{ row.description }}</div>
+                        {% endif %}
+                    </div>
+                    {% if loop.index % 2 == 0 and not loop.last %}
+                        <div style="width: 100%; height: 0;"></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
         {% endif %}
 

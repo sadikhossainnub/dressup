@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #2563eb;
+            --success: #059669;
+            --danger: #dc2626;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --bg-muted: #f8fafc;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .no-print { display: none; }
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            color: var(--text-main); 
+            line-height: 1.4; 
+            margin: 0; 
+            padding: 0;
+            background-color: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .print-format-container {
+            padding: 10mm;
+            max-width: 210mm;
+            margin: auto;
+        }
+
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            margin-bottom: 25px; 
+            border-bottom: 3px solid var(--primary); 
+            padding-bottom: 15px; 
+        }
+
+        .brand-logo { 
+            font-size: 26px; 
+            font-weight: 900; 
+            color: var(--primary); 
+            text-transform: uppercase; 
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+        
+        .company-info {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 6px;
+            max-width: 300px;
+        }
+
+        .doc-type { text-align: right; }
+        .doc-type h1 { 
+            margin: 0; 
+            font-size: 24px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            color: var(--primary);
+            line-height: 1;
+        }
+        .period { 
+            color: var(--accent); 
+            font-weight: 700; 
+            font-size: 13px; 
+            margin-top: 5px;
+            display: block;
+        }
+
+        .emp-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 30px; 
+            padding: 15px 0; 
+            margin-bottom: 25px; 
+            font-size: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .emp-detail { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 5px 0; 
+            border-bottom: 1px solid #f8fafc;
+        }
+        .emp-detail:last-child { border-bottom: none; }
+        
+        .label { color: var(--text-light); font-weight: 600; text-transform: uppercase; font-size: 10px; }
+        .value { color: var(--text-main); font-weight: 600; }
+
+        .salary-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 30px; 
+            margin-bottom: 25px; 
+        }
+
+        .column-box {
+            background: var(--bg-muted);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid var(--border);
+        }
+
+        .column-title { 
+            font-size: 11px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            color: var(--primary); 
+            border-bottom: 2px solid var(--primary); 
+            padding-bottom: 6px; 
+            margin-bottom: 12px; 
+            letter-spacing: 0.5px;
+        }
+        
+        .salary-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .salary-table td { padding: 6px 0; border-bottom: 1px solid #eef2f7; }
+        .salary-table tr:last-child td { border-bottom: none; }
+        .val { text-align: right; font-weight: 700; }
+        
+        .earning-val { color: var(--success); }
+        .deduction-val { color: var(--danger); }
+
+        .total-row {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .total-label { font-weight: 800; text-transform: uppercase; font-size: 11px; }
+
+        .summary-card { 
+            background: var(--primary);
+            color: #fff; 
+            border-radius: 8px; 
+            padding: 20px 25px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .net-pay-info { flex: 1; }
+        .net-pay-label { 
+            font-size: 11px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+        .net-pay-words { font-size: 11px; font-weight: 500; opacity: 0.8; font-style: italic; }
+        .net-pay-val { font-size: 32px; font-weight: 900; letter-spacing: -1px; }
+
+        .footer { 
+            margin-top: 50px; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 80px; 
+            text-align: center; 
+            font-size: 11px; 
+        }
+        .sig-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sig-line { 
+            width: 100%;
+            border-top: 1.5px solid var(--primary); 
+            padding-top: 8px; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sig-desc { font-size: 10px; color: var(--text-light); margin-top: 2px; }
+
+        .notice-bar { 
+            text-align: center; 
+            font-size: 10px; 
+            color: var(--text-light); 
+            margin-top: 40px; 
+            border-top: 1px dashed var(--border); 
+            padding-top: 12px; 
+        }
+
+        @media print {
+            .summary-card {
+                background: var(--primary) !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact;
+            }
+            .column-box {
+                background: #f8fafc !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-format-container">
+        <div class="header">
+            <div>
+                <div class="brand-logo">{{ doc.company }}</div>
+                <div class="company-info">{{ doc.company_address_display or '' }}</div>
+            </div>
+            <div class="doc-type">
+                <h1>Salary Slip</h1>
+                <span class="period">{{ doc.get_formatted("start_date") }} to {{ doc.get_formatted("end_date") }}</span>
+            </div>
+        </div>
+
+        <div class="emp-grid">
+            <div>
+                <div class="emp-detail"><span class="label">Employee Name</span><span class="value">{{ doc.employee_name }}</span></div>
+                <div class="emp-detail"><span class="label">Employee ID</span><span class="value">{{ doc.employee }}</span></div>
+                <div class="emp-detail"><span class="label">Designation</span><span class="value">{{ doc.designation }}</span></div>
+                <div class="emp-detail"><span class="label">Department</span><span class="value">{{ doc.department }}</span></div>
+            </div>
+            <div>
+                <div class="emp-detail"><span class="label">Bank Account</span><span class="value">{{ doc.bank_account_no or '-' }}</span></div>
+                <div class="emp-detail"><span class="label">Days Worked</span><span class="value">{{ doc.total_working_days }}</span></div>
+                <div class="emp-detail"><span class="label">LWP</span><span class="value">{{ doc.leave_without_pay }}</span></div>
+                <div class="emp-detail"><span class="label">Payment Days</span><span class="value">{{ doc.payment_days }}</span></div>
+            </div>
+        </div>
+
+        <div class="salary-container">
+            <!-- Earnings -->
+            <div class="column-box">
+                <div class="column-title">Earnings / আয়সমূহ</div>
+                <table class="salary-table">
+                    {% for component in doc.earnings %}
+                    <tr>
+                        <td>{{ component.salary_component }}</td>
+                        <td class="val earning-val">{{ component.get_formatted("amount") }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <div class="total-row">
+                    <span class="total-label">Gross Pay</span>
+                    <span class="val earning-val">{{ doc.get_formatted("gross_pay") }}</span>
+                </div>
+            </div>
+
+            <!-- Deductions -->
+            <div class="column-box">
+                <div class="column-title">Deductions / কর্তনসমূহ</div>
+                <table class="salary-table">
+                    {% for component in doc.deductions %}
+                    <tr>
+                        <td>{{ component.salary_component }}</td>
+                        <td class="val deduction-val">{{ component.get_formatted("amount") }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <div class="total-row">
+                    <span class="total-label">Total Deductions</span>
+                    <span class="val deduction-val">{{ doc.get_formatted("total_deduction") }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="net-pay-info">
+                <div class="net-pay-label">Net Payable Amount</div>
+                <div class="net-pay-words">{{ doc.total_in_words }}</div>
+            </div>
+            <div class="net-pay-val">{{ doc.get_formatted("net_pay") }}</div>
+        </div>
+
+        <div class="footer">
+            <div class="sig-box">
+                <div class="sig-line">Employer Signature</div>
+                <div class="sig-desc">Authorized Signatory</div>
+            </div>
+            <div class="sig-box">
+                <div class="sig-line">Employee Signature</div>
+                <div class="sig-desc">Acknowledgment of Receipt</div>
+            </div>
+        </div>
+
+        <div class="notice-bar">
+            This is a computer-generated document and does not require a physical signature for validity.
+            <br>
+            <strong>{{ doc.company }}</strong> &copy; {{ frappe.utils.now_datetime().year }}
+        </div>
+    </div>
+</body>
+</html>
