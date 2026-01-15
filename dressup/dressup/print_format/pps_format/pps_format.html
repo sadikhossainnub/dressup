@@ -221,7 +221,7 @@
                         <div class="swatch-info">
                             <div class="swatch-code">{{ item.item_code }}</div>
                             <div class="swatch-name">{{ item.item_name }}</div>
-                            <div class="swatch-qty">{{ "%.2f"|format(item.quantity or 0) }} {{ item.default_unit_of_measurement or item.uom }}</div>
+                            <div class="swatch-qty">{{ "%.2f"|format(item.quantity|float) }} {{ item.default_unit_of_measurement or item.uom }}</div>
                         </div>
                         <div class="image-well">
                             {% if item_image %}
