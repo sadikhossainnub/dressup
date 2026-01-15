@@ -524,12 +524,12 @@
         {
             "fieldname": "pocket_wid",
             "fieldtype": "Float",
-            "label": "\u09ab\u09cd\u09b0\u09a8\u09cd\u099f \u09b0\u09be\u0987\u099c"
+            "label": "\u09ab\u09cd\u09b0\u09a8\u09cd\u099f \u09b0\u09be\u0987\u099c (Front Rise)"
         },
         {
             "fieldname": "komor",
             "fieldtype": "Data",
-            "label": "\u0995\u09cb\u09ae\u09b0 (\u09b8\u09cd\u099f\u09cd\u09b0\u09c7\u099a\u09a1 \u00d72)"
+            "label": "\u0995\u09cb\u09ae\u09b0 (Stretched \u00d72)"
         },
         {
             "fieldname": "high_hip",
@@ -544,12 +544,12 @@
         {
             "fieldname": "thigh_uru",
             "fieldtype": "Data",
-            "label": "\u0989\u09b0\u09c1 (\u00d72)"
+            "label": "\u0989\u09b0\u09c1 (Thigh \u00d72)"
         },
         {
             "fieldname": "knee_x2",
             "fieldtype": "Data",
-            "label": "\u09b9\u09be\u0981\u099f\u09c1 (\u00d72)"
+            "label": "\u09b9\u09be\u0981\u099f\u09c1 (Knee \u00d72)"
         },
         {
             "fieldname": "leg_opening_x2",
@@ -603,7 +603,7 @@
         {
             "fieldname": "length_bottom",
             "fieldtype": "Float",
-            "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af"
+            "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Length)"
         },
         {
             "fieldname": "column_break_bgdr",

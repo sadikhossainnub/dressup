@@ -207,20 +207,20 @@
     <!-- Info Box -->
     <div class="info-box">
         <div class="info-col">
-            <div class="info-row"><span class="label">Tech Pack No:</span> {{ doc.name }}</div>
-            <div class="info-row"><span class="label">Designer Name:</span> {{ doc.designer_name }}</div>
-            <div class="info-row"><span class="label">Design No:</span> {{ doc.design_no }}</div>
-            <div class="info-row"><span class="label">Category:</span> {{ doc.category }}</div>
-            <div class="info-row"><span class="label">Season:</span> {{ doc.seson }}</div>
-            <div class="info-row"><span class="label">Sewing Finish:</span> {{ doc.sewing_finish }}</div>
+            {% if doc.name %}<div class="info-row"><span class="label">Tech Pack No:</span> {{ doc.name }}</div>{% endif %}
+            {% if doc.designer_name %}<div class="info-row"><span class="label">Designer Name:</span> {{ doc.designer_name }}</div>{% endif %}
+            {% if doc.design_no %}<div class="info-row"><span class="label">Design No:</span> {{ doc.design_no }}</div>{% endif %}
+            {% if doc.category %}<div class="info-row"><span class="label">Category:</span> {{ doc.category }}</div>{% endif %}
+            {% if doc.seson %}<div class="info-row"><span class="label">Season:</span> {{ doc.seson }}</div>{% endif %}
+            {% if doc.sewing_finish %}<div class="info-row"><span class="label">Sewing Finish:</span> {{ doc.sewing_finish }}</div>{% endif %}
         </div>
         <div class="info-col">
-            <div class="info-row"><span class="label">Start Date:</span> {{ frappe.utils.formatdate(doc.start_date) if doc.start_date else '' }}</div>
-            <div class="info-row"><span class="label">Item Name:</span> {{ doc.item_name }}</div>
-            <div class="info-row"><span class="label">Cut/ Fit Style:</span> {{ doc.cut_fit_style }}</div>
-            <div class="info-row"><span class="label">Collar/ Neck Style:</span> {{ doc.collar_neck_style }}</div>
-            <div class="info-row"><span class="label">Side Cut:</span> {{ doc.side_cut }}</div>
-            <div class="info-row"><span class="label">Submission Date:</span> {{ frappe.utils.formatdate(doc.submission_date) if doc.submission_date else '' }}</div>
+            {% if doc.start_date %}<div class="info-row"><span class="label">Start Date:</span> {{ frappe.utils.formatdate(doc.start_date) if doc.start_date else '' }}</div>{% endif %}
+            {% if doc.item_name %}<div class="info-row"><span class="label">Item Name:</span> {{ doc.item_name }}</div>{% endif %}
+            {% if doc.cut_fit_style %}<div class="info-row"><span class="label">Cut/ Fit Style:</span> {{ doc.cut_fit_style }}</div>{% endif %}
+            {% if doc.collar_neck_style %}<div class="info-row"><span class="label">Collar/ Neck Style:</span> {{ doc.collar_neck_style }}</div>{% endif %}
+            {% if doc.side_cut %}<div class="info-row"><span class="label">Side Cut:</span> {{ doc.side_cut }}</div>{% endif %}
+            {% if doc.submission_date %}<div class="info-row"><span class="label">Submission Date:</span> {{ frappe.utils.formatdate(doc.submission_date) if doc.submission_date else '' }}</div>{% endif %}
         </div>
     </div>
 
@@ -289,12 +289,18 @@
             <!-- Bottom Specs Logic -->
             {% set bottom_items = [] %}
             {% set b_defs = [
-                ('length_bottom', 'Length / দৈর্ঘ্য'),
-                ('high_hip', 'High Hip / উচ্চ হিপ'),
-                ('low_hip', 'Low Hip'),
-                ('thigh_uru', 'Thigh'),
-                ('knee_x2', 'Knee'),
-                ('leg_opening_x2', 'Leg Opening')
+                ('length_bottom', 'দৈর্ঘ্য (Length)'),
+                ('pocket_wid', 'ফ্রন্ট রাইজ (Front Rise)'),
+                ('komor', 'কোমর (Stretched ×2)'),
+                ('high_hip', 'উচ্চ হিপ (×2)'),
+                ('low_hip', 'নিম্ন হিপ (×2)'),
+                ('thigh_uru', 'উরু (Thigh ×2)'),
+                ('knee_x2', 'হাঁটু (Knee ×2)'),
+                ('leg_opening_x2', 'লেগ ওপেনিং (×2)'),
+                ('elasticrubber_width', 'ইলাস্টিক/রাবারের প্রস্থ'),
+                ('beltloop_width', 'বেল্ট/লুপের প্রস্থ'),
+                ('wb_to_pocket_opening', 'ওয়েস্টব্যান্ড থেকে পকেট ওপেনিং পর্যন্ত দূরত্ব'),
+                ('pocket_depth', 'পকেটের গভীরতা')
             ] %}
             {% for f, l in b_defs %}
                 {% if doc.get(f) %}
@@ -399,8 +405,10 @@
     </div>
 
     <!-- Footer Note -->
+    {% if doc.text_editor_noaa %}
     <div class="footer-box">
-        <strong>Note:</strong> {{ doc.text_editor_noaa or '' }}
+        <strong>Note:</strong> {{ doc.text_editor_noaa }}
     </div>
+    {% endif %}
 
 </div>
