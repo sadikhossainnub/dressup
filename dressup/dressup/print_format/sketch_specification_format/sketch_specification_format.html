@@ -210,33 +210,25 @@
         <div class="left-panel">
             
             <!-- Body Measurements -->
-            {% 
-                set measurements = [
-                    ('full_length', 'Length / দৈর্ঘ্য'), ('high_hip', 'High Hip / উচ্চ হিপ'),
-                    ('front_neck_depth_s', 'Collar Width / কলারের প্রস্থ'), ('back_neck_depth_s', 'Collar Height / কলারের উচ্চতা'),
-                    ('bust', 'Bust / বক্ষ'), ('waist_circumstance', 'Waist / কোমর'),
-                    ('shoulder', 'Shoulder / স্লিভের দৈর্ঘ্য'), ('armhole', 'Armhole / আর্মহোল গভীরতা')
-                ]
-            %}
-            <!-- Note: Displaying a subset or checking standard logic. Using a dynamic check for active measurements -->
-             {% 
-                set measurement_items = []
-                set m_defs = [
-                    ('full_length', 'Length / দৈর্ঘ্য'),
-                    ('high_hip', 'High Hip / উচ্চ হিপ'),
-                    ('front_neck_depth_s', 'Collar Width / কলারের প্রস্থ'),
-                    ('back_neck_depth_s', 'Collar Height / কলারের উচ্চতা'),
-                    ('bust', 'Bust / বক্ষ'),
-                    ('waist_circumstance', 'Waist / কোমর'),
-                    ('shoulder', 'Shoulder'),
-                    ('armhole', 'Armhole'),
-                    ('sleevelength', 'Sleeve Length'),
-                    ('cuff_opening', 'Cuff Opening')
-                ]
-                for f, l in m_defs:
-                    if doc.get(f):
-                        set _ = measurement_items.append((l, doc.get(f)))
-            %}
+            <!-- Body Measurements Logic -->
+            {% set measurement_items = [] %}
+            {% set m_defs = [
+                ('full_length', 'Length / দৈর্ঘ্য'),
+                ('high_hip', 'High Hip / উচ্চ হিপ'),
+                ('front_neck_depth_s', 'Collar Width / কলারের প্রস্থ'),
+                ('back_neck_depth_s', 'Collar Height / কলারের উচ্চতা'),
+                ('bust', 'Bust / বক্ষ'),
+                ('waist_circumstance', 'Waist / কোমর'),
+                ('shoulder', 'Shoulder'),
+                ('armhole', 'Armhole'),
+                ('sleevelength', 'Sleeve Length'),
+                ('cuff_opening', 'Cuff Opening')
+            ] %}
+            {% for f, l in m_defs %}
+                {% if doc.get(f) %}
+                    {% set _ = measurement_items.append((l, doc.get(f))) %}
+                {% endif %}
+            {% endfor %}
             
             {% if measurement_items %}
             <div class="section-box" style="border:none; padding:0;">
@@ -252,21 +244,21 @@
             </div>
             {% endif %}
 
-            <!-- Bottom Specs -->
-            {% 
-                set bottom_items = []
-                set b_defs = [
-                    ('length_bottom', 'Length / দৈর্ঘ্য'),
-                    ('high_hip', 'High Hip / উচ্চ হিপ'),
-                    ('low_hip', 'Low Hip'),
-                    ('thigh_uru', 'Thigh'),
-                    ('knee_x2', 'Knee'),
-                    ('leg_opening_x2', 'Leg Opening')
-                ]
-                for f, l in b_defs:
-                    if doc.get(f):
-                        set _ = bottom_items.append((l, doc.get(f)))
-            %}
+            <!-- Bottom Specs Logic -->
+            {% set bottom_items = [] %}
+            {% set b_defs = [
+                ('length_bottom', 'Length / দৈর্ঘ্য'),
+                ('high_hip', 'High Hip / উচ্চ হিপ'),
+                ('low_hip', 'Low Hip'),
+                ('thigh_uru', 'Thigh'),
+                ('knee_x2', 'Knee'),
+                ('leg_opening_x2', 'Leg Opening')
+            ] %}
+            {% for f, l in b_defs %}
+                {% if doc.get(f) %}
+                    {% set _ = bottom_items.append((l, doc.get(f))) %}
+                {% endif %}
+            {% endfor %}
 
             {% if bottom_items %}
             <div class="section-box" style="border:none; padding:0; margin-top:5px;">

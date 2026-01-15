@@ -1,0 +1,9 @@
+{
+    "doc_type": "Sales Order",
+    "doctype": "Print Format",
+    "html": "<!-- content from sales_order_modern.html -->",
+    "module": "DressUp",
+    "name": "Sales Order Modern",
+    "print_format_type": "Jinja",
+    "standard": "Yes"
+}
