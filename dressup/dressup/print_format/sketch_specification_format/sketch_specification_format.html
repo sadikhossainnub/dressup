@@ -234,16 +234,37 @@
             <!-- Body Measurements Logic -->
             {% set measurement_items = [] %}
             {% set m_defs = [
-                ('full_length', 'Length / দৈর্ঘ্য'),
-                ('high_hip', 'High Hip / উচ্চ হিপ'),
-                ('front_neck_depth_s', 'Collar Width / কলারের প্রস্থ'),
-                ('back_neck_depth_s', 'Collar Height / কলারের উচ্চতা'),
-                ('bust', 'Bust / বক্ষ'),
-                ('waist_circumstance', 'Waist / কোমর'),
-                ('shoulder', 'Shoulder'),
-                ('armhole', 'Armhole'),
-                ('sleevelength', 'Sleeve Length'),
-                ('cuff_opening', 'Cuff Opening')
+                ('full_length', 'দৈর্ঘ্য (HPS → CF হেম)'),
+                ('cf_length', 'CB দৈর্ঘ্য (HPS → CB হেম)'),
+                ('cb_length', 'বক্ষ (Chest)'),
+                ('waist_circumstance', 'কোমর (Waist)'),
+                ('bust', 'উচ্চ হিপ (High Hip)'),
+                ('upper_hip', 'নিম্ন হিপ (Low Hip)'),
+                ('lower_hip', 'হেম সুইপ (Hem Sweep)'),
+                ('front_neck_depth', 'সামনের গলার ড্রপ (Front Neck Drop)'),
+                ('back_neck_depth', 'পিছনের গলার ড্রপ (Back Neck Drop)'),
+                ('shoulder_tip_to_side_waist', 'গলার প্রস্থ (Neck Width)'),
+                ('front_neck_depth_s', 'কলারের প্রস্থ (Collar Width)'),
+                ('back_neck_depth_s', 'কলারের উচ্চতা (Collar Height)'),
+                ('collar_width_height', 'কাঁধ থেকে কাঁধের প্রস্থ (Shoulder to Shoulder)'),
+                ('button_placket_length', 'কাঁধের ঢাল/ড্রপ (Shoulder Drop)'),
+                ('button_placket_width', 'আর্মহোলের গভীরতা (Armhole Depth)'),
+                ('hem', 'বাটন প্ল্যাকেটের দৈর্ঘ্য (Button Placket Length)'),
+                ('shoulder_drop', 'বাটন প্ল্যাকেটের প্রস্থ (Button Placket Width)'),
+                ('shoulder', 'স্লিভের দৈর্ঘ্য (Sleeve Length)'),
+                ('armhole', 'বাইসেপ (Bicep)'),
+                ('full_length_arm', 'এলবো (Elbow)'),
+                ('armhole_arm', 'কাফ ওপেনিং (Cuff Opening)'),
+                ('biceps', 'বাইসেপ (×2)'),
+                ('elbow', 'পকেটের দৈর্ঘ্য (Pocket Length)'),
+                ('cuff_length', 'পকেট ওপেনিং (Pocket Opening)'),
+                ('cuff_width', 'পকেটের অবস্থান (Pocket Position)'),
+                ('cuff_opening', 'আউটসিম (Outseam)'),
+                ('pocket_length', 'ইনসিম (Inseam)'),
+                ('pocket_width', 'পকেটের প্রস্থ (Pocket Width)'),
+                ('pocket_opening', 'ব্যাক রাইজ (Back Rise)'),
+                ('pocket_placket', 'কাফের দৈর্ঘ্য (Cuff Length)'),
+                ('shoulder_tip_to_pocket_starting', 'কোমর (Relaxed ×2)')
             ] %}
             {% for f, l in m_defs %}
                 {% if doc.get(f) %}
