@@ -26,29 +26,7 @@
         margin: 0 auto;
     }
 
-    /* Header */
-    .header-section {
-        display: block;
-        width: 100%;
-        margin-bottom: 5px;
-        clear: both;
-        border-bottom: 0.5px solid var(--border-color);
-        overflow: hidden;
-    }
-    .header-logo {
-        float: left;
-        width: 40%;
-    }
-    .header-logo img {
-        height: 40px;
-    }
-    .header-address {
-        float: right;
-        width: 60%;
-        text-align: right;
-        font-size: 7pt;
-        line-height: 1.1;
-    }
+
 
     /* Title Bar */
     .title-bar {
@@ -188,18 +166,8 @@
 <div class="sketch-container">
 
     <!-- Header -->
-    <div class="header-section">
-        <div class="header-logo">
-             <img src="{{ frappe.utils.get_url() }}/files/Capture.PNG" alt="DressUp">
-        </div>
-        <div class="header-address">
-            House # 5, Road # 6<br>
-            Kollyanpur, Dhaka<br>
-            +8809678247247<br>
-            support@dressup.com.bd<br>
-            dressupbangladesh <i class="fa fa-facebook-square"></i><br>
-            www.dressup.com.bd
-        </div>
+    <div style="width: 100%; margin-bottom: 5px;">
+        {{ letter_head }}
     </div>
 
     <!-- Title Bar -->
@@ -415,6 +383,13 @@
     {% if doc.text_editor_noaa %}
     <div class="footer-box">
         <strong>Note:</strong> {{ doc.text_editor_noaa }}
+    </div>
+    {% endif %}
+
+    <!-- System Footer -->
+    {% if footer %}
+    <div style="width: 100%; border-top: 1px solid var(--border-color); margin-top: 10px; padding-top: 5px;">
+        {{ footer }}
     </div>
     {% endif %}
 
