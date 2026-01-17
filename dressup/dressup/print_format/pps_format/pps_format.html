@@ -204,6 +204,16 @@
                 </span>
             </td>
         </tr>
+        <tr>
+            <td colspan="2">
+                <span class="cell-label">Quality Inspection Template</span>
+                <span class="cell-value">{{ doc.link_nsnp or '-' }}</span>
+            </td>
+            <td colspan="2">
+                <span class="cell-label">PPS Image Link</span>
+                <span class="cell-value" style="word-break: break-all;">{{ doc.pps_image_link_if_any or '-' }}</span>
+            </td>
+        </tr>
     </table>
 
     {% set all_items = (doc.fabrics or []) + (doc.trim_accessories or []) + (doc.fabric_dupatta or []) %}
@@ -221,7 +231,12 @@
                         <div class="swatch-info">
                             <div class="swatch-code">{{ item.item_code }}</div>
                             <div class="swatch-name">{{ item.item_name }}</div>
-                            <div class="swatch-qty">{{ "%.2f"|format(item.quantity|float) }} {{ item.default_unit_of_measurement or item.uom }}</div>
+                            <div class="swatch-qty">
+                                <span>Req: {{ "%.2f"|format(item.quantity|float) }} {{ item.default_unit_of_measurement or item.uom }}</span>
+                                {% if item.actual_quantity %}
+                                <br><span style="color: #444;">Act: {{ "%.2f"|format(item.actual_quantity|float) }} {{ item.default_unit_of_measurement or item.uom }}</span>
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="image-well">
                             {% if item_image %}
@@ -246,23 +261,25 @@
     <table class="standard-table">
         <thead>
             <tr>
-                <th style="width: 30%;">Measurement Point</th>
-                <th style="text-align: center;">XS</th>
-                <th style="text-align: center;">S</th>
-                <th style="text-align: center;">M</th>
-                <th style="text-align: center;">L</th>
-                <th style="text-align: center;">XL</th>
+                <th style="width: 16%;">Size</th>
+                <th style="text-align: center;">Length</th>
+                <th style="text-align: center;">Bust</th>
+                <th style="text-align: center;">Waist</th>
+                <th style="text-align: center;">Btm Length</th>
+                <th style="text-align: center;">Btm Waist</th>
+                <th style="text-align: center;">Leg Open</th>
             </tr>
         </thead>
         <tbody>
             {% for row in doc.size_chart_in_inch %}
             <tr>
-                <td style="font-weight: 700; background: #fafafa;">{{ row.measurement_point }}</td>
-                <td style="text-align: center;">{{ row.x_small or '-' }}</td>
-                <td style="text-align: center;">{{ row.small or '-' }}</td>
-                <td style="text-align: center;">{{ row.medium or '-' }}</td>
-                <td style="text-align: center;">{{ row.large or '-' }}</td>
-                <td style="text-align: center;">{{ row.x_large or '-' }}</td>
+                <td style="font-weight: 700; background: #fafafa;">{{ row.size_chart_in_inch or '-' }}</td>
+                <td style="text-align: center;">{{ row.length or '-' }}</td>
+                <td style="text-align: center;">{{ row.bust or '-' }}</td>
+                <td style="text-align: center;">{{ row.waist or '-' }}</td>
+                <td style="text-align: center;">{{ row.bottom_length or '-' }}</td>
+                <td style="text-align: center;">{{ row.bottom_waist or '-' }}</td>
+                <td style="text-align: center;">{{ row.leg_opening or '-' }}</td>
             </tr>
             {% endfor %}
         </tbody>
