@@ -6,6 +6,8 @@ from frappe.model.document import Document  # type: ignore
 import random
 
 
+from frappe.model.naming import make_autoname
+
 class SketchSpecificationSampleMakingSheet(Document):
 	def before_insert(self):
 		if not self.designer:
@@ -51,10 +53,7 @@ class SketchSpecificationSampleMakingSheet(Document):
 
 	def before_save(self):
 		if self.designer and not self.design_no:
-			abbr = frappe.db.get_value("Employee", self.designer, "abbr")
-			if abbr:
-				random_num = random.randint(1000, 9999)
-				self.design_no = f"{abbr}{random_num}"
+			self.design_no = generate_design_no(self.designer)
 		if self.docstatus == 0:
 			self.status = "Draft"
 
@@ -62,8 +61,8 @@ class SketchSpecificationSampleMakingSheet(Document):
 def generate_design_no(designer):
 	abbr = frappe.db.get_value("Employee", designer, "abbr")
 	if abbr:
-		random_num = random.randint(1000, 9999)
-		return f"{abbr}{random_num}"
+		random_num = random.randint(100000, 999999)
+		return f"{abbr}-{random_num}"
 	return None
 
 @frappe.whitelist()
