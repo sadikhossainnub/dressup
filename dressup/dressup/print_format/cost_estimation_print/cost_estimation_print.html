@@ -175,13 +175,13 @@
     }
     
     .summary-main .label {
-        font-size: 10pt;
+        font-size: 8pt;
         font-weight: 600;
         text-transform: uppercase;
     }
     
     .summary-main .value {
-        font-size: 16pt;
+        font-size: 12pt;
         font-weight: 700;
         line-height: 1;
     }
@@ -449,14 +449,28 @@
         
         <table class="summary-table">
             <tr>
-                <td style="width: 60%;">
+                <td style="width: 15%;">
                     <div class="summary-item">
-                        <div style="font-size: 8pt; opacity: 0.8; text-transform: uppercase;">Material & Trims</div>
-                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money((doc.total_fabric or 0) + (doc.total_trim_and_accessories or 0), currency=doc.currency) }}</div>
+                        <div style="font-size: 8pt; opacity: 0.8; text-transform: uppercase;">Fabrics</div>
+                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money(doc.total_fabric or 0, currency=doc.currency) }}</div>
                     </div>
+                </td>
+                <td style="width: 15%;">
                     <div class="summary-item">
-                        <div style="font-size: 8pt; opacity: 0.8; text-transform: uppercase;">Labor & Process</div>
-                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money((doc.total_tailoring or 0) + (doc.total_finishing or 0), currency=doc.currency) }}</div>
+                        <div style="font-size: 8pt; opacity: 0.8; text-transform: uppercase;">Trims</div>
+                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money(doc.total_trim_and_accessories or 0, currency=doc.currency) }}</div>
+                    </div>
+                </td>
+                <td style="width: 15%;">
+                    <div class="summary-item">
+                        <div style="font-size: 8pt; opacity: 0.8; text-transform: uppercase;">Tailoring</div>
+                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money(doc.total_tailoring or 0, currency=doc.currency) }}</div>
+                    </div>
+                </td>
+                <td style="width: 15%;">
+                    <div class="summary-item">
+                        <div style="font-size: 8pt; opacity: 0.8; text-transform: uppercase;">Finishing</div>
+                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money(doc.total_finishing or 0, currency=doc.currency) }}</div>
                     </div>
                 </td>
                 <td style="width: 40%; text-align: right;">
