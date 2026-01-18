@@ -4,6 +4,7 @@
     "allow_rename": 1,
     "autoname": "naming_series:",
     "creation": "2024-01-01 00:00:00",
+    "default_view": "List",
     "doctype": "DocType",
     "engine": "InnoDB",
     "field_order": [
@@ -173,7 +174,6 @@
             "read_only": 1
         },
         {
-            "fetch_from": "designer.employee_number",
             "fieldname": "design_no",
             "fieldtype": "Data",
             "label": "Design No",
@@ -255,8 +255,7 @@
             "fieldtype": "Float",
             "in_list_view": 1,
             "in_preview": 1,
-            "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CF \u09b9\u09c7\u09ae)",
-            "reqd": 1
+            "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CF \u09b9\u09c7\u09ae)"
         },
         {
             "fieldname": "cf_length",
@@ -276,8 +275,7 @@
         {
             "fieldname": "bust",
             "fieldtype": "Float",
-            "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (High Hip)",
-            "reqd": 1
+            "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (High Hip)"
         },
         {
             "fieldname": "upper_hip",
@@ -297,7 +295,7 @@
         {
             "fieldname": "back_neck_depth",
             "fieldtype": "Float",
-            "label": "\u09aa\u09bbf\u099b\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Back Neck Drop)"
+            "label": "\u09aa\u09bf\u099b\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Back Neck Drop)"
         },
         {
             "fieldname": "shoulder_tip_to_side_waist",
@@ -307,14 +305,12 @@
         {
             "fieldname": "front_neck_depth_s",
             "fieldtype": "Float",
-            "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Collar Width)",
-            "reqd": 1
+            "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Collar Width)"
         },
         {
             "fieldname": "back_neck_depth_s",
             "fieldtype": "Float",
-            "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u0989\u099a\u09cd\u099a\u09a4\u09be (Collar Height)",
-            "reqd": 1
+            "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u0989\u099a\u09cd\u099a\u09a4\u09be (Collar Height)"
         },
         {
             "fieldname": "collar_width_height",
@@ -468,7 +464,8 @@
             "fieldname": "seson",
             "fieldtype": "Select",
             "label": "Seson",
-            "options": "\nEID\nMONSOON\nPOHELA BOISHAKH\nPUJA\nSPRING\nSUMMER\nWINTER"
+            "options": "\nEID\nMONSOON\nPOHELA BOISHAKH\nPUJA\nSPRING\nSUMMER\nWINTER",
+            "reqd": 1
         },
         {
             "fieldname": "column_break_wtxg",
@@ -892,7 +889,7 @@
     "index_web_pages_for_search": 1,
     "is_submittable": 1,
     "links": [],
-    "modified": "2025-11-24 08:19:51.100116",
+    "modified": "2026-01-18 15:56:37.124159",
     "modified_by": "Administrator",
     "module": "DressUp",
     "name": "Sketch Specification Sample Making Sheet",
@@ -900,6 +897,8 @@
     "owner": "Administrator",
     "permissions": [
         {
+            "amend": 1,
+            "cancel": 1,
             "create": 1,
             "delete": 1,
             "email": 1,
@@ -909,10 +908,8 @@
             "report": 1,
             "role": "System Manager",
             "share": 1,
-            "write": 1,
             "submit": 1,
-            "cancel": 1,
-            "amend": 1
+            "write": 1
         },
         {
             "create": 1,
@@ -922,6 +919,30 @@
             "read": 1,
             "report": 1,
             "role": "Projects Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "cancel": 1,
+            "create": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Fashion Designer Manager",
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Fashion Designer",
             "share": 1,
             "write": 1
         }

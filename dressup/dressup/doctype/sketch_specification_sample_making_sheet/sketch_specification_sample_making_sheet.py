@@ -52,7 +52,7 @@ class SketchSpecificationSampleMakingSheet(Document):
 		frappe.msgprint(f"Cost Estimation {cost_est.name} created successfully")
 
 	def before_save(self):
-		if self.designer and not self.design_no:
+		if self.designer and (not self.design_no or self.design_no.startswith("EID-")):
 			self.design_no = generate_design_no(self.designer)
 		if self.docstatus == 0:
 			self.status = "Draft"
