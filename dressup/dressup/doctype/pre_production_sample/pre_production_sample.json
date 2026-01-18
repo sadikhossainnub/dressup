@@ -11,8 +11,10 @@
   "received_date",
   "column_break_1",
   "pattern_master",
+  "pattern_master_name",
   "start_time_date",
   "sample_man",
+  "sample_man_name",
   "handler",
   "finish_time_date",
   "production_section",
@@ -40,8 +42,7 @@
   "pps_image_link_if_any",
   "quality_tab",
   "other_tests_section",
-  "link_nsnp",
-  "amended_from"
+  "link_nsnp"
  ],
  "fields": [
   {
@@ -54,9 +55,10 @@
   },
   {
    "fieldname": "pattern_master",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Pattern Master",
+   "options": "Employee",
    "reqd": 1
   },
   {
@@ -76,8 +78,9 @@
   },
   {
    "fieldname": "sample_man",
-   "fieldtype": "Data",
-   "label": "Sample Man"
+   "fieldtype": "Link",
+   "label": "Sample Man",
+   "options": "Employee"
   },
   {
    "default": "Now",
@@ -245,21 +248,26 @@
    "label": "Quality"
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Pre Production Sample",
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
+   "fetch_from": "pattern_master.employee_name",
+   "fieldname": "pattern_master_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Pattern Master Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "sample_man.employee_name",
+   "fieldname": "sample_man_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Sample Man Name",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "links": [],
- "modified": "2026-01-18 15:59:37.464226",
- "modified_by": "Administrator",
+ "modified": "2026-01-19 00:17:18.193095",
+ "modified_by": "sayedtkg@gmail.com",
  "module": "DressUp",
  "name": "Pre Production Sample",
  "naming_rule": "By \"Naming Series\" field",
@@ -282,18 +290,6 @@
    "read": 1,
    "report": 1,
    "role": "Manufacturing User",
-   "write": 1
-  },
-  {
-   "create": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Fashion Designer Manager",
-   "share": 1,
-   "submit": 1,
    "write": 1
   }
  ],
