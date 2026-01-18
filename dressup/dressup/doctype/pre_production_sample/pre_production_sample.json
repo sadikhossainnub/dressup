@@ -8,6 +8,7 @@
     "field_order": [
         "naming_series",
         "tech_pack_no",
+        "source_warehouse",
         "received_date",
         "column_break_1",
         "pattern_master",
@@ -42,7 +43,8 @@
         "pps_image_link_if_any",
         "quality_tab",
         "other_tests_section",
-        "link_nsnp"
+        "link_nsnp",
+        "stock_entry"
     ],
     "fields": [
         {
@@ -71,6 +73,13 @@
             "fieldname": "received_date",
             "fieldtype": "Date",
             "label": "Received Date:"
+        },
+        {
+            "fieldname": "source_warehouse",
+            "fieldtype": "Link",
+            "label": "Source Warehouse",
+            "options": "Warehouse",
+            "reqd": 1
         },
         {
             "fieldname": "column_break_1",
@@ -168,6 +177,13 @@
             "label": "Quality Inspection Template",
             "options": "Quality Inspection Template",
             "reqd": 1
+        },
+        {
+            "fieldname": "stock_entry",
+            "fieldtype": "Link",
+            "label": "Stock Entry",
+            "options": "Stock Entry",
+            "read_only": 1
         },
         {
             "fieldname": "washing_instruction",

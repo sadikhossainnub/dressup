@@ -102,6 +102,15 @@ frappe.ui.form.on("PPS Trim Accessories Item", {
 	}
 });
 
+frappe.ui.form.on("Fabric Dupatta", {
+	actual_quantity: function (frm, cdt, cdn) {
+		calculate_child_amount(frm, cdt, cdn);
+	},
+	rate: function (frm, cdt, cdn) {
+		calculate_child_amount(frm, cdt, cdn);
+	}
+});
+
 function calculate_child_amount(frm, cdt, cdn) {
 	let row = locals[cdt][cdn];
 	let amount = (flt(row.actual_quantity) || 0) * (flt(row.rate) || 0);

@@ -11,7 +11,7 @@ class PreProductionSample(Document):
 	def onload(self):
 		"""Add default size chart on new doc"""
 		if self.is_new() and not self.size_chart_in_inch:
-			for size in ['36', '38', '40', '42']:
+			for size in ['36', '38', '40', '42','44']:
 				self.append('size_chart_in_inch', {'size_chart_in_inch': size})
 	
 	def validate(self):
@@ -72,6 +72,49 @@ class PreProductionSample(Document):
 		# Auto-set finish time
 		if not self.finish_time_date:
 			self.finish_time_date = now()
+
+	def on_submit(self):
+		"""Create Stock Entry for material issue"""
+		if not self.source_warehouse:
+			frappe.throw("Source Warehouse is required for stock reduction")
+		
+		# Collect all items with actual quantity > 0
+		items = []
+		for table in ['fabrics', 'trim_accessories', 'fabric_dupatta']:
+			for row in self.get(table):
+				if row.actual_quantity:
+					items.append({
+						"item_code": row.item_code,
+						"qty": row.actual_quantity,
+						"uom": row.default_unit_of_measurement,
+						"s_warehouse": self.source_warehouse,
+						"t_warehouse": None,
+						"expense_account": frappe.db.get_value("Company", frappe.defaults.get_defaults().company, "default_expense_account") or "Cost of Goods Sold - DT"
+					})
+		
+		if not items:
+			return
+
+		# Create Stock Entry
+		stock_entry = frappe.get_doc({
+			"doctype": "Stock Entry",
+			"stock_entry_type": "Material Issue",
+			"company": frappe.defaults.get_defaults().company,
+			"items": items,
+			"remarks": f"Issued for Pre Production Sample: {self.name}"
+		})
+		stock_entry.insert()
+		stock_entry.submit()
+		
+		self.db_set("stock_entry", stock_entry.name)
+
+	def on_cancel(self):
+		"""Cancel associated Stock Entry"""
+		if self.stock_entry:
+			se = frappe.get_doc("Stock Entry", self.stock_entry)
+			if se.docstatus == 1:
+				se.cancel()
+			self.db_set("stock_entry", None)
 
 
 @frappe.whitelist()
