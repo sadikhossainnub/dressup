@@ -1,993 +1,994 @@
 {
- "actions": [],
- "allow_import": 1,
- "allow_rename": 1,
- "autoname": "naming_series:",
- "creation": "2024-01-01 00:00:00",
- "doctype": "DocType",
- "engine": "InnoDB",
- "field_order": [
-  "naming_series",
-  "item_name",
-  "status",
-  "designer",
-  "designer_name",
-  "design_no",
-  "seson",
-  "sewing_finish",
-  "column_break_nxfb",
-  "start_date",
-  "category",
-  "cut_fit_style",
-  "collar_neck_style",
-  "side_cut",
-  "submission_date",
-  "design_section",
-  "column_break_vrud",
-  "image",
-  "print_main_image",
-  "attach_image",
-  "additional_images",
-  "image_previews",
-  "ai_folder_link",
-  "referrence_link",
-  "other_link",
-  "workstations_section",
-  "cutting",
-  "fb",
-  "sewing",
-  "me",
-  "hand_embroidery",
-  "column_break_rpkv",
-  "hand_work",
-  "sp",
-  "bp",
-  "td",
-  "karchupi",
-  "section_break_fulh",
-  "color_units",
-  "section_break_qgzt",
-  "color",
-  "data_xmgl",
-  "color_2",
-  "data_ryzm",
-  "color_3",
-  "data_muzc",
-  "color_4",
-  "data_lfwb",
-  "column_break_oqxe",
-  "color_5",
-  "data_hnjh",
-  "color_6",
-  "data_zsdd",
-  "color_7",
-  "data_uxrz",
-  "color_8",
-  "data_mnat",
-  "column_break_kzbm",
-  "color_9",
-  "data_wptw",
-  "color_10",
-  "data_znsh",
-  "section_break_snwy",
-  "color_description",
-  "workstation_screen_print",
-  "pigments_dye",
-  "column_break_qhgw",
-  "old_frame__sku",
-  "new_frame__sku",
-  "screen_print_cost_details",
-  "column_break_rqjd",
-  "frame_cost",
-  "process_cost",
-  "chemical_cost",
-  "print_cost",
-  "column_break_zvfl",
-  "cost_for_30_unit",
-  "cost_for_50_unit",
-  "cost_for_70_unit",
-  "cost_for_100_unit",
-  "sample_hand_embroider_section",
-  "hand_embroider",
-  "sample",
-  "column_break_matv",
-  "quarter",
-  "half",
-  "full",
-  "time",
-  "rate",
-  "measurements_section",
-  "column_break_eghr",
-  "full_length",
-  "cf_length",
-  "cb_length",
-  "waist_circumstance",
-  "bust",
-  "upper_hip",
-  "lower_hip",
-  "front_neck_depth",
-  "back_neck_depth",
-  "shoulder_tip_to_side_waist",
-  "front_neck_depth_s",
-  "back_neck_depth_s",
-  "collar_width_height",
-  "button_placket_length",
-  "button_placket_width",
-  "column_break_wtxg",
-  "hem",
-  "shoulder_drop",
-  "shoulder",
-  "armhole",
-  "full_length_arm",
-  "pocket_placket",
-  "biceps",
-  "elbow",
-  "armhole_arm",
-  "pocket_width",
-  "cuff_length",
-  "cuff_width",
-  "cuff_opening",
-  "pocket_length",
-  "bottom_section",
-  "column_break_lvwn",
-  "length_bottom",
-  "pocket_wid",
-  "shoulder_tip_to_pocket_starting",
-  "pocket_opening",
-  "komor",
-  "thigh_uru",
-  "high_hip",
-  "column_break_bgdr",
-  "low_hip",
-  "leg_opening_x2",
-  "knee_x2",
-  "elasticrubber_width",
-  "wb_to_pocket_opening",
-  "beltloop_width",
-  "pocket_depth",
-  "note_section",
-  "text_editor_noaa",
-  "amended_from"
- ],
- "fields": [
-  {
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "label": "Tech Pack No.",
-   "options": ".DD.-.MM.-.YY.-.#####",
-   "reqd": 1
-  },
-  {
-   "fieldname": "designer",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Designer",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
-   "fetch_from": "designer.employee_name",
-   "fieldname": "designer_name",
-   "fieldtype": "Data",
-   "label": "Designer Name",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "designer.employee_number",
-   "fieldname": "design_no",
-   "fieldtype": "Data",
-   "label": "Style No:",
-   "reqd": 1
-  },
-  {
-   "fieldname": "column_break_nxfb",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "category",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Category",
-   "options": "Item Group",
-   "reqd": 1
-  },
-  {
-   "default": "Today",
-   "fieldname": "start_date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "Start Date"
-  },
-  {
-   "fieldname": "submission_date",
-   "fieldtype": "Datetime",
-   "in_list_view": 1,
-   "label": "Submission Date"
-  },
-  {
-   "fieldname": "sewing_finish",
-   "fieldtype": "Select",
-   "label": "Sewing Finish",
-   "options": "Kaktarua\nUnstitched\nReady to Wear"
-  },
-  {
-   "fieldname": "workstations_section",
-   "fieldtype": "Section Break",
-   "label": "Workstations"
-  },
-  {
-   "default": "0",
-   "fieldname": "cutting",
-   "fieldtype": "Check",
-   "label": "Cutting"
-  },
-  {
-   "default": "0",
-   "fieldname": "sp",
-   "fieldtype": "Check",
-   "label": "Screen Print"
-  },
-  {
-   "default": "0",
-   "fieldname": "me",
-   "fieldtype": "Check",
-   "label": "Machine Embroidery"
-  },
-  {
-   "default": "0",
-   "fieldname": "bp",
-   "fieldtype": "Check",
-   "label": "Block Print"
-  },
-  {
-   "default": "0",
-   "fieldname": "td",
-   "fieldtype": "Check",
-   "label": "Tie & Dye"
-  },
-  {
-   "fieldname": "measurements_section",
-   "fieldtype": "Section Break",
-   "label": "Measurements"
-  },
-  {
-   "fieldname": "full_length",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "in_preview": 1,
-   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CF \u09b9\u09c7\u09ae)",
-   "reqd": 1
-  },
-  {
-   "fieldname": "cf_length",
-   "fieldtype": "Float",
-   "label": "CB \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CB \u09b9\u09c7\u09ae)"
-  },
-  {
-   "fieldname": "cb_length",
-   "fieldtype": "Float",
-   "label": "\u09ac\u0995\u09cd\u09b7 (Chest)"
-  },
-  {
-   "fieldname": "waist_circumstance",
-   "fieldtype": "Float",
-   "label": "\u0995\u09cb\u09ae\u09b0 (Waist)"
-  },
-  {
-   "fieldname": "bust",
-   "fieldtype": "Float",
-   "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (High Hip)",
-   "reqd": 1
-  },
-  {
-   "fieldname": "upper_hip",
-   "fieldtype": "Float",
-   "label": "\u09a8\u09bf\u09ae\u09cd\u09a8 \u09b9\u09bf\u09aa (Low Hip)"
-  },
-  {
-   "fieldname": "lower_hip",
-   "fieldtype": "Float",
-   "label": "\u09b9\u09c7\u09ae \u09b8\u09c1\u0987\u09aa (Hem Sweep)"
-  },
-  {
-   "fieldname": "front_neck_depth",
-   "fieldtype": "Float",
-   "label": "\u09b8\u09be\u09ae\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Front Neck Drop)"
-  },
-  {
-   "fieldname": "back_neck_depth",
-   "fieldtype": "Float",
-   "label": "\u09aa\u09bbf\u099b\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Back Neck Drop)"
-  },
-  {
-   "fieldname": "shoulder_tip_to_side_waist",
-   "fieldtype": "Float",
-   "label": "\u0997\u09b2\u09be\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Neck Width)"
-  },
-  {
-   "fieldname": "front_neck_depth_s",
-   "fieldtype": "Float",
-   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Collar Width)",
-   "reqd": 1
-  },
-  {
-   "fieldname": "back_neck_depth_s",
-   "fieldtype": "Float",
-   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u0989\u099a\u09cd\u099a\u09a4\u09be (Collar Height)",
-   "reqd": 1
-  },
-  {
-   "fieldname": "collar_width_height",
-   "fieldtype": "Float",
-   "label": "\u0995\u09be\u0981\u09a7 \u09a5\u09c7\u0995\u09c7 \u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Shoulder to Shoulder)"
-  },
-  {
-   "fieldname": "button_placket_length",
-   "fieldtype": "Float",
-   "label": "\u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09a2\u09be\u09b2/\u09a1\u09cd\u09b0\u09aa (Shoulder Drop)"
-  },
-  {
-   "fieldname": "button_placket_width",
-   "fieldtype": "Float",
-   "label": "\u0986\u09b0\u09cd\u09ae\u09b9\u09cb\u09b2\u09c7\u09b0 \u0997\u09ad\u09c0\u09b0\u09a4\u09be (Armhole Depth)"
-  },
-  {
-   "fieldname": "hem",
-   "fieldtype": "Float",
-   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Button Placket Length)"
-  },
-  {
-   "fieldname": "shoulder_drop",
-   "fieldtype": "Float",
-   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Button Placket Width)"
-  },
-  {
-   "fieldname": "shoulder",
-   "fieldtype": "Float",
-   "label": "\u09b8\u09cd\u09b2\u09bf\u09ad\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Sleeve Length)"
-  },
-  {
-   "fieldname": "armhole",
-   "fieldtype": "Float",
-   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (Bicep)"
-  },
-  {
-   "fieldname": "full_length_arm",
-   "fieldtype": "Float",
-   "label": "\u098f\u09b2\u09ac\u09cb (Elbow)"
-  },
-  {
-   "fieldname": "armhole_arm",
-   "fieldtype": "Float",
-   "label": "\u0995\u09be\u09ab \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Cuff Opening)"
-  },
-  {
-   "fieldname": "biceps",
-   "fieldtype": "Float",
-   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (\u00d72)"
-  },
-  {
-   "fieldname": "elbow",
-   "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Pocket Length)"
-  },
-  {
-   "fieldname": "cuff_length",
-   "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Pocket Opening)"
-  },
-  {
-   "fieldname": "cuff_width",
-   "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u0985\u09ab\u09b8\u09cd\u09a5\u09be\u09a8 (Pocket Position)"
-  },
-  {
-   "fieldname": "cuff_opening",
-   "fieldtype": "Float",
-   "label": "\u0986\u0989\u099f\u09b8\u09bf\u09ae (Outseam)"
-  },
-  {
-   "fieldname": "pocket_length",
-   "fieldtype": "Float",
-   "label": "\u0987\u09a8\u09b8\u09bf\u09ae (Inseam)"
-  },
-  {
-   "fieldname": "pocket_width",
-   "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Pocket Width)"
-  },
-  {
-   "fieldname": "pocket_opening",
-   "fieldtype": "Float",
-   "label": "\u09ac\u09cd\u09af\u09be\u0995 \u09b0\u09be\u0987\u099c (Back Rise)"
-  },
-  {
-   "fieldname": "pocket_placket",
-   "fieldtype": "Float",
-   "label": "\u0995\u09be\u09ab\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Cuff Length)"
-  },
-  {
-   "fieldname": "shoulder_tip_to_pocket_starting",
-   "fieldtype": "Float",
-   "label": "\u0995\u09cb\u09ae\u09b0 (Relaxed \u00d72)"
-  },
-  {
-   "fieldname": "bottom_section",
-   "fieldtype": "Section Break",
-   "label": "BOTTOM"
-  },
-  {
-   "default": "0",
-   "fieldname": "karchupi",
-   "fieldtype": "Check",
-   "label": "Karchupi"
-  },
-  {
-   "fieldname": "column_break_rpkv",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "0",
-   "fieldname": "sewing",
-   "fieldtype": "Check",
-   "label": "Sewing"
-  },
-  {
-   "fieldname": "column_break_eghr",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "image",
-   "fieldtype": "Attach Image",
-   "label": "Design Image"
-  },
-  {
-   "default": "1",
-   "fieldname": "print_main_image",
-   "fieldtype": "Check",
-   "label": "Print Main Image"
-  },
-  {
-   "fieldname": "attach_image",
-   "fieldtype": "Image",
-   "label": "Attach Image",
-   "options": "image"
-  },
-  {
-   "fieldname": "additional_images",
-   "fieldtype": "Table",
-   "label": "Additional Images",
-   "options": "Sketch Specification Image"
-  },
-  {
-   "fieldname": "image_previews",
-   "fieldtype": "HTML",
-   "label": "Image Previews"
-  },
-  {
-   "fieldname": "seson",
-   "fieldtype": "Link",
-   "label": "Seson",
-   "options": "Seson"
-  },
-  {
-   "fieldname": "column_break_wtxg",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_lvwn",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "note_section",
-   "fieldtype": "Section Break",
-   "label": "Note"
-  },
-  {
-   "fieldname": "text_editor_noaa",
-   "fieldtype": "Text Editor",
-   "set_only_once": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "hand_embroidery",
-   "fieldtype": "Check",
-   "label": "Hand Embroidery"
-  },
-  {
-   "default": "0",
-   "fieldname": "fb",
-   "fieldtype": "Check",
-   "label": "Fusing & Bundling"
-  },
-  {
-   "default": "0",
-   "fieldname": "hand_work",
-   "fieldtype": "Check",
-   "label": "Hand Work"
-  },
-  {
-   "fieldname": "item_name",
-   "fieldtype": "Data",
-   "label": "Item Name",
-   "reqd": 1
-  },
-  {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Status",
-   "options": "Draft\nSubmitted\nCancelled",
-   "read_only": 1
-  },
-  {
-   "fieldname": "pocket_wid",
-   "fieldtype": "Float",
-   "label": "\u09ab\u09cd\u09b0\u09a8\u09cd\u099f \u09b0\u09be\u0987\u099c (Front Rise)"
-  },
-  {
-   "fieldname": "komor",
-   "fieldtype": "Data",
-   "label": "\u0995\u09cb\u09ae\u09b0 (Stretched \u00d72)"
-  },
-  {
-   "fieldname": "high_hip",
-   "fieldtype": "Data",
-   "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (\u00d72)"
-  },
-  {
-   "fieldname": "low_hip",
-   "fieldtype": "Data",
-   "label": "\u09a8\u09bf\u09ae\u09cd\u09a8 \u09b9\u09bf\u09aa (\u00d72)"
-  },
-  {
-   "fieldname": "thigh_uru",
-   "fieldtype": "Data",
-   "label": "\u0989\u09b0\u09c1 (Thigh \u00d72)"
-  },
-  {
-   "fieldname": "knee_x2",
-   "fieldtype": "Data",
-   "label": "\u09b9\u09be\u0981\u099f\u09c1 (Knee \u00d72)"
-  },
-  {
-   "fieldname": "leg_opening_x2",
-   "fieldtype": "Data",
-   "label": "\u09b2\u09c7\u0997 \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (\u00d72)"
-  },
-  {
-   "fieldname": "elasticrubber_width",
-   "fieldtype": "Data",
-   "label": "\u0987\u09b2\u09be\u09b8\u09cd\u099f\u09bf\u0995/\u09b0\u09be\u09ac\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5"
-  },
-  {
-   "fieldname": "beltloop_width",
-   "fieldtype": "Data",
-   "label": "\u09ac\u09c7\u09b2\u09cd\u099f/\u09b2\u09c1\u09aa\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5"
-  },
-  {
-   "fieldname": "wb_to_pocket_opening",
-   "fieldtype": "Data",
-   "label": "\u0993\u09af\u09bc\u09c7\u09b8\u09cd\u099f\u09ac\u09cd\u09af\u09be\u09a8\u09cd\u09a1 \u09a5\u09c7\u0995\u09c7 \u09aa\u0995\u09c7\u099f \u0993\u09aa\u09c7\u09a8\u09bf\u0982 \u09aa\u09b0\u09cd\u09af\u09a8\u09cd\u09a4 \u09a6\u09c2\u09b0\u09a4\u09cd\u09ac"
-  },
-  {
-   "fieldname": "pocket_depth",
-   "fieldtype": "Data",
-   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u0997\u09ad\u09c0\u09b0\u09a4\u09be"
-  },
-  {
-   "fieldname": "side_cut",
-   "fieldtype": "Select",
-   "label": "Side Cut",
-   "options": "\nHigh Side Slit (above mid-thigh)\nMid Side Slit (around knee level)\nLow Side Slit (below knee / calf level)\nFloor-Length Side Slit (long dresses/gowns)\nSingle Side Slit (left or right)\nDouble Side Slit (both sides)\nSlit-Free / Closed Side (no slit)\nStraight Slit\nCurved Slit\nOverlap Slit / Wrap Slit\nFront-Side Slit (slit placed slightly towards the front)\nSide-Slit with Pleat\nSide-Slit with Button Opening\nSide-Slit with Zipper\nDeep Cut Side Slit (bold, for gowns)\nSide Long Slit\nHigh Slit Kurti Style\nA-Line Kurti Slits\nStraight Kurti Side-Slits\nSide-Slit with Potli Buttons\nSide-Slit with Lace/Border\nFront-Open Style with Side Slits\nDiagonal Side Slit\nAsymmetric Side Slit\nSide-Slit with Tie-Up\nSide-Slit Cut-Out Style (exposes skin at waist/side)\nSide Knot Slit\nSide Drawstring Ruched Slit\nSide Slit with Panel Insert\nSide Slit with Fringe/Tassel Finishing"
-  },
-  {
-   "fieldname": "collar_neck_style",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Collar/ Neck Style",
-   "options": "\nRound Neck / Crew Neck\nV-Neck\nU-Neck\nScoop Neck\nSquare Neck\nBoat Neck / Bateau Neck\nSweetheart Neck\nKeyhole Neck\nDeep V-Neck\nHigh Neck\nMock Neck\nTurtle Neck\nHalter Neck\nOff-Shoulder\nCold Shoulder\nOne-Shoulder\nAsymmetric Neck\nBardot Neck\nCowl Neck\nPlunge Neck\nIllusion Neck (mesh/lace)\nSurplice / Wrap Neck\nShirt Collar\nPointed Collar\nSpread Collar\nBand Collar\nMandarin Collar\nPeter Pan Collar\nNotched Collar\nShawl Collar\nKurti Round Neck\nKurti V-Neck\nKurti Sweetheart\nMughal Neck\nPotli Button Neck\nHenley Neck\nChikankari Neck\nZari/Zardozi Embellished Neck\nBindiya Neck\nKeyhole Kurti Neck\nQueen Anne Neck\nOff-Shoulder Ruffle Neck\nStrapless / Tube Neck\nCorset Neck\nLace Appliqu\u00e9 Neck\nCollared Deep-V\nButterfly Neck\nMesh High-Neck\nNotched V-Neck"
-  },
-  {
-   "fieldname": "cut_fit_style",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Cut/ Fit Style",
-   "options": "Cut Fit"
-  },
-  {
-   "fieldname": "column_break_vrud",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "length_bottom",
-   "fieldtype": "Float",
-   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Length)"
-  },
-  {
-   "fieldname": "column_break_bgdr",
-   "fieldtype": "Column Break"
-  },
-  {
-   "depends_on": "eval:doc.sp == \"1\"",
-   "fieldname": "workstation_screen_print",
-   "fieldtype": "Section Break",
-   "label": "Workstation - Screen Print"
-  },
-  {
-   "fieldname": "pigments_dye",
-   "fieldtype": "Select",
-   "label": "Pigments & Dye (Multiple Select)"
-  },
-  {
-   "fieldname": "column_break_qhgw",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "old_frame__sku",
-   "fieldtype": "Data",
-   "label": "Old Frame / SKU"
-  },
-  {
-   "fieldname": "new_frame__sku",
-   "fieldtype": "Data",
-   "label": "New Frame / SKU"
-  },
-  {
-   "depends_on": "eval:doc.sp == \"1\"",
-   "fieldname": "screen_print_cost_details",
-   "fieldtype": "Section Break",
-   "label": "Screen Print Cost & Details"
-  },
-  {
-   "fieldname": "cost_for_30_unit",
-   "fieldtype": "Data",
-   "label": "Cost for 30 Unit"
-  },
-  {
-   "fieldname": "cost_for_50_unit",
-   "fieldtype": "Data",
-   "label": "Cost for 50 Unit"
-  },
-  {
-   "fieldname": "cost_for_70_unit",
-   "fieldtype": "Data",
-   "label": "Cost for 70 Unit"
-  },
-  {
-   "fieldname": "cost_for_100_unit",
-   "fieldtype": "Data",
-   "label": "Cost for 100 Unit"
-  },
-  {
-   "fieldname": "column_break_rqjd",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "frame_cost",
-   "fieldtype": "Data",
-   "label": "FRAME COST"
-  },
-  {
-   "fieldname": "process_cost",
-   "fieldtype": "Data",
-   "label": "PROCESS COST"
-  },
-  {
-   "fieldname": "chemical_cost",
-   "fieldtype": "Data",
-   "label": "CHEMICAL COST"
-  },
-  {
-   "fieldname": "print_cost",
-   "fieldtype": "Data",
-   "label": "PRINT COST"
-  },
-  {
-   "fieldname": "column_break_zvfl",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "ai_folder_link",
-   "fieldtype": "Attach",
-   "label": "AI File"
-  },
-  {
-   "fieldname": "referrence_link",
-   "fieldtype": "Data",
-   "label": "Referrence Link"
-  },
-  {
-   "fieldname": "other_link",
-   "fieldtype": "Data",
-   "label": "Other Link"
-  },
-  {
-   "fieldname": "design_section",
-   "fieldtype": "Section Break",
-   "label": "Design"
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Sketch Specification Sample Making Sheet",
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
-  },
-  {
-   "depends_on": "eval:doc.hand_embroidery == \"1\"",
-   "fieldname": "sample_hand_embroider_section",
-   "fieldtype": "Section Break",
-   "label": "Sample Hand Embroider"
-  },
-  {
-   "fieldname": "hand_embroider",
-   "fieldtype": "Data",
-   "label": "Hand Embroider"
-  },
-  {
-   "fieldname": "sample",
-   "fieldtype": "Data",
-   "label": "Sample"
-  },
-  {
-   "fieldname": "column_break_matv",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "0",
-   "fieldname": "quarter",
-   "fieldtype": "Check",
-   "label": "Quarter"
-  },
-  {
-   "default": "0",
-   "fieldname": "half",
-   "fieldtype": "Check",
-   "label": "Half"
-  },
-  {
-   "default": "0",
-   "fieldname": "full",
-   "fieldtype": "Check",
-   "label": "Full"
-  },
-  {
-   "fieldname": "time",
-   "fieldtype": "Data",
-   "label": "Time"
-  },
-  {
-   "fieldname": "rate",
-   "fieldtype": "Data",
-   "label": "Rate"
-  },
-  {
-   "fieldname": "section_break_qgzt",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "color",
-   "fieldtype": "Color",
-   "label": "Color"
-  },
-  {
-   "fieldname": "color_description",
-   "fieldtype": "Small Text",
-   "label": "Color Description"
-  },
-  {
-   "fieldname": "section_break_fulh",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "color_units",
-   "fieldtype": "Select",
-   "label": "Color Units",
-   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
-  },
-  {
-   "fieldname": "color_2",
-   "fieldtype": "Color",
-   "label": "Color 2"
-  },
-  {
-   "fieldname": "color_3",
-   "fieldtype": "Color",
-   "label": "Color 3"
-  },
-  {
-   "fieldname": "color_4",
-   "fieldtype": "Color",
-   "label": "Color 4"
-  },
-  {
-   "fieldname": "column_break_kzbm",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "color_5",
-   "fieldtype": "Color",
-   "label": "Color 5"
-  },
-  {
-   "fieldname": "color_6",
-   "fieldtype": "Color",
-   "label": "Color 6"
-  },
-  {
-   "fieldname": "color_7",
-   "fieldtype": "Color",
-   "label": "Color 7"
-  },
-  {
-   "fieldname": "color_8",
-   "fieldtype": "Color",
-   "label": "Color 8"
-  },
-  {
-   "fieldname": "color_9",
-   "fieldtype": "Color",
-   "label": "Color 9"
-  },
-  {
-   "fieldname": "color_10",
-   "fieldtype": "Color",
-   "label": "Color 10"
-  },
-  {
-   "fieldname": "section_break_snwy",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "data_xmgl",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_ryzm",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_muzc",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_lfwb",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "column_break_oqxe",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "data_hnjh",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_zsdd",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_uxrz",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_mnat",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_wptw",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_znsh",
-   "fieldtype": "Data"
-  }
- ],
- "image_field": "image",
- "index_web_pages_for_search": 1,
- "is_submittable": 1,
- "links": [],
- "modified": "2026-01-19 03:07:35.208116",
- "modified_by": "sayedtkg@gmail.com",
- "module": "DressUp",
- "name": "Sketch Specification Sample Making Sheet",
- "naming_rule": "By \"Naming Series\" field",
- "owner": "Administrator",
- "permissions": [
-  {
-   "amend": 1,
-   "cancel": 1,
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "import": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Administrator",
-   "select": 1,
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "amend": 1,
-   "cancel": 1,
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "import": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "select": 1,
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "amend": 1,
-   "cancel": 1,
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "import": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Projects Manager",
-   "select": 1,
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "amend": 1,
-   "cancel": 1,
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "import": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Fashion Designer Manager",
-   "select": 1,
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "amend": 1,
-   "cancel": 1,
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "import": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Fashion Designer",
-   "select": 1,
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  }
- ],
- "row_format": "Dynamic",
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": [],
- "track_changes": 1
+    "actions": [],
+    "allow_import": 1,
+    "allow_rename": 1,
+    "autoname": "naming_series:",
+    "creation": "2024-01-01 00:00:00",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "item_name",
+        "status",
+        "designer",
+        "designer_name",
+        "design_no",
+        "seson",
+        "sewing_finish",
+        "column_break_nxfb",
+        "start_date",
+        "category",
+        "cut_fit_style",
+        "collar_neck_style",
+        "side_cut",
+        "submission_date",
+        "design_section",
+        "column_break_vrud",
+        "image",
+        "print_main_image",
+        "attach_image",
+        "additional_images",
+        "image_previews",
+        "ai_folder_link",
+        "referrence_link",
+        "other_link",
+        "workstations_section",
+        "cutting",
+        "fb",
+        "sewing",
+        "me",
+        "hand_embroidery",
+        "column_break_rpkv",
+        "hand_work",
+        "sp",
+        "bp",
+        "td",
+        "karchupi",
+        "section_break_fulh",
+        "color_units",
+        "section_break_qgzt",
+        "color",
+        "data_xmgl",
+        "color_2",
+        "data_ryzm",
+        "color_3",
+        "data_muzc",
+        "color_4",
+        "data_lfwb",
+        "column_break_oqxe",
+        "color_5",
+        "data_hnjh",
+        "color_6",
+        "data_zsdd",
+        "color_7",
+        "data_uxrz",
+        "color_8",
+        "data_mnat",
+        "column_break_kzbm",
+        "color_9",
+        "data_wptw",
+        "color_10",
+        "data_znsh",
+        "section_break_snwy",
+        "color_description",
+        "workstation_screen_print",
+        "pigments_dye",
+        "column_break_qhgw",
+        "old_frame__sku",
+        "new_frame__sku",
+        "screen_print_cost_details",
+        "column_break_rqjd",
+        "frame_cost",
+        "process_cost",
+        "chemical_cost",
+        "print_cost",
+        "column_break_zvfl",
+        "cost_for_30_unit",
+        "cost_for_50_unit",
+        "cost_for_70_unit",
+        "cost_for_100_unit",
+        "sample_hand_embroider_section",
+        "hand_embroider",
+        "sample",
+        "column_break_matv",
+        "quarter",
+        "half",
+        "full",
+        "time",
+        "rate",
+        "measurements_section",
+        "column_break_eghr",
+        "full_length",
+        "cf_length",
+        "cb_length",
+        "waist_circumstance",
+        "bust",
+        "upper_hip",
+        "lower_hip",
+        "front_neck_depth",
+        "back_neck_depth",
+        "shoulder_tip_to_side_waist",
+        "front_neck_depth_s",
+        "back_neck_depth_s",
+        "collar_width_height",
+        "button_placket_length",
+        "button_placket_width",
+        "column_break_wtxg",
+        "hem",
+        "shoulder_drop",
+        "shoulder",
+        "armhole",
+        "full_length_arm",
+        "pocket_placket",
+        "biceps",
+        "elbow",
+        "armhole_arm",
+        "pocket_width",
+        "cuff_length",
+        "cuff_width",
+        "cuff_opening",
+        "pocket_length",
+        "bottom_section",
+        "column_break_lvwn",
+        "length_bottom",
+        "pocket_wid",
+        "shoulder_tip_to_pocket_starting",
+        "pocket_opening",
+        "komor",
+        "thigh_uru",
+        "high_hip",
+        "column_break_bgdr",
+        "low_hip",
+        "leg_opening_x2",
+        "knee_x2",
+        "elasticrubber_width",
+        "wb_to_pocket_opening",
+        "beltloop_width",
+        "pocket_depth",
+        "note_section",
+        "text_editor_noaa",
+        "amended_from"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Tech Pack No.",
+            "options": ".DD.-.MM.-.YY.-.#####",
+            "reqd": 1
+        },
+        {
+            "fieldname": "designer",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Designer",
+            "options": "Employee",
+            "reqd": 1
+        },
+        {
+            "fetch_from": "designer.employee_name",
+            "fieldname": "designer_name",
+            "fieldtype": "Data",
+            "label": "Designer Name",
+            "read_only": 1
+        },
+        {
+            "fetch_from": "designer.employee_number",
+            "fieldname": "design_no",
+            "fieldtype": "Data",
+            "label": "Style No:",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_nxfb",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "category",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Category",
+            "options": "Item Group",
+            "reqd": 1
+        },
+        {
+            "default": "Today",
+            "fieldname": "start_date",
+            "fieldtype": "Date",
+            "in_list_view": 1,
+            "label": "Start Date"
+        },
+        {
+            "fieldname": "submission_date",
+            "fieldtype": "Datetime",
+            "in_list_view": 1,
+            "label": "Submission Date"
+        },
+        {
+            "fieldname": "sewing_finish",
+            "fieldtype": "Select",
+            "label": "Sewing Finish",
+            "options": "Kaktarua\nUnstitched\nReady to Wear"
+        },
+        {
+            "fieldname": "workstations_section",
+            "fieldtype": "Section Break",
+            "label": "Workstations"
+        },
+        {
+            "default": "0",
+            "fieldname": "cutting",
+            "fieldtype": "Check",
+            "label": "Cutting"
+        },
+        {
+            "default": "0",
+            "fieldname": "sp",
+            "fieldtype": "Check",
+            "label": "Screen Print"
+        },
+        {
+            "default": "0",
+            "fieldname": "me",
+            "fieldtype": "Check",
+            "label": "Machine Embroidery"
+        },
+        {
+            "default": "0",
+            "fieldname": "bp",
+            "fieldtype": "Check",
+            "label": "Block Print"
+        },
+        {
+            "default": "0",
+            "fieldname": "td",
+            "fieldtype": "Check",
+            "label": "Tie & Dye"
+        },
+        {
+            "fieldname": "measurements_section",
+            "fieldtype": "Section Break",
+            "label": "Measurements"
+        },
+        {
+            "fieldname": "full_length",
+            "fieldtype": "Float",
+            "in_list_view": 1,
+            "in_preview": 1,
+            "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CF \u09b9\u09c7\u09ae)",
+            "reqd": 1
+        },
+        {
+            "fieldname": "cf_length",
+            "fieldtype": "Float",
+            "label": "CB \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CB \u09b9\u09c7\u09ae)"
+        },
+        {
+            "fieldname": "cb_length",
+            "fieldtype": "Float",
+            "label": "\u09ac\u0995\u09cd\u09b7 (Chest)"
+        },
+        {
+            "fieldname": "waist_circumstance",
+            "fieldtype": "Float",
+            "label": "\u0995\u09cb\u09ae\u09b0 (Waist)"
+        },
+        {
+            "fieldname": "bust",
+            "fieldtype": "Float",
+            "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (High Hip)",
+            "reqd": 1
+        },
+        {
+            "fieldname": "upper_hip",
+            "fieldtype": "Float",
+            "label": "\u09a8\u09bf\u09ae\u09cd\u09a8 \u09b9\u09bf\u09aa (Low Hip)"
+        },
+        {
+            "fieldname": "lower_hip",
+            "fieldtype": "Float",
+            "label": "\u09b9\u09c7\u09ae \u09b8\u09c1\u0987\u09aa (Hem Sweep)"
+        },
+        {
+            "fieldname": "front_neck_depth",
+            "fieldtype": "Float",
+            "label": "\u09b8\u09be\u09ae\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Front Neck Drop)"
+        },
+        {
+            "fieldname": "back_neck_depth",
+            "fieldtype": "Float",
+            "label": "\u09aa\u09bbf\u099b\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Back Neck Drop)"
+        },
+        {
+            "fieldname": "shoulder_tip_to_side_waist",
+            "fieldtype": "Float",
+            "label": "\u0997\u09b2\u09be\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Neck Width)"
+        },
+        {
+            "fieldname": "front_neck_depth_s",
+            "fieldtype": "Float",
+            "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Collar Width)",
+            "reqd": 1
+        },
+        {
+            "fieldname": "back_neck_depth_s",
+            "fieldtype": "Float",
+            "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u0989\u099a\u09cd\u099a\u09a4\u09be (Collar Height)",
+            "reqd": 1
+        },
+        {
+            "fieldname": "collar_width_height",
+            "fieldtype": "Float",
+            "label": "\u0995\u09be\u0981\u09a7 \u09a5\u09c7\u0995\u09c7 \u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Shoulder to Shoulder)"
+        },
+        {
+            "fieldname": "button_placket_length",
+            "fieldtype": "Float",
+            "label": "\u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09a2\u09be\u09b2/\u09a1\u09cd\u09b0\u09aa (Shoulder Drop)"
+        },
+        {
+            "fieldname": "button_placket_width",
+            "fieldtype": "Float",
+            "label": "\u0986\u09b0\u09cd\u09ae\u09b9\u09cb\u09b2\u09c7\u09b0 \u0997\u09ad\u09c0\u09b0\u09a4\u09be (Armhole Depth)"
+        },
+        {
+            "fieldname": "hem",
+            "fieldtype": "Float",
+            "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Button Placket Length)"
+        },
+        {
+            "fieldname": "shoulder_drop",
+            "fieldtype": "Float",
+            "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Button Placket Width)"
+        },
+        {
+            "fieldname": "shoulder",
+            "fieldtype": "Float",
+            "label": "\u09b8\u09cd\u09b2\u09bf\u09ad\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Sleeve Length)"
+        },
+        {
+            "fieldname": "armhole",
+            "fieldtype": "Float",
+            "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (Bicep)"
+        },
+        {
+            "fieldname": "full_length_arm",
+            "fieldtype": "Float",
+            "label": "\u098f\u09b2\u09ac\u09cb (Elbow)"
+        },
+        {
+            "fieldname": "armhole_arm",
+            "fieldtype": "Float",
+            "label": "\u0995\u09be\u09ab \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Cuff Opening)"
+        },
+        {
+            "fieldname": "biceps",
+            "fieldtype": "Float",
+            "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (\u00d72)"
+        },
+        {
+            "fieldname": "elbow",
+            "fieldtype": "Float",
+            "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Pocket Length)"
+        },
+        {
+            "fieldname": "cuff_length",
+            "fieldtype": "Float",
+            "label": "\u09aa\u0995\u09c7\u099f \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Pocket Opening)"
+        },
+        {
+            "fieldname": "cuff_width",
+            "fieldtype": "Float",
+            "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u0985\u09ab\u09b8\u09cd\u09a5\u09be\u09a8 (Pocket Position)"
+        },
+        {
+            "fieldname": "cuff_opening",
+            "fieldtype": "Float",
+            "label": "\u0986\u0989\u099f\u09b8\u09bf\u09ae (Outseam)"
+        },
+        {
+            "fieldname": "pocket_length",
+            "fieldtype": "Float",
+            "label": "\u0987\u09a8\u09b8\u09bf\u09ae (Inseam)"
+        },
+        {
+            "fieldname": "pocket_width",
+            "fieldtype": "Float",
+            "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Pocket Width)"
+        },
+        {
+            "fieldname": "pocket_opening",
+            "fieldtype": "Float",
+            "label": "\u09ac\u09cd\u09af\u09be\u0995 \u09b0\u09be\u0987\u099c (Back Rise)"
+        },
+        {
+            "fieldname": "pocket_placket",
+            "fieldtype": "Float",
+            "label": "\u0995\u09be\u09ab\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Cuff Length)"
+        },
+        {
+            "fieldname": "shoulder_tip_to_pocket_starting",
+            "fieldtype": "Float",
+            "label": "\u0995\u09cb\u09ae\u09b0 (Relaxed \u00d72)"
+        },
+        {
+            "fieldname": "bottom_section",
+            "fieldtype": "Section Break",
+            "label": "BOTTOM"
+        },
+        {
+            "default": "0",
+            "fieldname": "karchupi",
+            "fieldtype": "Check",
+            "label": "Karchupi"
+        },
+        {
+            "fieldname": "column_break_rpkv",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "0",
+            "fieldname": "sewing",
+            "fieldtype": "Check",
+            "label": "Sewing"
+        },
+        {
+            "fieldname": "column_break_eghr",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "image",
+            "fieldtype": "Attach Image",
+            "label": "Design Image"
+        },
+        {
+            "default": "1",
+            "fieldname": "print_main_image",
+            "fieldtype": "Check",
+            "label": "Print Main Image"
+        },
+        {
+            "fieldname": "attach_image",
+            "fieldtype": "Image",
+            "label": "Attach Image",
+            "options": "image"
+        },
+        {
+            "fieldname": "additional_images",
+            "fieldtype": "Table",
+            "label": "Additional Images",
+            "options": "Sketch Specification Image"
+        },
+        {
+            "fieldname": "image_previews",
+            "fieldtype": "HTML",
+            "label": "Image Previews"
+        },
+        {
+            "fieldname": "seson",
+            "fieldtype": "Link",
+            "label": "Seson",
+            "options": "Seson"
+        },
+        {
+            "fieldname": "column_break_wtxg",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "column_break_lvwn",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "note_section",
+            "fieldtype": "Section Break",
+            "label": "Note"
+        },
+        {
+            "fieldname": "text_editor_noaa",
+            "fieldtype": "Text Editor",
+            "set_only_once": 1
+        },
+        {
+            "default": "0",
+            "fieldname": "hand_embroidery",
+            "fieldtype": "Check",
+            "label": "Hand Embroidery"
+        },
+        {
+            "default": "0",
+            "fieldname": "fb",
+            "fieldtype": "Check",
+            "label": "Fusing & Bundling"
+        },
+        {
+            "default": "0",
+            "fieldname": "hand_work",
+            "fieldtype": "Check",
+            "label": "Hand Work"
+        },
+        {
+            "fieldname": "item_name",
+            "fieldtype": "Data",
+            "label": "Item Name",
+            "reqd": 1
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "in_standard_filter": 1,
+            "label": "Status",
+            "options": "Draft\nSubmitted\nCancelled",
+            "read_only": 1
+        },
+        {
+            "fieldname": "pocket_wid",
+            "fieldtype": "Float",
+            "label": "\u09ab\u09cd\u09b0\u09a8\u09cd\u099f \u09b0\u09be\u0987\u099c (Front Rise)"
+        },
+        {
+            "fieldname": "komor",
+            "fieldtype": "Data",
+            "label": "\u0995\u09cb\u09ae\u09b0 (Stretched \u00d72)"
+        },
+        {
+            "fieldname": "high_hip",
+            "fieldtype": "Data",
+            "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (\u00d72)"
+        },
+        {
+            "fieldname": "low_hip",
+            "fieldtype": "Data",
+            "label": "\u09a8\u09bf\u09ae\u09cd\u09a8 \u09b9\u09bf\u09aa (\u00d72)"
+        },
+        {
+            "fieldname": "thigh_uru",
+            "fieldtype": "Data",
+            "label": "\u0989\u09b0\u09c1 (Thigh \u00d72)"
+        },
+        {
+            "fieldname": "knee_x2",
+            "fieldtype": "Data",
+            "label": "\u09b9\u09be\u0981\u099f\u09c1 (Knee \u00d72)"
+        },
+        {
+            "fieldname": "leg_opening_x2",
+            "fieldtype": "Data",
+            "label": "\u09b2\u09c7\u0997 \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (\u00d72)"
+        },
+        {
+            "fieldname": "elasticrubber_width",
+            "fieldtype": "Data",
+            "label": "\u0987\u09b2\u09be\u09b8\u09cd\u099f\u09bf\u0995/\u09b0\u09be\u09ac\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5"
+        },
+        {
+            "fieldname": "beltloop_width",
+            "fieldtype": "Data",
+            "label": "\u09ac\u09c7\u09b2\u09cd\u099f/\u09b2\u09c1\u09aa\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5"
+        },
+        {
+            "fieldname": "wb_to_pocket_opening",
+            "fieldtype": "Data",
+            "label": "\u0993\u09af\u09bc\u09c7\u09b8\u09cd\u099f\u09ac\u09cd\u09af\u09be\u09a8\u09cd\u09a1 \u09a5\u09c7\u0995\u09c7 \u09aa\u0995\u09c7\u099f \u0993\u09aa\u09c7\u09a8\u09bf\u0982 \u09aa\u09b0\u09cd\u09af\u09a8\u09cd\u09a4 \u09a6\u09c2\u09b0\u09a4\u09cd\u09ac"
+        },
+        {
+            "fieldname": "pocket_depth",
+            "fieldtype": "Data",
+            "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u0997\u09ad\u09c0\u09b0\u09a4\u09be"
+        },
+        {
+            "fieldname": "side_cut",
+            "fieldtype": "Select",
+            "label": "Side Cut",
+            "options": "\nHigh Side Slit (above mid-thigh)\nMid Side Slit (around knee level)\nLow Side Slit (below knee / calf level)\nFloor-Length Side Slit (long dresses/gowns)\nSingle Side Slit (left or right)\nDouble Side Slit (both sides)\nSlit-Free / Closed Side (no slit)\nStraight Slit\nCurved Slit\nOverlap Slit / Wrap Slit\nFront-Side Slit (slit placed slightly towards the front)\nSide-Slit with Pleat\nSide-Slit with Button Opening\nSide-Slit with Zipper\nDeep Cut Side Slit (bold, for gowns)\nSide Long Slit\nHigh Slit Kurti Style\nA-Line Kurti Slits\nStraight Kurti Side-Slits\nSide-Slit with Potli Buttons\nSide-Slit with Lace/Border\nFront-Open Style with Side Slits\nDiagonal Side Slit\nAsymmetric Side Slit\nSide-Slit with Tie-Up\nSide-Slit Cut-Out Style (exposes skin at waist/side)\nSide Knot Slit\nSide Drawstring Ruched Slit\nSide Slit with Panel Insert\nSide Slit with Fringe/Tassel Finishing"
+        },
+        {
+            "fieldname": "collar_neck_style",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Collar/ Neck Style",
+            "options": "\nRound Neck / Crew Neck\nV-Neck\nU-Neck\nScoop Neck\nSquare Neck\nBoat Neck / Bateau Neck\nSweetheart Neck\nKeyhole Neck\nDeep V-Neck\nHigh Neck\nMock Neck\nTurtle Neck\nHalter Neck\nOff-Shoulder\nCold Shoulder\nOne-Shoulder\nAsymmetric Neck\nBardot Neck\nCowl Neck\nPlunge Neck\nIllusion Neck (mesh/lace)\nSurplice / Wrap Neck\nShirt Collar\nPointed Collar\nSpread Collar\nBand Collar\nMandarin Collar\nPeter Pan Collar\nNotched Collar\nShawl Collar\nKurti Round Neck\nKurti V-Neck\nKurti Sweetheart\nMughal Neck\nPotli Button Neck\nHenley Neck\nChikankari Neck\nZari/Zardozi Embellished Neck\nBindiya Neck\nKeyhole Kurti Neck\nQueen Anne Neck\nOff-Shoulder Ruffle Neck\nStrapless / Tube Neck\nCorset Neck\nLace Appliqu\u00e9 Neck\nCollared Deep-V\nButterfly Neck\nMesh High-Neck\nNotched V-Neck"
+        },
+        {
+            "fieldname": "cut_fit_style",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Cut/ Fit Style",
+            "options": "Cut Fit"
+        },
+        {
+            "fieldname": "column_break_vrud",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "length_bottom",
+            "fieldtype": "Float",
+            "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Length)"
+        },
+        {
+            "fieldname": "column_break_bgdr",
+            "fieldtype": "Column Break"
+        },
+        {
+            "depends_on": "eval:doc.sp == \"1\"",
+            "fieldname": "workstation_screen_print",
+            "fieldtype": "Section Break",
+            "label": "Workstation - Screen Print"
+        },
+        {
+            "fieldname": "pigments_dye",
+            "fieldtype": "Table MultiSelect",
+            "label": "Pigments & Dye",
+            "options": "Pigments and Dye Selection"
+        },
+        {
+            "fieldname": "column_break_qhgw",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "old_frame__sku",
+            "fieldtype": "Data",
+            "label": "Old Frame / SKU"
+        },
+        {
+            "fieldname": "new_frame__sku",
+            "fieldtype": "Data",
+            "label": "New Frame / SKU"
+        },
+        {
+            "depends_on": "eval:doc.sp == \"1\"",
+            "fieldname": "screen_print_cost_details",
+            "fieldtype": "Section Break",
+            "label": "Screen Print Cost & Details"
+        },
+        {
+            "fieldname": "cost_for_30_unit",
+            "fieldtype": "Data",
+            "label": "Cost for 30 Unit"
+        },
+        {
+            "fieldname": "cost_for_50_unit",
+            "fieldtype": "Data",
+            "label": "Cost for 50 Unit"
+        },
+        {
+            "fieldname": "cost_for_70_unit",
+            "fieldtype": "Data",
+            "label": "Cost for 70 Unit"
+        },
+        {
+            "fieldname": "cost_for_100_unit",
+            "fieldtype": "Data",
+            "label": "Cost for 100 Unit"
+        },
+        {
+            "fieldname": "column_break_rqjd",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "frame_cost",
+            "fieldtype": "Data",
+            "label": "FRAME COST"
+        },
+        {
+            "fieldname": "process_cost",
+            "fieldtype": "Data",
+            "label": "PROCESS COST"
+        },
+        {
+            "fieldname": "chemical_cost",
+            "fieldtype": "Data",
+            "label": "CHEMICAL COST"
+        },
+        {
+            "fieldname": "print_cost",
+            "fieldtype": "Data",
+            "label": "PRINT COST"
+        },
+        {
+            "fieldname": "column_break_zvfl",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "ai_folder_link",
+            "fieldtype": "Attach",
+            "label": "AI File"
+        },
+        {
+            "fieldname": "referrence_link",
+            "fieldtype": "Data",
+            "label": "Referrence Link"
+        },
+        {
+            "fieldname": "other_link",
+            "fieldtype": "Data",
+            "label": "Other Link"
+        },
+        {
+            "fieldname": "design_section",
+            "fieldtype": "Section Break",
+            "label": "Design"
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Sketch Specification Sample Making Sheet",
+            "print_hide": 1,
+            "read_only": 1,
+            "search_index": 1
+        },
+        {
+            "depends_on": "eval:doc.hand_embroidery == \"1\"",
+            "fieldname": "sample_hand_embroider_section",
+            "fieldtype": "Section Break",
+            "label": "Sample Hand Embroider"
+        },
+        {
+            "fieldname": "hand_embroider",
+            "fieldtype": "Data",
+            "label": "Hand Embroider"
+        },
+        {
+            "fieldname": "sample",
+            "fieldtype": "Data",
+            "label": "Sample"
+        },
+        {
+            "fieldname": "column_break_matv",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "0",
+            "fieldname": "quarter",
+            "fieldtype": "Check",
+            "label": "Quarter"
+        },
+        {
+            "default": "0",
+            "fieldname": "half",
+            "fieldtype": "Check",
+            "label": "Half"
+        },
+        {
+            "default": "0",
+            "fieldname": "full",
+            "fieldtype": "Check",
+            "label": "Full"
+        },
+        {
+            "fieldname": "time",
+            "fieldtype": "Data",
+            "label": "Time"
+        },
+        {
+            "fieldname": "rate",
+            "fieldtype": "Data",
+            "label": "Rate"
+        },
+        {
+            "fieldname": "section_break_qgzt",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "color",
+            "fieldtype": "Color",
+            "label": "Color"
+        },
+        {
+            "fieldname": "color_description",
+            "fieldtype": "Small Text",
+            "label": "Color Description"
+        },
+        {
+            "fieldname": "section_break_fulh",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "color_units",
+            "fieldtype": "Select",
+            "label": "Color Units",
+            "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
+        },
+        {
+            "fieldname": "color_2",
+            "fieldtype": "Color",
+            "label": "Color 2"
+        },
+        {
+            "fieldname": "color_3",
+            "fieldtype": "Color",
+            "label": "Color 3"
+        },
+        {
+            "fieldname": "color_4",
+            "fieldtype": "Color",
+            "label": "Color 4"
+        },
+        {
+            "fieldname": "column_break_kzbm",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "color_5",
+            "fieldtype": "Color",
+            "label": "Color 5"
+        },
+        {
+            "fieldname": "color_6",
+            "fieldtype": "Color",
+            "label": "Color 6"
+        },
+        {
+            "fieldname": "color_7",
+            "fieldtype": "Color",
+            "label": "Color 7"
+        },
+        {
+            "fieldname": "color_8",
+            "fieldtype": "Color",
+            "label": "Color 8"
+        },
+        {
+            "fieldname": "color_9",
+            "fieldtype": "Color",
+            "label": "Color 9"
+        },
+        {
+            "fieldname": "color_10",
+            "fieldtype": "Color",
+            "label": "Color 10"
+        },
+        {
+            "fieldname": "section_break_snwy",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "data_xmgl",
+            "fieldtype": "Data"
+        },
+        {
+            "fieldname": "data_ryzm",
+            "fieldtype": "Data"
+        },
+        {
+            "fieldname": "data_muzc",
+            "fieldtype": "Data"
+        },
+        {
+            "fieldname": "data_lfwb",
+            "fieldtype": "Data"
+        },
+        {
+            "fieldname": "column_break_oqxe",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "data_hnjh",
+            "fieldtype": "Data"
+        },
+        {
+            "fieldname": "data_zsdd",
+            "fieldtype": "Data"
+        },
+        {
+            "fieldname": "data_uxrz",
+            "fieldtype": "Data"
+        },
+        {
+            "fieldname": "data_mnat",
+            "fieldtype": "Data"
+        },
+        {
+            "fieldname": "data_wptw",
+            "fieldtype": "Data"
+        },
+        {
+            "fieldname": "data_znsh",
+            "fieldtype": "Data"
+        }
+    ],
+    "image_field": "image",
+    "index_web_pages_for_search": 1,
+    "is_submittable": 1,
+    "links": [],
+    "modified": "2026-01-19 03:07:35.208116",
+    "modified_by": "sayedtkg@gmail.com",
+    "module": "DressUp",
+    "name": "Sketch Specification Sample Making Sheet",
+    "naming_rule": "By \"Naming Series\" field",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "amend": 1,
+            "cancel": 1,
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Administrator",
+            "select": 1,
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        },
+        {
+            "amend": 1,
+            "cancel": 1,
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "select": 1,
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        },
+        {
+            "amend": 1,
+            "cancel": 1,
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Projects Manager",
+            "select": 1,
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        },
+        {
+            "amend": 1,
+            "cancel": 1,
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Fashion Designer Manager",
+            "select": 1,
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        },
+        {
+            "amend": 1,
+            "cancel": 1,
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Fashion Designer",
+            "select": 1,
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        }
+    ],
+    "row_format": "Dynamic",
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1
 }
