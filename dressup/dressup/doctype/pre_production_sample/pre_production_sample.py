@@ -52,6 +52,14 @@ class PreProductionSample(Document):
 		if not self.size_chart_in_inch:
 			frappe.throw("Size chart is required")
 		
+		# User requested mandatory fields for submission
+		if not self.pattern_master_note:
+			frappe.throw("Pattern Master Note is mandatory for submission")
+		if not self.pps_front:
+			frappe.throw("PPS Front image is mandatory for submission")
+		if not self.pps_back:
+			frappe.throw("PPS Back image is mandatory for submission")
+		
 		# Check if Quality Inspection exists and is submitted
 		qi = frappe.db.exists("Quality Inspection", {
 			"reference_type": "Pre Production Sample",

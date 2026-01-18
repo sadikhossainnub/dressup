@@ -1,301 +1,298 @@
 {
- "actions": [],
- "allow_rename": 1,
- "autoname": "naming_series:",
- "creation": "2024-01-01 00:00:00",
- "doctype": "DocType",
- "engine": "InnoDB",
- "field_order": [
-  "naming_series",
-  "tech_pack_no",
-  "received_date",
-  "column_break_1",
-  "pattern_master",
-  "pattern_master_name",
-  "start_time_date",
-  "sample_man",
-  "sample_man_name",
-  "handler",
-  "finish_time_date",
-  "production_section",
-  "fabrics",
-  "trim_accessories",
-  "section_break_xgdz",
-  "fabric_dupatta",
-  "size_chart_section",
-  "size_chart_in_inch",
-  "pattern_master_note_section",
-  "pattern_master_note",
-  "washing_instruction",
-  "dry_clean_only",
-  "wash_separately",
-  "wash_warm_iron_inside_out",
-  "hand_wash_only",
-  "note_section",
-  "note_or_instructions",
-  "section_break_vvjb",
-  "read_confirm_carefully",
-  "pps_image_and_links_section",
-  "pps_front",
-  "pps_back",
-  "pps_side",
-  "pps_image_link_if_any",
-  "quality_tab",
-  "other_tests_section",
-  "link_nsnp"
- ],
- "fields": [
-  {
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Series",
-   "options": "PPS-.YYYY.-",
-   "reqd": 1
-  },
-  {
-   "fieldname": "pattern_master",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Pattern Master",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
-   "fieldname": "handler",
-   "fieldtype": "Data",
-   "label": "Handler:"
-  },
-  {
-   "default": "Today",
-   "fieldname": "received_date",
-   "fieldtype": "Date",
-   "label": "Received Date:"
-  },
-  {
-   "fieldname": "column_break_1",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "sample_man",
-   "fieldtype": "Link",
-   "label": "Sample Man",
-   "options": "Employee"
-  },
-  {
-   "default": "Now",
-   "fieldname": "start_time_date",
-   "fieldtype": "Datetime",
-   "label": "Start Time & Date:"
-  },
-  {
-   "default": "Now",
-   "depends_on": "eval:doc.docstatus==1",
-   "fieldname": "finish_time_date",
-   "fieldtype": "Datetime",
-   "label": "Finish Time & Date:",
-   "read_only": 1
-  },
-  {
-   "fieldname": "production_section",
-   "fieldtype": "Section Break",
-   "label": "Actual Raw Material Required"
-  },
-  {
-   "fieldname": "pattern_master_note_section",
-   "fieldtype": "Section Break",
-   "label": "Pattern Master Note"
-  },
-  {
-   "fieldname": "pattern_master_note",
-   "fieldtype": "Text Editor",
-   "label": "Pattern Master Note:",
-   "reqd": 1
-  },
-  {
-   "fieldname": "other_tests_section",
-   "fieldtype": "Section Break",
-   "label": "Quality Inspection"
-  },
-  {
-   "fieldname": "note_section",
-   "fieldtype": "Section Break",
-   "label": "NOTE & TEST RESULTS:"
-  },
-  {
-   "fieldname": "size_chart_section",
-   "fieldtype": "Section Break",
-   "label": "Size Chart"
-  },
-  {
-   "fieldname": "section_break_xgdz",
-   "fieldtype": "Section Break",
-   "label": "Fabric - Dupatta"
-  },
-  {
-   "fieldname": "fabric_dupatta",
-   "fieldtype": "Table",
-   "label": "Fabric - Dupatta",
-   "options": "Fabric Dupatta"
-  },
-  {
-   "fieldname": "fabrics",
-   "fieldtype": "Table",
-   "label": "Fabrics",
-   "options": "PPS Fabric Item"
-  },
-  {
-   "fieldname": "trim_accessories",
-   "fieldtype": "Table",
-   "label": "Trim & Accessories",
-   "options": "PPS Trim Accessories Item"
-  },
-  {
-   "fieldname": "size_chart_in_inch",
-   "fieldtype": "Table",
-   "label": "Size Chart in Inch",
-   "options": "Size Chart in Inch",
-   "reqd": 1
-  },
-  {
-   "fieldname": "tech_pack_no",
-   "fieldtype": "Data",
-   "label": "Tech Pack No",
-   "reqd": 1
-  },
-  {
-   "fieldname": "link_nsnp",
-   "fieldtype": "Link",
-   "label": "Quality Inspection Template",
-   "options": "Quality Inspection Template",
-   "reqd": 1
-  },
-  {
-   "fieldname": "washing_instruction",
-   "fieldtype": "Section Break",
-   "label": "Washing Instruction"
-  },
-  {
-   "default": "0",
-   "fieldname": "wash_separately",
-   "fieldtype": "Check",
-   "label": "Wash Separately"
-  },
-  {
-   "default": "0",
-   "fieldname": "dry_clean_only",
-   "fieldtype": "Check",
-   "label": "Dry Clean Only"
-  },
-  {
-   "default": "0",
-   "fieldname": "wash_warm_iron_inside_out",
-   "fieldtype": "Check",
-   "label": "Wash & warm iron inside out, Do not rub"
-  },
-  {
-   "default": "0",
-   "fieldname": "hand_wash_only",
-   "fieldtype": "Check",
-   "label": "Hand Wash Only"
-  },
-  {
-   "fieldname": "note_or_instructions",
-   "fieldtype": "Text Editor",
-   "label": "Note or Instructions"
-  },
-  {
-   "fieldname": "section_break_vvjb",
-   "fieldtype": "Section Break",
-   "label": "Designer's Disclaimer"
-  },
-  {
-   "fieldname": "read_confirm_carefully",
-   "fieldtype": "Read Only",
-   "label": "Read and Confirm Carefully",
-   "reqd": 1
-  },
-  {
-   "fieldname": "pps_image_and_links_section",
-   "fieldtype": "Section Break",
-   "label": "PPS Image and Links"
-  },
-  {
-   "fieldname": "pps_front",
-   "fieldtype": "Attach Image",
-   "label": "PPS Front",
-   "reqd": 1
-  },
-  {
-   "fieldname": "pps_back",
-   "fieldtype": "Attach Image",
-   "label": "PPS Back",
-   "reqd": 1
-  },
-  {
-   "fieldname": "pps_side",
-   "fieldtype": "Attach Image",
-   "label": "PPS Side"
-  },
-  {
-   "fieldname": "pps_image_link_if_any",
-   "fieldtype": "Data",
-   "label": "PPS Image Link (if any)"
-  },
-  {
-   "fieldname": "quality_tab",
-   "fieldtype": "Tab Break",
-   "label": "Quality"
-  },
-  {
-   "fetch_from": "pattern_master.employee_name",
-   "fieldname": "pattern_master_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Pattern Master Name",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "sample_man.employee_name",
-   "fieldname": "sample_man_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Sample Man Name",
-   "read_only": 1
-  }
- ],
- "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2026-01-19 00:17:18.193095",
- "modified_by": "sayedtkg@gmail.com",
- "module": "DressUp",
- "name": "Pre Production Sample",
- "naming_rule": "By \"Naming Series\" field",
- "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Manufacturing User",
-   "write": 1
-  }
- ],
- "row_format": "Dynamic",
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": [],
- "track_changes": 1
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "naming_series:",
+    "creation": "2024-01-01 00:00:00",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "tech_pack_no",
+        "received_date",
+        "column_break_1",
+        "pattern_master",
+        "pattern_master_name",
+        "start_time_date",
+        "sample_man",
+        "sample_man_name",
+        "handler",
+        "finish_time_date",
+        "production_section",
+        "fabrics",
+        "trim_accessories",
+        "section_break_xgdz",
+        "fabric_dupatta",
+        "size_chart_section",
+        "size_chart_in_inch",
+        "pattern_master_note_section",
+        "pattern_master_note",
+        "washing_instruction",
+        "dry_clean_only",
+        "wash_separately",
+        "wash_warm_iron_inside_out",
+        "hand_wash_only",
+        "note_section",
+        "note_or_instructions",
+        "section_break_vvjb",
+        "read_confirm_carefully",
+        "pps_image_and_links_section",
+        "pps_front",
+        "pps_back",
+        "pps_side",
+        "pps_image_link_if_any",
+        "quality_tab",
+        "other_tests_section",
+        "link_nsnp"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Series",
+            "options": "PPS-.YYYY.-",
+            "reqd": 1
+        },
+        {
+            "fieldname": "pattern_master",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Pattern Master",
+            "options": "Employee",
+            "reqd": 1
+        },
+        {
+            "fieldname": "handler",
+            "fieldtype": "Data",
+            "label": "Handler:"
+        },
+        {
+            "default": "Today",
+            "fieldname": "received_date",
+            "fieldtype": "Date",
+            "label": "Received Date:"
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "sample_man",
+            "fieldtype": "Link",
+            "label": "Sample Man",
+            "options": "Employee"
+        },
+        {
+            "default": "Now",
+            "fieldname": "start_time_date",
+            "fieldtype": "Datetime",
+            "label": "Start Time & Date:"
+        },
+        {
+            "default": "Now",
+            "depends_on": "eval:doc.docstatus==1",
+            "fieldname": "finish_time_date",
+            "fieldtype": "Datetime",
+            "label": "Finish Time & Date:",
+            "read_only": 1
+        },
+        {
+            "fieldname": "production_section",
+            "fieldtype": "Section Break",
+            "label": "Actual Raw Material Required"
+        },
+        {
+            "fieldname": "pattern_master_note_section",
+            "fieldtype": "Section Break",
+            "label": "Pattern Master Note"
+        },
+        {
+            "fieldname": "pattern_master_note",
+            "fieldtype": "Text Editor",
+            "label": "Pattern Master Note:"
+        },
+        {
+            "fieldname": "other_tests_section",
+            "fieldtype": "Section Break",
+            "label": "Quality Inspection"
+        },
+        {
+            "fieldname": "note_section",
+            "fieldtype": "Section Break",
+            "label": "NOTE & TEST RESULTS:"
+        },
+        {
+            "fieldname": "size_chart_section",
+            "fieldtype": "Section Break",
+            "label": "Size Chart"
+        },
+        {
+            "fieldname": "section_break_xgdz",
+            "fieldtype": "Section Break",
+            "label": "Fabric - Dupatta"
+        },
+        {
+            "fieldname": "fabric_dupatta",
+            "fieldtype": "Table",
+            "label": "Fabric - Dupatta",
+            "options": "Fabric Dupatta"
+        },
+        {
+            "fieldname": "fabrics",
+            "fieldtype": "Table",
+            "label": "Fabrics",
+            "options": "PPS Fabric Item"
+        },
+        {
+            "fieldname": "trim_accessories",
+            "fieldtype": "Table",
+            "label": "Trim & Accessories",
+            "options": "PPS Trim Accessories Item"
+        },
+        {
+            "fieldname": "size_chart_in_inch",
+            "fieldtype": "Table",
+            "label": "Size Chart in Inch",
+            "options": "Size Chart in Inch",
+            "reqd": 1
+        },
+        {
+            "fieldname": "tech_pack_no",
+            "fieldtype": "Data",
+            "label": "Tech Pack No",
+            "reqd": 1
+        },
+        {
+            "fieldname": "link_nsnp",
+            "fieldtype": "Link",
+            "label": "Quality Inspection Template",
+            "options": "Quality Inspection Template",
+            "reqd": 1
+        },
+        {
+            "fieldname": "washing_instruction",
+            "fieldtype": "Section Break",
+            "label": "Washing Instruction"
+        },
+        {
+            "default": "0",
+            "fieldname": "wash_separately",
+            "fieldtype": "Check",
+            "label": "Wash Separately"
+        },
+        {
+            "default": "0",
+            "fieldname": "dry_clean_only",
+            "fieldtype": "Check",
+            "label": "Dry Clean Only"
+        },
+        {
+            "default": "0",
+            "fieldname": "wash_warm_iron_inside_out",
+            "fieldtype": "Check",
+            "label": "Wash & warm iron inside out, Do not rub"
+        },
+        {
+            "default": "0",
+            "fieldname": "hand_wash_only",
+            "fieldtype": "Check",
+            "label": "Hand Wash Only"
+        },
+        {
+            "fieldname": "note_or_instructions",
+            "fieldtype": "Text Editor",
+            "label": "Note or Instructions"
+        },
+        {
+            "fieldname": "section_break_vvjb",
+            "fieldtype": "Section Break",
+            "label": "Designer's Disclaimer"
+        },
+        {
+            "fieldname": "read_confirm_carefully",
+            "fieldtype": "Read Only",
+            "label": "Read and Confirm Carefully",
+            "reqd": 1
+        },
+        {
+            "fieldname": "pps_image_and_links_section",
+            "fieldtype": "Section Break",
+            "label": "PPS Image and Links"
+        },
+        {
+            "fieldname": "pps_front",
+            "fieldtype": "Attach Image",
+            "label": "PPS Front"
+        },
+        {
+            "fieldname": "pps_back",
+            "fieldtype": "Attach Image",
+            "label": "PPS Back"
+        },
+        {
+            "fieldname": "pps_side",
+            "fieldtype": "Attach Image",
+            "label": "PPS Side"
+        },
+        {
+            "fieldname": "pps_image_link_if_any",
+            "fieldtype": "Data",
+            "label": "PPS Image Link (if any)"
+        },
+        {
+            "fieldname": "quality_tab",
+            "fieldtype": "Tab Break",
+            "label": "Quality"
+        },
+        {
+            "fetch_from": "pattern_master.employee_name",
+            "fieldname": "pattern_master_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Pattern Master Name",
+            "read_only": 1
+        },
+        {
+            "fetch_from": "sample_man.employee_name",
+            "fieldname": "sample_man_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Sample Man Name",
+            "read_only": 1
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2026-01-19 00:17:18.193095",
+    "modified_by": "sayedtkg@gmail.com",
+    "module": "DressUp",
+    "name": "Pre Production Sample",
+    "naming_rule": "By \"Naming Series\" field",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Manufacturing User",
+            "write": 1
+        }
+    ],
+    "row_format": "Dynamic",
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1
 }
