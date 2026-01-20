@@ -123,6 +123,7 @@ def make_pre_production_sample(source_name, target_doc=None):
 				"doctype": "Pre Production Sample",
 				"field_map": {
 					"category": "category",
+					"item_name": "item_name",
 					"cut_fit_style": "cut_fit_style",
 					"collar_neck_style": "collar_neck_style",
 					"side_cut": "side_cut",

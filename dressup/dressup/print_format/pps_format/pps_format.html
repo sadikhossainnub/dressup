@@ -208,6 +208,10 @@
         </tr>
         <tr>
             <td>
+                <span class="cell-label">Item Name / আইটেম</span>
+                <span class="cell-value">{{ doc.item_name or (doc.item_code if doc.item_code else '-') }}</span>
+            </td>
+            <td>
                 <span class="cell-label">Sample Man / স্যাম্পল ম্যান</span>
                 <span class="cell-value">{{ doc.sample_man or '-' }}</span>
             </td>
@@ -216,6 +220,12 @@
                 <span class="cell-value">{{ doc.handler or '-' }}</span>
             </td>
             <td>
+                <span class="cell-label">Quality Inspection Template</span>
+                <span class="cell-value">{{ doc.link_nsnp or '-' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <span class="cell-label">Start Time / শুরুর সময়</span>
                 <span class="cell-value">{{ frappe.utils.format_datetime(doc.start_time_date) if doc.start_time_date else '-' }}</span>
             </td>
@@ -223,21 +233,15 @@
                 <span class="cell-label">Finish Time / শেষ সময়</span>
                 <span class="cell-value">{{ frappe.utils.format_datetime(doc.finish_time_date) if doc.finish_time_date else '-' }}</span>
             </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="background: #fafafa;">
+            <td>
+                 <span class="cell-label">PPS Image Link</span>
+                <span class="cell-value" style="word-break: break-all;">{{ doc.pps_image_link_if_any or '-' }}</span>
+            </td>
+            <td style="background: #fafafa;">
                 <span class="cell-label">Status / বর্তমান অবস্থা</span>
                 <span class="cell-value" style="color: {{ 'green' if doc.docstatus == 1 else '#f39c12' }}; text-transform: uppercase;">
                     {{ 'SUBMITTED / এপ্রুভড' if doc.docstatus == 1 else 'DRAFT / খসড়া' }}
                 </span>
-            </td>
-            <td>
-                <span class="cell-label">Quality Inspection Template</span>
-                <span class="cell-value">{{ doc.link_nsnp or '-' }}</span>
-            </td>
-            <td>
-                <span class="cell-label">PPS Image Link</span>
-                <span class="cell-value" style="word-break: break-all;">{{ doc.pps_image_link_if_any or '-' }}</span>
             </td>
         </tr>
     </table>

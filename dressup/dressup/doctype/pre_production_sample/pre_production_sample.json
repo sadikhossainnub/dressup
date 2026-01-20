@@ -14,6 +14,8 @@
   "side_cut",
   "source_warehouse",
   "received_date",
+  "item_code",
+  "item_name",
   "column_break_1",
   "pattern_master",
   "pattern_master_name",
@@ -328,11 +330,25 @@
   {
    "fieldname": "small_text_zmnf",
    "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Item Code",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-20 06:57:21.571600",
+ "modified": "2026-01-20 07:04:47.162054",
  "modified_by": "sayedtkg@gmail.com",
  "module": "DressUp",
  "name": "Pre Production Sample",
