@@ -297,7 +297,7 @@
   {
    "fieldname": "back_neck_depth",
    "fieldtype": "Float",
-   "label": "\u09aa\u09bbf\u099b\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Back Neck Drop)"
+   "label": "\u09aa\u09bf\u099b\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Back Neck Drop)"
   },
   {
    "fieldname": "shoulder_tip_to_side_waist",
@@ -893,7 +893,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-19 22:40:08.686158",
+ "modified": "2026-01-21 02:56:11.100545",
  "modified_by": "sayedtkg@gmail.com",
  "module": "DressUp",
  "name": "Sketch Specification Sample Making Sheet",

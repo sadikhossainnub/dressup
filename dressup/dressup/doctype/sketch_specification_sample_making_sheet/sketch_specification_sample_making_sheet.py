@@ -56,7 +56,8 @@ class SketchSpecificationSampleMakingSheet(Document):
 						"bp": "block_print",
 						"td": "tiedye",
 						"karchupi": "karchupi"
-					}
+					},
+					"field_no_map": ["naming_series"]
 				}
 			},
 			None,
@@ -111,7 +112,8 @@ def make_cost_estimation(source_name, target_doc=None):
 					"bp": "block_print",
 					"td": "tiedye",
 					"karchupi": "karchupi"
-				}
+				},
+				"field_no_map": ["naming_series"]
 			}
 		},
 		target_doc
