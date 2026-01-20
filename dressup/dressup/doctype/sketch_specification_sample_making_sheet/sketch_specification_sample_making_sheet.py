@@ -40,7 +40,22 @@ class SketchSpecificationSampleMakingSheet(Document):
 						"item_name": "item_name",
 						"category": "category",
 						"designer": "designer",
-						"design_no": "design_no"
+						"design_no": "design_no",
+						"cut_fit_style": "cut_fit_style",
+						"collar_neck_style": "collar_neck_style",
+						"side_cut": "side_cut",
+						"seson": "seson",
+						"sewing_finish": "sewing_finish",
+						"cutting": "cutting",
+						"fb": "fusing_bundling",
+						"sewing": "sewing",
+						"me": "machine_embroidery",
+						"hand_embroidery": "hand_embroidery",
+						"hand_work": "hand_work",
+						"sp": "screen_print",
+						"bp": "block_print",
+						"td": "tiedye",
+						"karchupi": "karchupi"
 					}
 				}
 			},
@@ -80,7 +95,22 @@ def make_cost_estimation(source_name, target_doc=None):
 					"item_name": "item_name",
 					"category": "category",
 					"designer": "designer",
-					"design_no": "design_no"
+					"design_no": "design_no",
+					"cut_fit_style": "cut_fit_style",
+					"collar_neck_style": "collar_neck_style",
+					"side_cut": "side_cut",
+					"seson": "seson",
+					"sewing_finish": "sewing_finish",
+					"cutting": "cutting",
+					"fb": "fusing_bundling",
+					"sewing": "sewing",
+					"me": "machine_embroidery",
+					"hand_embroidery": "hand_embroidery",
+					"hand_work": "hand_work",
+					"sp": "screen_print",
+					"bp": "block_print",
+					"td": "tiedye",
+					"karchupi": "karchupi"
 				}
 			}
 		},

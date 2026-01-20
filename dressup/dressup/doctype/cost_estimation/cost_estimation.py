@@ -104,7 +104,7 @@ def make_pre_production_sample(source_name, target_doc=None):
 			target.link_nsnp = quality_templates[0].name
 		
 		# Add default size chart rows
-		for size in ['36', '38', '40', '42']:
+		for size in ['36', '38', '40', '42', '44','46']:
 			target.append('size_chart_in_inch', {'size_chart_in_inch': size})
 	
 	def update_fabric_item(source, target, source_parent):
@@ -121,6 +121,14 @@ def make_pre_production_sample(source_name, target_doc=None):
 		{
 			"Cost Estimation": {
 				"doctype": "Pre Production Sample",
+				"field_map": {
+					"category": "category",
+					"cut_fit_style": "cut_fit_style",
+					"collar_neck_style": "collar_neck_style",
+					"side_cut": "side_cut",
+					"seson": "seson",
+					"sewing_finish": "sewing_finish"
+				},
 				"validation": {"docstatus": ["=", 1]}
 			},
 			"Cost Estimation Material": {

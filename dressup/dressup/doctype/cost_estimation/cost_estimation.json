@@ -1,544 +1,576 @@
 {
-    "actions": [],
-    "allow_import": 1,
-    "allow_rename": 1,
-    "autoname": "naming_series:",
-    "creation": "2024-01-01 00:00:00",
-    "default_print_format": "Cost Estimation Print",
-    "doctype": "DocType",
-    "engine": "InnoDB",
-    "field_order": [
-        "naming_series",
-        "tech_pack_no",
-        "item_name",
-        "column_break_1",
-        "date",
-        "designer",
-        "design_no",
-        "category",
-        "materials_section",
-        "materials",
-        "total_fabric",
-        "accessories_section",
-        "accessories",
-        "total_trim_and_accessories",
-        "workstation_section",
-        "cutting",
-        "fusing_bundling",
-        "sewing",
-        "machine_embroidery",
-        "hand_embroidery",
-        "column_break_oweg",
-        "hand_work",
-        "screen_print",
-        "block_print",
-        "tiedye",
-        "karchupi",
-        "value_addition_section",
-        "cutting_f",
-        "sewing_f",
-        "hand_work_estimation",
-        "column_break_nxdh",
-        "machine_embroidery_f",
-        "hand_embroidery_f",
-        "karchupi_f",
-        "column_break_lntb",
-        "screen_print_f",
-        "block_print_f",
-        "tie_dye",
-        "section_break_zbnn",
-        "total_tailoring",
-        "finishing_section",
-        "wash_iron",
-        "column_break_miob",
-        "qc_packaging",
-        "column_break_uglg",
-        "transportation",
-        "column_break_svkd",
-        "total_finishing",
-        "margin_section",
-        "pattern_variation",
-        "column_break_lnyo",
-        "screen_print_machine_emb_65",
-        "column_break_dvhv",
-        "hand_embroidery_75",
-        "suggested_selling_price_section",
-        "column_break_tjnu",
-        "for_pattern_variation_only",
-        "column_break_gpdc",
-        "screen_print_machine_emb_only",
-        "column_break_xivu",
-        "hand_embroidery_only",
-        "section_break_stcm",
-        "amended_from",
-        "section_break_xmnq",
-        "important_note"
-    ],
-    "fields": [
-        {
-            "fieldname": "naming_series",
-            "fieldtype": "Select",
-            "in_list_view": 1,
-            "label": "Series",
-            "options": "CE-.DD.-.MM.-.YY.-",
-            "reqd": 1
-        },
-        {
-            "fieldname": "tech_pack_no",
-            "fieldtype": "Link",
-            "in_list_view": 1,
-            "label": "Tech Pack No:",
-            "options": "Sketch Specification Sample Making Sheet",
-            "reqd": 1
-        },
-        {
-            "default": "Today",
-            "fieldname": "date",
-            "fieldtype": "Date",
-            "label": "Date:",
-            "reqd": 1
-        },
-        {
-            "fieldname": "column_break_1",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fetch_from": "tech_pack_no.design_no",
-            "fieldname": "design_no",
-            "fieldtype": "Data",
-            "label": "Style No:",
-            "reqd": 1
-        },
-        {
-            "fetch_from": "tech_pack_no.designer",
-            "fieldname": "designer",
-            "fieldtype": "Data",
-            "label": "Designer:",
-            "reqd": 1
-        },
-        {
-            "fieldname": "materials_section",
-            "fieldtype": "Section Break",
-            "label": "Fabrics"
-        },
-        {
-            "fieldname": "materials",
-            "fieldtype": "Table",
-            "label": "Raw Material Items",
-            "options": "Cost Estimation Material"
-        },
-        {
-            "fieldname": "total_fabric",
-            "fieldtype": "Currency",
-            "label": "Total Fabric",
-            "read_only": 1
-        },
-        {
-            "fieldname": "accessories_section",
-            "fieldtype": "Section Break",
-            "label": "Trims & Accessories"
-        },
-        {
-            "fieldname": "accessories",
-            "fieldtype": "Table",
-            "label": "Trims & Accessories",
-            "options": "Cost Estimation Accessory"
-        },
-        {
-            "fieldname": "value_addition_section",
-            "fieldtype": "Section Break",
-            "label": "Workstation Charges"
-        },
-        {
-            "default": "0",
-            "fieldname": "cutting",
-            "fieldtype": "Check",
-            "label": "Cutting"
-        },
-        {
-            "default": "0",
-            "fieldname": "sewing",
-            "fieldtype": "Check",
-            "label": "Sewing"
-        },
-        {
-            "fieldname": "total_tailoring",
-            "fieldtype": "Currency",
-            "label": "Total Tailoring",
-            "read_only": 1
-        },
-        {
-            "fieldname": "finishing_section",
-            "fieldtype": "Section Break",
-            "label": "Total Finishing"
-        },
-        {
-            "fieldname": "wash_iron",
-            "fieldtype": "Currency",
-            "label": "Wash & Iron"
-        },
-        {
-            "fieldname": "qc_packaging",
-            "fieldtype": "Currency",
-            "label": "QC & Packaging"
-        },
-        {
-            "fieldname": "transportation",
-            "fieldtype": "Currency",
-            "label": "Transportation"
-        },
-        {
-            "fieldname": "total_finishing",
-            "fieldtype": "Currency",
-            "label": "Total Finishing",
-            "read_only": 1
-        },
-        {
-            "depends_on": "eval:doc.hand_work == \"1\"",
-            "fieldname": "hand_work_estimation",
-            "fieldtype": "Currency",
-            "label": "Hand Work"
-        },
-        {
-            "fieldname": "column_break_nxdh",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "column_break_lntb",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "column_break_miob",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "column_break_uglg",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "column_break_svkd",
-            "fieldtype": "Column Break",
-            "read_only": 1
-        },
-        {
-            "fieldname": "column_break_lnyo",
-            "fieldtype": "Column Break"
-        },
-        {
-            "depends_on": "eval:doc.machine_embroidery == \"1\" || doc.screen_print == \"1\"",
-            "fieldname": "screen_print_machine_emb_65",
-            "fieldtype": "Data",
-            "label": "Screen Print/ Machine Emb 65%"
-        },
-        {
-            "fieldname": "column_break_dvhv",
-            "fieldtype": "Column Break"
-        },
-        {
-            "depends_on": "eval:doc.hand_embroidery == \"1\" || doc.hand_work == \"1\"",
-            "fieldname": "hand_embroidery_75",
-            "fieldtype": "Data",
-            "label": "Hand Embroidery 75%"
-        },
-        {
-            "fieldname": "suggested_selling_price_section",
-            "fieldtype": "Section Break",
-            "label": "Suggested Selling Price",
-            "read_only": 1
-        },
-        {
-            "depends_on": "eval:doc.pattern_variation",
-            "fieldname": "for_pattern_variation_only",
-            "fieldtype": "Currency",
-            "label": "For Pattern Variation Only"
-        },
-        {
-            "fieldname": "column_break_gpdc",
-            "fieldtype": "Column Break",
-            "read_only": 1
-        },
-        {
-            "depends_on": "eval:doc.screen_print || doc.machine_embroidery",
-            "fieldname": "screen_print_machine_emb_only",
-            "fieldtype": "Currency",
-            "label": "Screen Print/ Machine Emb only"
-        },
-        {
-            "fieldname": "column_break_xivu",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "hand_embroidery_only",
-            "fieldtype": "Currency",
-            "label": "Hand Embroidery Only",
-            "read_only": 1
-        },
-        {
-            "fieldname": "total_trim_and_accessories",
-            "fieldtype": "Currency",
-            "label": "Total Trim and Accessories",
-            "read_only": 1
-        },
-        {
-            "fieldname": "column_break_tjnu",
-            "fieldtype": "Column Break",
-            "read_only": 1
-        },
-        {
-            "fieldname": "section_break_xmnq",
-            "fieldtype": "Section Break"
-        },
-        {
-            "fieldname": "important_note",
-            "fieldtype": "Text Editor",
-            "label": "Important Note"
-        },
-        {
-            "default": "0",
-            "fieldname": "machine_embroidery",
-            "fieldtype": "Check",
-            "label": "Machine Embroidery"
-        },
-        {
-            "default": "0",
-            "fieldname": "hand_embroidery",
-            "fieldtype": "Check",
-            "label": "Hand Embroidery"
-        },
-        {
-            "default": "0",
-            "fieldname": "karchupi",
-            "fieldtype": "Check",
-            "label": "Karchupi"
-        },
-        {
-            "default": "0",
-            "fieldname": "screen_print",
-            "fieldtype": "Check",
-            "label": "Screen Print"
-        },
-        {
-            "default": "0",
-            "fieldname": "block_print",
-            "fieldtype": "Check",
-            "label": "Block Print"
-        },
-        {
-            "default": "0",
-            "fieldname": "tiedye",
-            "fieldtype": "Check",
-            "label": "Tie & Dye"
-        },
-        {
-            "fieldname": "section_break_zbnn",
-            "fieldtype": "Section Break"
-        },
-        {
-            "fieldname": "margin_section",
-            "fieldtype": "Section Break",
-            "label": "Margin"
-        },
-        {
-            "fieldname": "pattern_variation",
-            "fieldtype": "Percent",
-            "label": "Pattern Variation 52%"
-        },
-        {
-            "fieldname": "item_name",
-            "fieldtype": "Data",
-            "label": "Item Name"
-        },
-        {
-            "fieldname": "category",
-            "fieldtype": "Data",
-            "label": "Category"
-        },
-        {
-            "fieldname": "workstation_section",
-            "fieldtype": "Section Break",
-            "hidden": 1,
-            "label": "Workstation "
-        },
-        {
-            "default": "0",
-            "fieldname": "fusing_bundling",
-            "fieldtype": "Check",
-            "label": "Fusing & Bundling"
-        },
-        {
-            "fieldname": "column_break_oweg",
-            "fieldtype": "Column Break"
-        },
-        {
-            "default": "0",
-            "fieldname": "hand_work",
-            "fieldtype": "Check",
-            "label": "Hand Work"
-        },
-        {
-            "depends_on": "eval:doc.cutting == \"1\"",
-            "fieldname": "cutting_f",
-            "fieldtype": "Currency",
-            "label": "Cutting Estimation"
-        },
-        {
-            "depends_on": "eval:doc.sewing == \"1\"",
-            "fieldname": "sewing_f",
-            "fieldtype": "Currency",
-            "label": "Sewing Estimation"
-        },
-        {
-            "depends_on": "eval:doc.machine_embroidery == \"1\"",
-            "fieldname": "machine_embroidery_f",
-            "fieldtype": "Currency",
-            "label": "Machine Embroidery"
-        },
-        {
-            "depends_on": "eval:doc.hand_embroidery == \"1\"",
-            "fieldname": "hand_embroidery_f",
-            "fieldtype": "Currency",
-            "label": " Hand Embroidery"
-        },
-        {
-            "depends_on": "eval:doc.karchupi == \"1\"",
-            "fieldname": "karchupi_f",
-            "fieldtype": "Currency",
-            "label": "Karchupi"
-        },
-        {
-            "depends_on": "eval:doc.screen_print == \"1\"",
-            "fieldname": "screen_print_f",
-            "fieldtype": "Currency",
-            "label": "Screen Print"
-        },
-        {
-            "depends_on": "eval:doc.block_print == \"1\"",
-            "fieldname": "block_print_f",
-            "fieldtype": "Currency",
-            "label": "Block Print"
-        },
-        {
-            "depends_on": "eval:doc.tiedye == \"1\"",
-            "fieldname": "tie_dye",
-            "fieldtype": "Currency",
-            "label": " Tie & Dye"
-        },
-        {
-            "fieldname": "amended_from",
-            "fieldtype": "Link",
-            "label": "Amended From",
-            "no_copy": 1,
-            "options": "Cost Estimation",
-            "print_hide": 1,
-            "read_only": 1,
-            "search_index": 1
-        },
-        {
-            "fieldname": "section_break_stcm",
-            "fieldtype": "Section Break"
-        }
-    ],
-    "index_web_pages_for_search": 1,
-    "is_submittable": 1,
-    "links": [],
-    "modified": "2026-01-17 16:35:26.291347",
-    "modified_by": "sayedtkg@gmail.com",
-    "module": "DressUp",
-    "name": "Cost Estimation",
-    "naming_rule": "By \"Naming Series\" field",
-    "owner": "Administrator",
-    "permissions": [
-        {
-            "amend": 1,
-            "cancel": 1,
-            "create": 1,
-            "delete": 1,
-            "email": 1,
-            "export": 1,
-            "import": 1,
-            "print": 1,
-            "read": 1,
-            "report": 1,
-            "role": "Administrator",
-            "select": 1,
-            "share": 1,
-            "submit": 1,
-            "write": 1
-        },
-        {
-            "amend": 1,
-            "cancel": 1,
-            "create": 1,
-            "delete": 1,
-            "email": 1,
-            "export": 1,
-            "import": 1,
-            "print": 1,
-            "read": 1,
-            "report": 1,
-            "role": "System Manager",
-            "select": 1,
-            "share": 1,
-            "submit": 1,
-            "write": 1
-        },
-        {
-            "amend": 1,
-            "cancel": 1,
-            "create": 1,
-            "delete": 1,
-            "email": 1,
-            "export": 1,
-            "import": 1,
-            "print": 1,
-            "read": 1,
-            "report": 1,
-            "role": "Projects Manager",
-            "select": 1,
-            "share": 1,
-            "submit": 1,
-            "write": 1
-        },
-        {
-            "amend": 1,
-            "cancel": 1,
-            "create": 1,
-            "delete": 1,
-            "email": 1,
-            "export": 1,
-            "import": 1,
-            "print": 1,
-            "read": 1,
-            "report": 1,
-            "role": "Fashion Designer Manager",
-            "select": 1,
-            "share": 1,
-            "submit": 1,
-            "write": 1
-        },
-        {
-            "amend": 1,
-            "cancel": 1,
-            "create": 1,
-            "delete": 1,
-            "email": 1,
-            "export": 1,
-            "import": 1,
-            "print": 1,
-            "read": 1,
-            "report": 1,
-            "role": "Fashion Designer",
-            "select": 1,
-            "share": 1,
-            "submit": 1,
-            "write": 1
-        }
-    ],
-    "row_format": "Dynamic",
-    "sort_field": "modified",
-    "sort_order": "DESC",
-    "states": [],
-    "track_changes": 1,
-    "track_seen": 1,
-    "track_views": 1
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-01-01 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "tech_pack_no",
+  "item_name",
+  "designer",
+  "design_no",
+  "seson",
+  "column_break_1",
+  "date",
+  "category",
+  "cut_fit_style",
+  "collar_neck_style",
+  "side_cut",
+  "sewing_finish",
+  "materials_section",
+  "materials",
+  "total_fabric",
+  "accessories_section",
+  "accessories",
+  "total_trim_and_accessories",
+  "workstation_section",
+  "cutting",
+  "fusing_bundling",
+  "sewing",
+  "machine_embroidery",
+  "hand_embroidery",
+  "column_break_oweg",
+  "hand_work",
+  "screen_print",
+  "block_print",
+  "tiedye",
+  "karchupi",
+  "value_addition_section",
+  "cutting_f",
+  "sewing_f",
+  "hand_work_estimation",
+  "column_break_nxdh",
+  "machine_embroidery_f",
+  "hand_embroidery_f",
+  "karchupi_f",
+  "column_break_lntb",
+  "screen_print_f",
+  "block_print_f",
+  "tie_dye",
+  "section_break_zbnn",
+  "total_tailoring",
+  "finishing_section",
+  "wash_iron",
+  "column_break_miob",
+  "qc_packaging",
+  "column_break_uglg",
+  "transportation",
+  "column_break_svkd",
+  "total_finishing",
+  "margin_section",
+  "pattern_variation",
+  "column_break_lnyo",
+  "screen_print_machine_emb_65",
+  "column_break_dvhv",
+  "hand_embroidery_75",
+  "suggested_selling_price_section",
+  "column_break_tjnu",
+  "for_pattern_variation_only",
+  "column_break_gpdc",
+  "screen_print_machine_emb_only",
+  "column_break_xivu",
+  "hand_embroidery_only",
+  "section_break_stcm",
+  "amended_from",
+  "section_break_xmnq",
+  "important_note"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Series",
+   "options": "CE-.DD.-.MM.-.YY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tech_pack_no",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Tech Pack No:",
+   "options": "Sketch Specification Sample Making Sheet",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date:",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "tech_pack_no.design_no",
+   "fieldname": "design_no",
+   "fieldtype": "Data",
+   "label": "Style No:",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "tech_pack_no.designer",
+   "fieldname": "designer",
+   "fieldtype": "Data",
+   "label": "Designer:",
+   "reqd": 1
+  },
+  {
+   "fieldname": "materials_section",
+   "fieldtype": "Section Break",
+   "label": "Fabrics"
+  },
+  {
+   "fieldname": "materials",
+   "fieldtype": "Table",
+   "label": "Raw Material Items",
+   "options": "Cost Estimation Material"
+  },
+  {
+   "fieldname": "total_fabric",
+   "fieldtype": "Currency",
+   "label": "Total Fabric",
+   "read_only": 1
+  },
+  {
+   "fieldname": "accessories_section",
+   "fieldtype": "Section Break",
+   "label": "Trims & Accessories"
+  },
+  {
+   "fieldname": "accessories",
+   "fieldtype": "Table",
+   "label": "Trims & Accessories",
+   "options": "Cost Estimation Accessory"
+  },
+  {
+   "fieldname": "value_addition_section",
+   "fieldtype": "Section Break",
+   "label": "Workstation Charges"
+  },
+  {
+   "default": "0",
+   "fieldname": "cutting",
+   "fieldtype": "Check",
+   "label": "Cutting"
+  },
+  {
+   "default": "0",
+   "fieldname": "sewing",
+   "fieldtype": "Check",
+   "label": "Sewing"
+  },
+  {
+   "fieldname": "total_tailoring",
+   "fieldtype": "Currency",
+   "label": "Total Workstation Charges",
+   "read_only": 1
+  },
+  {
+   "fieldname": "finishing_section",
+   "fieldtype": "Section Break",
+   "label": "Total Finishing"
+  },
+  {
+   "fieldname": "wash_iron",
+   "fieldtype": "Currency",
+   "label": "Wash & Iron"
+  },
+  {
+   "fieldname": "qc_packaging",
+   "fieldtype": "Currency",
+   "label": "QC & Packaging"
+  },
+  {
+   "fieldname": "transportation",
+   "fieldtype": "Currency",
+   "label": "Transportation"
+  },
+  {
+   "fieldname": "total_finishing",
+   "fieldtype": "Currency",
+   "label": "Total Finishing",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.hand_work == \"1\"",
+   "fieldname": "hand_work_estimation",
+   "fieldtype": "Currency",
+   "label": "Hand Work"
+  },
+  {
+   "fieldname": "column_break_nxdh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_lntb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_miob",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_uglg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_svkd",
+   "fieldtype": "Column Break",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_lnyo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.machine_embroidery == \"1\" || doc.screen_print == \"1\"",
+   "fieldname": "screen_print_machine_emb_65",
+   "fieldtype": "Data",
+   "label": "Screen Print/ Machine Emb"
+  },
+  {
+   "fieldname": "column_break_dvhv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.hand_embroidery == \"1\" || doc.hand_work == \"1\"",
+   "fieldname": "hand_embroidery_75",
+   "fieldtype": "Data",
+   "label": "Hand Embroidery"
+  },
+  {
+   "fieldname": "suggested_selling_price_section",
+   "fieldtype": "Section Break",
+   "label": "Suggested Selling Price",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.pattern_variation",
+   "fieldname": "for_pattern_variation_only",
+   "fieldtype": "Currency",
+   "label": "For Pattern Variation Only"
+  },
+  {
+   "fieldname": "column_break_gpdc",
+   "fieldtype": "Column Break",
+   "read_only": 1
+  },
+  {
+   "fieldname": "screen_print_machine_emb_only",
+   "fieldtype": "Currency",
+   "label": "Screen Print/ Machine Emb only"
+  },
+  {
+   "fieldname": "column_break_xivu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hand_embroidery_only",
+   "fieldtype": "Currency",
+   "label": "Hand Embroidery Only",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_trim_and_accessories",
+   "fieldtype": "Currency",
+   "label": "Total Trim and Accessories",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tjnu",
+   "fieldtype": "Column Break",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_xmnq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "important_note",
+   "fieldtype": "Text Editor",
+   "label": "Important Note"
+  },
+  {
+   "default": "0",
+   "fieldname": "machine_embroidery",
+   "fieldtype": "Check",
+   "label": "Machine Embroidery"
+  },
+  {
+   "default": "0",
+   "fieldname": "hand_embroidery",
+   "fieldtype": "Check",
+   "label": "Hand Embroidery"
+  },
+  {
+   "default": "0",
+   "fieldname": "karchupi",
+   "fieldtype": "Check",
+   "label": "Karchupi"
+  },
+  {
+   "default": "0",
+   "fieldname": "screen_print",
+   "fieldtype": "Check",
+   "label": "Screen Print"
+  },
+  {
+   "default": "0",
+   "fieldname": "block_print",
+   "fieldtype": "Check",
+   "label": "Block Print"
+  },
+  {
+   "default": "0",
+   "fieldname": "tiedye",
+   "fieldtype": "Check",
+   "label": "Tie & Dye"
+  },
+  {
+   "fieldname": "section_break_zbnn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "margin_section",
+   "fieldtype": "Section Break",
+   "label": "Margin"
+  },
+  {
+   "fieldname": "pattern_variation",
+   "fieldtype": "Percent",
+   "label": "Pattern Variation"
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Data",
+   "label": "Category"
+  },
+  {
+   "fieldname": "cut_fit_style",
+   "fieldtype": "Link",
+   "label": "Cut/ Fit Style",
+   "options": "Cut Fit"
+  },
+  {
+   "fieldname": "collar_neck_style",
+   "fieldtype": "Select",
+   "label": "Collar/ Neck Style",
+   "options": "\nRound Neck / Crew Neck\nV-Neck\nU-Neck\nScoop Neck\nSquare Neck\nBoat Neck / Bateau Neck\nSweetheart Neck\nKeyhole Neck\nDeep V-Neck\nHigh Neck\nMock Neck\nTurtle Neck\nHalter Neck\nOff-Shoulder\nCold Shoulder\nOne-Shoulder\nAsymmetric Neck\nBardot Neck\nCowl Neck\nPlunge Neck\nIllusion Neck (mesh/lace)\nSurplice / Wrap Neck\nShirt Collar\nPointed Collar\nSpread Collar\nBand Collar\nMandarin Collar\nPeter Pan Collar\nNotched Collar\nShawl Collar\nKurti Round Neck\nKurti V-Neck\nKurti Sweetheart\nMughal Neck\nPotli Button Neck\nHenley Neck\nChikankari Neck\nZari/Zardozi Embellished Neck\nBindiya Neck\nKeyhole Kurti Neck\nQueen Anne Neck\nOff-Shoulder Ruffle Neck\nStrapless / Tube Neck\nCorset Neck\nLace Appliqu\u00e9 Neck\nCollared Deep-V\nButterfly Neck\nMesh High-Neck\nNotched V-Neck"
+  },
+  {
+   "fieldname": "side_cut",
+   "fieldtype": "Select",
+   "label": "Side Cut",
+   "options": "\nHigh Side Slit (above mid-thigh)\nMid Side Slit (around knee level)\nLow Side Slit (below knee / calf level)\nFloor-Length Side Slit (long dresses/gowns)\nSingle Side Slit (left or right)\nDouble Side Slit (both sides)\nSlit-Free / Closed Side (no slit)\nStraight Slit\nCurved Slit\nOverlap Slit / Wrap Slit\nFront-Side Slit (slit placed slightly towards the front)\nSide-Slit with Pleat\nSide-Slit with Button Opening\nSide-Slit with Zipper\nDeep Cut Side Slit (bold, for gowns)\nSide Long Slit\nHigh Slit Kurti Style\nA-Line Kurti Slits\nStraight Kurti Side-Slits\nSide-Slit with Potli Buttons\nSide-Slit with Lace/Border\nFront-Open Style with Side Slits\nDiagonal Side Slit\nAsymmetric Side Slit\nSide-Slit with Tie-Up\nSide-Slit Cut-Out Style (exposes skin at waist/side)\nSide Knot Slit\nSide Drawstring Ruched Slit\nSide Slit with Panel Insert\nSide Slit with Fringe/Tassel Finishing"
+  },
+  {
+   "fieldname": "seson",
+   "fieldtype": "Link",
+   "label": "Season",
+   "options": "Seson"
+  },
+  {
+   "fieldname": "sewing_finish",
+   "fieldtype": "Select",
+   "label": "Sewing Finish",
+   "options": "Ready to Wear\nKaktarua\nUnstitched"
+  },
+  {
+   "fieldname": "workstation_section",
+   "fieldtype": "Section Break",
+   "label": "Workstation "
+  },
+  {
+   "default": "0",
+   "fieldname": "fusing_bundling",
+   "fieldtype": "Check",
+   "label": "Fusing & Bundling"
+  },
+  {
+   "fieldname": "column_break_oweg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "hand_work",
+   "fieldtype": "Check",
+   "label": "Hand Work"
+  },
+  {
+   "depends_on": "eval:doc.cutting == \"1\"",
+   "fieldname": "cutting_f",
+   "fieldtype": "Currency",
+   "label": "Cutting Estimation"
+  },
+  {
+   "depends_on": "eval:doc.sewing == \"1\"",
+   "fieldname": "sewing_f",
+   "fieldtype": "Currency",
+   "label": "Sewing Estimation"
+  },
+  {
+   "depends_on": "eval:doc.machine_embroidery == \"1\"",
+   "fieldname": "machine_embroidery_f",
+   "fieldtype": "Currency",
+   "label": "Machine Embroidery"
+  },
+  {
+   "depends_on": "eval:doc.hand_embroidery == \"1\"",
+   "fieldname": "hand_embroidery_f",
+   "fieldtype": "Currency",
+   "label": " Hand Embroidery"
+  },
+  {
+   "depends_on": "eval:doc.karchupi == \"1\"",
+   "fieldname": "karchupi_f",
+   "fieldtype": "Currency",
+   "label": "Karchupi"
+  },
+  {
+   "depends_on": "eval:doc.screen_print == \"1\"",
+   "fieldname": "screen_print_f",
+   "fieldtype": "Currency",
+   "label": "Screen Print"
+  },
+  {
+   "depends_on": "eval:doc.block_print == \"1\"",
+   "fieldname": "block_print_f",
+   "fieldtype": "Currency",
+   "label": "Block Print"
+  },
+  {
+   "depends_on": "eval:doc.tiedye == \"1\"",
+   "fieldname": "tie_dye",
+   "fieldtype": "Currency",
+   "label": " Tie & Dye"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Cost Estimation",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "section_break_stcm",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-01-20 06:37:22.157262",
+ "modified_by": "sayedtkg@gmail.com",
+ "module": "DressUp",
+ "name": "Cost Estimation",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Projects Manager",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fashion Designer Manager",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fashion Designer",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
 }

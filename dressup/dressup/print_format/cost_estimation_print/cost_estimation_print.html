@@ -318,13 +318,46 @@
                     <span class="info-value">{{ doc.category }}</span>
                 </td>
                 {% endif %}
-                {% if doc.item_name %}
+                {% if doc.seson %}
                 <td>
+                    <span class="info-label">Season / সিজন</span>
+                    <span class="info-value">{{ doc.seson }}</span>
+                </td>
+                {% endif %}
+            <tr>
+                {% if doc.cut_fit_style %}
+                <td>
+                    <span class="info-label">Cut/Fit Style / কাট ফিট</span>
+                    <span class="info-value">{{ doc.cut_fit_style }}</span>
+                </td>
+                {% endif %}
+                {% if doc.collar_neck_style %}
+                <td>
+                    <span class="info-label">Collar/Neck / কলার-গলা</span>
+                    <span class="info-value">{{ doc.collar_neck_style }}</span>
+                </td>
+                {% endif %}
+                {% if doc.side_cut %}
+                <td>
+                    <span class="info-label">Side Cut / সাইড কাট</span>
+                    <span class="info-value">{{ doc.side_cut }}</span>
+                </td>
+                {% endif %}
+                {% if doc.sewing_finish %}
+                <td>
+                    <span class="info-label">Sewing Finish / সেলাই ফিনিশ</span>
+                    <span class="info-value">{{ doc.sewing_finish }}</span>
+                </td>
+                {% endif %}
+            </tr>
+            <tr>
+                {% if doc.item_name %}
+                <td colspan="2">
                     <span class="info-label">Item / আইটেম</span>
                     <span class="info-value">{{ doc.item_name }}</span>
                 </td>
                 {% endif %}
-                <td>
+                <td colspan="2">
                     <span class="info-label">Status / অবস্থা</span>
                     <span class="info-value">{% if doc.docstatus == 1 %}SUBMITTED / জমা হয়েছে{% else %}DRAFT / খসড়া{% endif %}</span>
                 </td>

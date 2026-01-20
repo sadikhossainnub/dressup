@@ -176,9 +176,37 @@
                 <span class="cell-value">{{ doc.tech_pack_no }}</span>
             </td>
             <td>
+                <span class="cell-label">Category / ক্যাটাগরি</span>
+                <span class="cell-value">{{ doc.category or '-' }}</span>
+            </td>
+            <td>
+                <span class="cell-label">Season / সিজন</span>
+                <span class="cell-value">{{ doc.seson or '-' }}</span>
+            </td>
+            <td>
+                <span class="cell-label">Sewing Finish / সেলাই ফিনিশ</span>
+                <span class="cell-value">{{ doc.sewing_finish or '-' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="cell-label">Cut/Fit Style / কাট ফিট</span>
+                <span class="cell-value">{{ doc.cut_fit_style or '-' }}</span>
+            </td>
+            <td>
+                <span class="cell-label">Collar/Neck / কলার-গলা</span>
+                <span class="cell-value">{{ doc.collar_neck_style or '-' }}</span>
+            </td>
+            <td>
+                <span class="cell-label">Side Cut / সাইড কাট</span>
+                <span class="cell-value">{{ doc.side_cut or '-' }}</span>
+            </td>
+            <td>
                 <span class="cell-label">Pattern Master / প্যাটার্ন মাস্টার</span>
                 <span class="cell-value">{{ doc.pattern_master or '-' }}</span>
             </td>
+        </tr>
+        <tr>
             <td>
                 <span class="cell-label">Sample Man / স্যাম্পল ম্যান</span>
                 <span class="cell-value">{{ doc.sample_man or '-' }}</span>
@@ -187,8 +215,6 @@
                 <span class="cell-label">Handler / হ্যান্ডলার</span>
                 <span class="cell-value">{{ doc.handler or '-' }}</span>
             </td>
-        </tr>
-        <tr>
             <td>
                 <span class="cell-label">Start Time / শুরুর সময়</span>
                 <span class="cell-value">{{ frappe.utils.format_datetime(doc.start_time_date) if doc.start_time_date else '-' }}</span>
@@ -197,19 +223,19 @@
                 <span class="cell-label">Finish Time / শেষ সময়</span>
                 <span class="cell-value">{{ frappe.utils.format_datetime(doc.finish_time_date) if doc.finish_time_date else '-' }}</span>
             </td>
+        </tr>
+        <tr>
             <td colspan="2" style="background: #fafafa;">
                 <span class="cell-label">Status / বর্তমান অবস্থা</span>
                 <span class="cell-value" style="color: {{ 'green' if doc.docstatus == 1 else '#f39c12' }}; text-transform: uppercase;">
                     {{ 'SUBMITTED / এপ্রুভড' if doc.docstatus == 1 else 'DRAFT / খসড়া' }}
                 </span>
             </td>
-        </tr>
-        <tr>
-            <td colspan="2">
+            <td>
                 <span class="cell-label">Quality Inspection Template</span>
                 <span class="cell-value">{{ doc.link_nsnp or '-' }}</span>
             </td>
-            <td colspan="2">
+            <td>
                 <span class="cell-label">PPS Image Link</span>
                 <span class="cell-value" style="word-break: break-all;">{{ doc.pps_image_link_if_any or '-' }}</span>
             </td>
