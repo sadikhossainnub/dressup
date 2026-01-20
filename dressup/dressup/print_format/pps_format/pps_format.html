@@ -173,7 +173,7 @@
         <tr>
             <td>
                 <span class="cell-label">Tech Pack No / টেক প্যাক নং</span>
-                <span class="cell-value">{{ doc.tech_pack_no }}</span>
+                <span class="cell-value">{{ doc.tech_pack_no or '-' }}</span>
             </td>
             <td>
                 <span class="cell-label">Category / ক্যাটাগরি</span>
@@ -208,8 +208,8 @@
         </tr>
         <tr>
             <td>
-                <span class="cell-label">Item Name / আইটেম</span>
-                <span class="cell-value">{{ doc.item_name or (doc.item_code if doc.item_code else '-') }}</span>
+                <span class="cell-label">Item / আইটেম</span>
+                <span class="cell-value">{{ doc.item_name or doc.item_code or '-' }}</span>
             </td>
             <td>
                 <span class="cell-label">Sample Man / স্যাম্পল ম্যান</span>
@@ -220,7 +220,7 @@
                 <span class="cell-value">{{ doc.handler or '-' }}</span>
             </td>
             <td>
-                <span class="cell-label">Quality Inspection Template</span>
+                <span class="cell-label">Quality Inspection / কোয়ালিটি</span>
                 <span class="cell-value">{{ doc.link_nsnp or '-' }}</span>
             </td>
         </tr>
@@ -234,7 +234,7 @@
                 <span class="cell-value">{{ frappe.utils.format_datetime(doc.finish_time_date) if doc.finish_time_date else '-' }}</span>
             </td>
             <td>
-                 <span class="cell-label">PPS Image Link</span>
+                <span class="cell-label">PPS Image Link / ইমেজ লিংক</span>
                 <span class="cell-value" style="word-break: break-all;">{{ doc.pps_image_link_if_any or '-' }}</span>
             </td>
             <td style="background: #fafafa;">
@@ -262,9 +262,9 @@
                             <div class="swatch-code">{{ item.item_code }}</div>
                             <div class="swatch-name">{{ item.item_name }}</div>
                             <div class="swatch-qty">
-                                <span>Req: {{ "%.2f"|format(item.quantity|float) }} {{ item.default_unit_of_measurement or item.uom }}</span>
+                                <span>Req: {{ "%.2f"|format(item.quantity|float) }} {{ item.default_unit_of_measurement or item.uom or '' }}</span>
                                 {% if item.actual_quantity %}
-                                <br><span style="color: #444;">Act: {{ "%.2f"|format(item.actual_quantity|float) }} {{ item.default_unit_of_measurement or item.uom }}</span>
+                                <br><span style="color: #444;">Act: {{ "%.2f"|format(item.actual_quantity|float) }} {{ item.default_unit_of_measurement or item.uom or '' }}</span>
                                 {% endif %}
                             </div>
                         </div>
@@ -316,7 +316,7 @@
     </table>
     {% endif %}
 
-    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed;">
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; page-break-inside: avoid;">
         <tr>
             <td style="width: 50%; vertical-align: top; padding-right: 6px;">
                 <div class="section-title" style="margin-top: 0;">Washing Guidelines</div>
@@ -375,14 +375,16 @@
     </table>
     {% endif %}
 
-    <div style="margin-top: 15px; padding: 8px; border: 2pt solid #000; background: #eee;">
+    {% if doc.read_confirm_carefully or doc.docstatus == 1 %}
+    <div style="margin-top: 15px; padding: 8px; border: 2pt solid #000; background: #eee; page-break-inside: avoid;">
         <div style="font-size: 7.5pt; font-weight: 900; text-transform: uppercase; color: #000;">Designer's Disclaimer:</div>
         <div style="font-size: 7.5pt; line-height: 1.2;">
             {{ doc.read_confirm_carefully or 'Please verify all components, sizing, and colors before moving to bulk production. Any deviation must be approved by the design head.' }}
         </div>
     </div>
+    {% endif %}
 
-    <table style="width: 100%; margin-top: 10px; border: none; font-size: 7.5pt; color: #555;">
+    <table class="footer-table" style="width: 100%; margin-top: 10px; border: none; font-size: 7.5pt; color: #555;">
         <tr>
             <td style="border: none;">DRESSUP MANUFACTURING | PPS MODULE</td>
             <td style="border: none; text-align: right;">PRINTED: {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</td>
