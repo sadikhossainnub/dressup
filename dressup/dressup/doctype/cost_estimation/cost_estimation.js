@@ -73,7 +73,7 @@ frappe.ui.form.on("Cost Estimation Material", {
 });
 
 frappe.ui.form.on("Cost Estimation", {
-	refresh(frm) {
+	refresh: function (frm) {
 		frm.set_query("tech_pack_no", () => {
 			return {
 				filters: {

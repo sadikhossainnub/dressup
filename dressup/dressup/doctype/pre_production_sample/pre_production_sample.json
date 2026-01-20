@@ -29,8 +29,6 @@
   "production_section",
   "fabrics",
   "trim_accessories",
-  "section_break_xgdz",
-  "fabric_dupatta",
   "size_chart_section",
   "size_chart_in_inch",
   "size_note_section",
@@ -54,7 +52,8 @@
   "quality_tab",
   "other_tests_section",
   "link_nsnp",
-  "stock_entry"
+  "stock_entry",
+  "amended_from"
  ],
  "fields": [
   {
@@ -145,17 +144,6 @@
    "fieldname": "size_chart_section",
    "fieldtype": "Section Break",
    "label": "Size Chart"
-  },
-  {
-   "fieldname": "section_break_xgdz",
-   "fieldtype": "Section Break",
-   "label": "Fabric - Dupatta"
-  },
-  {
-   "fieldname": "fabric_dupatta",
-   "fieldtype": "Table",
-   "label": "Fabric - Dupatta",
-   "options": "Fabric Dupatta"
   },
   {
    "fieldname": "fabrics",
@@ -344,11 +332,22 @@
    "fieldtype": "Data",
    "label": "Item Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Pre Production Sample",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2026-01-21 02:32:50.782733",
+ "modified": "2026-01-21 03:52:26.326968",
  "modified_by": "sayedtkg@gmail.com",
  "module": "DressUp",
  "name": "Pre Production Sample",
@@ -356,6 +355,8 @@
  "owner": "Administrator",
  "permissions": [
   {
+   "amend": 1,
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -364,7 +365,9 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "select": 1,
    "share": 1,
+   "submit": 1,
    "write": 1
   },
   {
@@ -376,7 +379,6 @@
   },
   {
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -388,7 +390,6 @@
   },
   {
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -400,7 +401,6 @@
   },
   {
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -415,5 +415,7 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
 }

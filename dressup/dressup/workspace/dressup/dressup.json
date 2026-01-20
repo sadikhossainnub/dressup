@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"B3ZBbzHt_T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">DressUP</span>\",\"col\":12}},{\"id\":\"JJ30H5rrBP\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Monthly Sketch Specification Sample\",\"col\":3}},{\"id\":\"7DJI0Um_DM\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Daily Sketch Specification Sample\",\"col\":3}},{\"id\":\"ZNAzlGtEQx\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"mQ2qmjwU8-\",\"type\":\"card\",\"data\":{\"card_name\":\"Designer\",\"col\":4}},{\"id\":\"Umhpm7x7gs\",\"type\":\"card\",\"data\":{\"card_name\":\"Barcode\",\"col\":4}}]",
+ "content": "[{\"id\":\"B3ZBbzHt_T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">DressUP</span>\",\"col\":12}},{\"id\":\"JJ30H5rrBP\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Monthly Sketch Specification Sample\",\"col\":3}},{\"id\":\"7DJI0Um_DM\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Daily Sketch Specification Sample\",\"col\":3}},{\"id\":\"tIu1Lf9TMw\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Cost Estimation\",\"col\":3}},{\"id\":\"C_uw6unwHL\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Pre Production Sample\",\"col\":3}},{\"id\":\"ZNAzlGtEQx\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"mQ2qmjwU8-\",\"type\":\"card\",\"data\":{\"card_name\":\"Designer\",\"col\":4}},{\"id\":\"Umhpm7x7gs\",\"type\":\"card\",\"data\":{\"card_name\":\"Barcode\",\"col\":4}}]",
  "creation": "2025-11-05 17:24:33.874729",
  "custom_blocks": [],
  "docstatus": 0,
@@ -81,8 +81,8 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-28 23:59:24.356777",
- "modified_by": "Administrator",
+ "modified": "2026-01-21 03:26:34.480877",
+ "modified_by": "sayedtkg@gmail.com",
  "module": "DressUp",
  "name": "DressUP",
  "number_cards": [
@@ -91,8 +91,16 @@
    "number_card_name": "Monthly Sketch Specification Sample"
   },
   {
+   "label": "Cost Estimation",
+   "number_card_name": "Cost Estimation"
+  },
+  {
    "label": "Daily Sketch Specification Sample",
    "number_card_name": "Daily Sketch Specification Sample"
+  },
+  {
+   "label": "Pre Production Sample",
+   "number_card_name": "Pre Production Sample Monthly"
   }
  ],
  "owner": "Administrator",

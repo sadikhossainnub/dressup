@@ -893,7 +893,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-21 02:56:11.100545",
+ "modified": "2026-01-21 03:29:05.783785",
  "modified_by": "sayedtkg@gmail.com",
  "module": "DressUp",
  "name": "Sketch Specification Sample Making Sheet",
@@ -990,5 +990,7 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
 }
