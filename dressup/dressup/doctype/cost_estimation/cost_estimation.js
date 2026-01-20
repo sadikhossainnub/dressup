@@ -5,7 +5,7 @@ frappe.ui.form.on("Cost Estimation Accessory", {
 	itemcode(frm, cdt, cdn) {
 		let row = locals[cdt][cdn];
 		if (row.itemcode) {
-			frappe.db.get_value("Item Price", {item_code: row.itemcode}, "price_list_rate", (r) => {
+			frappe.db.get_value("Item Price", { item_code: row.itemcode }, "price_list_rate", (r) => {
 				if (r && r.price_list_rate) {
 					frappe.model.set_value(cdt, cdn, "rate", r.price_list_rate);
 				} else {
@@ -44,7 +44,7 @@ frappe.ui.form.on("Cost Estimation Material", {
 					frappe.model.set_value(cdt, cdn, "stock_in_hand", r.message || 0);
 				}
 			});
-			frappe.db.get_value("Item Price", {item_code: row.item_code}, "price_list_rate", (r) => {
+			frappe.db.get_value("Item Price", { item_code: row.item_code }, "price_list_rate", (r) => {
 				if (r && r.price_list_rate) {
 					frappe.model.set_value(cdt, cdn, "rate", r.price_list_rate);
 				} else {
@@ -74,8 +74,16 @@ frappe.ui.form.on("Cost Estimation Material", {
 
 frappe.ui.form.on("Cost Estimation", {
 	refresh(frm) {
+		frm.set_query("tech_pack_no", () => {
+			return {
+				filters: {
+					docstatus: 1
+				}
+			};
+		});
+
 		if (frm.doc.docstatus === 1) {
-			frm.add_custom_button(__('Pre Production Sample'), function() {
+			frm.add_custom_button(__('Pre Production Sample'), function () {
 				frappe.model.open_mapped_doc({
 					method: 'dressup.dressup.doctype.cost_estimation.cost_estimation.make_pre_production_sample',
 					frm: frm
@@ -107,9 +115,9 @@ frappe.ui.form.on("Cost Estimation", {
 	karchupi_f(frm) { frm.trigger("calculate_total_tailoring"); },
 	tie_dye(frm) { frm.trigger("calculate_total_tailoring"); },
 	calculate_total_tailoring(frm) {
-		let total = flt(frm.doc.cutting_f) + flt(frm.doc.machine_embroidery_f) + flt(frm.doc.screen_print_f) + 
-					flt(frm.doc.sewing_f) + flt(frm.doc.hand_embroidery_f) + flt(frm.doc.block_print_f) + 
-					flt(frm.doc.hand_work_estimation) + flt(frm.doc.karchupi_f) + flt(frm.doc.tie_dye);
+		let total = flt(frm.doc.cutting_f) + flt(frm.doc.machine_embroidery_f) + flt(frm.doc.screen_print_f) +
+			flt(frm.doc.sewing_f) + flt(frm.doc.hand_embroidery_f) + flt(frm.doc.block_print_f) +
+			flt(frm.doc.hand_work_estimation) + flt(frm.doc.karchupi_f) + flt(frm.doc.tie_dye);
 		frm.set_value("total_tailoring", total);
 	},
 	wash_iron(frm) { frm.trigger("calculate_total_finishing"); },
