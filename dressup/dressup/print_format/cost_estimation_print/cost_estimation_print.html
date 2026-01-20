@@ -428,21 +428,60 @@
                     <div class="section">
                         <div class="section-title">Tailoring Charges / সেলাই খরচ</div>
                         <table style="width: 100%; border-collapse: collapse;">
+                            {% if doc.cutting_f %}
                             <tr>
-                                <td style="width: 50%; padding-right: 5px; border: none; vertical-align: top;">
-                                    {% if doc.cutting_f %}<div class="card"><div class="card-label">Cutting / কাটিং</div><div class="card-value">{{ frappe.utils.fmt_money(doc.cutting_f, currency=doc.currency) }}</div></div>{% endif %}
-                                    {% if doc.sewing_f %}<div class="card"><div class="card-label">Sewing / সেলাই</div><div class="card-value">{{ frappe.utils.fmt_money(doc.sewing_f, currency=doc.currency) }}</div></div>{% endif %}
-                                    {% if doc.machine_embroidery_f %}<div class="card"><div class="card-label">Machine Emb / মেশিন এমব্রয়ডারি</div><div class="card-value">{{ frappe.utils.fmt_money(doc.machine_embroidery_f, currency=doc.currency) }}</div></div>{% endif %}
-                                    {% if doc.screen_print_f %}<div class="card"><div class="card-label">Screen Print / স্ক্রিন প্রিন্ট</div><div class="card-value">{{ frappe.utils.fmt_money(doc.screen_print_f, currency=doc.currency) }}</div></div>{% endif %}
-                                </td>
-                                <td style="width: 50%; padding-left: 5px; border: none; vertical-align: top;">
-                                    {% if doc.hand_embroidery_f %}<div class="card"><div class="card-label">Hand Emb / হাতের এমব্রয়ডারি</div><div class="card-value">{{ frappe.utils.fmt_money(doc.hand_embroidery_f, currency=doc.currency) }}</div></div>{% endif %}
-                                    {% if doc.hand_work_estimation %}<div class="card"><div class="card-label">Hand Work / হাতের কাজ</div><div class="card-value">{{ frappe.utils.fmt_money(doc.hand_work_estimation, currency=doc.currency) }}</div></div>{% endif %}
-                                    {% if doc.karchupi_f %}<div class="card"><div class="card-label">Karchupi / কারচুপি</div><div class="card-value">{{ frappe.utils.fmt_money(doc.karchupi_f, currency=doc.currency) }}</div></div>{% endif %}
-                                    {% if doc.block_print_f %}<div class="card"><div class="card-label">Block Print / ব্লক প্রিন্ট</div><div class="card-value">{{ frappe.utils.fmt_money(doc.block_print_f, currency=doc.currency) }}</div></div>{% endif %}
-                                    {% if doc.tie_dye %}<div class="card"><div class="card-label">Tie & Dye / টাই ডাই</div><div class="card-value">{{ frappe.utils.fmt_money(doc.tie_dye, currency=doc.currency) }}</div></div>{% endif %}
-                                </td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Cutting / কাটিং</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.cutting_f, currency=doc.currency) }}</td>
                             </tr>
+                            {% endif %}
+                            {% if doc.sewing_f %}
+                            <tr>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Sewing / সেলাই</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.sewing_f, currency=doc.currency) }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if doc.machine_embroidery_f %}
+                            <tr>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Machine Emb / মেশিন এমব্রয়ডারি</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.machine_embroidery_f, currency=doc.currency) }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if doc.screen_print_f %}
+                            <tr>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Screen Print / স্ক্রিন প্রিন্ট</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.screen_print_f, currency=doc.currency) }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if doc.hand_embroidery_f %}
+                            <tr>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Hand Emb / হাতের এমব্রয়ডারি</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.hand_embroidery_f, currency=doc.currency) }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if doc.hand_work_estimation %}
+                            <tr>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Hand Work / হাতের কাজ</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.hand_work_estimation, currency=doc.currency) }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if doc.karchupi_f %}
+                            <tr>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Karchupi / কারচুপি</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.karchupi_f, currency=doc.currency) }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if doc.block_print_f %}
+                            <tr>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Block Print / ব্লক প্রিন্ট</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.block_print_f, currency=doc.currency) }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if doc.tie_dye %}
+                            <tr>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee;">Tie & Dye / টাই ডাই</td>
+                                <td style="padding: 4px 0; border-bottom: 1px solid #eee; text-align: right;">{{ frappe.utils.fmt_money(doc.tie_dye, currency=doc.currency) }}</td>
+                            </tr>
+                            {% endif %}
                         </table>
                     </div>
                 </td>
