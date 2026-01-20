@@ -23,6 +23,7 @@
   "sample_man",
   "sample_man_name",
   "handler",
+  "handler_name",
   "finish_time_date",
   "seson",
   "sewing_finish",
@@ -75,7 +76,7 @@
   {
    "fieldname": "handler",
    "fieldtype": "Link",
-   "label": "Handler:",
+   "label": "Handler",
    "options": "Employee"
   },
   {
@@ -342,12 +343,18 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fetch_from": "handler.employee_name",
+   "fieldname": "handler_name",
+   "fieldtype": "Data",
+   "label": "Handler Name"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-21 03:52:26.326968",
+ "modified": "2026-01-21 04:10:45.839743",
  "modified_by": "sayedtkg@gmail.com",
  "module": "DressUp",
  "name": "Pre Production Sample",
