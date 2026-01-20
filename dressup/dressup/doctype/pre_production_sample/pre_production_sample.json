@@ -62,7 +62,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Series",
-   "options": "PPS-.YYYY.-",
+   "options": "PPS-.YYYY.-.####",
    "reqd": 1
   },
   {
@@ -348,7 +348,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-20 07:04:47.162054",
+ "modified": "2026-01-21 02:32:50.782733",
  "modified_by": "sayedtkg@gmail.com",
  "module": "DressUp",
  "name": "Pre Production Sample",
