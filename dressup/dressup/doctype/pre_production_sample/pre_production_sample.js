@@ -3,20 +3,25 @@
 
 frappe.ui.form.on("Pre Production Sample", {
 	refresh(frm) {
-		// Add Quality Inspection button for draft PPS
-		if (!frm.doc.__islocal && frm.doc.docstatus === 0) {
-			// Add Quality Inspection button for draft PPS
-			frappe.db.count('Quality Inspection', {
-				reference_type: 'Pre Production Sample',
-				reference_name: frm.doc.name
-			}).then(count => {
-				if (count === 0) {
-					frm.add_custom_button(__('Quality Inspection'), function () {
-						frappe.model.open_mapped_doc({
-							method: 'dressup.dressup.doctype.pre_production_sample.pre_production_sample.make_quality_inspection',
-							frm: frm
-						});
-					}, __('Create'));
+		if (!frm.is_new() && frm.doc.docstatus !== 2) {
+			frappe.call({
+				method: 'frappe.client.get_count',
+				args: {
+					doctype: 'Quality Inspection',
+					filters: {
+						reference_type: 'Pre Production Sample',
+						reference_name: frm.doc.name
+					}
+				},
+				callback: function (r) {
+					if (!r.message || r.message === 0) {
+						frm.add_custom_button(__('Quality Inspection'), function () {
+							frappe.model.open_mapped_doc({
+								method: 'dressup.dressup.doctype.pre_production_sample.pre_production_sample.make_quality_inspection',
+								frm: frm
+							});
+						}, __('Create'));
+					}
 				}
 			});
 		}

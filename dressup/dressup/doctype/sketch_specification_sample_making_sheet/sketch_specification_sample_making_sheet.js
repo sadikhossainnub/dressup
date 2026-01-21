@@ -3,15 +3,22 @@
 
 frappe.ui.form.on('Sketch Specification Sample Making Sheet', {
 	refresh: function (frm) {
-		if (frm.doc.docstatus === 1) {
-			frappe.db.count('Cost Estimation', { tech_pack_no: frm.doc.name }).then(count => {
-				if (count === 0) {
-					frm.add_custom_button(__('Cost Estimation'), function () {
-						frappe.model.open_mapped_doc({
-							method: 'dressup.dressup.doctype.sketch_specification_sample_making_sheet.sketch_specification_sample_making_sheet.make_cost_estimation',
-							frm: frm
-						});
-					}, __('Create'));
+		if (!frm.is_new() && frm.doc.docstatus !== 2) {
+			frappe.call({
+				method: 'frappe.client.get_count',
+				args: {
+					doctype: 'Cost Estimation',
+					filters: { tech_pack_no: frm.doc.name }
+				},
+				callback: function (r) {
+					if (!r.message || r.message === 0) {
+						frm.add_custom_button(__('Cost Estimation'), function () {
+							frappe.model.open_mapped_doc({
+								method: 'dressup.dressup.doctype.sketch_specification_sample_making_sheet.sketch_specification_sample_making_sheet.make_cost_estimation',
+								frm: frm
+							});
+						}, __('Create'));
+					}
 				}
 			});
 		}

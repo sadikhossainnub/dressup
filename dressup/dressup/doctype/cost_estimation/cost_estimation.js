@@ -82,15 +82,22 @@ frappe.ui.form.on("Cost Estimation", {
 			};
 		});
 
-		if (frm.doc.docstatus === 1) {
-			frappe.db.count('Pre Production Sample', { tech_pack_no: frm.doc.tech_pack_no }).then(count => {
-				if (count === 0) {
-					frm.add_custom_button(__('Pre Production Sample'), function () {
-						frappe.model.open_mapped_doc({
-							method: 'dressup.dressup.doctype.cost_estimation.cost_estimation.make_pre_production_sample',
-							frm: frm
-						});
-					}, __('Create'));
+		if (!frm.is_new() && frm.doc.docstatus !== 2) {
+			frappe.call({
+				method: 'frappe.client.get_count',
+				args: {
+					doctype: 'Pre Production Sample',
+					filters: { tech_pack_no: frm.doc.tech_pack_no }
+				},
+				callback: function (r) {
+					if (!r.message || r.message === 0) {
+						frm.add_custom_button(__('Pre Production Sample'), function () {
+							frappe.model.open_mapped_doc({
+								method: 'dressup.dressup.doctype.cost_estimation.cost_estimation.make_pre_production_sample',
+								frm: frm
+							});
+						}, __('Create'));
+					}
 				}
 			});
 		}

@@ -143,9 +143,8 @@ def make_quality_inspection(source_name, target_doc=None):
 				"doctype": "Quality Inspection",
 				"field_map": {
 					"name": "reference_name",
-					"tech_pack_no": "item_code"
-				},
-				"validation": {"docstatus": ["=", 1]}
+					"item_code": "item_code"
+				}
 			}
 		},
 		target_doc,

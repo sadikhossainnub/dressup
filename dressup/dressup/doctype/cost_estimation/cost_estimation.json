@@ -239,7 +239,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.hand_embroidery == \"1\" || doc.hand_work == \"1\"",
    "fieldname": "hand_embroidery_75",
    "fieldtype": "Data",
    "label": "Hand Embroidery"
@@ -473,7 +472,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-20 06:37:22.157262",
+ "modified": "2026-01-21 17:22:26.214444",
  "modified_by": "sayedtkg@gmail.com",
  "module": "DressUp",
  "name": "Cost Estimation",
