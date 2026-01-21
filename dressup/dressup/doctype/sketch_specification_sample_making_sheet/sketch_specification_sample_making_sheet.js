@@ -3,7 +3,7 @@
 
 frappe.ui.form.on('Sketch Specification Sample Making Sheet', {
 	refresh: function (frm) {
-		if (!frm.is_new() && frm.doc.docstatus !== 2) {
+		if (frm.doc.docstatus === 1) {
 			frappe.call({
 				method: 'frappe.client.get_count',
 				args: {

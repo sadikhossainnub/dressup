@@ -135,7 +135,8 @@ def make_pre_production_sample(source_name, target_doc=None):
 					"seson": "seson",
 					"sewing_finish": "sewing_finish"
 				},
-				"field_no_map": ["naming_series"]
+				"field_no_map": ["naming_series"],
+				"validation": {"docstatus": ["=", 1]}
 			},
 			"Cost Estimation Material": {
 				"doctype": "PPS Fabric Item",

@@ -113,7 +113,8 @@ def make_cost_estimation(source_name, target_doc=None):
 					"td": "tiedye",
 					"karchupi": "karchupi"
 				},
-				"field_no_map": ["naming_series"]
+				"field_no_map": ["naming_series"],
+				"validation": {"docstatus": ["=", 1]}
 			}
 		},
 		target_doc

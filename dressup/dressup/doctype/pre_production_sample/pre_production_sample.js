@@ -3,7 +3,7 @@
 
 frappe.ui.form.on("Pre Production Sample", {
 	refresh(frm) {
-		if (!frm.is_new() && frm.doc.docstatus !== 2) {
+		if (!frm.is_new() && frm.doc.docstatus === 0) {
 			frappe.call({
 				method: 'frappe.client.get_count',
 				args: {
