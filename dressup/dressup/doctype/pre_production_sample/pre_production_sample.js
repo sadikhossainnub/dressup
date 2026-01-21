@@ -3,20 +3,62 @@
 
 frappe.ui.form.on("Pre Production Sample", {
 	refresh(frm) {
+		// Add Quality Inspection button for draft PPS
 		if (!frm.doc.__islocal && frm.doc.docstatus === 0) {
-			frm.add_custom_button(__('Fetch Tech Pack Data'), function () {
-				frm.trigger('fetch_tech_pack_data');
+			// Add Quality Inspection button for draft PPS
+			frappe.db.count('Quality Inspection', {
+				reference_type: 'Pre Production Sample',
+				reference_name: frm.doc.name
+			}).then(count => {
+				if (count === 0) {
+					frm.add_custom_button(__('Quality Inspection'), function () {
+						frappe.model.open_mapped_doc({
+							method: 'dressup.dressup.doctype.pre_production_sample.pre_production_sample.make_quality_inspection',
+							frm: frm
+						});
+					}, __('Create'));
+				}
 			});
 		}
 
+		// Show Quality Inspection button for submitted PPS (for reference)
 		if (frm.doc.docstatus === 1) {
-			frm.add_custom_button(__('Quality Inspection'), function () {
-				frappe.model.open_mapped_doc({
-					method: 'dressup.dressup.doctype.pre_production_sample.pre_production_sample.make_quality_inspection',
-					frm: frm
+			frm.add_custom_button(__('View Quality Inspection'), function () {
+				frappe.set_route('List', 'Quality Inspection', {
+					reference_type: 'Pre Production Sample',
+					reference_name: frm.doc.name
 				});
-			}, __('Create'));
+			});
 		}
+	},
+
+	before_submit(frm) {
+		// Check if Quality Inspection exists and is accepted
+		return frappe.call({
+			method: 'frappe.client.get_list',
+			args: {
+				doctype: 'Quality Inspection',
+				filters: {
+					reference_type: 'Pre Production Sample',
+					reference_name: frm.doc.name,
+					docstatus: 1
+				},
+				fields: ['name', 'status']
+			},
+			async: false,
+			callback: function (r) {
+				if (!r.message || r.message.length === 0) {
+					frappe.throw(__('Please create and submit Quality Inspection before submitting PPS'));
+					frappe.validated = false;
+				} else {
+					let qi = r.message[0];
+					if (qi.status !== 'Accepted') {
+						frappe.throw(__('Quality Inspection must be Accepted before submitting PPS. Current status: {0}', [qi.status]));
+						frappe.validated = false;
+					}
+				}
+			}
+		});
 	},
 
 	tech_pack_no(frm) {

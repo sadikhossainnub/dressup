@@ -81,16 +81,19 @@ class PreProductionSample(Document):
 		# Collect all items with actual quantity > 0
 		items = []
 		for table in ['fabrics', 'trim_accessories', 'fabric_dupatta']:
-			for row in self.get(table):
-				if row.actual_quantity:
-					items.append({
-						"item_code": row.item_code,
-						"qty": row.actual_quantity,
-						"uom": row.default_unit_of_measurement,
-						"s_warehouse": self.source_warehouse,
-						"t_warehouse": None,
-						"expense_account": frappe.db.get_value("Company", frappe.defaults.get_defaults().company, "default_expense_account") or "Cost of Goods Sold - DT"
-					})
+			# Check if table exists and is not None
+			table_data = self.get(table)
+			if table_data:
+				for row in table_data:
+					if row.actual_quantity:
+						items.append({
+							"item_code": row.item_code,
+							"qty": row.actual_quantity,
+							"uom": row.default_unit_of_measurement,
+							"s_warehouse": self.source_warehouse,
+							"t_warehouse": None,
+							"expense_account": frappe.db.get_value("Company", frappe.defaults.get_defaults().company, "default_expense_account") or "Cost of Goods Sold - DT"
+						})
 		
 		if not items:
 			return
