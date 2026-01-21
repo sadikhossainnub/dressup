@@ -1,0 +1,232 @@
+{% set pps_doc = doc %}
+{% set sketch_doc = frappe.get_doc("Sketch Specification Sample Making Sheet", doc.tech_pack_no) if doc.tech_pack_no else None %}
+{% set ce_list = frappe.get_all("Cost Estimation", filters={"tech_pack_no": doc.tech_pack_no}, order_by="creation desc", limit=1) %}
+{% set ce_doc = None %}
+{% if ce_list %}
+    {% set ce_doc = frappe.get_doc("Cost Estimation", ce_list[0].name) %}
+{% endif %}
+{% set qi_list = frappe.get_all("Quality Inspection", filters={"reference_name": doc.name, "reference_type": "Pre Production Sample"}, order_by="creation desc", limit=1) %}
+{% set qi_doc = None %}
+{% if qi_list %}
+    {% set qi_doc = frappe.get_doc("Quality Inspection", qi_list[0].name) %}
+{% endif %}
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+    /* Global Print Settings */
+    @media print {
+        @page { size: A4 portrait; margin: 10mm; }
+        .page-break { page-break-after: always; display: block; clear: both; }
+        thead { display: table-header-group !important; }
+        tfoot { display: table-footer-group !important; }
+    }
+    
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    
+    /* Styles from Sketch Specification */
+    .sketch-section { font-family: 'Poppins', sans-serif; font-size: 8pt; line-height: 1.05; width: 100%; background: #fff; }
+    .sketch-section .title-bar { display: block; width: 100%; margin-bottom: 3px; padding-bottom: 1px; clear: both; }
+    .sketch-section .doc-title { float: left; font-size: 11pt; font-weight: 700; text-transform: uppercase; }
+    .sketch-section .doc-meta { float: right; text-align: right; font-weight: 600; font-size: 8pt; }
+    .sketch-section .section-box { border: 1px solid #000; padding: 4px; font-size: 7.5pt; margin-bottom: 5px; width: 100%; }
+    .sketch-section .section-header { font-weight: 700; margin-bottom: 2px; text-decoration: underline; }
+    .sketch-section .spec-table { width: 100%; border-collapse: collapse; font-size: 6pt; }
+    .sketch-section .spec-table td { padding: 0.5px 0; border-bottom: 0.5px solid #000; }
+    .sketch-section .design-image-container { width: 100%; min-height: 400px; background: #fdfdfd; text-align: center; border: 1px solid transparent; }
+    .sketch-section .design-image { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+    .sketch-section .val { text-align: right; font-weight: 600; font-size: 6.5pt; }
+
+    /* Styles from Cost Estimation */
+    .ce-section { font-family: 'Poppins', sans-serif; font-size: 8pt; line-height: 1.0; background: #fff; width: 100%; }
+    .ce-section .header-table { width: 100%; border-collapse: collapse; border-bottom: 2pt solid #000; margin-bottom: 4px; }
+    .ce-section .section-title { font-size: 8.5pt; font-weight: 700; text-transform: uppercase; border-bottom: 1.2pt solid #000; display: inline-block; margin-bottom: 1px; line-height: 0.7; }
+    .ce-section .standard-table { width: 100%; border-collapse: collapse; font-size: 8.5pt; }
+    .ce-section .standard-table thead th { background: #fff; padding: 3px 6px; text-align: left; font-weight: 700; border: 1px solid #000; }
+    .ce-section .standard-table tbody td { padding: 1px 6px; border: 1px solid #ddd; }
+    .ce-section .summary-table { width: 100%; border-collapse: collapse; border: 2pt solid #000; margin-top: 6px; background: #fff; }
+    .ce-section .summary-main { text-align: right; }
+    .ce-section .summary-main .value { font-size: 12pt; font-weight: 700; line-height: 1; }
+    .ce-section .price-chip { background: white; border: 1px solid #333; border-radius: 8px; padding: 4px 8px; text-align: center; }
+
+    /* Styles from PPS */
+    .pps-section { font-family: 'Inter', sans-serif; font-size: 8.5pt; color: #000; line-height: 1.3; width: 100%; background: #fff; }
+    .pps-section .pps-header { border-bottom: 2px solid #000; padding-bottom: 3px; margin-bottom: 5px; }
+    .pps-section .section-title { background: #fff; color: #000; border: 1px solid #000; padding: 3px 10px; font-size: 8pt; font-weight: 700; text-transform: uppercase; margin-top: 5px; margin-bottom: 4px; border-radius: 2px; }
+    .pps-section .swatch-card { border: 1px solid #000; border-radius: 4px; background: #fff; page-break-inside: avoid; }
+    .pps-section .image-well { height: 120px; background: #fff; padding: 5px; text-align: center; vertical-align: middle; }
+    .pps-section .image-well img { max-width: 100%; max-height: 150px; }
+    .pps-section .gallery-img img { width: 100%; height: auto; border: 1px solid #ddd; display: block; }
+    .pps-section .gallery-label { font-size: 7pt; font-weight: 700; margin-top: 5px; border: 0.5pt solid #000; padding: 2px; text-align: center; }
+
+    /* Global Utils */
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+</style>
+
+<div class="master-tech-pack">
+
+    <!-- ================= PAGE 1: SKETCH SPECIFICATION ================= -->
+    <div class="page-break sketch-section">
+        {% if sketch_doc %}
+            {% set doc = sketch_doc %}
+            <div class="sketch-container">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead><tr><td>
+                        <div style="width: 100%; margin-bottom: 5px;">{{ letter_head }}</div>
+                        <div class="title-bar">
+                            <div class="doc-title">SKETCH SPECIFICATION SHEET</div>
+                            <div class="doc-meta">
+                                <div>DOC ID: {{ doc.name }}</div>
+                                <div>Date: {{ frappe.utils.formatdate(doc.creation) }}</div>
+                            </div>
+                        </div>
+                    </td></tr></thead>
+                    <tbody>
+                        <tr><td style="border:none; padding:5px 0;">
+                            <div style="column-count: 2; column-gap: 15px; border: 0.5px solid #000; padding: 5px; border-radius: 2px;">
+                                {% set info_fields = [
+                                    ('Tech Pack No', doc.name), ('Designer Name', doc.designer_name), ('Style No', doc.design_no),
+                                    ('Category', doc.category), ('Season', doc.seson), ('Sewing Finish', doc.sewing_finish),
+                                    ('Start Date', frappe.utils.formatdate(doc.start_date) if doc.start_date else ''),
+                                    ('Item Name', doc.item_name), ('Cut/ Fit Style', doc.cut_fit_style),
+                                    ('Collar/ Neck Style', doc.collar_neck_style), ('Side Cut', doc.side_cut),
+                                    ('Submission Date', frappe.utils.formatdate(doc.submission_date) if doc.submission_date else '')
+                                ] %}
+                                {% for label, val in info_fields %}{% if val %}
+                                <div style="font-size: 6.5pt; padding: 1px 0;"><span style="font-weight:700;">{{ label }}:</span> <span>{{ val }}</span></div>
+                                {% endif %}{% endfor %}
+                            </div>
+                        </td></tr>
+                        <tr><td style="border:none; padding:10px 0; vertical-align: top;">
+                            <div style="float: right; width: 58%; margin-left: 2%;">
+                                <div class="design-image-container">
+                                    {% if doc.image %}<img src="{{ frappe.utils.get_url(doc.image) }}" class="design-image">
+                                    {% elif doc.additional_images and doc.additional_images[0] %}<img src="{{ frappe.utils.get_url(doc.additional_images[0].image) }}" class="design-image">
+                                    {% else %}<div style="padding: 100px; color: #ccc;">No Image</div>{% endif %}
+                                </div>
+                            </div>
+                            <div style="width: 40%; float: left;">
+                                {% set m_defs = [
+                                    ('full_length', 'দৈর্ঘ্য (HPS → CF হেম)'), ('cf_length', 'CB দৈর্ঘ্য'), ('cb_length', 'বক্ষ (Chest)'),
+                                    ('waist_circumstance', 'কোমর (Waist)'), ('bust', 'উচ্চ হিপ (High Hip)'), ('upper_hip', 'নিম্ন হিপ (Low Hip)'),
+                                    ('lower_hip', 'হেম সুইপ (Hem Sweep)'), ('front_neck_depth', 'গলার ড্রপ (সামনে)'), ('back_neck_depth', 'গলার ড্রপ (পিছনে)'),
+                                    ('shoulder_tip_to_side_waist', 'গলার প্রস্থ'), ('shoulder', 'কাঁধ থেকে কাঁধ'), ('armhole', 'আর্মহোল'),
+                                    ('full_length_arm', 'স্লিভ দৈর্ঘ্য'), ('biceps', 'বাইসেপ'), ('cuff_opening', 'কাফ ওপেনিং')
+                                ] %}
+                                <div class="section-header" style="font-size: 8.5pt;">Measurements:</div>
+                                <div style="column-count: 2; column-gap: 10px;">
+                                {% for f, l in m_defs %}{% if doc.get(f) %}
+                                <div style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #000; font-size: 6pt; padding: 0.5px 0;"><span>{{ l }}</span><span class="val">{{ doc.get(f) }}</span></div>
+                                {% endif %}{% endfor %}
+                                </div>
+                            </div>
+                        </td></tr>
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div style="padding: 100px; text-align: center; border: 1px dashed #ccc;">SKETCH SHEET NOT LINKED</div>
+        {% endif %}
+    </div>
+
+    <!-- ================= PAGE 2: COST ESTIMATION ================= -->
+    <div class="page-break ce-section">
+        {% if ce_doc %}
+            {% set doc = ce_doc %}
+            <div class="print-content">
+                <div style="width: 100%; margin-bottom: 5px;">{{ letter_head }}</div>
+                <table class="header-table" style="border-bottom: 1.5px solid #000; margin-bottom: 8px;">
+                    <tr>
+                        <td><h1 style="font-size: 14pt; font-weight: 900;">COST ESTIMATION <span style="font-weight: 300; font-size: 10pt; color: #666;">/ আনুমানিক খরচের হিসাব</span></h1></td>
+                        <td style="text-align: right; vertical-align: bottom; font-size: 9pt; font-weight: 700;">REF: {{ doc.name }}<br>DATE: {{ frappe.utils.formatdate(doc.date) }}</td>
+                    </tr>
+                </table>
+                <div style="border: 1.5px solid #000; padding: 6px; margin-bottom: 10px; border-radius: 4px;">
+                    <table style="width: 100%; font-size: 8pt; table-layout: fixed;"><tr>
+                        <td style="width: 50%; vertical-align: top; padding-right: 10px;">
+                            <div><span style="font-weight: 700;">Tech Pack No:</span> {{ doc.tech_pack_no or '-' }}</div>
+                            <div><span style="font-weight: 700;">Designer:</span> {{ doc.designer or '-' }}</div>
+                            <div><span style="font-weight: 700;">Style No:</span> {{ doc.design_no or '-' }}</div>
+                        </td>
+                        <td style="width: 50%; vertical-align: top; padding-left: 10px;">
+                            <div><span style="font-weight: 700;">Item:</span> {{ doc.item_name or '-' }}</div>
+                            <div><span style="font-weight: 700;">Category:</span> {{ doc.category or '-' }}</div>
+                            <div><span style="font-weight: 700;">Status:</span> {{ 'DRAFT' if doc.docstatus==0 else 'APPROVED' }}</div>
+                        </td>
+                    </tr></table>
+                </div>
+                {% if doc.materials %}
+                <div class="section"><div class="section-title">Fabrics Details</div>
+                <table class="standard-table"><thead><tr><th style="width: 45%">Item Description</th><th style="width: 15%" class="text-right">Qty</th><th style="width: 10%">UOM</th><th style="width: 15%" class="text-right">Rate</th><th style="width: 15%" class="text-right">Amount</th></tr></thead>
+                <tbody>{% for row in doc.materials %}<tr><td><strong>{{ row.item_code }}</strong><br><small>{{ row.item_name }}</small></td><td class="text-right">{{ "%.2f"|format(row.qty or 0) }}</td><td>{{ row.uom }}</td><td class="text-right">{{ frappe.utils.fmt_money(row.rate, currency=doc.currency) }}</td><td class="text-right">{{ frappe.utils.fmt_money(row.amount, currency=doc.currency) }}</td></tr>{% endfor %}</tbody>
+                </table></div>
+                {% endif %}
+                <table class="summary-table"><tr>
+                    <td style="width: 50%; padding: 10px;">Cost Summary includes raw materials and all labor charges.</td>
+                    <td style="width: 50%; text-align: right; padding: 10px;"><div class="summary-main"><div style="font-size: 9pt; font-weight: 600;">TOTAL UNIT COST</div><div style="font-size: 14pt; font-weight: 900;">{{ frappe.utils.fmt_money((doc.total_fabric or 0) + (doc.total_trim_and_accessories or 0) + (doc.total_tailoring or 0) + (doc.total_finishing or 0), currency=doc.currency) }}</div></div></td>
+                </tr></table>
+            </div>
+        {% else %}
+            <div style="padding: 100px; text-align: center; border: 1px dashed #ccc;">COST ESTIMATION NOT FOUND</div>
+        {% endif %}
+    </div>
+
+    <!-- ================= PAGE 3: PRE PRODUCTION SAMPLE ================= -->
+    <div class="page-break pps-section">
+        {% set doc = pps_doc %}
+        <div class="pps-print-container">
+            <div style="width: 100%; margin-bottom: 5px;">{{ letter_head }}</div>
+            <div class="pps-header"><table style="width: 100%;"><tr>
+                <td><h1 style="margin: 0; font-size: 15pt; font-weight: 900;">PPS FORMAT <span style="font-weight: 300; font-size: 10pt; color: #666;">/ পিপিএস ফরম্যাট</span></h1></td>
+                <td style="text-align: right; font-size: 9pt; font-weight: 700; vertical-align: bottom;">REF: {{ doc.name }}<br>DATE: {{ frappe.utils.formatdate(doc.received_date) if doc.received_date else '-' }}</td>
+            </tr></table></div>
+            <div style="border: 1.5px solid #000; padding: 6px; margin-bottom: 8px; border-radius: 4px;">
+                <table style="width: 100%; font-size: 7.5pt; table-layout: fixed;"><tr>
+                    <td style="width: 50%;">
+                        <div><span style="font-weight: 700;">Tech Pack No:</span> {{ doc.tech_pack_no or '-' }}</div>
+                        <div><span style="font-weight: 700;">Category:</span> {{ doc.category or '-' }}</div>
+                        <div><span style="font-weight: 700;">Season:</span> {{ doc.seson or '-' }}</div>
+                    </td><td>
+                        <div><span style="font-weight: 700;">Item Name:</span> {{ doc.item_name or '-' }}</div>
+                        <div><span style="font-weight: 700;">Cut/ Fit:</span> {{ doc.cut_fit_style or '-' }}</div>
+                        <div><span style="font-weight: 700;">Status:</span> {{ 'DRAFT' if doc.docstatus==0 else 'APPROVED' }}</div>
+                    </td>
+                </tr></table>
+            </div>
+            {% set all_items = (doc.fabrics or []) + (doc.trim_accessories or []) %}
+            {% if all_items %}<div class="section-title">Component Swatches</div>
+            <table style="width: 100%; border-collapse: separate; border-spacing: 5px;">
+                {% for i in range(0, all_items|length, 3) %}<tr>
+                {% for j in range(0, 3) %}{% if i+j < all_items|length %}{% set item=all_items[i+j] %}<td style="width: 33.3%;">
+                    <div class="swatch-card"><div class="swatch-info"><div style="font-weight: 800;">{{ item.item_code }}</div><div style="font-size: 7.5pt;">{{ item.item_name }}</div></div>
+                    <div class="image-well">{% set img=frappe.db.get_value("Item", item.item_code, "image") %}{% if img %}<img src="{{img}}">{% else %}<div style="font-size: 7pt; padding-top: 40px;">AFFIX SWATCH</div>{% endif %}</div></div>
+                </td>{% endif %}{% endfor %}
+                </tr>{% endfor %}
+            </table>{% endif %}
+            {% if doc.size_chart_in_inch %}<div class="section-title">Actual Size Chart</div>
+            <table style="width:100%; border-collapse: collapse; border: 1.5px solid #000; font-size: 7.5pt;"><thead><tr style="background:#fff;"><th style="border:1px solid #000; padding:4px;">Size</th><th style="border:1px solid #000; padding:4px; text-align:center;">Length</th><th style="border:1px solid #000; padding:4px; text-align:center;">Bust</th><th style="border:1px solid #000; padding:4px; text-align:center;">Waist</th><th style="border:1px solid #000; padding:4px; text-align:center;">Btm Len</th></tr></thead>
+            <tbody>{% for row in doc.size_chart_in_inch %}<tr><td style="border:1px solid #000; padding:4px; font-weight:700;">{{ row.size_chart_in_inch }}</td><td style="border:1px solid #000; padding:4px; text-align:center;">{{ row.length or '-' }}</td><td style="border:1px solid #000; padding:4px; text-align:center;">{{ row.bust or '-' }}</td><td style="border:1px solid #000; padding:4px; text-align:center;">{{ row.waist or '-' }}</td><td style="border:1px solid #000; padding:4px; text-align:center;">{{ row.bottom_length or '-' }}</td></tr>{% endfor %}</tbody></table>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ================= PAGE 4: QUALITY INSPECTION ================= -->
+    <div class="pps-section">
+        {% if qi_doc %}
+            {% set doc = qi_doc %}
+            <div class="section-title">4. Quality Inspection Report</div>
+            <table style="width:100%; border-collapse: collapse; margin-bottom: 10px; border: 1px solid #000; font-size: 8.5pt;">
+                <tr style="background: #f2f2f2;"><td style="padding: 5px; border: 1px solid #000;"><strong>QI Ref:</strong> {{ doc.name }}</td><td style="padding: 5px; border: 1px solid #000;"><strong>Status:</strong> {{ doc.status }}</td></tr>
+                <tr><td colspan="2" style="padding: 5px; border: 1px solid #000;"><strong>Remarks:</strong> {{ doc.remarks or '-' }}</td></tr>
+            </table>
+            <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; font-size: 8pt;">
+                <thead><tr style="background: #f2f2f2;"><th style="border: 1px solid #000; padding: 4px;">Parameter</th><th style="border: 1px solid #000; padding: 4px;">Criteria</th><th style="border: 1px solid #000; padding: 4px;">Reading</th><th style="border: 1px solid #000; padding: 4px;">Status</th></tr></thead>
+                <tbody>{% for row in (doc.readings or []) %}<tr><td style="border: 1px solid #000; padding: 4px;">{{ row.specification }}</td><td style="border: 1px solid #000; padding: 4px;">{{ row.value or '-' }}</td><td style="border: 1px solid #000; padding: 4px;">{{ row.reading_value or row.reading_1 or '-' }}</td><td style="border: 1px solid #000; padding: 4px;">{{ row.status }}</td></tr>{% endfor %}</tbody>
+            </table>
+        {% else %}
+            <div style="padding: 30px; text-align: center; border: 1px dashed #ccc; font-size: 9pt;">QUALITY INSPECTION RECORD NOT FOUND</div>
+        {% endif %}
+    </div>
+
+</div>

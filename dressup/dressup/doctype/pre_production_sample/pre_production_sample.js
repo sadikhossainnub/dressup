@@ -35,6 +35,13 @@ frappe.ui.form.on("Pre Production Sample", {
 				});
 			});
 		}
+
+		// Add Full Tech Pack Print Button
+		if (!frm.is_new()) {
+			frm.add_custom_button(__('Print Master Tech Pack'), function () {
+				frappe.utils.print(frm.doc.doctype, frm.doc.name, "Full Tech Pack");
+			}, __('Print'));
+		}
 	},
 
 	before_submit(frm) {

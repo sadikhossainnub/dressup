@@ -1,0 +1,10 @@
+{
+    "doctype": "Print Format",
+    "doc_type": "Pre Production Sample",
+    "module": "DressUp",
+    "name": "Full Tech Pack",
+    "print_format_name": "Full Tech Pack",
+    "standard": "Yes",
+    "print_format_type": "Jinja",
+    "raw_printing": 0
+}

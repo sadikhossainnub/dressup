@@ -21,6 +21,7 @@ frappe.ui.form.on('Sketch Specification Sample Making Sheet', {
 					}
 				}
 			});
+
 		}
 		toggle_color_fields(frm);
 		render_image_previews(frm);
