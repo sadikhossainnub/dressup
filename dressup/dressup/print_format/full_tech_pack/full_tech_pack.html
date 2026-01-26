@@ -1,231 +1,1388 @@
+{# Data Fetching #}
 {% set pps_doc = doc %}
-{% set sketch_doc = frappe.get_doc("Sketch Specification Sample Making Sheet", doc.tech_pack_no) if doc.tech_pack_no else None %}
-{% set ce_list = frappe.get_all("Cost Estimation", filters={"tech_pack_no": doc.tech_pack_no}, order_by="creation desc", limit=1) %}
+{% set sketch_doc = None %}
+{% if doc.tech_pack_no %}
+{% set sketch_doc = frappe.get_doc("Sketch Specification Sample Making Sheet", doc.tech_pack_no) %}
+{% endif %}
+
 {% set ce_doc = None %}
+{% if doc.tech_pack_no %}
+{% set ce_list = frappe.get_all("Cost Estimation", filters={"tech_pack_no": doc.tech_pack_no}, order_by="creation desc",
+limit=1) %}
 {% if ce_list %}
-    {% set ce_doc = frappe.get_doc("Cost Estimation", ce_list[0].name) %}
+{% set ce_doc = frappe.get_doc("Cost Estimation", ce_list[0].name) %}
 {% endif %}
-{% set qi_list = frappe.get_all("Quality Inspection", filters={"reference_name": doc.name, "reference_type": "Pre Production Sample"}, order_by="creation desc", limit=1) %}
+{% endif %}
+
 {% set qi_doc = None %}
+{% set qi_list = frappe.get_all("Quality Inspection", filters={"reference_name": doc.name, "reference_type": "Pre
+Production Sample"}, order_by="creation desc", limit=1) %}
 {% if qi_list %}
-    {% set qi_doc = frappe.get_doc("Quality Inspection", qi_list[0].name) %}
+{% set qi_doc = frappe.get_doc("Quality Inspection", qi_list[0].name) %}
 {% endif %}
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-
-<style>
-    /* Global Print Settings */
-    @media print {
-        @page { size: A4 portrait; margin: 10mm; }
-        .page-break { page-break-after: always; display: block; clear: both; }
-        thead { display: table-header-group !important; }
-        tfoot { display: table-footer-group !important; }
-    }
-    
-    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    
-    /* Styles from Sketch Specification */
-    .sketch-section { font-family: 'Poppins', sans-serif; font-size: 8pt; line-height: 1.05; width: 100%; background: #fff; }
-    .sketch-section .title-bar { display: block; width: 100%; margin-bottom: 3px; padding-bottom: 1px; clear: both; }
-    .sketch-section .doc-title { float: left; font-size: 11pt; font-weight: 700; text-transform: uppercase; }
-    .sketch-section .doc-meta { float: right; text-align: right; font-weight: 600; font-size: 8pt; }
-    .sketch-section .section-box { border: 1px solid #000; padding: 4px; font-size: 7.5pt; margin-bottom: 5px; width: 100%; }
-    .sketch-section .section-header { font-weight: 700; margin-bottom: 2px; text-decoration: underline; }
-    .sketch-section .spec-table { width: 100%; border-collapse: collapse; font-size: 6pt; }
-    .sketch-section .spec-table td { padding: 0.5px 0; border-bottom: 0.5px solid #000; }
-    .sketch-section .design-image-container { width: 100%; min-height: 400px; background: #fdfdfd; text-align: center; border: 1px solid transparent; }
-    .sketch-section .design-image { max-width: 100%; height: auto; display: block; margin: 0 auto; }
-    .sketch-section .val { text-align: right; font-weight: 600; font-size: 6.5pt; }
-
-    /* Styles from Cost Estimation */
-    .ce-section { font-family: 'Poppins', sans-serif; font-size: 8pt; line-height: 1.0; background: #fff; width: 100%; }
-    .ce-section .header-table { width: 100%; border-collapse: collapse; border-bottom: 2pt solid #000; margin-bottom: 4px; }
-    .ce-section .section-title { font-size: 8.5pt; font-weight: 700; text-transform: uppercase; border-bottom: 1.2pt solid #000; display: inline-block; margin-bottom: 1px; line-height: 0.7; }
-    .ce-section .standard-table { width: 100%; border-collapse: collapse; font-size: 8.5pt; }
-    .ce-section .standard-table thead th { background: #fff; padding: 3px 6px; text-align: left; font-weight: 700; border: 1px solid #000; }
-    .ce-section .standard-table tbody td { padding: 1px 6px; border: 1px solid #ddd; }
-    .ce-section .summary-table { width: 100%; border-collapse: collapse; border: 2pt solid #000; margin-top: 6px; background: #fff; }
-    .ce-section .summary-main { text-align: right; }
-    .ce-section .summary-main .value { font-size: 12pt; font-weight: 700; line-height: 1; }
-    .ce-section .price-chip { background: white; border: 1px solid #333; border-radius: 8px; padding: 4px 8px; text-align: center; }
-
-    /* Styles from PPS */
-    .pps-section { font-family: 'Inter', sans-serif; font-size: 8.5pt; color: #000; line-height: 1.3; width: 100%; background: #fff; }
-    .pps-section .pps-header { border-bottom: 2px solid #000; padding-bottom: 3px; margin-bottom: 5px; }
-    .pps-section .section-title { background: #fff; color: #000; border: 1px solid #000; padding: 3px 10px; font-size: 8pt; font-weight: 700; text-transform: uppercase; margin-top: 5px; margin-bottom: 4px; border-radius: 2px; }
-    .pps-section .swatch-card { border: 1px solid #000; border-radius: 4px; background: #fff; page-break-inside: avoid; }
-    .pps-section .image-well { height: 120px; background: #fff; padding: 5px; text-align: center; vertical-align: middle; }
-    .pps-section .image-well img { max-width: 100%; max-height: 150px; }
-    .pps-section .gallery-img img { width: 100%; height: auto; border: 1px solid #ddd; display: block; }
-    .pps-section .gallery-label { font-size: 7pt; font-weight: 700; margin-top: 5px; border: 0.5pt solid #000; padding: 2px; text-align: center; }
-
-    /* Global Utils */
-    .text-right { text-align: right; }
-    .text-center { text-align: center; }
-</style>
-
-<div class="master-tech-pack">
+<div class="full-tech-pack-master">
 
     <!-- ================= PAGE 1: SKETCH SPECIFICATION ================= -->
-    <div class="page-break sketch-section">
+    <div class="page-break">
         {% if sketch_doc %}
-            {% set doc = sketch_doc %}
-            <div class="sketch-container">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead><tr><td>
-                        <div style="width: 100%; margin-bottom: 5px;">{{ letter_head }}</div>
-                        <div class="title-bar">
-                            <div class="doc-title">SKETCH SPECIFICATION SHEET</div>
-                            <div class="doc-meta">
-                                <div>DOC ID: {{ doc.name }}</div>
-                                <div>Date: {{ frappe.utils.formatdate(doc.creation) }}</div>
+        {% set doc = sketch_doc %}
+        {# START OF SAME-TO-SAME SKETCH CODE #}
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+        <style>
+            @media print {
+                @page {
+                    size: A4 portrait;
+                    margin: 10mm;
+                }
+
+                .sketch-container {
+                    width: 100% !important;
+                }
+
+                thead {
+                    display: table-header-group !important;
+                }
+
+                tfoot {
+                    display: table-footer-group !important;
+                }
+
+                .footer-sticky {
+                    display: block;
+                    width: 100%;
+                    background: #fff;
+                }
+
+                .page-break {
+                    page-break-after: always;
+                }
+            }
+
+            * {
+                box-sizing: border-box;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .sketch-container table {
+                width: 100%;
+                border-collapse: collapse;
+                page-break-inside: auto;
+            }
+
+            .sketch-container tr {
+                page-break-inside: auto;
+                page-break-after: auto;
+            }
+
+            .sketch-container td {
+                page-break-inside: auto;
+                padding: 1px 0;
+            }
+
+            .sketch-container {
+                font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 8pt;
+                color: #000;
+                line-height: 1.05;
+                width: 100%;
+                background: #fff;
+                margin: 0 auto;
+            }
+
+            .sketch-container .title-bar {
+                display: block;
+                width: 100%;
+                margin-bottom: 3px;
+                padding-bottom: 1px;
+                clear: both;
+            }
+
+            .sketch-container .doc-title {
+                float: left;
+                font-size: 11pt;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+
+            .sketch-container .doc-meta {
+                float: right;
+                text-align: right;
+                font-weight: 600;
+                font-size: 8pt;
+            }
+
+            .sketch-container .label {
+                font-weight: 700;
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                display: inline !important;
+                box-shadow: none !important;
+            }
+
+            .sketch-container .section-box {
+                border: 1px solid #000;
+                padding: 4px;
+                font-size: 7.5pt;
+                margin-bottom: 5px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .sketch-container .section-header {
+                font-weight: 700;
+                margin-bottom: 2px;
+                text-decoration: underline;
+            }
+
+            .sketch-container .spec-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 6pt;
+            }
+
+            .sketch-container .spec-table td {
+                padding: 0.5px 0;
+                vertical-align: top;
+                border-bottom: 0.5px solid #000;
+                line-height: 0.95;
+            }
+
+            .sketch-container .spec-table .val {
+                text-align: right;
+                font-weight: 600;
+                font-size: 6.5pt;
+            }
+
+            .sketch-container .cost-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 2px;
+            }
+
+            .sketch-container .cost-table td {
+                padding: 0px 0;
+            }
+
+            .sketch-container .cost-table .cost-val {
+                text-align: right;
+            }
+
+            .sketch-container .design-image-container {
+                width: 100%;
+                min-height: 400px;
+                border: 1px solid transparent;
+                display: block;
+                background: #fdfdfd;
+                text-align: center;
+            }
+
+            .sketch-container .design-image {
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin: 0 auto;
+            }
+
+            .sketch-container .footer-box {
+                border: 1px solid #000;
+                padding: 2px 6px;
+                margin-top: 3px;
+                min-height: 20px;
+                font-size: 7.5pt;
+            }
+        </style>
+        <div class="sketch-container">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <td>
+                            <div style="width: 100%; margin-bottom: 5px;">{{ letter_head }}</div>
+                            <div class="title-bar">
+                                <div class="doc-title">SKETCH SPECIFICATION SHEET</div>
+                                <div class="doc-meta">
+                                    <div>DOC ID: {{ doc.name }}</div>
+                                    <div>Date: {{ frappe.utils.formatdate(doc.creation) }}</div>
+                                </div>
                             </div>
-                        </div>
-                    </td></tr></thead>
-                    <tbody>
-                        <tr><td style="border:none; padding:5px 0;">
-                            <div style="column-count: 2; column-gap: 15px; border: 0.5px solid #000; padding: 5px; border-radius: 2px;">
-                                {% set info_fields = [
-                                    ('Tech Pack No', doc.name), ('Designer Name', doc.designer_name), ('Style No', doc.design_no),
-                                    ('Category', doc.category), ('Season', doc.seson), ('Sewing Finish', doc.sewing_finish),
-                                    ('Start Date', frappe.utils.formatdate(doc.start_date) if doc.start_date else ''),
-                                    ('Item Name', doc.item_name), ('Cut/ Fit Style', doc.cut_fit_style),
-                                    ('Collar/ Neck Style', doc.collar_neck_style), ('Side Cut', doc.side_cut),
-                                    ('Submission Date', frappe.utils.formatdate(doc.submission_date) if doc.submission_date else '')
-                                ] %}
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border:none; padding:5px 0;">
+                            <div
+                                style="column-count: 2; column-gap: 15px; border: 0.5px solid #000; padding: 5px; border-radius: 2px;">
+                                {% set info_fields = [('Tech Pack No', doc.name),('Designer Name',
+                                doc.designer_name),('Style No', doc.design_no),('Category', doc.category),('Season',
+                                doc.seson),('Sewing Finish', doc.sewing_finish),('Start Date',
+                                frappe.utils.formatdate(doc.start_date) if doc.start_date else ''),('Item Name',
+                                doc.item_name),('Cut/ Fit Style', doc.cut_fit_style),('Collar/ Neck Style',
+                                doc.collar_neck_style),('Side Cut', doc.side_cut),('Submission Date',
+                                frappe.utils.formatdate(doc.submission_date) if doc.submission_date else '')] %}
                                 {% for label, val in info_fields %}{% if val %}
-                                <div style="font-size: 6.5pt; padding: 1px 0;"><span style="font-weight:700;">{{ label }}:</span> <span>{{ val }}</span></div>
+                                <div style="font-size: 6.5pt; page-break-inside: avoid; padding: 1px 0;"><span
+                                        class="label" style="font-size: 6.5pt;">{{ label }}:</span> <span>{{ val
+                                        }}</span></div>
                                 {% endif %}{% endfor %}
                             </div>
-                        </td></tr>
-                        <tr><td style="border:none; padding:10px 0; vertical-align: top;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:none; padding:10px 0; vertical-align: top;">
                             <div style="float: right; width: 58%; margin-left: 2%;">
                                 <div class="design-image-container">
-                                    {% if doc.image %}<img src="{{ frappe.utils.get_url(doc.image) }}" class="design-image">
-                                    {% elif doc.additional_images and doc.additional_images[0] %}<img src="{{ frappe.utils.get_url(doc.additional_images[0].image) }}" class="design-image">
-                                    {% else %}<div style="padding: 100px; color: #ccc;">No Image</div>{% endif %}
+                                    {% if doc.image %}<img src="{{ frappe.utils.get_url(doc.image) }}"
+                                        class="design-image">
+                                    {% elif doc.additional_images and doc.additional_images[0] %}<img
+                                        src="{{ frappe.utils.get_url(doc.additional_images[0].image) }}"
+                                        class="design-image">
+                                    {% else %}<div style="padding: 100px; color: #ccc;">No Main Image Selected</div>{%
+                                    endif %}
                                 </div>
                             </div>
                             <div style="width: 40%; float: left;">
                                 {% set m_defs = [
-                                    ('full_length', 'দৈর্ঘ্য (HPS → CF হেম)'), ('cf_length', 'CB দৈর্ঘ্য'), ('cb_length', 'বক্ষ (Chest)'),
-                                    ('waist_circumstance', 'কোমর (Waist)'), ('bust', 'উচ্চ হিপ (High Hip)'), ('upper_hip', 'নিম্ন হিপ (Low Hip)'),
-                                    ('lower_hip', 'হেম সুইপ (Hem Sweep)'), ('front_neck_depth', 'গলার ড্রপ (সামনে)'), ('back_neck_depth', 'গলার ড্রপ (পিছনে)'),
-                                    ('shoulder_tip_to_side_waist', 'গলার প্রস্থ'), ('shoulder', 'কাঁধ থেকে কাঁধ'), ('armhole', 'আর্মহোল'),
-                                    ('full_length_arm', 'স্লিভ দৈর্ঘ্য'), ('biceps', 'বাইসেপ'), ('cuff_opening', 'কাফ ওপেনিং')
+                                ('full_length', 'দৈর্ঘ্য (HPS→CF)'),
+                                ('cf_length', 'CB দৈর্ঘ্য'),
+                                ('cb_length', 'বক্ষ (Chest)'),
+                                ('waist_circumstance', 'কোমর (Waist)'),
+                                ('bust', 'উচ্চ হিপ'),
+                                ('upper_hip', 'নিম্ন হিপ'),
+                                ('lower_hip', 'হেম সুইপ'),
+                                ('front_neck_depth', 'Front Neck Drop'),
+                                ('back_neck_depth', 'Back Neck Drop'),
+                                ('shoulder_tip_to_side_waist', 'Neck Width'),
+                                ('front_neck_depth_s', 'Collar Width'),
+                                ('back_neck_depth_s', 'Collar Height'),
+                                ('collar_width_height', 'Shoulder to Shoulder'),
+                                ('button_placket_length', 'Shoulder Drop'),
+                                ('button_placket_width', 'Armhole Depth'),
+                                ('hem', 'Button Placket Len'),
+                                ('shoulder_drop', 'Button Placket Wid'),
+                                ('shoulder', 'Sleeve Length'),
+                                ('armhole', 'Bicep'),
+                                ('full_length_arm', 'Elbow'),
+                                ('armhole_arm', 'Cuff Opening'),
+                                ('biceps', 'Bicep (×2)'),
+                                ('elbow', 'Pocket Length'),
+                                ('cuff_length', 'Pocket Opening'),
+                                ('cuff_width', 'Pocket Position'),
+                                ('cuff_opening', 'Outseam'),
+                                ('pocket_length', 'Inseam'),
+                                ('pocket_width', 'Pocket Width'),
+                                ('pocket_opening', 'Back Rise'),
+                                ('pocket_placket', 'Cuff Length'),
+                                ('shoulder_tip_to_pocket_starting', 'Waist (Relaxed ×2)')
                                 ] %}
-                                <div class="section-header" style="font-size: 8.5pt;">Measurements:</div>
-                                <div style="column-count: 2; column-gap: 10px;">
-                                {% for f, l in m_defs %}{% if doc.get(f) %}
-                                <div style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #000; font-size: 6pt; padding: 0.5px 0;"><span>{{ l }}</span><span class="val">{{ doc.get(f) }}</span></div>
-                                {% endif %}{% endfor %}
+                                <div class="section-header" style="font-size: 8.5pt;">Body Measurements:</div>
+                                <div style="column-count: 2; column-gap: 10px; margin-bottom: 10px;">
+                                    {% for f, l in m_defs %}{% if doc.get(f) %}
+                                    <div
+                                        style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #000; font-size: 6pt; page-break-inside: avoid; padding: 1.5px 0;">
+                                        <span>{{ l }}</span><span class="val">{{ doc.get(f) }}</span>
+                                    </div>
+                                    {% endif %}{% endfor %}
                                 </div>
+
+                                {% set b_defs = [
+                                ('length_bottom', 'Length'),
+                                ('pocket_wid', 'Front Rise'),
+                                ('komor', 'Waist (Stretched ×2)'),
+                                ('high_hip', 'High Hip (×2)'),
+                                ('low_hip', 'Low Hip (×2)'),
+                                ('thigh_uru', 'Thigh (×2)'),
+                                ('knee_x2', 'Knee (×2)'),
+                                ('leg_opening_x2', 'Leg Opening (×2)'),
+                                ('elasticrubber_width', 'Elastic Width'),
+                                ('beltloop_width', 'Belt/Loop Width'),
+                                ('wb_to_pocket_opening', 'WB to Pocket'),
+                                ('pocket_depth', 'Pocket Depth')
+                                ] %}
+                                {% set has_bottom = [] %}{% for f, l in b_defs %}{% if doc.get(f) %}{% set _ =
+                                has_bottom.append(1) %}{% endif %}{% endfor %}
+                                {% if has_bottom %}
+                                <div class="section-header" style="font-size: 8.5pt; margin-top: 10px;">Bottom
+                                    Specifications:</div>
+                                <div style="column-count: 2; column-gap: 10px;">
+                                    {% for f, l in b_defs %}{% if doc.get(f) %}
+                                    <div
+                                        style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #000; font-size: 6pt; page-break-inside: avoid; padding: 1.5px 0;">
+                                        <span>{{ l }}</span><span class="val">{{ doc.get(f) }}</span>
+                                    </div>
+                                    {% endif %}{% endfor %}
+                                </div>
+                                {% endif %}
                             </div>
-                        </td></tr>
-                    </tbody>
-                </table>
-            </div>
-        {% else %}
-            <div style="padding: 100px; text-align: center; border: 1px dashed #ccc;">SKETCH SHEET NOT LINKED</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 10px;">
+                            <div style="clear: both; width: 100%;">
+                                {% set ws_list = [] %}
+                                {% if doc.cutting %}{% set _ = ws_list.append('Cutting') %}{% endif %}
+                                {% if doc.fb %}{% set _ = ws_list.append('Fusing & Bundling') %}{% endif %}
+                                {% if doc.sewing %}{% set _ = ws_list.append('Sewing') %}{% endif %}
+                                {% if doc.me %}{% set _ = ws_list.append('Machine Embroidery') %}{% endif %}
+                                {% if doc.hand_embroidery %}{% set _ = ws_list.append('Hand Embroidery') %}{% endif %}
+                                {% if doc.hand_work %}{% set _ = ws_list.append('Hand Work') %}{% endif %}
+                                {% if doc.sp %}{% set _ = ws_list.append('Screen Print') %}{% endif %}
+                                {% if doc.bp %}{% set _ = ws_list.append('Block Print') %}{% endif %}
+                                {% if doc.td %}{% set _ = ws_list.append('Tie Dye') %}{% endif %}
+                                {% if doc.karchupi %}{% set _ = ws_list.append('Karchupi') %}{% endif %}
+
+                                {% if ws_list %}<div class="section-box">
+                                    <div class="section-header">Workstations:</div>
+                                    <div>{{ ws_list|join(', ') }}</div>
+                                </div>{% endif %}
+
+                                <div
+                                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 5px;">
+                                    <!-- Left Column: Screen Print Detailed -->
+                                    <div>
+                                        {% if doc.sp %}
+                                        <div class="section-box" style="page-break-inside: avoid; margin-bottom: 0;">
+                                            <div class="section-header">Workstation - Screen Print:</div>
+                                            <div style="font-size: 7pt; margin-bottom: 2px;">
+                                                <strong>Frame/SKU:</strong> Old: {{ doc.old_frame__sku or '-' }}, New:
+                                                {{ doc.new_frame__sku or '-' }}
+                                            </div>
+                                            <div style="font-size: 7pt; margin-bottom: 2px;">
+                                                <strong>Color Units:</strong> {{ doc.color_units or '-' }}
+                                            </div>
+                                            <div
+                                                style="font-size: 7pt; font-weight: 700; margin-bottom: 3px; color: #333;">
+                                                Colors: {{ [doc.color, doc.color_2, doc.color_3, doc.color_4,
+                                                doc.color_5, doc.color_6, doc.color_7, doc.color_8, doc.color_9,
+                                                doc.color_10]|select|join(', ') }}
+                                            </div>
+                                            <table class="cost-table" style="font-size: 6.5pt; width: 100%;">
+                                                <tr>
+                                                    <td>Cost for 30 Unit</td>
+                                                    <td class="cost-val" style="text-align: right;">{{
+                                                        doc.cost_for_30_unit or '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cost for 50 Unit</td>
+                                                    <td class="cost-val" style="text-align: right;">{{
+                                                        doc.cost_for_50_unit or '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cost for 70 Unit</td>
+                                                    <td class="cost-val" style="text-align: right;">{{
+                                                        doc.cost_for_70_unit or '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cost for 100 Unit</td>
+                                                    <td class="cost-val" style="text-align: right;">{{
+                                                        doc.cost_for_100_unit or '-' }}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Right Column: Hand Embroidery Detailed -->
+                                    <div>
+                                        {% if doc.hand_embroidery %}
+                                        <div class="section-box" style="page-break-inside: avoid; margin-bottom: 0;">
+                                            <div class="section-header">Workstation - Hand Embroidery:</div>
+                                            <div style="font-size: 7pt; margin-bottom: 2px;">
+                                                <strong>Description:</strong> {{ doc.hand_embroider or '-' }}
+                                            </div>
+                                            <div style="font-size: 7pt; margin-bottom: 2px;"><strong>Sample:</strong> {{
+                                                doc.sample or '-' }}</div>
+                                            <div style="font-size: 7pt; margin-bottom: 2px;">
+                                                <strong>Coverage:</strong>
+                                                {% set cov = [] %}
+                                                {% if doc.quarter %}{% set _ = cov.append('Quarter') %}{% endif %}
+                                                {% if doc.half %}{% set _ = cov.append('Half') %}{% endif %}
+                                                {% if doc.full %}{% set _ = cov.append('Full') %}{% endif %}
+                                                {{ cov|join(', ') or '-' }}
+                                            </div>
+                                            <table class="cost-table"
+                                                style="font-size: 6.5pt; width: 100%; margin-top: 3px;">
+                                                <tr>
+                                                    <td>Estimated Time</td>
+                                                    <td class="cost-val" style="text-align: right;">{{ doc.time or '-'
+                                                        }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Agreed Rate</td>
+                                                    <td class="cost-val" style="text-align: right;">{{ doc.rate or '-'
+                                                        }}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                {% if doc.text_editor_noaa %}<div class="footer-box" style="margin-top: 5px;">
+                                    <strong>Note:</strong> {{ doc.text_editor_noaa }}
+                                </div>{% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>{% if footer %}<div class="footer-sticky">
+                                <div
+                                    style="width: 100%; border-top: 1px solid #000; margin-top: 10px; padding-top: 5px;">
+                                    {{ footer }}</div>
+                            </div>{% endif %}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        {# END OF SAME-TO-SAME SKETCH CODE #}
         {% endif %}
     </div>
 
     <!-- ================= PAGE 2: COST ESTIMATION ================= -->
-    <div class="page-break ce-section">
+    <div class="page-break">
         {% if ce_doc %}
-            {% set doc = ce_doc %}
-            <div class="print-content">
-                <div style="width: 100%; margin-bottom: 5px;">{{ letter_head }}</div>
-                <table class="header-table" style="border-bottom: 1.5px solid #000; margin-bottom: 8px;">
+        {% set doc = ce_doc %}
+        <style>
+            @media print {
+                @page {
+                    size: A4 portrait;
+                    margin: 7mm;
+                }
+
+                .no-print {
+                    display: none;
+                }
+            }
+
+            :root {
+                --primary: #000000;
+                --primary-light: #333333;
+                --secondary: #666666;
+                --accent: #000000;
+                --bg-light: #f2f2f2;
+                --text-main: #000000;
+                --text-muted: #444444;
+                --border-color: #000000;
+            }
+
+            .ce-print-container {
+                font-family: 'Poppins', sans-serif;
+                font-size: 8pt;
+                line-height: 1.0;
+                color: #000;
+                background: #fff;
+                width: 100%;
+            }
+
+            .ce-print-container .header-table {
+                width: 100%;
+                border-collapse: collapse;
+                border-bottom: 2pt solid #000;
+                margin-bottom: 4px;
+            }
+
+            .ce-print-container .header-left h1 {
+                margin: 0;
+                font-size: 14pt;
+                font-weight: 900;
+            }
+
+            .ce-print-container .section-title {
+                font-size: 8.5pt;
+                font-weight: 700;
+                text-transform: uppercase;
+                border-bottom: 1.2pt solid #000;
+                display: inline-block;
+                margin-bottom: 1px;
+                padding-bottom: 0px;
+                line-height: 0.7;
+            }
+
+            .ce-print-container .standard-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 8.5pt;
+            }
+
+            .ce-print-container .standard-table thead th {
+                background: #fff;
+                padding: 3px 6px;
+                text-align: left;
+                font-weight: 700;
+                border: 1px solid #000;
+            }
+
+            .ce-print-container .standard-table tbody td {
+                padding: 1px 6px;
+                border: 1px solid #ddd;
+            }
+
+            .ce-print-container .summary-table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 2pt solid #000;
+                margin-top: 6px;
+                background: #fff;
+            }
+
+            .ce-print-container .summary-main .value {
+                font-size: 12pt;
+                font-weight: 700;
+                line-height: 1;
+            }
+
+            .ce-print-container .price-chip {
+                background: white;
+                border: 1px solid #333;
+                border-radius: 8px;
+                padding: 4px 8px;
+                text-align: center;
+            }
+
+            .ce-print-container .price-chip .value {
+                font-size: 14pt;
+                font-weight: 700;
+            }
+
+            .ce-print-container .price-chip .margin {
+                font-size: 7pt;
+                border: 1px solid #000;
+                padding: 2px 6px;
+                border-radius: 10px;
+                display: inline-block;
+                margin-top: 4px;
+            }
+
+            .ce-print-container .summary-item {
+                padding: 4px;
+            }
+        </style>
+        <div class="ce-print-container">
+            <div style="width: 100%; margin-bottom: 0px;">{{ letter_head }}</div>
+            <table class="header-table" style="border-bottom: 1.5px solid #000; margin-bottom: 8px;">
+                <tr>
+                    <td>
+                        <div class="header-left">
+                            <h1 style="font-size: 14pt; font-weight: 900;">COST ESTIMATION <span
+                                    style="font-weight: 300; font-size: 10pt; color: #666;">/ আনুমানিক খরচের
+                                    হিসাব</span></h1>
+                        </div>
+                    </td>
+                    <td style="text-align: right; vertical-align: bottom; font-size: 9pt; font-weight: 700;">REF: {{
+                        doc.name }}<br>DATE: {{ frappe.utils.formatdate(doc.date, "dd-mm-yyyy") }}</td>
+                </tr>
+            </table>
+            <div style="border: 1.5px solid #000; padding: 6px; margin-bottom: 10px; border-radius: 4px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 8pt; table-layout: fixed;">
                     <tr>
-                        <td><h1 style="font-size: 14pt; font-weight: 900;">COST ESTIMATION <span style="font-weight: 300; font-size: 10pt; color: #666;">/ আনুমানিক খরচের হিসাব</span></h1></td>
-                        <td style="text-align: right; vertical-align: bottom; font-size: 9pt; font-weight: 700;">REF: {{ doc.name }}<br>DATE: {{ frappe.utils.formatdate(doc.date) }}</td>
-                    </tr>
-                </table>
-                <div style="border: 1.5px solid #000; padding: 6px; margin-bottom: 10px; border-radius: 4px;">
-                    <table style="width: 100%; font-size: 8pt; table-layout: fixed;"><tr>
                         <td style="width: 50%; vertical-align: top; padding-right: 10px;">
-                            <div><span style="font-weight: 700;">Tech Pack No:</span> {{ doc.tech_pack_no or '-' }}</div>
-                            <div><span style="font-weight: 700;">Designer:</span> {{ doc.designer or '-' }}</div>
+                            <div><span style="font-weight: 700;">Tech Pack No:</span> {{ doc.tech_pack_no or '-' }}
+                            </div>
+                            <div><span style="font-weight: 700;">Designer Name:</span> {{ doc.designer or '-' }}</div>
                             <div><span style="font-weight: 700;">Style No:</span> {{ doc.design_no or '-' }}</div>
+                            <div><span style="font-weight: 700;">Category:</span> {{ doc.category or '-' }}</div>
+                            <div><span style="font-weight: 700;">Season:</span> {{ doc.seson or '-' }}</div>
+                            <div><span style="font-weight: 700;">Status:</span> {{ 'DRAFT' if doc.docstatus == 0 else
+                                'APPROVED' }}</div>
                         </td>
                         <td style="width: 50%; vertical-align: top; padding-left: 10px;">
-                            <div><span style="font-weight: 700;">Item:</span> {{ doc.item_name or '-' }}</div>
-                            <div><span style="font-weight: 700;">Category:</span> {{ doc.category or '-' }}</div>
-                            <div><span style="font-weight: 700;">Status:</span> {{ 'DRAFT' if doc.docstatus==0 else 'APPROVED' }}</div>
+                            <div><span style="font-weight: 700;">Item Name:</span> {{ doc.item_name or '-' }}</div>
+                            <div><span style="font-weight: 700;">Cut/ Fit Style:</span> {{ doc.cut_fit_style or '-' }}
+                            </div>
+                            <div><span style="font-weight: 700;">Collar/ Neck Style:</span> {{ doc.collar_neck_style or
+                                '-' }}</div>
+                            <div><span style="font-weight: 700;">Side Cut:</span> {{ doc.side_cut or '-' }}</div>
+                            <div><span style="font-weight: 700;">Sewing Finish:</span> {{ doc.sewing_finish or '-' }}
+                            </div>
                         </td>
-                    </tr></table>
-                </div>
-                {% if doc.materials %}
-                <div class="section"><div class="section-title">Fabrics Details</div>
-                <table class="standard-table"><thead><tr><th style="width: 45%">Item Description</th><th style="width: 15%" class="text-right">Qty</th><th style="width: 10%">UOM</th><th style="width: 15%" class="text-right">Rate</th><th style="width: 15%" class="text-right">Amount</th></tr></thead>
-                <tbody>{% for row in doc.materials %}<tr><td><strong>{{ row.item_code }}</strong><br><small>{{ row.item_name }}</small></td><td class="text-right">{{ "%.2f"|format(row.qty or 0) }}</td><td>{{ row.uom }}</td><td class="text-right">{{ frappe.utils.fmt_money(row.rate, currency=doc.currency) }}</td><td class="text-right">{{ frappe.utils.fmt_money(row.amount, currency=doc.currency) }}</td></tr>{% endfor %}</tbody>
-                </table></div>
-                {% endif %}
-                <table class="summary-table"><tr>
-                    <td style="width: 50%; padding: 10px;">Cost Summary includes raw materials and all labor charges.</td>
-                    <td style="width: 50%; text-align: right; padding: 10px;"><div class="summary-main"><div style="font-size: 9pt; font-weight: 600;">TOTAL UNIT COST</div><div style="font-size: 14pt; font-weight: 900;">{{ frappe.utils.fmt_money((doc.total_fabric or 0) + (doc.total_trim_and_accessories or 0) + (doc.total_tailoring or 0) + (doc.total_finishing or 0), currency=doc.currency) }}</div></div></td>
-                </tr></table>
+                    </tr>
+                </table>
             </div>
-        {% else %}
-            <div style="padding: 100px; text-align: center; border: 1px dashed #ccc;">COST ESTIMATION NOT FOUND</div>
+
+            {% if doc.materials %}<div class="section">
+                <div class="section-title">Fabrics / ফ্যাব্রিকস</div>
+                <table class="standard-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 45%;">Item Description</th>
+                            <th style="width: 15%;" class="text-right">Qty</th>
+                            <th style="width: 10%;">UOM</th>
+                            <th style="width: 15%;" class="text-right">Rate</th>
+                            <th style="width: 15%;" class="text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>{% for row in doc.materials %}<tr>
+                            <td><strong>{{ row.item_code }}</strong><br><small>{{ row.item_name }}</small></td>
+                            <td class="text-right">{{ "%.2f"|format(row.qty or 0) }}</td>
+                            <td>{{ row.uom }}</td>
+                            <td class="text-right">{{ frappe.utils.fmt_money(row.rate) }}</td>
+                            <td class="text-right">{{ frappe.utils.fmt_money(row.amount) }}</td>
+                        </tr>{% endfor %}</tbody>
+                </table>
+            </div>{% endif %}
+
+            {% if doc.accessories %}<div class="section" style="margin-top: 8px;">
+                <div class="section-title">Trims & Accessories / ট্রিমস ও পাওয়ার আইটেম</div>
+                <table class="standard-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 45%;">Item Description</th>
+                            <th style="width: 15%;" class="text-right">Qty</th>
+                            <th style="width: 10%;">UOM</th>
+                            <th style="width: 15%;" class="text-right">Rate</th>
+                            <th style="width: 15%;" class="text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>{% for row in doc.accessories %}<tr>
+                            <td><strong>{{ row.itemcode }}</strong><br><small>{{ row.item_name }}</small></td>
+                            <td class="text-right">{{ "%.2f"|format(row.qty or 0) }}</td>
+                            <td>Nos</td>
+                            <td class="text-right">{{ frappe.utils.fmt_money(row.rate) }}</td>
+                            <td class="text-right">{{ frappe.utils.fmt_money(row.amount) }}</td>
+                        </tr>{% endfor %}</tbody>
+                </table>
+            </div>{% endif %}
+
+            <table
+                style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 6px; table-layout: fixed;">
+                <tr>
+                    <td style="width: 50%; vertical-align: top; padding-right: 15px; border: none;">
+                        <div class="section">
+                            <div class="section-title">Tailoring Charges / সেলাই খরচ</div>
+                            <table style="width: 100%; border-collapse: collapse; font-size: 7.5pt;">
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">Cutting Charge</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.cutting_f or 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">Sewing Charge</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.sewing_f or 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">Machine Embroidery</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.machine_embroidery_f or 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">Hand Embroidery</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.hand_embroidery_f or 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">Hand Work</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.hand_work_estimation or 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">Karchupi</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.karchupi_f or 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">Screen Print</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.screen_print_f or 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">Block Print</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.block_print_f or 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">Tie & Dye</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.tie_dye or 0) }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                    <td style="width: 50%; vertical-align: top; padding-left: 15px; border: none;">
+                        <div class="section">
+                            <div class="section-title">Finishing Charges / ফিনিশিং খরচ</div>
+                            <table style="width: 100%; border-collapse: collapse; font-size: 7.5pt;">
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">Wash & Iron</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.wash_iron or 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">QC & Packaging</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.qc_packaging or 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-bottom: 1px solid #eee;">Transportation</td>
+                                    <td style="text-align: right; border-bottom: 1px solid #eee;">{{
+                                        frappe.utils.fmt_money(doc.transportation or 0) }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="summary-table">
+                <tr>
+                    <td style="width: 15%; border-right: 1px solid #eee;">
+                        <div class="summary-item">
+                            <div>Fabrics</div>
+                            <div style="font-weight: 700;">{{ frappe.utils.fmt_money(doc.total_fabric or 0) }}</div>
+                        </div>
+                    </td>
+                    <td style="width: 15%; border-right: 1px solid #eee;">
+                        <div class="summary-item">
+                            <div>Trims</div>
+                            <div style="font-weight: 700;">{{ frappe.utils.fmt_money(doc.total_trim_and_accessories or
+                                0) }}</div>
+                        </div>
+                    </td>
+                    <td style="width: 15%; border-right: 1px solid #eee;">
+                        <div class="summary-item">
+                            <div>Tailoring</div>
+                            <div style="font-weight: 700;">{{ frappe.utils.fmt_money(doc.total_tailoring or 0) }}</div>
+                        </div>
+                    </td>
+                    <td style="width: 15%; border-right: 1px solid #eee;">
+                        <div class="summary-item">
+                            <div>Finishing</div>
+                            <div style="font-weight: 700;">{{ frappe.utils.fmt_money(doc.total_finishing or 0) }}</div>
+                        </div>
+                    </td>
+                    <td style="width: 40%; text-align: right; padding-right: 10px;">
+                        <div class="summary-main">
+                            <div style="font-size: 8pt; font-weight: 600;">TOTAL UNIT COST</div>
+                            <div class="value">{{ frappe.utils.fmt_money((doc.total_fabric or 0) +
+                                (doc.total_trim_and_accessories or 0) + (doc.total_tailoring or 0) +
+                                (doc.total_finishing or 0)) }}</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            {% if doc.for_pattern_variation_only or doc.screen_print_machine_emb_only or doc.hand_embroidery_only %}
+            <div class="section" style="margin-top: 8px;">
+                <div class="section-title">Market Strategy (Suggested Selling)</div>
+                <table style="width: 100%; border-collapse: separate; border-spacing: 10px 0; margin-top: 6px;">
+                    <tr>
+                        {% if doc.for_pattern_variation_only %}<td>
+                            <div class="price-chip"><label>Standard Variation</label>
+                                <div class="value">{{ frappe.utils.fmt_money(doc.for_pattern_variation_only) }}</div>
+                                <div class="margin">{{ doc.pattern_variation or 0 }}% GP</div>
+                            </div>
+                        </td>{% endif %}
+                        {% if doc.screen_print_machine_emb_only %}<td>
+                            <div class="price-chip"><label>Screen Print/Emb</label>
+                                <div class="value">{{ frappe.utils.fmt_money(doc.screen_print_machine_emb_only) }}</div>
+                                <div class="margin">{{ doc.screen_print_machine_emb_65 or 0 }}% GP</div>
+                            </div>
+                        </td>{% endif %}
+                        {% if doc.hand_embroidery_only %}<td>
+                            <div class="price-chip"><label>Hand Embroidery</label>
+                                <div class="value">{{ frappe.utils.fmt_money(doc.hand_embroidery_only) }}</div>
+                                <div class="margin">{{ doc.hand_embroidery_75 or 0 }}% GP</div>
+                            </div>
+                        </td>{% endif %}
+                    </tr>
+                </table>
+            </div>{% endif %}
+            {% if footer %}<div
+                style="width: 100%; border-top: 1px solid #000; margin-top: 10px; padding-top: 5px; text-align: center;">
+                {{ footer }}</div>{% endif %}
+        </div>
         {% endif %}
     </div>
 
+
     <!-- ================= PAGE 3: PRE PRODUCTION SAMPLE ================= -->
-    <div class="page-break pps-section">
+    <div class="page-break">
         {% set doc = pps_doc %}
-        <div class="pps-print-container">
-            <div style="width: 100%; margin-bottom: 5px;">{{ letter_head }}</div>
-            <div class="pps-header"><table style="width: 100%;"><tr>
-                <td><h1 style="margin: 0; font-size: 15pt; font-weight: 900;">PPS FORMAT <span style="font-weight: 300; font-size: 10pt; color: #666;">/ পিপিএস ফরম্যাট</span></h1></td>
-                <td style="text-align: right; font-size: 9pt; font-weight: 700; vertical-align: bottom;">REF: {{ doc.name }}<br>DATE: {{ frappe.utils.formatdate(doc.received_date) if doc.received_date else '-' }}</td>
-            </tr></table></div>
-            <div style="border: 1.5px solid #000; padding: 6px; margin-bottom: 8px; border-radius: 4px;">
-                <table style="width: 100%; font-size: 7.5pt; table-layout: fixed;"><tr>
-                    <td style="width: 50%;">
-                        <div><span style="font-weight: 700;">Tech Pack No:</span> {{ doc.tech_pack_no or '-' }}</div>
-                        <div><span style="font-weight: 700;">Category:</span> {{ doc.category or '-' }}</div>
-                        <div><span style="font-weight: 700;">Season:</span> {{ doc.seson or '-' }}</div>
-                    </td><td>
-                        <div><span style="font-weight: 700;">Item Name:</span> {{ doc.item_name or '-' }}</div>
-                        <div><span style="font-weight: 700;">Cut/ Fit:</span> {{ doc.cut_fit_style or '-' }}</div>
-                        <div><span style="font-weight: 700;">Status:</span> {{ 'DRAFT' if doc.docstatus==0 else 'APPROVED' }}</div>
-                    </td>
-                </tr></table>
+        <style>
+            @media print {
+                @page {
+                    size: A4 portrait;
+                    margin: 8mm;
+                }
+
+                .page-break {
+                    page-break-before: always;
+                }
+            }
+
+            :root {
+                --primary: #000000;
+                --accent: #2c3e50;
+                --border: #000000;
+                --bg-light: #f9f9f9;
+                --text-muted: #666;
+            }
+
+            .tech-pps-container {
+                font-family: 'Inter', sans-serif;
+                font-size: 8.5pt;
+                color: #000;
+                line-height: 1.3;
+                width: 100%;
+            }
+
+            .tech-pps-container .pps-header {
+                border-bottom: 2px solid #000;
+                padding-bottom: 3px;
+                margin-bottom: 5px;
+            }
+
+            .tech-pps-container .section-title {
+                background: #fff;
+                color: #000;
+                border: 1px solid #000;
+                padding: 3px 10px;
+                font-size: 8pt;
+                font-weight: 700;
+                text-transform: uppercase;
+                margin-top: 5px;
+                margin-bottom: 4px;
+                border-radius: 2px;
+            }
+
+            .tech-pps-container .swatch-grid-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 5px;
+                margin-left: -5px;
+                table-layout: fixed;
+            }
+
+            .tech-pps-container .swatch-card {
+                border: 1px solid #000;
+                border-radius: 4px;
+                background: #fff;
+                page-break-inside: avoid;
+            }
+
+            .tech-pps-container .swatch-info {
+                padding: 8px;
+                background: #fff;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .tech-pps-container .swatch-code {
+                font-weight: 800;
+                font-size: 9pt;
+            }
+
+            .tech-pps-container .swatch-name {
+                font-size: 7.5pt;
+                color: #444;
+            }
+
+            .tech-pps-container .swatch-qty {
+                font-weight: 700;
+                color: #000;
+                margin-top: 2px;
+                font-size: 8pt;
+                border-top: 1px solid #ccc;
+                padding-top: 2px;
+            }
+
+            .tech-pps-container .image-well {
+                height: 120px;
+                background: #fff;
+                padding: 5px;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .tech-pps-container .image-well img {
+                max-width: 100%;
+                max-height: 150px;
+            }
+
+            .tech-pps-container .manual-placeholder {
+                border: 1.5px dashed #ccc;
+                height: 140px;
+                width: 100%;
+                display: block;
+                padding-top: 50px;
+                color: #999;
+                font-size: 7pt;
+                text-align: center;
+                box-sizing: border-box;
+            }
+
+            .tech-pps-container .standard-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 8px;
+                border: 1.5px solid #000;
+                table-layout: fixed;
+            }
+
+            .tech-pps-container .standard-table th {
+                background: #fff;
+                border: 1px solid #000;
+                padding: 4px;
+                font-size: 7.5pt;
+                text-align: left;
+            }
+
+            .tech-pps-container .standard-table td {
+                border: 1px solid #000;
+                padding: 4px;
+                font-size: 7.5pt;
+                vertical-align: top;
+            }
+
+            .tech-pps-container .gallery-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 12px 0;
+                margin-left: -6px;
+                table-layout: fixed;
+            }
+
+            .tech-pps-container .gallery-img {
+                border: 1px solid #eee;
+                padding: 5px;
+                background: #fff;
+                text-align: center;
+                vertical-align: top;
+            }
+
+            .tech-pps-container .gallery-img img {
+                width: 100%;
+                height: auto;
+                border: 1px solid #ddd;
+                display: block;
+            }
+
+            .tech-pps-container .gallery-label {
+                font-size: 7pt;
+                font-weight: 700;
+                margin-top: 5px;
+                background: #fff;
+                color: #000;
+                border: 0.5pt solid #000;
+                padding: 2px;
+            }
+        </style>
+        <div class="tech-pps-container">
+            <div style="width: 100%; margin-bottom: 10px;">{{ letter_head }}</div>
+            <div class="pps-header">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td>
+                            <h1 style="margin: 0; font-size: 15pt; font-weight: 900;">PPS FORMAT <span
+                                    style="font-weight: 300; font-size: 10pt; color: #666;">/ পিপিএস ফরম্যাট</span></h1>
+                            <div style="font-size: 8pt; color: #555;">PRE-PRODUCTION SAMPLE & COMPONENT VERIFICATION
+                                SHEET</div>
+                        </td>
+                        <td style="text-align: right; font-size: 9pt; font-weight: 700; vertical-align: bottom;">
+                            REF: {{ doc.name }}<br>DATE: {{ doc.received_date or
+                            frappe.utils.now_datetime().strftime("%d %b %Y") }}
+                        </td>
+                    </tr>
+                </table>
             </div>
-            {% set all_items = (doc.fabrics or []) + (doc.trim_accessories or []) %}
-            {% if all_items %}<div class="section-title">Component Swatches</div>
-            <table style="width: 100%; border-collapse: separate; border-spacing: 5px;">
-                {% for i in range(0, all_items|length, 3) %}<tr>
-                {% for j in range(0, 3) %}{% if i+j < all_items|length %}{% set item=all_items[i+j] %}<td style="width: 33.3%;">
-                    <div class="swatch-card"><div class="swatch-info"><div style="font-weight: 800;">{{ item.item_code }}</div><div style="font-size: 7.5pt;">{{ item.item_name }}</div></div>
-                    <div class="image-well">{% set img=frappe.db.get_value("Item", item.item_code, "image") %}{% if img %}<img src="{{img}}">{% else %}<div style="font-size: 7pt; padding-top: 40px;">AFFIX SWATCH</div>{% endif %}</div></div>
-                </td>{% endif %}{% endfor %}
-                </tr>{% endfor %}
+            <div style="border: 1.5px solid #000; padding: 6px; margin-bottom: 8px; border-radius: 4px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 7.5pt; table-layout: fixed;">
+                    <tr>
+                        <td style="width: 50%; vertical-align: top; padding-right: 8px;">
+                            <div><span style="font-weight: 700;">Tech Pack No:</span> {{ doc.tech_pack_no or '-' }}
+                            </div>
+                            <div><span style="font-weight: 700;">Designer Name:</span> {{ doc.handler_name or
+                                doc.handler or '-' }}</div>
+                            <div><span style="font-weight: 700;">Style No:</span> {{ doc.link_nsnp or '-' }}</div>
+                            <div><span style="font-weight: 700;">Category:</span> {{ doc.category or '-' }}</div>
+                            <div><span style="font-weight: 700;">Season:</span> {{ doc.seson or '-' }}</div>
+                            <div><span style="font-weight: 700;">Sewing Finish:</span> {{ doc.sewing_finish or '-' }}
+                            </div>
+                        </td>
+                        <td style="width: 50%; vertical-align: top; padding-left: 8px;">
+                            <div><span style="font-weight: 700;">Start Date:</span> {{
+                                frappe.utils.format_date(doc.start_time_date) if doc.start_time_date else '-' }}</div>
+                            <div><span style="font-weight: 700;">Item Name:</span> {{ doc.item_name or doc.item_code or
+                                '-' }}</div>
+                            <div><span style="font-weight: 700;">Cut/ Fit Style:</span> {{ doc.cut_fit_style or '-' }}
+                            </div>
+                            <div><span style="font-weight: 700;">Collar/ Neck Style:</span> {{ doc.collar_neck_style or
+                                '-' }}</div>
+                            <div><span style="font-weight: 700;">Side Cut:</span> {{ doc.side_cut or '-' }}</div>
+                            <div><span style="font-weight: 700;">Submission Date:</span> {{
+                                frappe.utils.format_date(doc.finish_time_date) if doc.finish_time_date else '-' }}</div>
+                            <div style="margin-top: 4px;"><span style="font-weight: 700;">Status:</span> {{ 'DRAFT' if
+                                doc.docstatus==0 else 'APPROVED' }}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {% set all_items = (doc.fabrics or []) + (doc.trim_accessories or []) + (doc.fabric_dupatta or []) %}
+            {% if all_items %}<div class="section-title">Component Swatches / উপকরণের সোয়াচ</div>
+            <table class="swatch-grid-table">{% for i in range(0, all_items|length, 3) %}<tr>{% for j in range(0, 3)
+                    %}{% if i+j < all_items|length %}{% set item=all_items[i+j] %}{% set
+                        item_image=frappe.db.get_value("Item", item.item_code, "image" ) %} <td style="width: 33.3%;">
+                        <div class="swatch-card">
+                            <div class="swatch-info">
+                                <div class="swatch-code">{{ item.item_code }}</div>
+                                <div class="swatch-name">{{ item.item_name }}</div>
+                                <div class="swatch-qty">Req: {{ "%.2f"|format(item.quantity|float) }} {{ item.uom or ''
+                                    }}</div>
+                            </div>
+                            <div class="image-well">{% if item_image %}<img src="{{ item_image }}">{% else %}<div
+                                    class="manual-placeholder">AFFIX SWATCH HERE</div>{% endif %}</div>
+                        </div>
+                        </td>
+                        {% else %}<td style="border:none;">&nbsp;</td>{% endif %}{% endfor %}</tr>{% endfor %}</table>{%
+            endif %}
+            {% if doc.size_chart_in_inch %}<div class="section-title">Actual Size Chart / সাইজ চার্ট</div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th style="width: 16%;">Size</th>
+                        <th style="text-align: center;">Len</th>
+                        <th style="text-align: center;">Bust</th>
+                        <th style="text-align: center;">Waist</th>
+                        <th style="text-align: center;">Btm Len</th>
+                        <th style="text-align: center;">Btm Waist</th>
+                        <th style="text-align: center;">Leg Open</th>
+                    </tr>
+                </thead>
+                <tbody>{% for row in doc.size_chart_in_inch %}<tr>
+                        <td style="font-weight: 700;">{{ row.size_chart_in_inch or '-' }}</td>
+                        <td style="text-align: center;">{{ row.length or '-' }}</td>
+                        <td style="text-align: center;">{{ row.bust or '-' }}</td>
+                        <td style="text-align: center;">{{ row.waist or '-' }}</td>
+                        <td style="text-align: center;">{{ row.bottom_length or '-' }}</td>
+                        <td style="text-align: center;">{{ row.bottom_waist or '-' }}</td>
+                        <td style="text-align: center;">{{ row.leg_opening or '-' }}</td>
+                    </tr>{% endfor %}</tbody>
             </table>{% endif %}
-            {% if doc.size_chart_in_inch %}<div class="section-title">Actual Size Chart</div>
-            <table style="width:100%; border-collapse: collapse; border: 1.5px solid #000; font-size: 7.5pt;"><thead><tr style="background:#fff;"><th style="border:1px solid #000; padding:4px;">Size</th><th style="border:1px solid #000; padding:4px; text-align:center;">Length</th><th style="border:1px solid #000; padding:4px; text-align:center;">Bust</th><th style="border:1px solid #000; padding:4px; text-align:center;">Waist</th><th style="border:1px solid #000; padding:4px; text-align:center;">Btm Len</th></tr></thead>
-            <tbody>{% for row in doc.size_chart_in_inch %}<tr><td style="border:1px solid #000; padding:4px; font-weight:700;">{{ row.size_chart_in_inch }}</td><td style="border:1px solid #000; padding:4px; text-align:center;">{{ row.length or '-' }}</td><td style="border:1px solid #000; padding:4px; text-align:center;">{{ row.bust or '-' }}</td><td style="border:1px solid #000; padding:4px; text-align:center;">{{ row.waist or '-' }}</td><td style="border:1px solid #000; padding:4px; text-align:center;">{{ row.bottom_length or '-' }}</td></tr>{% endfor %}</tbody></table>
-            {% endif %}
+            <div style="display: flex; gap: 15px; margin-top: 10px;">
+                <div style="flex: 1;">
+                    {% set wash_list = [] %}
+                    {% if doc.wash_separately %}{% set _ = wash_list.append('Wash Separately') %}{% endif %}
+                    {% if doc.dry_clean_only %}{% set _ = wash_list.append('Dry Clean Only') %}{% endif %}
+                    {% if doc.wash_warm_iron_inside_out %}{% set _ = wash_list.append('Iron Inside Out') %}{% endif %}
+                    {% if doc.hand_wash_only %}{% set _ = wash_list.append('Hand Wash Only') %}{% endif %}
+
+                    {% if wash_list %}
+                    <div class="section-title">Washing Guidelines / ধোয়া নির্দেশাবলী</div>
+                    <div style="border: 1px solid #000; padding: 5px; font-size: 7.5pt; background: #fdfdfd;">
+                        <ul style="margin: 0; padding-left: 20px;">
+                            {% for item in wash_list %}<li>{{ item }}</li>{% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if doc.note_or_instructions %}
+                    <div class="section-title" style="margin-top: 10px;">Note / বিশেষ দ্রষ্টব্য</div>
+                    <div style="border: 1px solid #000; padding: 5px; font-size: 7.5pt; background: #fdfdfd;">
+                        {{ doc.note_or_instructions }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div style="flex: 1;">
+                    {% if doc.pattern_master_note %}
+                    <div class="section-title">Pattern Master Notes / প্যাটার্ন মাস্টার নোট</div>
+                    <div style="border: 1px solid #000; padding: 5px; font-size: 7.5pt; background: #fdfdfd;">
+                        {{ doc.pattern_master_note }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if doc.pps_front or doc.pps_back or doc.pps_side %}<div class="section-title">PPS Gallery / পিপিএস
+                গ্যালারি</div>
+            <table class="gallery-table">
+                <tr>{% if doc.pps_front %}<td class="gallery-img"><img src="{{ doc.pps_front }}">
+                        <div class="gallery-label">FRONT VIEW</div>
+                    </td>{% endif %}{% if doc.pps_back %}<td class="gallery-img"><img src="{{ doc.pps_back }}">
+                        <div class="gallery-label">BACK VIEW</div>
+                    </td>{% endif %}{% if doc.pps_side %}<td class="gallery-img"><img src="{{ doc.pps_side }}">
+                        <div class="gallery-label">SIDE VIEW</div>
+                    </td>{% endif %}</tr>
+            </table>{% endif %}
+            {% if footer %}<div
+                style="width: 100%; border-top: 1px solid #000; margin-top: 10px; padding-top: 5px; text-align: center;">
+                {{ footer }}</div>{% endif %}
         </div>
     </div>
 
+
     <!-- ================= PAGE 4: QUALITY INSPECTION ================= -->
-    <div class="pps-section">
+    <div class="page-break">
         {% if qi_doc %}
-            {% set doc = qi_doc %}
-            <div class="section-title">4. Quality Inspection Report</div>
-            <table style="width:100%; border-collapse: collapse; margin-bottom: 10px; border: 1px solid #000; font-size: 8.5pt;">
-                <tr style="background: #f2f2f2;"><td style="padding: 5px; border: 1px solid #000;"><strong>QI Ref:</strong> {{ doc.name }}</td><td style="padding: 5px; border: 1px solid #000;"><strong>Status:</strong> {{ doc.status }}</td></tr>
-                <tr><td colspan="2" style="padding: 5px; border: 1px solid #000;"><strong>Remarks:</strong> {{ doc.remarks or '-' }}</td></tr>
+        {% set doc = qi_doc %}
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+            .qi-premium {
+                font-family: 'Outfit', sans-serif;
+                --primary-color: #0f172a;
+                --secondary-color: #64748b;
+                --accent-success: #10b981;
+                --accent-danger: #ef4444;
+                --bg-light: #f8fafc;
+                --border-color: #e2e8f0;
+                color: var(--primary-color);
+                line-height: 1.6;
+            }
+
+            .qi-premium .header-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                margin-bottom: 25px;
+                border-bottom: 3px solid var(--primary-color);
+                padding-bottom: 15px;
+            }
+
+            .qi-premium .highlights {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 25px;
+            }
+
+            .qi-premium .highlight-card {
+                flex: 1;
+                background: var(--bg-light);
+                padding: 12px 15px;
+                border-radius: 12px;
+                border: 1px solid var(--border-color);
+            }
+
+            .qi-premium .highlight-card label {
+                display: block;
+                font-size: 10px;
+                font-weight: 700;
+                color: var(--secondary-color);
+                text-transform: uppercase;
+                margin-bottom: 3px;
+            }
+
+            .qi-premium .highlight-card span {
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--primary-color);
+            }
+
+            .qi-premium .status-pill {
+                display: inline-flex;
+                align-items: center;
+                padding: 2px 10px;
+                border-radius: 99px;
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+
+            .qi-premium .status-pill.accepted {
+                background: #dcfce7;
+                color: #166534;
+            }
+
+            .qi-premium .status-pill.rejected {
+                background: #fee2e2;
+                color: #991b1b;
+            }
+
+            .qi-premium .info-grid-premium {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+                margin-bottom: 25px;
+            }
+
+            .qi-premium .info-block-title {
+                font-size: 12px;
+                font-weight: 800;
+                text-transform: uppercase;
+                color: var(--primary-color);
+                margin-bottom: 10px;
+                border-left: 4px solid var(--primary-color);
+                padding-left: 10px;
+            }
+
+            .qi-premium .info-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 6px 0;
+                border-bottom: 1px solid var(--bg-light);
+            }
+
+            .qi-premium .premium-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 25px;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            }
+
+            .qi-premium .premium-table th {
+                background: var(--primary-color);
+                color: white;
+                padding: 12px;
+                text-align: left;
+                font-size: 11px;
+                text-transform: uppercase;
+            }
+
+            .qi-premium .premium-table td {
+                background: white;
+                padding: 10px 12px;
+                border-bottom: 1px solid var(--border-color);
+                font-size: 12px;
+            }
+
+            .qi-premium .badge-reading {
+                background: #f1f5f9;
+                color: #475569;
+                padding: 1px 6px;
+                border-radius: 4px;
+                font-family: monospace;
+                font-weight: 600;
+                margin-right: 4px;
+                display: inline-block;
+            }
+
+            .qi-premium .remarks-box {
+                background: #fffbeb;
+                border: 1px solid #fef3c7;
+                padding: 15px;
+                border-radius: 10px;
+                margin-bottom: 25px;
+            }
+
+            .qi-premium .signature-area {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 50px;
+            }
+
+            .qi-premium .signature-card {
+                text-align: center;
+                width: 220px;
+            }
+
+            .qi-premium .signature-line {
+                height: 1.5px;
+                background: var(--primary-color);
+                margin-bottom: 8px;
+            }
+
+            @media print {
+                .qi-premium .premium-table {
+                    box-shadow: none;
+                }
+            }
+        </style>
+        <div class="qi-premium">
+            <div style="width: 100%; margin-bottom: 10px;">{{ letter_head }}</div>
+
+            <div class="header-container">
+                <div style="text-align: left;">
+                    <h1
+                        style="margin:0; color: var(--primary-color); font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                        Quality Inspection</h1>
+                    <div style="font-weight: 600; color: var(--secondary-color); font-size: 12px; margin-top: 3px;">{{
+                        doc.name }}</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-weight: 600; color: var(--primary-color); font-size: 12px;">Reference: {{
+                        doc.reference_name or 'N/A' }}</div>
+                </div>
+            </div>
+
+            <div class="highlights">
+                <div class="highlight-card"><label>Inspection Date</label><span>{{ frappe.format_date(doc.report_date)
+                        }}</span></div>
+                <div class="highlight-card"><label>Inspection Type</label><span>{{ doc.inspection_type }}</span></div>
+                <div class="highlight-card"><label>Overall Status</label><span
+                        class="status-pill {{ doc.status | lower }}">{{ doc.status }}</span></div>
+            </div>
+
+            <div class="info-grid-premium">
+                <div>
+                    <div class="info-block-title">Item Specification</div>
+                    <div class="info-row"><label>Item Code</label><span>{{ doc.item_code }}</span></div>
+                    <div class="info-row"><label>Item Name</label><span>{{ doc.item_name }}</span></div>
+                    <div class="info-row"><label>Sample Size</label><span>{{ doc.sample_size }}</span></div>
+                </div>
+                <div>
+                    <div class="info-block-title">Reference Details</div>
+                    <div class="info-row"><label>Reference Type</label><span>{{ doc.reference_type }}</span></div>
+                    <div class="info-row"><label>Reference ID</label><span>{{ doc.reference_name }}</span></div>
+                </div>
+            </div>
+
+            <div class="info-block-title">Inspection Readings & Parameters</div>
+            <table class="premium-table">
+                <thead>
+                    <tr>
+                        <th width="25%">Parameter</th>
+                        <th width="25%">Acceptance Criteria</th>
+                        <th width="35%">Actual Readings</th>
+                        <th width="15%">Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in doc.readings %}
+                    <tr>
+                        <td>
+                            <div style="font-weight: 700;">{{ row.specification }}</div>
+                        </td>
+                        <td>{% if row.numeric %}{{ row.min_value }} - {{ row.max_value }}{% else %}{{ row.value or
+                            'Standard' }}{% endif %}</td>
+                        <td>
+                            {% if row.reading_value %}<span class="badge-reading">{{ row.reading_value }}</span>
+                            {% else %}
+                            {% for i in range(1, 6) %}{% set field = "reading_" ~ i %}{% if row[field] %}<span
+                                class="badge-reading">{{ row[field] }}</span>{% endif %}{% endfor %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="status-pill {{ row.status | lower }}" style="font-size: 9px; padding: 1px 6px;">
+                                {{ row.status }}</div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
-            <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; font-size: 8pt;">
-                <thead><tr style="background: #f2f2f2;"><th style="border: 1px solid #000; padding: 4px;">Parameter</th><th style="border: 1px solid #000; padding: 4px;">Criteria</th><th style="border: 1px solid #000; padding: 4px;">Reading</th><th style="border: 1px solid #000; padding: 4px;">Status</th></tr></thead>
-                <tbody>{% for row in (doc.readings or []) %}<tr><td style="border: 1px solid #000; padding: 4px;">{{ row.specification }}</td><td style="border: 1px solid #000; padding: 4px;">{{ row.value or '-' }}</td><td style="border: 1px solid #000; padding: 4px;">{{ row.reading_value or row.reading_1 or '-' }}</td><td style="border: 1px solid #000; padding: 4px;">{{ row.status }}</td></tr>{% endfor %}</tbody>
-            </table>
-        {% else %}
-            <div style="padding: 30px; text-align: center; border: 1px dashed #ccc; font-size: 9pt;">QUALITY INSPECTION RECORD NOT FOUND</div>
+
+            {% if doc.remarks %}<div class="remarks-box">
+                <h4 style="margin:0 0 5px 0; font-size: 12px; color: #92400e; text-transform: uppercase;">Quality
+                    Remarks</h4>
+                <div style="font-size: 12px; color: #4b5563;">{{ doc.remarks }}</div>
+            </div>{% endif %}
+
+            <div class="signature-area">
+                <div class="signature-card">
+                    <div class="signature-line"></div>
+                    <div
+                        style="font-size: 10px; font-weight: 700; color: var(--secondary-color); text-transform: uppercase;">
+                        Inspected By</div>
+                    <div style="font-weight: 600; margin-top: 3px; font-size: 12px;">{{
+                        frappe.get_fullname(doc.inspected_by) }}</div>
+                </div>
+                <div class="signature-card">
+                    <div class="signature-line"></div>
+                    <div
+                        style="font-size: 10px; font-weight: 700; color: var(--secondary-color); text-transform: uppercase;">
+                        QA Manager Verification</div>
+                    <div style="font-weight: 600; margin-top: 3px; font-size: 12px;">{{ doc.verified_by or
+                        '________________' }}</div>
+                </div>
+            </div>
+
+            {% if footer %}<div
+                style="width: 100%; border-top: 1px solid var(--border-color); margin-top: 30px; padding-top: 10px; text-align: center;">
+                {{ footer }}</div>{% endif %}
+        </div>
         {% endif %}
     </div>
 
