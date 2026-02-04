@@ -114,6 +114,7 @@ class LabelDesigner {
             elDiv.id = elData.id;
             elDiv.style.position = 'absolute';
             elDiv.style.cursor = 'move';
+            elDiv.style.userSelect = 'none';
             elDiv.style.border = '1px dashed transparent';
             elDiv.style.boxSizing = 'border-box';
 
@@ -274,8 +275,6 @@ class LabelDesigner {
     }
 
     handle_drag_start(e, elData) {
-        if (e.target !== e.currentTarget) return; // Prevent dragging when clicking child controls if any
-
         const startX = e.clientX;
         const startY = e.clientY;
         const startLeft = elData.x;
