@@ -38,12 +38,25 @@ def get_barcode_base64(code_type, code_value):
         except barcode.errors.BarcodeNotFoundError:
              frappe.throw(f"Barcode type '{code_type}' is not supported.")
         
-        # Generate barcode
-        # writer_options = {"write_text": False} # Optional: hide text if handled by template
-        my_barcode = BarcodeClass(code_value, writer=ImageWriter())
+        # Generate barcode with proper settings for scanner readability
+        my_barcode = BarcodeClass(str(code_value), writer=ImageWriter())
         
-        # Write to stream
-        my_barcode.write(rv)
+        # Writer options for better scanner compatibility
+        # - write_text: False (we show text separately in template)
+        # - module_width: width of each bar (higher = thicker bars, easier to scan)
+        # - module_height: height of bars
+        # - quiet_zone: white space on sides (important for scanners!)
+        # - font_size: 0 if no text
+        writer_options = {
+            "write_text": False,
+            "module_width": 0.4,
+            "module_height": 12,
+            "quiet_zone": 3,
+            "text_distance": 2,
+        }
+        
+        # Write to stream with options
+        my_barcode.write(rv, options=writer_options)
         
         # Convert to base64
         img_str = base64.b64encode(rv.getvalue()).decode("utf-8")

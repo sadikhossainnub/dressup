@@ -35,7 +35,7 @@
     .barcode-label {
         width: {{ template.label_width }}mm;
         height: {{ template.label_height }}mm;
-        background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+        background: #fff;
         page-break-inside: avoid;
         overflow: hidden;
         position: relative;
@@ -46,6 +46,7 @@
         padding: 1.5mm;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
     }
 
     /* Company Name - Top Header */
@@ -70,8 +71,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.5mm;
+        gap: 0.3mm;
         flex-shrink: 0;
+        flex-grow: 0;
     }
 
     .item-code {
@@ -98,34 +100,34 @@
 
     /* Price Tag */
     .price-tag {
-        background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
-        color: #fff;
+        color: #000;
         font-weight: 700;
         font-size: {{ font_size * 1.3 }}px;
-        padding: 1mm 3mm;
-        border-radius: 1.5mm;
         text-align: center;
         margin: 1mm 0;
         letter-spacing: 0.5px;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
 
     /* Barcode Section */
     .barcode-section {
-        flex-grow: 1;
+        flex-shrink: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        min-height: 0;
+        justify-content: flex-end;
+        margin-top: auto;
+        padding: 0;
     }
 
     .barcode-image {
-        max-width: 100%;
-        max-height: 100%;
         width: auto;
         height: auto;
-        object-fit: contain;
+        max-width: 100%;
+        max-height: 10mm;
+        /* IMPORTANT: Don't stretch barcode - it breaks scanner readability! */
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
     }
 
     .barcode-text {
