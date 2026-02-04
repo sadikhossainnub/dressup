@@ -1,0 +1,38 @@
+{
+ "attach_files": "",
+ "attach_print": 0,
+ "channel": "Email",
+ "condition_type": "Python",
+ "creation": "2026-02-03 17:20:24.269319",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Sketch Specification Sample Making Sheet",
+ "enabled": 1,
+ "event": "Save",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "Recieved a Sketch Spec & Sample Making Sheet Approval Request",
+ "message_type": "Plain Text",
+ "minutes_offset": 0,
+ "modified": "2026-02-03 17:20:24.269319",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Request For Approval",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_document_field": "owner",
+   "receiver_by_role": "Fashion Designer Manager"
+  },
+  {
+   "receiver_by_document_field": "owner",
+   "receiver_by_role": "System Manager"
+  }
+ ],
+ "send_system_notification": 1,
+ "send_to_all_assignees": 0,
+ "sender": "No_Replay",
+ "sender_email": "no-reply@dressup.com.bd",
+ "subject": "{{ doc.name }} Approval Request"
+}

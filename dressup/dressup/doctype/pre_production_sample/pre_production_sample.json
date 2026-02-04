@@ -70,6 +70,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Pattern Master",
+   "link_filters": "[[\"Employee\",\"designation\",\"=\",\"Pattern Master\"]]",
    "options": "Employee",
    "reqd": 1
   },
@@ -354,8 +355,8 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-21 04:10:45.839743",
- "modified_by": "sayedtkg@gmail.com",
+ "modified": "2026-02-03 18:12:28.817098",
+ "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Pre Production Sample",
  "naming_rule": "By \"Naming Series\" field",
