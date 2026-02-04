@@ -10,79 +10,103 @@
 {% set top_margin = template.top_margin or 0 %}
 {% set left_margin = template.left_margin or 0 %}
 
-<div style="
-    display: flex;
-    flex-wrap: wrap;
-    gap: {{ vertical_gap }}mm {{ horizontal_gap }}mm;
-    padding-top: {{ top_margin }}mm;
-    padding-left: {{ left_margin }}mm;
-    box-sizing: border-box;
-">
+<style>
+    .label-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: {{ vertical_gap }}mm {{ horizontal_gap }}mm;
+        padding-top: {{ top_margin }}mm;
+        padding-left: {{ left_margin }}mm;
+        box-sizing: border-box;
+    }
+
+    .barcode-label {
+        width: {{ template.label_width }}mm;
+        height: {{ template.label_height }}mm;
+        background: white;
+        page-break-inside: avoid;
+        box-sizing: border-box;
+        overflow: hidden;
+        position: relative;
+        font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #000000;
+    }
+
+    /* The main black box shown in the image */
+    .content-box {
+        border: 1.2pt solid #000000;
+        width: 90%;
+        height: 80%;
+        margin-top: 10%; /* To account for the white space above in the image */
+        margin-left: 2pt;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .price-tag {
+        border-right: 1.2pt solid #000000;
+        border-bottom: 1.2pt solid #000000;
+        width: fit-content;
+        padding: 1px 4px;
+        font-weight: 600;
+        font-size: {{ (template.font_size or 10) * 1.1 }}px;
+        line-height: 1.2;
+    }
+
+    .barcode-section {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2px;
+    }
+
+    .barcode-image {
+        max-width: 95%;
+        max-height: 60%;
+        display: block;
+    }
+
+    .item-code-text {
+        font-size: {{ (template.font_size or 10) * 0.8 }}px;
+        margin-top: 1px;
+        font-weight: 400;
+        text-align: center;
+    }
+</style>
+
+<div class="label-wrapper">
     {% for item in doc.items %}
         {% set qty = item.qty if item.qty > 0 else 1 %}
         {% for i in range(qty) %}
-        
             {% set code_value = item.item_code %}
             {% if item.batch_no %}{% set code_value = item.batch_no %}{% endif %}
             {% if item.serial_no %}{% set code_value = item.serial_no %}{% endif %}
             
             {% set barcode_image = get_barcode_base64(template.barcode_type, code_value) %}
             
-            <div style="
-                width: {{ template.label_width }}mm;
-                height: {{ template.label_height }}mm;
-                border: 1.5pt solid #000000;
-                padding: 1.5mm;
-                font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                font-size: {{ template.font_size }}px;
-                text-align: center;
-                overflow: hidden;
-                background: white;
-                page-break-inside: avoid;
-                line-height: 1.1;
-                color: #000000;
-                box-sizing: border-box;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            ">
-                {% if template.include_company_name %}
-                <div style='font-weight: 600; text-transform: uppercase; margin-bottom: 2px;'>{{ frappe.db.get_default("Company") }}</div>
-                {% endif %}
-            
-                {% if template.include_item_name and item.item_name %}
-                <div style="font-weight: 400; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; line-height: 1.1;">{{ item.item_name }}</div>
-                {% endif %}
-            
-                {% if template.include_item_code and item.item_code %}
-                <div style="font-weight: 600; font-size: 0.9em; border-top: 0.5pt solid #000; margin-top: 1px; padding-top: 1px;">#{{ item.item_code }}</div>
-                {% endif %}
-                
-                {% if template.include_price and item.price %}
-                <div style="font-weight: 600; font-size: 1.1em; margin-top: 1px;">{{ frappe.format_value(item.price, {'fieldtype': 'Currency'}) }}</div>
-                {% endif %}
-            
-                {% if barcode_image %}
-                <div style="text-align: center; padding: 2px 0;">
-                    <img src='{{ barcode_image }}' style='max-width: 100%; max-height: 45%; filter: grayscale(100%); display: inline-block;' />
-                </div>
-                {% endif %}
-            
-                <div style="font-size: 0.85em; width: 100%;">
-                    {% if template.include_batch_no and item.batch_no %}
-                    <div style="border-top: 0.5pt dashed #000; margin-top: 1px; padding-top: 1px;">BATCH: <strong>{{ item.batch_no }}</strong></div>
+            <div class="barcode-label">
+                <div class="content-box">
+                    {% if template.include_price and item.price %}
+                    <div class="price-tag">
+                        {{ frappe.format_value(item.price, {'fieldtype': 'Currency'}) }}
+                    </div>
                     {% endif %}
-            
-                    {% if template.include_serial_no and item.serial_no %}
-                    <div style="margin-top: 1px;">SN: <strong>{{ item.serial_no }}</strong></div>
-                    {% endif %}
-            
-                    {% if template.include_expiry_date and item.expiry_date %}
-                    <div style="margin-top: 1px; font-weight: 500;">EXP: {{ item.expiry_date }}</div>
-                    {% endif %}
+
+                    <div class="barcode-section">
+                        {% if barcode_image %}
+                            <img src='{{ barcode_image }}' class="barcode-image" />
+                        {% endif %}
+                        
+                        {% if template.include_item_code %}
+                            <div class="item-code-text">{{ code_value }}</div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         {% endfor %}
     {% endfor %}
 </div>
+

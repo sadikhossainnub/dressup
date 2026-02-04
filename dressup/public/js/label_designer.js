@@ -29,15 +29,23 @@ class LabelDesigner {
         this.toolbox.style.backgroundColor = '#fff';
         this.toolbox.style.borderRight = '1px solid #d1d8dd';
         this.toolbox.style.padding = '10px';
-        this.toolbox.innerHTML = `
+
+        let toolbox_html = `
             <div style="font-weight: bold; margin-bottom: 10px;">Tools</div>
-            <button class="btn btn-default btn-block btn-sm mb-2" onclick="cur_designer.add_element('text')">Add Text</button>
-            <button class="btn btn-default btn-block btn-sm mb-2" onclick="cur_designer.add_element('field')">Add Data Field</button>
-            <button class="btn btn-default btn-block btn-sm mb-2" onclick="cur_designer.add_element('barcode')">Add Barcode</button>
-            <button class="btn btn-default btn-block btn-sm mb-2" onclick="cur_designer.add_element('image')">Add Image</button>
+            <button class="btn btn-default btn-block btn-sm mb-2 btn-add-text">Add Text</button>
+            <button class="btn btn-default btn-block btn-sm mb-2 btn-add-field">Add Data Field</button>
+            <button class="btn btn-default btn-block btn-sm mb-2 btn-add-barcode">Add Barcode</button>
+            <button class="btn btn-default btn-block btn-sm mb-2 btn-add-image">Add Image</button>
             <div style="margin-top: 20px; font-weight: bold;">Properties</div>
             <div id="prop-editor">Select an element</div>
         `;
+        this.toolbox.innerHTML = toolbox_html;
+
+        // Bind events
+        this.toolbox.querySelector('.btn-add-text').addEventListener('click', () => this.add_element('text'));
+        this.toolbox.querySelector('.btn-add-field').addEventListener('click', () => this.add_element('field'));
+        this.toolbox.querySelector('.btn-add-barcode').addEventListener('click', () => this.add_element('barcode'));
+        this.toolbox.querySelector('.btn-add-image').addEventListener('click', () => this.add_element('image'));
 
         // Canvas Area
         this.canvasArea = document.createElement('div');
@@ -163,60 +171,72 @@ class LabelDesigner {
         const propDiv = document.getElementById('prop-editor');
         if (!el || !propDiv) return;
 
-        let html = `
-            <div class="form-group">
-                <label>Type</label>
-                <input type="text" class="form-control input-sm" value="${el.type}" disabled>
-            </div>
-            <div class="form-group">
-                <label>X (px)</label>
-                <input type="number" class="form-control input-sm" value="${el.x}" onchange="cur_designer.update_property('${id}', 'x', this.value)">
-            </div>
-            <div class="form-group">
-                <label>Y (px)</label>
-                <input type="number" class="form-control input-sm" value="${el.y}" onchange="cur_designer.update_property('${id}', 'y', this.value)">
-            </div>
-            <div class="form-group">
-                <label>Width (px)</label>
-                <input type="number" class="form-control input-sm" value="${el.width}" onchange="cur_designer.update_property('${id}', 'width', this.value)">
-            </div>
-            <div class="form-group">
-                <label>Height (px)</label>
-                <input type="number" class="form-control input-sm" value="${el.height}" onchange="cur_designer.update_property('${id}', 'height', this.value)">
-            </div>
-            <div class="form-group">
-                <label>Font Size</label>
-                <input type="number" class="form-control input-sm" value="${el.fontSize}" onchange="cur_designer.update_property('${id}', 'fontSize', this.value)">
-            </div>
-             <div class="form-group">
-                <label>Bold</label>
-                <input type="checkbox" ${el.bold ? 'checked' : ''} onchange="cur_designer.update_property('${id}', 'bold', this.checked)">
-            </div>
-            <div class="form-group">
-                <label>Text Align</label>
-                <select class="form-control input-sm" onchange="cur_designer.update_property('${id}', 'align', this.value)">
-                    <option value="left" ${el.align === 'left' ? 'selected' : ''}>Left</option>
-                    <option value="center" ${el.align === 'center' ? 'selected' : ''}>Center</option>
-                    <option value="right" ${el.align === 'right' ? 'selected' : ''}>Right</option>
-                </select>
-            </div>
-        `;
+        propDiv.innerHTML = ''; // Clear
+
+        const create_input = (label, type, value, prop, options = {}) => {
+            const group = document.createElement('div');
+            group.className = 'form-group';
+            group.style.marginBottom = '10px';
+
+            const labelEl = document.createElement('label');
+            labelEl.textContent = label;
+            labelEl.style.fontSize = '12px';
+            group.appendChild(labelEl);
+
+            let input;
+            if (type === 'select') {
+                input = document.createElement('select');
+                options.items.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item;
+                    opt.textContent = item.charAt(0).toUpperCase() + item.slice(1);
+                    if (item === value) opt.selected = true;
+                    input.appendChild(opt);
+                });
+            } else if (type === 'checkbox') {
+                input = document.createElement('input');
+                input.type = 'checkbox';
+                input.checked = value;
+            } else {
+                input = document.createElement('input');
+                input.type = type;
+                input.value = value;
+            }
+
+            input.className = type === 'checkbox' ? '' : 'form-control input-sm';
+            input.addEventListener('change', (e) => {
+                let val = type === 'checkbox' ? e.target.checked : e.target.value;
+                this.update_property(id, prop, val);
+            });
+
+            group.appendChild(input);
+            return group;
+        };
+
+        propDiv.appendChild(create_input('X (px)', 'number', el.x, 'x'));
+        propDiv.appendChild(create_input('Y (px)', 'number', el.y, 'y'));
+        propDiv.appendChild(create_input('Width (px)', 'number', el.width, 'width'));
+        propDiv.appendChild(create_input('Height (px)', 'number', el.height, 'height'));
+        propDiv.appendChild(create_input('Font Size', 'number', el.fontSize, 'fontSize'));
+        propDiv.appendChild(create_input('Bold', 'checkbox', el.bold, 'bold'));
+        propDiv.appendChild(create_input('Text Align', 'select', el.align, 'align', { items: ['left', 'center', 'right'] }));
 
         if (el.type === 'text' || el.type === 'field') {
-            html += `
-            <div class="form-group">
-                <label>${el.type === 'field' ? 'Field Name' : 'Content'}</label>
-                <input type="text" class="form-control input-sm" value="${el.content}" onchange="cur_designer.update_property('${id}', 'content', this.value)">
-                ${el.type === 'field' ? '<small class="text-muted">Fields: item_code, item_name, price, batch_no, serial_no, expiry_date</small>' : ''}
-            </div>
-            `;
+            propDiv.appendChild(create_input(el.type === 'field' ? 'Field Name' : 'Content', 'text', el.content, 'content'));
+            if (el.type === 'field') {
+                const hint = document.createElement('small');
+                hint.className = 'text-muted';
+                hint.textContent = 'Fields: item_code, item_name, price, batch_no, serial_no, expiry_date';
+                propDiv.appendChild(hint);
+            }
         }
 
-        html += `
-            <button class="btn btn-danger btn-xs mt-2" onclick="cur_designer.remove_element('${id}')">Remove Element</button>
-        `;
-
-        propDiv.innerHTML = html;
+        const btnRemove = document.createElement('button');
+        btnRemove.className = 'btn btn-danger btn-xs mt-3';
+        btnRemove.style.width = '100%';
+        btnRemove.textContent = 'Remove Element';
+        btnRemove.onclick = () => this.remove_element(id);
+        propDiv.appendChild(btnRemove);
     }
 
     update_property(id, prop, value) {

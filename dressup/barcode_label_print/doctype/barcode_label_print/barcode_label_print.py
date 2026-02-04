@@ -126,47 +126,58 @@ class BarcodeLabelPrint(Document):
 				<div style="
 					width: {template.label_width}mm;
 					height: {template.label_height}mm;
-					border: 1px dotted #ccc; /* Dotted border for preview only */
 					box-sizing: border-box;
-					padding: 2mm;
+					padding: 0;
 					font-family: sans-serif;
 					font-size: {template.font_size}px;
-					display: flex;
-					flex-direction: column;
-					align-items: center;
-					justify-content: center;
-					text-align: center;
 					overflow: hidden;
 					background: white;
 					page-break-inside: avoid;
+					position: relative;
 				">
+					<div style="
+						border: 1.2pt solid #000000;
+						width: 90%;
+						height: 80%;
+						margin-top: 10%;
+						margin-left: 2pt;
+						display: flex;
+						flex-direction: column;
+						box-sizing: border-box;
+					">
 				"""
 				
-				if template.include_company_name and data.get("company"):
-					label_html += f"<div style='font-weight: bold;'>{data['company']}</div>"
-					
-				if template.include_item_name and data.get("item_name"):
-					label_html += f"<div style='margin-bottom: 2px; line-height: 1.1;'>{data['item_name']}</div>"
-					
-				if template.include_item_code and data.get("item_code"):
-					label_html += f"<div>{data['item_code']}</div>"
-					
 				if template.get("include_price") and data.get("price"):
-					label_html += f"<div style='font-weight: bold; font-size: 1.1em;'>{frappe.format_value(data['price'], {'fieldtype': 'Currency'})}</div>"
-					
-				if data.get("barcode_image"):
-					label_html += f"<img src='{data['barcode_image']}' style='max-width: 100%; max-height: 40%; margin: 2px 0;' />"
+					price_val = frappe.format_value(data['price'], {'fieldtype': 'Currency'})
+					label_html += f"""
+						<div style="
+							border-right: 1.2pt solid #000000;
+							border-bottom: 1.2pt solid #000000;
+							width: fit-content;
+							padding: 1px 4px;
+							font-weight: bold;
+							font-size: {template.font_size * 1.1}px;
+						">{price_val}</div>
+					"""
 				
-				if template.include_batch_no and data.get("batch_no"):
-					label_html += f"<div style='font-size: 0.9em;'>Batch: {data['batch_no']}</div>"
+				label_html += """
+					<div style="
+						flex-grow: 1;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: center;
+						padding: 2px;
+					">
+				"""
+
+				if data.get("barcode_image"):
+					label_html += f"<img src='{data['barcode_image']}' style='max-width: 95%; max-height: 60%;' />"
+				
+				if template.include_item_code and data.get("item_code"):
+					label_html += f"<div style='font-size: {template.font_size * 0.8}px; margin-top: 1px;'>{data['item_code']}</div>"
 					
-				if template.include_serial_no and data.get("serial_no"):
-					label_html += f"<div style='font-size: 0.9em;'>SN: {data['serial_no']}</div>"
-					
-				if template.include_expiry_date and data.get("expiry_date"):
-					label_html += f"<div style='font-size: 0.9em;'>Exp: {data['expiry_date']}</div>"
-					
-				label_html += "</div>"
+				label_html += "</div></div></div>"
 			
 			html += label_html
 			

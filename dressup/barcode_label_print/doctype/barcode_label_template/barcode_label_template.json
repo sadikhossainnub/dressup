@@ -26,6 +26,7 @@
         "include_expiry_date",
         "include_company_name",
         "section_break_design",
+        "designer_html",
         "design_data"
     ],
     "fields": [
@@ -33,6 +34,11 @@
             "fieldname": "section_break_design",
             "fieldtype": "Section Break",
             "label": "Visual Designer"
+        },
+        {
+            "fieldname": "designer_html",
+            "fieldtype": "HTML",
+            "label": "Designer HTML"
         },
         {
             "fieldname": "design_data",

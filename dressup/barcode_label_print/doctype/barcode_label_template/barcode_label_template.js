@@ -10,34 +10,40 @@ frappe.ui.form.on('Barcode Label Template', {
     },
 
     render_designer: function (frm) {
-        const wrapper = frm.get_field('section_break_design').wrapper;
-        if (!wrapper) return;
+        let field = frm.get_field('designer_html');
+        if (!field || !field.wrapper) {
+            console.log("Designer wrapper not ready yet...");
+            return;
+        }
 
-        wrapper.innerHTML = ''; // Clear previous
+        const wrapper = field.wrapper;
+        wrapper.innerHTML = '<div class="text-muted p-3">Loading Designer...</div>';
 
-        // Ensure LabelDesigner class is loaded
-        if (typeof LabelDesigner === 'undefined') {
-            frappe.require('/assets/dressup/js/label_designer.js', () => {
+        const init_designer = () => {
+            try {
+                if (typeof LabelDesigner === 'undefined') {
+                    frappe.msgprint(__('LabelDesigner class not found. Please ensure label_designer.js is loaded.'));
+                    return;
+                }
+
                 new LabelDesigner(wrapper, {
-                    width: frm.doc.label_width,
-                    height: frm.doc.label_height,
+                    width: frm.doc.label_width || 50,
+                    height: frm.doc.label_height || 25,
                     data: JSON.parse(frm.doc.design_data || '[]'),
                     on_save: (data) => {
                         frm.set_value('design_data', JSON.stringify(data));
-                        frm.dirty();
                     }
                 });
-            });
+            } catch (e) {
+                console.error("Designer Init Error:", e);
+                wrapper.innerHTML = `<div class="alert alert-danger">Error loading designer: ${e.message}</div>`;
+            }
+        };
+
+        if (typeof LabelDesigner === 'undefined') {
+            frappe.require('/assets/dressup/js/label_designer.js', init_designer);
         } else {
-            new LabelDesigner(wrapper, {
-                width: frm.doc.label_width,
-                height: frm.doc.label_height,
-                data: JSON.parse(frm.doc.design_data || '[]'),
-                on_save: (data) => {
-                    frm.set_value('design_data', JSON.stringify(data));
-                    frm.dirty();
-                }
-            });
+            init_designer();
         }
     },
 
