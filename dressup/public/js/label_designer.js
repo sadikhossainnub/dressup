@@ -33,7 +33,9 @@ class LabelDesigner {
         let toolbox_html = `
             <div style="font-weight: bold; margin-bottom: 10px;">Tools</div>
             <button class="btn btn-default btn-block btn-sm mb-2 btn-add-text">Add Text</button>
-            <button class="btn btn-default btn-block btn-sm mb-2 btn-add-field">Add Data Field</button>
+            <button class="btn btn-default btn-block btn-sm mb-2 btn-add-field">Add Dynamic Field</button>
+            <button class="btn btn-primary btn-block btn-sm mb-2 btn-add-price">Add Price</button>
+            <button class="btn btn-info btn-block btn-sm mb-2 btn-add-company">Add Company</button>
             <button class="btn btn-default btn-block btn-sm mb-2 btn-add-barcode">Add Barcode</button>
             <button class="btn btn-default btn-block btn-sm mb-2 btn-add-image">Add Image</button>
             <div style="margin-top: 20px; font-weight: bold;">Properties</div>
@@ -44,6 +46,8 @@ class LabelDesigner {
         // Bind events
         this.toolbox.querySelector('.btn-add-text').addEventListener('click', () => this.add_element('text'));
         this.toolbox.querySelector('.btn-add-field').addEventListener('click', () => this.add_element('field'));
+        this.toolbox.querySelector('.btn-add-price').addEventListener('click', () => this.add_element('field', { content: 'price', bold: true, fontSize: 16 }));
+        this.toolbox.querySelector('.btn-add-company').addEventListener('click', () => this.add_element('field', { content: 'company', bold: true }));
         this.toolbox.querySelector('.btn-add-barcode').addEventListener('click', () => this.add_element('barcode'));
         this.toolbox.querySelector('.btn-add-image').addEventListener('click', () => this.add_element('image'));
 
@@ -138,9 +142,16 @@ class LabelDesigner {
             elDiv.textContent = elData.content;
             elDiv.style.backgroundColor = 'transparent';
         } else if (elData.type === 'field') {
-            elDiv.textContent = '{' + elData.content + '}';
+            let label = elData.content;
+            if (label === 'price') label = '$ Price';
+            if (label === 'company') label = '🏢 Company';
+            elDiv.textContent = '{' + label + '}';
             elDiv.style.backgroundColor = '#e8f0fe';
             elDiv.style.border = '1px solid #b3d7ff';
+            elDiv.style.padding = '0 4px';
+            elDiv.style.display = 'flex';
+            elDiv.style.alignItems = 'center';
+            elDiv.style.justifyContent = elData.align === 'center' ? 'center' : (elData.align === 'right' ? 'flex-end' : 'flex-start');
         } else if (elData.type === 'barcode') {
             elDiv.innerHTML = '<div style="width:100%; height:100%; background: repeating-linear-gradient(90deg, #000 0px, #000 2px, #fff 2px, #fff 4px);"></div>';
             elDiv.style.backgroundColor = '#fafafa';
@@ -235,7 +246,7 @@ class LabelDesigner {
         btnRemove.className = 'btn btn-danger btn-xs mt-3';
         btnRemove.style.width = '100%';
         btnRemove.textContent = 'Remove Element';
-        btnRemove.onclick = () => this.remove_element(id);
+        btnRemove.addEventListener('click', () => this.remove_element(id));
         propDiv.appendChild(btnRemove);
     }
 
