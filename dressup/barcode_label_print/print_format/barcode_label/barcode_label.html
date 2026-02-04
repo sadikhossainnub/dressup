@@ -1,6 +1,6 @@
 <!-- Barcode Label Print Format - 45mm x 35mm Label -->
 {% set template = frappe.get_doc("Barcode Label Template", doc.label_template) %}
-{% set company = frappe.defaults.get_user_default("Company") %}
+{% set company = frappe.db.get_default("Company") %}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
