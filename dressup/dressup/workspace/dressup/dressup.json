@@ -1,114 +1,181 @@
 {
-    "charts": [],
-    "content": "[{\"id\":\"B3ZBbzHt_T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">DressUP</span>\",\"col\":12}},{\"id\":\"JJ30H5rrBP\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Monthly Sketch Specification Sample\",\"col\":3}},{\"id\":\"7DJI0Um_DM\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Daily Sketch Specification Sample\",\"col\":3}},{\"id\":\"tIu1Lf9TMw\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Cost Estimation\",\"col\":3}},{\"id\":\"C_uw6unwHL\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Pre Production Sample\",\"col\":3}},{\"id\":\"ZNAzlGtEQx\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"YNbj-9anrh\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"mQ2qmjwU8-\",\"type\":\"card\",\"data\":{\"card_name\":\"Designer\",\"col\":4}},{\"id\":\"Umhpm7x7gs\",\"type\":\"card\",\"data\":{\"card_name\":\"Barcode\",\"col\":4}}]",
-    "creation": "2025-11-05 17:24:33.874729",
-    "custom_blocks": [],
-    "docstatus": 0,
-    "doctype": "Workspace",
-    "for_user": "",
-    "hide_custom": 0,
-    "idx": 0,
-    "indicator_color": "green",
-    "is_hidden": 0,
-    "label": "DressUP",
-    "links": [
-        {
-            "hidden": 0,
-            "is_query_report": 0,
-            "label": "Designer",
-            "link_count": 4,
-            "link_type": "DocType",
-            "onboard": 0,
-            "type": "Card Break"
-        },
-        {
-            "hidden": 0,
-            "is_query_report": 0,
-            "label": "Sketch Specification Sample Making Sheet",
-            "link_count": 0,
-            "link_to": "Sketch Specification Sample Making Sheet",
-            "link_type": "DocType",
-            "onboard": 0,
-            "type": "Link"
-        },
-        {
-            "hidden": 0,
-            "is_query_report": 0,
-            "label": "Cost Estimation",
-            "link_count": 0,
-            "link_to": "Cost Estimation",
-            "link_type": "DocType",
-            "onboard": 0,
-            "type": "Link"
-        },
-        {
-            "hidden": 0,
-            "is_query_report": 0,
-            "label": "Pre Production Sample",
-            "link_count": 0,
-            "link_to": "Pre Production Sample",
-            "link_type": "DocType",
-            "onboard": 0,
-            "type": "Link"
-        },
-        {
-            "hidden": 0,
-            "is_query_report": 0,
-            "label": "Barcode",
-            "link_count": 2,
-            "link_type": "DocType",
-            "onboard": 0,
-            "type": "Card Break"
-        },
-        {
-            "hidden": 0,
-            "is_query_report": 0,
-            "label": "Barcode Label Print",
-            "link_count": 0,
-            "link_to": "Barcode Label Print",
-            "link_type": "DocType",
-            "onboard": 0,
-            "type": "Link"
-        },
-        {
-            "hidden": 0,
-            "is_query_report": 0,
-            "label": "Barcode Label Template",
-            "link_count": 0,
-            "link_to": "Barcode Label Template",
-            "link_type": "DocType",
-            "onboard": 0,
-            "type": "Link"
-        }
-    ],
-    "modified": "2026-01-21 23:25:54.855391",
-    "modified_by": "sayedtkg@gmail.com",
-    "module": "DressUp",
-    "name": "DressUP",
-    "number_cards": [
-        {
-            "label": "Monthly Sketch Specification Sample",
-            "number_card_name": "Monthly Sketch Specification Sample"
-        },
-        {
-            "label": "Cost Estimation",
-            "number_card_name": "Cost Estimation"
-        },
-        {
-            "label": "Daily Sketch Specification Sample",
-            "number_card_name": "Daily Sketch Specification Sample"
-        },
-        {
-            "label": "Pre Production Sample",
-            "number_card_name": "Pre Production Sample Monthly"
-        }
-    ],
-    "owner": "Administrator",
-    "parent_page": "",
-    "public": 1,
-    "quick_lists": [],
-    "roles": [],
-    "sequence_id": 2.0,
-    "shortcuts": [],
-    "title": "DressUP"
+ "charts": [],
+ "content": "[{\"id\":\"B3ZBbzHt_T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">DressUP</span>\",\"col\":12}},{\"id\":\"JJ30H5rrBP\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Monthly Sketch Specification Sample\",\"col\":3}},{\"id\":\"7DJI0Um_DM\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Daily Sketch Specification Sample\",\"col\":3}},{\"id\":\"tIu1Lf9TMw\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Cost Estimation\",\"col\":3}},{\"id\":\"C_uw6unwHL\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Pre Production Sample\",\"col\":3}},{\"id\":\"ZNAzlGtEQx\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"f8Jgy5jrhe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Tech Pack Summary\",\"col\":3}},{\"id\":\"YNbj-9anrh\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"mQ2qmjwU8-\",\"type\":\"card\",\"data\":{\"card_name\":\"Designer\",\"col\":4}},{\"id\":\"Umhpm7x7gs\",\"type\":\"card\",\"data\":{\"card_name\":\"Barcode\",\"col\":4}},{\"id\":\"bcHS3cxJlT\",\"type\":\"card\",\"data\":{\"card_name\":\"Customer Membership\",\"col\":4}}]",
+ "creation": "2025-11-05 17:24:33.874729",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "DressUP",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Designer",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sketch Specification Sample Making Sheet",
+   "link_count": 0,
+   "link_to": "Sketch Specification Sample Making Sheet",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Cost Estimation",
+   "link_count": 0,
+   "link_to": "Cost Estimation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Pre Production Sample",
+   "link_count": 0,
+   "link_to": "Pre Production Sample",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Barcode",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Barcode Label Print",
+   "link_count": 0,
+   "link_to": "Barcode Label Print",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Barcode Label Template",
+   "link_count": 0,
+   "link_to": "Barcode Label Template",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer Membership",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Membership Type",
+   "link_count": 0,
+   "link_to": "Membership Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer Membership",
+   "link_count": 0,
+   "link_to": "Customer Membership",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Membership Application",
+   "link_count": 0,
+   "link_to": "Membership Application",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Membership Payment",
+   "link_count": 0,
+   "link_to": "Membership Payment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Membership Renewal",
+   "link_count": 0,
+   "link_to": "Membership Renewal",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-02-05 16:22:33.090397",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "DressUP",
+ "number_cards": [
+  {
+   "label": "Monthly Sketch Specification Sample",
+   "number_card_name": "Monthly Sketch Specification Sample"
+  },
+  {
+   "label": "Cost Estimation",
+   "number_card_name": "Cost Estimation"
+  },
+  {
+   "label": "Daily Sketch Specification Sample",
+   "number_card_name": "Daily Sketch Specification Sample"
+  },
+  {
+   "label": "Pre Production Sample",
+   "number_card_name": "Pre Production Sample Monthly"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 2.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Tech Pack Summary",
+   "link_to": "tech-pack-summary",
+   "type": "Page"
+  }
+ ],
+ "title": "DressUP"
 }

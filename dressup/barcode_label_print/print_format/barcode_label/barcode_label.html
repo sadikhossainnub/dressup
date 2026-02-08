@@ -14,8 +14,15 @@
 
 <style>
     @page {
-        margin: 0;
-        padding: 0;
+        margin: 0mm;
+        padding: 0mm;
+        size: auto;
+    }
+
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff;
     }
 
     * {
@@ -30,6 +37,7 @@
         gap: {{ vertical_gap }}mm {{ horizontal_gap }}mm;
         padding-top: {{ top_margin }}mm;
         padding-left: {{ left_margin }}mm;
+        overflow: visible;
     }
 
     .barcode-label {
@@ -41,101 +49,62 @@
         position: relative;
         font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
         color: #1a1a1a;
-        border: 1.5px solid #000;
-        border-radius: 2mm;
-        padding: 1.5mm;
+        border: 0.5px solid #eee; /* Very thin border or none */
+        padding: 2mm; /* Increased padding for safety */
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: center; /* Center content vertically */
+        align-items: center;    /* Center content horizontally */
+        text-align: center;
     }
 
-    /* Company Name - Top Header */
+    /* Company Name */
     .company-name {
-        text-align: center;
+        width: 100%;
         font-weight: 700;
-        font-size: {{ font_size * 0.9 }}px;
-        color: #000;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding-bottom: 1mm;
-        border-bottom: 0.8px solid #333;
+        font-size: {{ font_size * 0.8 }}px;
         margin-bottom: 1mm;
-        line-height: 1.2;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    /* Item Details Section */
+    /* Item Details */
     .item-details {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.3mm;
-        flex-shrink: 0;
-        flex-grow: 0;
-    }
-
-    .item-code {
-        font-size: {{ font_size * 0.7 }}px;
-        color: #555;
-        font-weight: 500;
-        letter-spacing: 0.3px;
+        width: 100%;
+        margin-bottom: 1mm;
     }
 
     .item-name {
-        font-size: {{ font_size * 0.85 }}px;
-        font-weight: 600;
-        text-align: center;
-        color: #222;
-        line-height: 1.2;
-        max-height: 2.4em;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        word-break: break-word;
+        font-size: {{ font_size * 0.8 }}px;
+        font-weight: 500;
+        line-height: 1.1;
     }
 
     /* Price Tag */
     .price-tag {
-        color: #000;
         font-weight: 700;
-        font-size: {{ font_size * 1.3 }}px;
-        text-align: center;
-        margin: 1mm 0;
-        letter-spacing: 0.5px;
+        font-size: {{ font_size * 1.2 }}px;
+        margin: 0.5mm 0;
     }
 
     /* Barcode Section */
     .barcode-section {
-        flex-shrink: 0;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-end;
-        margin-top: auto;
-        padding: 0;
+        margin-top: 1mm;
     }
 
     .barcode-image {
-        width: auto;
-        height: auto;
-        max-width: 100%;
-        max-height: 10mm;
-        /* IMPORTANT: Don't stretch barcode - it breaks scanner readability! */
-        image-rendering: pixelated;
-        image-rendering: -moz-crisp-edges;
-        image-rendering: crisp-edges;
+        max-width: 95%;
+        max-height: 8mm; /* Reduced slightly to fit better */
     }
 
     .barcode-text {
-        font-size: {{ font_size * 0.65 }}px;
-        color: #666;
+        font-size: {{ font_size * 0.6 }}px;
         margin-top: 0.5mm;
-        font-family: 'Courier New', monospace;
-        letter-spacing: 1px;
     }
 
     /* Print Optimizations */
