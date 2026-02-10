@@ -27,6 +27,22 @@
   "finish_time_date",
   "seson",
   "sewing_finish",
+  "item_details",
+  "value_addition",
+  "color",
+  "sleeve",
+  "length",
+  "lining",
+  "column_break_taqt",
+  "bottom_value_addition",
+  "bottom_color",
+  "bottom_style",
+  "bottom_length",
+  "bottom_waist",
+  "column_break_xlqq",
+  "dupatta_fabric",
+  "dupatta_color",
+  "dupatta_value_addition",
   "production_section",
   "fabrics",
   "trim_accessories",
@@ -350,13 +366,92 @@
    "fieldname": "handler_name",
    "fieldtype": "Data",
    "label": "Handler Name"
+  },
+  {
+   "fieldname": "item_details",
+   "fieldtype": "Section Break",
+   "label": "Item Details"
+  },
+  {
+   "fieldname": "value_addition",
+   "fieldtype": "Data",
+   "label": "Value Addition"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Data",
+   "label": "Color"
+  },
+  {
+   "fieldname": "sleeve",
+   "fieldtype": "Data",
+   "label": "Sleeve"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Select",
+   "label": "Length"
+  },
+  {
+   "fieldname": "lining",
+   "fieldtype": "Select",
+   "label": "Lining",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "column_break_taqt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bottom_value_addition",
+   "fieldtype": "Data",
+   "label": "Bottom Value Addition"
+  },
+  {
+   "fieldname": "bottom_color",
+   "fieldtype": "Data",
+   "label": "Bottom Color"
+  },
+  {
+   "fieldname": "bottom_style",
+   "fieldtype": "Data",
+   "label": "Bottom Style"
+  },
+  {
+   "fieldname": "bottom_length",
+   "fieldtype": "Data",
+   "label": "Bottom Length"
+  },
+  {
+   "fieldname": "bottom_waist",
+   "fieldtype": "Data",
+   "label": "Bottom Waist"
+  },
+  {
+   "fieldname": "column_break_xlqq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "dupatta_fabric",
+   "fieldtype": "Data",
+   "label": "Dupatta Fabric"
+  },
+  {
+   "fieldname": "dupatta_color",
+   "fieldtype": "Data",
+   "label": "Dupatta Color"
+  },
+  {
+   "fieldname": "dupatta_value_addition",
+   "fieldtype": "Data",
+   "label": "Dupatta Value Addition"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-03 18:12:28.817098",
- "modified_by": "Administrator",
+ "modified": "2026-02-10 12:35:00.731592",
+ "modified_by": "asif.expo@gmail.com",
  "module": "DressUp",
  "name": "Pre Production Sample",
  "naming_rule": "By \"Naming Series\" field",
