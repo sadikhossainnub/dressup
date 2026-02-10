@@ -1,524 +1,529 @@
 {
- "actions": [],
- "allow_rename": 1,
- "autoname": "naming_series:",
- "creation": "2024-01-01 00:00:00",
- "doctype": "DocType",
- "engine": "InnoDB",
- "field_order": [
-  "naming_series",
-  "tech_pack_no",
-  "category",
-  "cut_fit_style",
-  "collar_neck_style",
-  "side_cut",
-  "source_warehouse",
-  "received_date",
-  "item_code",
-  "item_name",
-  "column_break_1",
-  "pattern_master",
-  "pattern_master_name",
-  "start_time_date",
-  "sample_man",
-  "sample_man_name",
-  "handler",
-  "handler_name",
-  "finish_time_date",
-  "seson",
-  "sewing_finish",
-  "item_details",
-  "value_addition",
-  "color",
-  "sleeve",
-  "length",
-  "lining",
-  "column_break_taqt",
-  "bottom_value_addition",
-  "bottom_color",
-  "bottom_style",
-  "bottom_length",
-  "bottom_waist",
-  "column_break_xlqq",
-  "dupatta_fabric",
-  "dupatta_color",
-  "dupatta_value_addition",
-  "production_section",
-  "fabrics",
-  "trim_accessories",
-  "size_chart_section",
-  "size_chart_in_inch",
-  "size_note_section",
-  "small_text_zmnf",
-  "pattern_master_note_section",
-  "pattern_master_note",
-  "washing_instruction",
-  "dry_clean_only",
-  "wash_separately",
-  "wash_warm_iron_inside_out",
-  "hand_wash_only",
-  "note_section",
-  "note_or_instructions",
-  "section_break_vvjb",
-  "read_confirm_carefully",
-  "pps_image_and_links_section",
-  "pps_front",
-  "pps_back",
-  "pps_side",
-  "pps_image_link_if_any",
-  "quality_tab",
-  "other_tests_section",
-  "link_nsnp",
-  "stock_entry",
-  "amended_from"
- ],
- "fields": [
-  {
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Series",
-   "options": "PPS-.YYYY.-.####",
-   "reqd": 1
-  },
-  {
-   "fieldname": "pattern_master",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Pattern Master",
-   "link_filters": "[[\"Employee\",\"designation\",\"=\",\"Pattern Master\"]]",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
-   "fieldname": "handler",
-   "fieldtype": "Link",
-   "label": "Handler",
-   "options": "Employee"
-  },
-  {
-   "default": "Today",
-   "fieldname": "received_date",
-   "fieldtype": "Date",
-   "label": "Received Date:"
-  },
-  {
-   "fieldname": "source_warehouse",
-   "fieldtype": "Link",
-   "label": "Source Warehouse",
-   "options": "Warehouse",
-   "reqd": 1
-  },
-  {
-   "fieldname": "column_break_1",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "sample_man",
-   "fieldtype": "Link",
-   "label": "Sample Man",
-   "options": "Employee"
-  },
-  {
-   "default": "Now",
-   "fieldname": "start_time_date",
-   "fieldtype": "Datetime",
-   "label": "Start Time & Date:"
-  },
-  {
-   "default": "Now",
-   "depends_on": "eval:doc.docstatus==1",
-   "fieldname": "finish_time_date",
-   "fieldtype": "Datetime",
-   "label": "Finish Time & Date:",
-   "read_only": 1
-  },
-  {
-   "fieldname": "production_section",
-   "fieldtype": "Section Break",
-   "label": "Actual Raw Material Required"
-  },
-  {
-   "fieldname": "pattern_master_note_section",
-   "fieldtype": "Section Break",
-   "label": "Pattern Master Note"
-  },
-  {
-   "fieldname": "pattern_master_note",
-   "fieldtype": "Text Editor",
-   "label": "Pattern Master Note:"
-  },
-  {
-   "fieldname": "other_tests_section",
-   "fieldtype": "Section Break",
-   "label": "Quality Inspection"
-  },
-  {
-   "fieldname": "note_section",
-   "fieldtype": "Section Break",
-   "label": "NOTE & TEST RESULTS:"
-  },
-  {
-   "fieldname": "size_chart_section",
-   "fieldtype": "Section Break",
-   "label": "Size Chart"
-  },
-  {
-   "fieldname": "fabrics",
-   "fieldtype": "Table",
-   "label": "Fabrics",
-   "options": "PPS Fabric Item"
-  },
-  {
-   "fieldname": "trim_accessories",
-   "fieldtype": "Table",
-   "label": "Trim & Accessories",
-   "options": "PPS Trim Accessories Item"
-  },
-  {
-   "fieldname": "size_chart_in_inch",
-   "fieldtype": "Table",
-   "label": "Size Chart in Inch",
-   "options": "Size Chart in Inch",
-   "reqd": 1
-  },
-  {
-   "fieldname": "tech_pack_no",
-   "fieldtype": "Data",
-   "label": "Tech Pack No",
-   "reqd": 1
-  },
-  {
-   "fieldname": "category",
-   "fieldtype": "Data",
-   "label": "Category"
-  },
-  {
-   "fieldname": "cut_fit_style",
-   "fieldtype": "Link",
-   "label": "Cut/ Fit Style",
-   "options": "Cut Fit"
-  },
-  {
-   "fieldname": "collar_neck_style",
-   "fieldtype": "Select",
-   "label": "Collar/ Neck Style",
-   "options": "\nRound Neck / Crew Neck\nV-Neck\nU-Neck\nScoop Neck\nSquare Neck\nBoat Neck / Bateau Neck\nSweetheart Neck\nKeyhole Neck\nDeep V-Neck\nHigh Neck\nMock Neck\nTurtle Neck\nHalter Neck\nOff-Shoulder\nCold Shoulder\nOne-Shoulder\nAsymmetric Neck\nBardot Neck\nCowl Neck\nPlunge Neck\nIllusion Neck (mesh/lace)\nSurplice / Wrap Neck\nShirt Collar\nPointed Collar\nSpread Collar\nBand Collar\nMandarin Collar\nPeter Pan Collar\nNotched Collar\nShawl Collar\nKurti Round Neck\nKurti V-Neck\nKurti Sweetheart\nMughal Neck\nPotli Button Neck\nHenley Neck\nChikankari Neck\nZari/Zardozi Embellished Neck\nBindiya Neck\nKeyhole Kurti Neck\nQueen Anne Neck\nOff-Shoulder Ruffle Neck\nStrapless / Tube Neck\nCorset Neck\nLace Appliqu\u00e9 Neck\nCollared Deep-V\nButterfly Neck\nMesh High-Neck\nNotched V-Neck"
-  },
-  {
-   "fieldname": "side_cut",
-   "fieldtype": "Select",
-   "label": "Side Cut",
-   "options": "\nHigh Side Slit (above mid-thigh)\nMid Side Slit (around knee level)\nLow Side Slit (below knee / calf level)\nFloor-Length Side Slit (long dresses/gowns)\nSingle Side Slit (left or right)\nDouble Side Slit (both sides)\nSlit-Free / Closed Side (no slit)\nStraight Slit\nCurved Slit\nOverlap Slit / Wrap Slit\nFront-Side Slit (slit placed slightly towards the front)\nSide-Slit with Pleat\nSide-Slit with Button Opening\nSide-Slit with Zipper\nDeep Cut Side Slit (bold, for gowns)\nSide Long Slit\nHigh Slit Kurti Style\nA-Line Kurti Slits\nStraight Kurti Side-Slits\nSide-Slit with Potli Buttons\nSide-Slit with Lace/Border\nFront-Open Style with Side Slits\nDiagonal Side Slit\nAsymmetric Side Slit\nSide-Slit with Tie-Up\nSide-Slit Cut-Out Style (exposes skin at waist/side)\nSide Knot Slit\nSide Drawstring Ruched Slit\nSide Slit with Panel Insert\nSide Slit with Fringe/Tassel Finishing"
-  },
-  {
-   "fieldname": "seson",
-   "fieldtype": "Link",
-   "label": "Season",
-   "options": "Seson"
-  },
-  {
-   "fieldname": "sewing_finish",
-   "fieldtype": "Select",
-   "label": "Sewing Finish",
-   "options": "Ready to Wear\nKaktarua\nUnstitched"
-  },
-  {
-   "fieldname": "link_nsnp",
-   "fieldtype": "Link",
-   "label": "Quality Inspection Template",
-   "options": "Quality Inspection Template",
-   "reqd": 1
-  },
-  {
-   "fieldname": "stock_entry",
-   "fieldtype": "Link",
-   "label": "Stock Entry",
-   "options": "Stock Entry",
-   "read_only": 1
-  },
-  {
-   "fieldname": "washing_instruction",
-   "fieldtype": "Section Break",
-   "label": "Washing Instruction"
-  },
-  {
-   "default": "0",
-   "fieldname": "wash_separately",
-   "fieldtype": "Check",
-   "label": "Wash Separately"
-  },
-  {
-   "default": "0",
-   "fieldname": "dry_clean_only",
-   "fieldtype": "Check",
-   "label": "Dry Clean Only"
-  },
-  {
-   "default": "0",
-   "fieldname": "wash_warm_iron_inside_out",
-   "fieldtype": "Check",
-   "label": "Wash & warm iron inside out, Do not rub"
-  },
-  {
-   "default": "0",
-   "fieldname": "hand_wash_only",
-   "fieldtype": "Check",
-   "label": "Hand Wash Only"
-  },
-  {
-   "fieldname": "note_or_instructions",
-   "fieldtype": "Text Editor",
-   "label": "Note or Instructions"
-  },
-  {
-   "fieldname": "section_break_vvjb",
-   "fieldtype": "Section Break",
-   "label": "Designer's Disclaimer"
-  },
-  {
-   "fieldname": "read_confirm_carefully",
-   "fieldtype": "Read Only",
-   "label": "Read and Confirm Carefully",
-   "reqd": 1
-  },
-  {
-   "fieldname": "pps_image_and_links_section",
-   "fieldtype": "Section Break",
-   "label": "PPS Image and Links"
-  },
-  {
-   "fieldname": "pps_front",
-   "fieldtype": "Attach Image",
-   "label": "PPS Front"
-  },
-  {
-   "fieldname": "pps_back",
-   "fieldtype": "Attach Image",
-   "label": "PPS Back"
-  },
-  {
-   "fieldname": "pps_side",
-   "fieldtype": "Attach Image",
-   "label": "PPS Side"
-  },
-  {
-   "fieldname": "pps_image_link_if_any",
-   "fieldtype": "Data",
-   "label": "PPS Image Link (if any)"
-  },
-  {
-   "fieldname": "quality_tab",
-   "fieldtype": "Tab Break",
-   "label": "Quality"
-  },
-  {
-   "fetch_from": "pattern_master.employee_name",
-   "fieldname": "pattern_master_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Pattern Master Name",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "sample_man.employee_name",
-   "fieldname": "sample_man_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Sample Man Name",
-   "read_only": 1
-  },
-  {
-   "fieldname": "size_note_section",
-   "fieldtype": "Section Break",
-   "label": "Size Note"
-  },
-  {
-   "fieldname": "small_text_zmnf",
-   "fieldtype": "Small Text"
-  },
-  {
-   "fieldname": "item_code",
-   "fieldtype": "Link",
-   "label": "Item Code",
-   "options": "Item",
-   "reqd": 1
-  },
-  {
-   "fetch_from": "item_code.item_name",
-   "fieldname": "item_name",
-   "fieldtype": "Data",
-   "label": "Item Name",
-   "read_only": 1
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Pre Production Sample",
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
-  },
-  {
-   "fetch_from": "handler.employee_name",
-   "fieldname": "handler_name",
-   "fieldtype": "Data",
-   "label": "Handler Name"
-  },
-  {
-   "fieldname": "item_details",
-   "fieldtype": "Section Break",
-   "label": "Item Details"
-  },
-  {
-   "fieldname": "value_addition",
-   "fieldtype": "Data",
-   "label": "Value Addition"
-  },
-  {
-   "fieldname": "color",
-   "fieldtype": "Data",
-   "label": "Color"
-  },
-  {
-   "fieldname": "sleeve",
-   "fieldtype": "Data",
-   "label": "Sleeve"
-  },
-  {
-   "fieldname": "length",
-   "fieldtype": "Select",
-   "label": "Length"
-  },
-  {
-   "fieldname": "lining",
-   "fieldtype": "Select",
-   "label": "Lining",
-   "options": "Yes\nNo"
-  },
-  {
-   "fieldname": "column_break_taqt",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "bottom_value_addition",
-   "fieldtype": "Data",
-   "label": "Bottom Value Addition"
-  },
-  {
-   "fieldname": "bottom_color",
-   "fieldtype": "Data",
-   "label": "Bottom Color"
-  },
-  {
-   "fieldname": "bottom_style",
-   "fieldtype": "Data",
-   "label": "Bottom Style"
-  },
-  {
-   "fieldname": "bottom_length",
-   "fieldtype": "Data",
-   "label": "Bottom Length"
-  },
-  {
-   "fieldname": "bottom_waist",
-   "fieldtype": "Data",
-   "label": "Bottom Waist"
-  },
-  {
-   "fieldname": "column_break_xlqq",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "dupatta_fabric",
-   "fieldtype": "Data",
-   "label": "Dupatta Fabric"
-  },
-  {
-   "fieldname": "dupatta_color",
-   "fieldtype": "Data",
-   "label": "Dupatta Color"
-  },
-  {
-   "fieldname": "dupatta_value_addition",
-   "fieldtype": "Data",
-   "label": "Dupatta Value Addition"
-  }
- ],
- "index_web_pages_for_search": 1,
- "is_submittable": 1,
- "links": [],
- "modified": "2026-02-10 12:35:00.731592",
- "modified_by": "asif.expo@gmail.com",
- "module": "DressUp",
- "name": "Pre Production Sample",
- "naming_rule": "By \"Naming Series\" field",
- "owner": "Administrator",
- "permissions": [
-  {
-   "amend": 1,
-   "cancel": 1,
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "select": 1,
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Manufacturing User",
-   "write": 1
-  },
-  {
-   "create": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Fashion Designer",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Fashion Designer Manager",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Administrator",
-   "share": 1,
-   "write": 1
-  }
- ],
- "row_format": "Dynamic",
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": [],
- "track_changes": 1,
- "track_seen": 1,
- "track_views": 1
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "naming_series:",
+    "creation": "2024-01-01 00:00:00",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "tech_pack_no",
+        "category",
+        "cut_fit_style",
+        "collar_neck_style",
+        "side_cut",
+        "source_warehouse",
+        "received_date",
+        "item_code",
+        "item_name",
+        "column_break_1",
+        "pattern_master",
+        "pattern_master_name",
+        "start_time_date",
+        "sample_man",
+        "sample_man_name",
+        "handler",
+        "handler_name",
+        "finish_time_date",
+        "seson",
+        "sewing_finish",
+        "item_details",
+        "value_addition",
+        "color",
+        "sleeve",
+        "length",
+        "lining",
+        "column_break_taqt",
+        "bottom_value_addition",
+        "bottom_color",
+        "bottom_style",
+        "bottom_length",
+        "bottom_waist",
+        "column_break_xlqq",
+        "dupatta_value_addition",
+        "dupatta_color",
+        "dupatta_fabric",
+        "production_section",
+        "fabrics",
+        "trim_accessories",
+        "size_chart_section",
+        "size_chart_in_inch",
+        "size_note_section",
+        "small_text_zmnf",
+        "pattern_master_note_section",
+        "pattern_master_note",
+        "washing_instruction",
+        "dry_clean_only",
+        "wash_separately",
+        "wash_warm_iron_inside_out",
+        "hand_wash_only",
+        "note_section",
+        "note_or_instructions",
+        "section_break_vvjb",
+        "read_confirm_carefully",
+        "pps_image_and_links_section",
+        "pps_front",
+        "pps_back",
+        "pps_side",
+        "pps_image_link_if_any",
+        "quality_tab",
+        "other_tests_section",
+        "link_nsnp",
+        "stock_entry",
+        "amended_from"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Series",
+            "options": "PPS-.YYYY.-.####",
+            "reqd": 1
+        },
+        {
+            "fieldname": "pattern_master",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Pattern Master",
+            "link_filters": "[[\"Employee\",\"designation\",\"=\",\"Pattern Master\"]]",
+            "options": "Employee",
+            "reqd": 1
+        },
+        {
+            "fieldname": "handler",
+            "fieldtype": "Link",
+            "label": "Handler",
+            "options": "Employee"
+        },
+        {
+            "default": "Today",
+            "fieldname": "received_date",
+            "fieldtype": "Date",
+            "label": "Received Date:"
+        },
+        {
+            "fieldname": "source_warehouse",
+            "fieldtype": "Link",
+            "label": "Source Warehouse",
+            "options": "Warehouse",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "sample_man",
+            "fieldtype": "Link",
+            "label": "Sample Man",
+            "options": "Employee"
+        },
+        {
+            "default": "Now",
+            "fieldname": "start_time_date",
+            "fieldtype": "Datetime",
+            "label": "Start Time & Date:"
+        },
+        {
+            "default": "Now",
+            "depends_on": "eval:doc.docstatus==1",
+            "fieldname": "finish_time_date",
+            "fieldtype": "Datetime",
+            "label": "Finish Time & Date:",
+            "read_only": 1
+        },
+        {
+            "fieldname": "production_section",
+            "fieldtype": "Section Break",
+            "label": "Actual Raw Material Required"
+        },
+        {
+            "fieldname": "pattern_master_note_section",
+            "fieldtype": "Section Break",
+            "label": "Pattern Master Note"
+        },
+        {
+            "fieldname": "pattern_master_note",
+            "fieldtype": "Text Editor",
+            "label": "Pattern Master Note:"
+        },
+        {
+            "fieldname": "other_tests_section",
+            "fieldtype": "Section Break",
+            "label": "Quality Inspection"
+        },
+        {
+            "fieldname": "note_section",
+            "fieldtype": "Section Break",
+            "label": "NOTE & TEST RESULTS:"
+        },
+        {
+            "fieldname": "size_chart_section",
+            "fieldtype": "Section Break",
+            "label": "Size Chart"
+        },
+        {
+            "fieldname": "fabrics",
+            "fieldtype": "Table",
+            "label": "Fabrics",
+            "options": "PPS Fabric Item"
+        },
+        {
+            "fieldname": "trim_accessories",
+            "fieldtype": "Table",
+            "label": "Trim & Accessories",
+            "options": "PPS Trim Accessories Item"
+        },
+        {
+            "fieldname": "size_chart_in_inch",
+            "fieldtype": "Table",
+            "label": "Size Chart in Inch",
+            "options": "Size Chart in Inch",
+            "reqd": 1
+        },
+        {
+            "fieldname": "tech_pack_no",
+            "fieldtype": "Data",
+            "label": "Tech Pack No",
+            "reqd": 1
+        },
+        {
+            "fieldname": "category",
+            "fieldtype": "Data",
+            "label": "Category"
+        },
+        {
+            "fieldname": "cut_fit_style",
+            "fieldtype": "Link",
+            "label": "Cut/ Fit Style",
+            "options": "Cut Fit"
+        },
+        {
+            "fieldname": "collar_neck_style",
+            "fieldtype": "Select",
+            "label": "Collar/ Neck Style",
+            "options": "\nRound Neck / Crew Neck\nV-Neck\nU-Neck\nScoop Neck\nSquare Neck\nBoat Neck / Bateau Neck\nSweetheart Neck\nKeyhole Neck\nDeep V-Neck\nHigh Neck\nMock Neck\nTurtle Neck\nHalter Neck\nOff-Shoulder\nCold Shoulder\nOne-Shoulder\nAsymmetric Neck\nBardot Neck\nCowl Neck\nPlunge Neck\nIllusion Neck (mesh/lace)\nSurplice / Wrap Neck\nShirt Collar\nPointed Collar\nSpread Collar\nBand Collar\nMandarin Collar\nPeter Pan Collar\nNotched Collar\nShawl Collar\nKurti Round Neck\nKurti V-Neck\nKurti Sweetheart\nMughal Neck\nPotli Button Neck\nHenley Neck\nChikankari Neck\nZari/Zardozi Embellished Neck\nBindiya Neck\nKeyhole Kurti Neck\nQueen Anne Neck\nOff-Shoulder Ruffle Neck\nStrapless / Tube Neck\nCorset Neck\nLace Appliqu\u00e9 Neck\nCollared Deep-V\nButterfly Neck\nMesh High-Neck\nNotched V-Neck"
+        },
+        {
+            "fieldname": "side_cut",
+            "fieldtype": "Select",
+            "label": "Side Cut",
+            "options": "\nHigh Side Slit (above mid-thigh)\nMid Side Slit (around knee level)\nLow Side Slit (below knee / calf level)\nFloor-Length Side Slit (long dresses/gowns)\nSingle Side Slit (left or right)\nDouble Side Slit (both sides)\nSlit-Free / Closed Side (no slit)\nStraight Slit\nCurved Slit\nOverlap Slit / Wrap Slit\nFront-Side Slit (slit placed slightly towards the front)\nSide-Slit with Pleat\nSide-Slit with Button Opening\nSide-Slit with Zipper\nDeep Cut Side Slit (bold, for gowns)\nSide Long Slit\nHigh Slit Kurti Style\nA-Line Kurti Slits\nStraight Kurti Side-Slits\nSide-Slit with Potli Buttons\nSide-Slit with Lace/Border\nFront-Open Style with Side Slits\nDiagonal Side Slit\nAsymmetric Side Slit\nSide-Slit with Tie-Up\nSide-Slit Cut-Out Style (exposes skin at waist/side)\nSide Knot Slit\nSide Drawstring Ruched Slit\nSide Slit with Panel Insert\nSide Slit with Fringe/Tassel Finishing"
+        },
+        {
+            "fieldname": "seson",
+            "fieldtype": "Link",
+            "label": "Season",
+            "options": "Seson"
+        },
+        {
+            "fieldname": "sewing_finish",
+            "fieldtype": "Select",
+            "label": "Sewing Finish",
+            "options": "Ready to Wear\nKaktarua\nUnstitched"
+        },
+        {
+            "fieldname": "link_nsnp",
+            "fieldtype": "Link",
+            "label": "Quality Inspection Template",
+            "options": "Quality Inspection Template",
+            "reqd": 1
+        },
+        {
+            "fieldname": "stock_entry",
+            "fieldtype": "Link",
+            "label": "Stock Entry",
+            "options": "Stock Entry",
+            "read_only": 1
+        },
+        {
+            "fieldname": "washing_instruction",
+            "fieldtype": "Section Break",
+            "label": "Washing Instruction"
+        },
+        {
+            "default": "0",
+            "fieldname": "wash_separately",
+            "fieldtype": "Check",
+            "label": "Wash Separately"
+        },
+        {
+            "default": "0",
+            "fieldname": "dry_clean_only",
+            "fieldtype": "Check",
+            "label": "Dry Clean Only"
+        },
+        {
+            "default": "0",
+            "fieldname": "wash_warm_iron_inside_out",
+            "fieldtype": "Check",
+            "label": "Wash & warm iron inside out, Do not rub"
+        },
+        {
+            "default": "0",
+            "fieldname": "hand_wash_only",
+            "fieldtype": "Check",
+            "label": "Hand Wash Only"
+        },
+        {
+            "fieldname": "note_or_instructions",
+            "fieldtype": "Text Editor",
+            "label": "Note or Instructions"
+        },
+        {
+            "fieldname": "section_break_vvjb",
+            "fieldtype": "Section Break",
+            "label": "Designer's Disclaimer"
+        },
+        {
+            "fieldname": "read_confirm_carefully",
+            "fieldtype": "Read Only",
+            "label": "Read and Confirm Carefully",
+            "reqd": 1
+        },
+        {
+            "fieldname": "pps_image_and_links_section",
+            "fieldtype": "Section Break",
+            "label": "PPS Image and Links"
+        },
+        {
+            "fieldname": "pps_front",
+            "fieldtype": "Attach Image",
+            "label": "PPS Front"
+        },
+        {
+            "fieldname": "pps_back",
+            "fieldtype": "Attach Image",
+            "label": "PPS Back"
+        },
+        {
+            "fieldname": "pps_side",
+            "fieldtype": "Attach Image",
+            "label": "PPS Side"
+        },
+        {
+            "fieldname": "pps_image_link_if_any",
+            "fieldtype": "Data",
+            "label": "PPS Image Link (if any)"
+        },
+        {
+            "fieldname": "quality_tab",
+            "fieldtype": "Tab Break",
+            "label": "Quality"
+        },
+        {
+            "fetch_from": "pattern_master.employee_name",
+            "fieldname": "pattern_master_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Pattern Master Name",
+            "read_only": 1
+        },
+        {
+            "fetch_from": "sample_man.employee_name",
+            "fieldname": "sample_man_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Sample Man Name",
+            "read_only": 1
+        },
+        {
+            "fieldname": "size_note_section",
+            "fieldtype": "Section Break",
+            "label": "Size Note"
+        },
+        {
+            "fieldname": "small_text_zmnf",
+            "fieldtype": "Small Text"
+        },
+        {
+            "fieldname": "item_code",
+            "fieldtype": "Link",
+            "label": "Item Code",
+            "options": "Item",
+            "reqd": 1
+        },
+        {
+            "fetch_from": "item_code.item_name",
+            "fieldname": "item_name",
+            "fieldtype": "Data",
+            "label": "Item Name",
+            "read_only": 1
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Pre Production Sample",
+            "print_hide": 1,
+            "read_only": 1,
+            "search_index": 1
+        },
+        {
+            "fetch_from": "handler.employee_name",
+            "fieldname": "handler_name",
+            "fieldtype": "Data",
+            "label": "Handler Name"
+        },
+        {
+            "fieldname": "item_details",
+            "fieldtype": "Section Break",
+            "label": "Item Details"
+        },
+        {
+            "fieldname": "value_addition",
+            "fieldtype": "Table MultiSelect",
+            "label": "Value Addition",
+            "options": "Value Addition Selection"
+        },
+        {
+            "fieldname": "color",
+            "fieldtype": "Color",
+            "label": "Color"
+        },
+        {
+            "fieldname": "sleeve",
+            "fieldtype": "Link",
+            "label": "Sleeve",
+            "options": "Sleeve Style"
+        },
+        {
+            "fieldname": "length",
+            "fieldtype": "Select",
+            "label": "Length"
+        },
+        {
+            "fieldname": "lining",
+            "fieldtype": "Select",
+            "label": "Lining",
+            "options": "Yes\nNo"
+        },
+        {
+            "fieldname": "column_break_taqt",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "bottom_value_addition",
+            "fieldtype": "Table MultiSelect",
+            "label": "Bottom Value Addition",
+            "options": "Value Addition Selection"
+        },
+        {
+            "fieldname": "bottom_color",
+            "fieldtype": "Color",
+            "label": "Bottom Color"
+        },
+        {
+            "fieldname": "bottom_style",
+            "fieldtype": "Link",
+            "label": "Bottom Style",
+            "options": "Bottom Style"
+        },
+        {
+            "fieldname": "bottom_length",
+            "fieldtype": "Data",
+            "label": "Bottom Length"
+        },
+        {
+            "fieldname": "bottom_waist",
+            "fieldtype": "Data",
+            "label": "Bottom Waist"
+        },
+        {
+            "fieldname": "column_break_xlqq",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "dupatta_fabric",
+            "fieldtype": "Data",
+            "label": "Dupatta Fabric"
+        },
+        {
+            "fieldname": "dupatta_color",
+            "fieldtype": "Color",
+            "label": "Dupatta Color"
+        },
+        {
+            "fieldname": "dupatta_value_addition",
+            "fieldtype": "Table MultiSelect",
+            "label": "Dupatta Value Addition",
+            "options": "Value Addition Selection"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "is_submittable": 1,
+    "links": [],
+    "modified": "2026-02-10 14:17:15.833797",
+    "modified_by": "Administrator",
+    "module": "DressUp",
+    "name": "Pre Production Sample",
+    "naming_rule": "By \"Naming Series\" field",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "amend": 1,
+            "cancel": 1,
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "select": 1,
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Manufacturing User",
+            "write": 1
+        },
+        {
+            "create": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Fashion Designer",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Fashion Designer Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Administrator",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "row_format": "Dynamic",
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1,
+    "track_seen": 1,
+    "track_views": 1
 }
