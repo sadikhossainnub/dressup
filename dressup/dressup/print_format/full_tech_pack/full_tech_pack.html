@@ -1,5 +1,9 @@
 {# Data Fetching #}
 {% set pps_doc = doc %}
+{% if not letter_head %}
+{% set lh_name = frappe.db.get_default("letter_head") %}
+{% set letter_head = frappe.db.get_value("Letter Head", lh_name, "content") if lh_name else "" %}
+{% endif %}
 {% set sketch_doc = None %}
 {% if doc.tech_pack_no %}
 {% set sketch_doc = frappe.get_doc("Sketch Specification Sample Making Sheet", doc.tech_pack_no) %}
