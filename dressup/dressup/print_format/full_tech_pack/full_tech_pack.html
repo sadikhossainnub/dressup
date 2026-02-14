@@ -487,7 +487,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
 
             .ce-print-container .header-left h1 {
                 margin: 0;
-                font-size: 14pt;
+                font-size: 11pt;
                 font-weight: 900;
             }
 
@@ -505,7 +505,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
             .ce-print-container .standard-table {
                 width: 100%;
                 border-collapse: collapse;
-                font-size: 8.5pt;
+                font-size: 7.5pt;
             }
 
             .ce-print-container .standard-table thead th {
@@ -530,7 +530,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
             }
 
             .ce-print-container .summary-main .value {
-                font-size: 12pt;
+                font-size: 11pt;
                 font-weight: 700;
                 line-height: 1;
             }
@@ -544,7 +544,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
             }
 
             .ce-print-container .price-chip .value {
-                font-size: 14pt;
+                font-size: 11pt;
                 font-weight: 700;
             }
 
@@ -567,12 +567,12 @@ Production Sample"}, order_by="creation desc", limit=1) %}
                 <tr>
                     <td>
                         <div class="header-left">
-                            <h1 style="font-size: 14pt; font-weight: 900;">COST ESTIMATION <span
+                            <h1 style="font-size: 11pt; font-weight: 900;">COST ESTIMATION <span
                                     style="font-weight: 300; font-size: 10pt; color: #666;">/ আনুমানিক খরচের
                                     হিসাব</span></h1>
                         </div>
                     </td>
-                    <td style="text-align: right; vertical-align: bottom; font-size: 9pt; font-weight: 700;">REF: {{
+                    <td style="text-align: right; vertical-align: bottom; font-size: 8pt; font-weight: 700;">REF: {{
                         doc.name }}<br>DATE: {{ frappe.utils.formatdate(doc.date, "dd-mm-yyyy") }}</td>
                 </tr>
             </table>
@@ -824,7 +824,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
 
             .tech-pps-container {
                 font-family: 'Inter', sans-serif;
-                font-size: 8.5pt;
+                font-size: 8pt;
                 color: #000;
                 line-height: 1.3;
                 width: 100%;
@@ -841,7 +841,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
                 color: #000;
                 border: 1px solid #000;
                 padding: 3px 10px;
-                font-size: 8pt;
+                font-size: 8.5pt;
                 font-weight: 700;
                 text-transform: uppercase;
                 margin-top: 5px;
@@ -872,11 +872,11 @@ Production Sample"}, order_by="creation desc", limit=1) %}
 
             .tech-pps-container .swatch-code {
                 font-weight: 800;
-                font-size: 9pt;
+                font-size: 8pt;
             }
 
             .tech-pps-container .swatch-name {
-                font-size: 7.5pt;
+                font-size: 7pt;
                 color: #444;
             }
 
@@ -884,7 +884,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
                 font-weight: 700;
                 color: #000;
                 margin-top: 2px;
-                font-size: 8pt;
+                font-size: 7.5pt;
                 border-top: 1px solid #ccc;
                 padding-top: 2px;
             }
@@ -909,7 +909,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
                 display: block;
                 padding-top: 50px;
                 color: #999;
-                font-size: 7pt;
+                font-size: 6.5pt;
                 text-align: center;
                 box-sizing: border-box;
             }
@@ -961,7 +961,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
             }
 
             .tech-pps-container .gallery-label {
-                font-size: 7pt;
+                font-size: 6.5pt;
                 font-weight: 700;
                 margin-top: 5px;
                 background: #fff;
@@ -976,12 +976,12 @@ Production Sample"}, order_by="creation desc", limit=1) %}
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr>
                         <td>
-                            <h1 style="margin: 0; font-size: 15pt; font-weight: 900;">PPS FORMAT <span
+                            <h1 style="margin: 0; font-size: 11pt; font-weight: 900;">PPS FORMAT <span
                                     style="font-weight: 300; font-size: 10pt; color: #666;">/ পিপিএস ফরম্যাট</span></h1>
                             <div style="font-size: 8pt; color: #555;">PRE-PRODUCTION SAMPLE & COMPONENT VERIFICATION
                                 SHEET</div>
                         </td>
-                        <td style="text-align: right; font-size: 9pt; font-weight: 700; vertical-align: bottom;">
+                        <td style="text-align: right; font-size: 8pt; font-weight: 700; vertical-align: bottom;">
                             REF: {{ doc.name }}<br>DATE: {{ doc.received_date or
                             frappe.utils.now_datetime().strftime("%d %b %Y") }}
                         </td>
@@ -1128,8 +1128,9 @@ Production Sample"}, order_by="creation desc", limit=1) %}
                 --accent-danger: #ef4444;
                 --bg-light: #f8fafc;
                 --border-color: #e2e8f0;
+                font-size: 8pt;
                 color: var(--primary-color);
-                line-height: 1.6;
+                line-height: 1.4;
             }
 
             .qi-premium .header-container {
@@ -1157,7 +1158,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
 
             .qi-premium .highlight-card label {
                 display: block;
-                font-size: 10px;
+                font-size: 7pt;
                 font-weight: 700;
                 color: var(--secondary-color);
                 text-transform: uppercase;
@@ -1165,7 +1166,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
             }
 
             .qi-premium .highlight-card span {
-                font-size: 14px;
+                font-size: 10pt;
                 font-weight: 600;
                 color: var(--primary-color);
             }
@@ -1175,7 +1176,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
                 align-items: center;
                 padding: 2px 10px;
                 border-radius: 99px;
-                font-size: 11px;
+                font-size: 7pt;
                 font-weight: 700;
                 text-transform: uppercase;
             }
@@ -1198,7 +1199,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
             }
 
             .qi-premium .info-block-title {
-                font-size: 12px;
+                font-size: 8.5pt;
                 font-weight: 800;
                 text-transform: uppercase;
                 color: var(--primary-color);
@@ -1228,7 +1229,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
                 color: white;
                 padding: 12px;
                 text-align: left;
-                font-size: 11px;
+                font-size: 7.5pt;
                 text-transform: uppercase;
             }
 
@@ -1236,7 +1237,7 @@ Production Sample"}, order_by="creation desc", limit=1) %}
                 background: white;
                 padding: 10px 12px;
                 border-bottom: 1px solid var(--border-color);
-                font-size: 12px;
+                font-size: 7.5pt;
             }
 
             .qi-premium .badge-reading {
@@ -1287,13 +1288,13 @@ Production Sample"}, order_by="creation desc", limit=1) %}
             <div class="header-container">
                 <div style="text-align: left;">
                     <h1
-                        style="margin:0; color: var(--primary-color); font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                        style="margin:0; color: var(--primary-color); font-size: 11pt; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
                         Quality Inspection</h1>
-                    <div style="font-weight: 600; color: var(--secondary-color); font-size: 12px; margin-top: 3px;">{{
+                    <div style="font-weight: 600; color: var(--secondary-color); font-size: 7.5pt; margin-top: 3px;">{{
                         doc.name }}</div>
                 </div>
                 <div style="text-align: right;">
-                    <div style="font-weight: 600; color: var(--primary-color); font-size: 12px;">Reference: {{
+                    <div style="font-weight: 600; color: var(--primary-color); font-size: 7.5pt;">Reference: {{
                         doc.reference_name or 'N/A' }}</div>
                 </div>
             </div>
@@ -1336,17 +1337,25 @@ Production Sample"}, order_by="creation desc", limit=1) %}
                         <td>
                             <div style="font-weight: 700;">{{ row.specification }}</div>
                         </td>
-                        <td>{% if row.numeric %}{{ row.min_value }} - {{ row.max_value }}{% else %}{{ row.value or
-                            'Standard' }}{% endif %}</td>
+                        <td>
+                            <div style="font-weight: 500;">
+                                {% if row.numeric %}
+                                <span style="font-size: 6.5pt; color: var(--secondary-color);">RANGE:</span> {{
+                                row.min_value }} - {{ row.max_value }}
+                                {% else %}
+                                {{ row.value or row.acceptance_formula or 'Defined Standard' }}
+                                {% endif %}
+                            </div>
+                        </td>
                         <td>
                             {% if row.reading_value %}<span class="badge-reading">{{ row.reading_value }}</span>
                             {% else %}
-                            {% for i in range(1, 6) %}{% set field = "reading_" ~ i %}{% if row[field] %}<span
+                            {% for i in range(1, 11) %}{% set field = "reading_" ~ i %}{% if row[field] %}<span
                                 class="badge-reading">{{ row[field] }}</span>{% endif %}{% endfor %}
                             {% endif %}
                         </td>
                         <td>
-                            <div class="status-pill {{ row.status | lower }}" style="font-size: 9px; padding: 1px 6px;">
+                            <div class="status-pill {{ row.status | lower }}" style="font-size: 7pt; padding: 1px 6px;">
                                 {{ row.status }}</div>
                         </td>
                     </tr>
@@ -1355,32 +1364,32 @@ Production Sample"}, order_by="creation desc", limit=1) %}
             </table>
 
             {% if doc.remarks %}<div class="remarks-box">
-                <h4 style="margin:0 0 5px 0; font-size: 12px; color: #92400e; text-transform: uppercase;">Quality
+                <h4 style="margin:0 0 5px 0; font-size: 8pt; color: #92400e; text-transform: uppercase;">Quality
                     Remarks</h4>
-                <div style="font-size: 12px; color: #4b5563;">{{ doc.remarks }}</div>
+                <div style="font-size: 8pt; color: #4b5563;">{{ doc.remarks }}</div>
             </div>{% endif %}
 
             <div class="signature-area">
                 <div class="signature-card">
                     <div class="signature-line"></div>
                     <div
-                        style="font-size: 10px; font-weight: 700; color: var(--secondary-color); text-transform: uppercase;">
+                        style="font-size: 7.5pt; font-weight: 700; color: var(--secondary-color); text-transform: uppercase;">
                         Inspected By</div>
-                    <div style="font-weight: 600; margin-top: 3px; font-size: 12px;">{{
+                    <div style="font-weight: 600; margin-top: 3px; font-size: 8pt;">{{
                         frappe.get_fullname(doc.inspected_by) }}</div>
                 </div>
                 <div class="signature-card">
                     <div class="signature-line"></div>
                     <div
-                        style="font-size: 10px; font-weight: 700; color: var(--secondary-color); text-transform: uppercase;">
+                        style="font-size: 7.5pt; font-weight: 700; color: var(--secondary-color); text-transform: uppercase;">
                         QA Manager Verification</div>
-                    <div style="font-weight: 600; margin-top: 3px; font-size: 12px;">{{ doc.verified_by or
+                    <div style="font-weight: 600; margin-top: 3px; font-size: 8pt;">{{ doc.verified_by or
                         '________________' }}</div>
                 </div>
             </div>
 
             {% if footer %}<div
-                style="width: 100%; border-top: 1px solid var(--border-color); margin-top: 30px; padding-top: 10px; text-align: center;">
+                style="width: 100%; border-top: 1px solid var(--border-color); margin-top: 30px; padding-top: 10px; text-align: center; font-size: 7.5pt;">
                 {{ footer }}</div>{% endif %}
         </div>
         {% endif %}

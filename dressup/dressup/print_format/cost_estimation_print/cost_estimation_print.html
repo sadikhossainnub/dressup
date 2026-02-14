@@ -4,9 +4,12 @@
             size: A4 portrait;
             margin: 7mm;
         }
-        .no-print { display: none; }
+
+        .no-print {
+            display: none;
+        }
     }
-    
+
     :root {
         --primary: #000000;
         --primary-light: #333333;
@@ -28,11 +31,11 @@
         margin: 0;
         padding: 0;
     }
-    
+
     .print-content {
         padding: 0;
     }
-    
+
     .header-table {
         width: 100%;
         border-collapse: collapse;
@@ -45,15 +48,15 @@
         padding-bottom: 0px;
         border: none;
     }
-    
+
     .header-left h1 {
         margin: 0;
         color: var(--primary);
-        font-size: 14pt;
+        font-size: 11pt;
         font-weight: 700;
         letter-spacing: -0.5px;
     }
-    
+
     .doc-info-table {
         width: 100%;
         border-collapse: collapse;
@@ -68,7 +71,7 @@
         width: 25%;
         vertical-align: top;
     }
-    
+
     .info-label {
         font-size: 7pt;
         font-weight: 600;
@@ -77,19 +80,19 @@
         display: block;
         line-height: 1;
     }
-    
+
     .info-value {
-        font-size: 8.5pt;
+        font-size: 7.5pt;
         font-weight: 600;
         color: var(--text-main);
         display: block;
         line-height: 1.1;
     }
-    
+
     .section {
         margin-bottom: 4px;
     }
-    
+
     .section-title {
         font-size: 8.5pt;
         font-weight: 700;
@@ -101,13 +104,13 @@
         padding-bottom: 0px;
         line-height: 0.7;
     }
-    
+
     .standard-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 8.5pt;
+        font-size: 7.5pt;
     }
-    
+
     .standard-table thead th {
         background: #fff;
         color: #000000;
@@ -116,20 +119,22 @@
         font-weight: 700;
         border: 1px solid #000;
     }
-    
+
     .standard-table tbody td {
         padding: 1px 6px;
         border: 1px solid #ddd;
     }
-    
-    .text-right { text-align: right; }
-    
+
+    .text-right {
+        text-align: right;
+    }
+
     .total-row {
         background: #f8f9fa;
         font-weight: 700;
         border-top: 1pt solid #000;
     }
-    
+
     .card {
         padding: 4px 8px;
         background: white;
@@ -137,7 +142,7 @@
         border-radius: 4px;
         margin-bottom: 2px;
     }
-    
+
     .card-label {
         font-size: 7.5pt;
         font-weight: 700;
@@ -145,13 +150,13 @@
         margin-bottom: 1px;
         line-height: 1;
     }
-    
+
     .card-value {
-        font-size: 9pt;
+        font-size: 8pt;
         font-weight: 600;
         color: var(--text-main);
     }
-    
+
     .summary-table {
         width: 100%;
         border-collapse: collapse;
@@ -165,28 +170,28 @@
         vertical-align: middle;
         border: none;
     }
-    
+
     .summary-item {
         padding-left: 8px;
         margin-bottom: 2px;
     }
-    
+
     .summary-main {
         text-align: right;
     }
-    
+
     .summary-main .label {
         font-size: 8pt;
         font-weight: 600;
         text-transform: uppercase;
     }
-    
+
     .summary-main .value {
-        font-size: 12pt;
+        font-size: 11pt;
         font-weight: 700;
         line-height: 1;
     }
-    
+
     .selling-prices-table {
         width: 100%;
         border-collapse: separate;
@@ -200,7 +205,7 @@
         padding: 0;
         border: none;
     }
-    
+
     .price-chip {
         background: white;
         border: 1px solid var(--primary-light);
@@ -208,20 +213,20 @@
         padding: 4px 8px;
         text-align: center;
     }
-    
+
     .price-chip label {
         display: block;
         font-size: 8pt;
         color: var(--text-muted);
         margin-bottom: 4px;
     }
-    
+
     .price-chip .value {
-        font-size: 14pt;
+        font-size: 11pt;
         font-weight: 700;
         color: var(--primary);
     }
-    
+
     .price-chip .margin {
         font-size: 7pt;
         border: 1px solid #000;
@@ -231,7 +236,7 @@
         display: inline-block;
         margin-top: 4px;
     }
-    
+
     .footer-table {
         width: 100%;
         margin-top: 8px;
@@ -245,7 +250,7 @@
         border: none;
         padding: 5px 0;
     }
-    
+
     .notes {
         font-size: 8pt;
         color: #000;
@@ -275,10 +280,12 @@
             <tr>
                 <td>
                     <div class="header-left">
-                        <h1 style="font-size: 14pt; font-weight: 900;">COST ESTIMATION <span style="font-weight: 300; font-size: 10pt; color: #666;">/ আনুমানিক খরচের হিসাব</span></h1>
+                        <h1 style="font-size: 11pt; font-weight: 900;">COST ESTIMATION <span
+                                style="font-weight: 300; font-size: 10pt; color: #666;">/ আনুমানিক খরচের হিসাব</span>
+                        </h1>
                     </div>
                 </td>
-                <td style="text-align: right; vertical-align: bottom; font-size: 9pt; font-weight: 700;">
+                <td style="text-align: right; vertical-align: bottom; font-size: 8pt; font-weight: 700;">
                     REF: {{ doc.name }}<br>
                     DATE: {{ frappe.utils.formatdate(doc.date, "dd-mm-yyyy") }}
                 </td>
@@ -315,7 +322,8 @@
                             <span style="font-weight: 700;">Cut/ Fit Style:</span> {{ doc.cut_fit_style or '-' }}
                         </div>
                         <div style="margin-bottom: 3px; line-height: 1.2;">
-                            <span style="font-weight: 700;">Collar/ Neck Style:</span> {{ doc.collar_neck_style or '-' }}
+                            <span style="font-weight: 700;">Collar/ Neck Style:</span> {{ doc.collar_neck_style or '-'
+                            }}
                         </div>
                         <div style="margin-bottom: 3px; line-height: 1.2;">
                             <span style="font-weight: 700;">Side Cut:</span> {{ doc.side_cut or '-' }}
@@ -324,20 +332,23 @@
                             <span style="font-weight: 700;">Sewing Finish:</span> {{ doc.sewing_finish or '-' }}
                         </div>
                         <div style="margin-top: 5px; line-height: 1.4;">
-                            <span style="font-weight: 700;">Status:</span> 
+                            <span style="font-weight: 700;">Status:</span>
                             {% if doc.docstatus == 0 %}
-                                <span style="background: #f39c12; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">DRAFT</span>
+                            <span
+                                style="background: #f39c12; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">DRAFT</span>
                             {% elif doc.docstatus == 1 %}
-                                <span style="background: #27ae60; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">APPROVED</span>
+                            <span
+                                style="background: #27ae60; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">APPROVED</span>
                             {% elif doc.docstatus == 2 %}
-                                <span style="background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">CANCELLED</span>
+                            <span
+                                style="background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">CANCELLED</span>
                             {% endif %}
                         </div>
                     </td>
                 </tr>
             </table>
         </div>
-        
+
         {% if doc.materials %}
         <div class="section" style="page-break-inside: avoid;">
             <div class="section-title">Fabrics / ফ্যাব্রিকস</div>
@@ -393,67 +404,99 @@
             </table>
         </div>
         {% endif %}
-        
-        {% if doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or doc.hand_work_estimation or doc.karchupi_f or doc.screen_print_f or doc.block_print_f or doc.tie_dye or doc.wash_iron or doc.qc_packaging or doc.transportation %}
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px; table-layout: fixed; page-break-inside: avoid;">
+
+        {% if doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or
+        doc.hand_work_estimation or doc.karchupi_f or doc.screen_print_f or doc.block_print_f or doc.tie_dye or
+        doc.wash_iron or doc.qc_packaging or doc.transportation %}
+        <table
+            style="width: 100%; border-collapse: collapse; margin-bottom: 6px; table-layout: fixed; page-break-inside: avoid;">
             <tr>
-                {% if doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or doc.hand_work_estimation or doc.karchupi_f or doc.screen_print_f or doc.block_print_f or doc.tie_dye %}
-                <td style="width: {{ '55%' if (doc.wash_iron or doc.qc_packaging or doc.transportation) else '100%' }}; vertical-align: top; padding-right: 15px; border: none;">
+                {% if doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or
+                doc.hand_work_estimation or doc.karchupi_f or doc.screen_print_f or doc.block_print_f or doc.tie_dye %}
+                <td
+                    style="width: {{ '55%' if (doc.wash_iron or doc.qc_packaging or doc.transportation) else '100%' }}; vertical-align: top; padding-right: 15px; border: none;">
                     <div class="section">
                         <div class="section-title">Tailoring Charges / সেলাই খরচ</div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 7.5pt;">
                             {% if doc.cutting_f %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Cutting / কাটিং</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.cutting_f, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Cutting /
+                                    কাটিং</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.cutting_f, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                             {% if doc.sewing_f %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Sewing / সেলাই</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.sewing_f, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Sewing /
+                                    সেলাই</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.sewing_f, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                             {% if doc.machine_embroidery_f %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Machine Emb / মেশিন এমব্রয়ডারি</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.machine_embroidery_f, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Machine Emb
+                                    / মেশিন এমব্রয়ডারি</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.machine_embroidery_f, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                             {% if doc.screen_print_f %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Screen Print / স্ক্রিন প্রিন্ট</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.screen_print_f, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Screen
+                                    Print / স্ক্রিন প্রিন্ট</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.screen_print_f, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                             {% if doc.hand_embroidery_f %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Hand Emb / হাতের এমব্রয়ডারি</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.hand_embroidery_f, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Hand Emb /
+                                    হাতের এমব্রয়ডারি</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.hand_embroidery_f, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                             {% if doc.hand_work_estimation %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Hand Work / হাতের কাজ</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.hand_work_estimation, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Hand Work /
+                                    হাতের কাজ</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.hand_work_estimation, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                             {% if doc.karchupi_f %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Karchupi / কারচুপি</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.karchupi_f, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Karchupi /
+                                    কারচুপি</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.karchupi_f, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                             {% if doc.block_print_f %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Block Print / ব্লক প্রিন্ট</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.block_print_f, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Block Print
+                                    / ব্লক প্রিন্ট</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.block_print_f, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                             {% if doc.tie_dye %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Tie & Dye / টাই ডাই</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.tie_dye, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Tie & Dye /
+                                    টাই ডাই</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.tie_dye, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                         </table>
@@ -462,26 +505,36 @@
                 {% endif %}
 
                 {% if doc.wash_iron or doc.qc_packaging or doc.transportation %}
-                <td style="width: {{ '45%' if (doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or doc.hand_work_estimation or doc.karchupi_f or doc.screen_print_f or doc.block_print_f or doc.tie_dye) else '100%' }}; vertical-align: top; padding-left: 15px; border: none;">
+                <td
+                    style="width: {{ '45%' if (doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or doc.hand_work_estimation or doc.karchupi_f or doc.screen_print_f or doc.block_print_f or doc.tie_dye) else '100%' }}; vertical-align: top; padding-left: 15px; border: none;">
                     <div class="section">
                         <div class="section-title">Finishing Charges / ফিনিশিং খরচ</div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 7.5pt;">
                             {% if doc.wash_iron %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Wash & Iron / ওয়াশ ও আয়রন</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.wash_iron, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Wash & Iron
+                                    / ওয়াশ ও আয়রন</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.wash_iron, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                             {% if doc.qc_packaging %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">QC & Packaging / কিউসি ও প্যাকিং</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.qc_packaging, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">QC &
+                                    Packaging / কিউসি ও প্যাকিং</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.qc_packaging, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                             {% if doc.transportation %}
                             <tr>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Transportation / ট্রান্সপোর্ট</td>
-                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">{{ frappe.utils.fmt_money(doc.transportation, currency=doc.currency) }}</td>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">
+                                    Transportation / ট্রান্সপোর্ট</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.transportation, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                         </table>
@@ -491,42 +544,48 @@
             </tr>
         </table>
         {% endif %}
-        
+
         <table class="summary-table">
             <tr>
                 <td style="width: 15%;">
                     <div class="summary-item">
                         <div style="font-size: 8pt; opacity: 0.8; text-transform: uppercase;">Fabrics</div>
-                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money(doc.total_fabric or 0, currency=doc.currency) }}</div>
+                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money(doc.total_fabric or 0,
+                            currency=doc.currency) }}</div>
                     </div>
                 </td>
                 <td style="width: 15%;">
                     <div class="summary-item">
                         <div style="font-size: 8pt; opacity: 0.8; text-transform: uppercase;">Trims</div>
-                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money(doc.total_trim_and_accessories or 0, currency=doc.currency) }}</div>
+                        <div style="font-size: 11pt; font-weight: 600;">{{
+                            frappe.utils.fmt_money(doc.total_trim_and_accessories or 0, currency=doc.currency) }}</div>
                     </div>
                 </td>
                 <td style="width: 15%;">
                     <div class="summary-item">
                         <div style="font-size: 8pt; opacity: 0.8; text-transform: uppercase;">Tailoring</div>
-                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money(doc.total_tailoring or 0, currency=doc.currency) }}</div>
+                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money(doc.total_tailoring or
+                            0, currency=doc.currency) }}</div>
                     </div>
                 </td>
                 <td style="width: 15%;">
                     <div class="summary-item">
                         <div style="font-size: 8pt; opacity: 0.8; text-transform: uppercase;">Finishing</div>
-                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money(doc.total_finishing or 0, currency=doc.currency) }}</div>
+                        <div style="font-size: 11pt; font-weight: 600;">{{ frappe.utils.fmt_money(doc.total_finishing or
+                            0, currency=doc.currency) }}</div>
                     </div>
                 </td>
                 <td style="width: 40%; text-align: right;">
                     <div class="summary-main">
                         <div class="label">TOTAL UNIT COST / প্রতি পিসের খরচ</div>
-                        <div class="value">{{ frappe.utils.fmt_money((doc.total_fabric or 0) + (doc.total_trim_and_accessories or 0) + (doc.total_tailoring or 0) + (doc.total_finishing or 0), currency=doc.currency) }}</div>
+                        <div class="value">{{ frappe.utils.fmt_money((doc.total_fabric or 0) +
+                            (doc.total_trim_and_accessories or 0) + (doc.total_tailoring or 0) + (doc.total_finishing or
+                            0), currency=doc.currency) }}</div>
                     </div>
                 </td>
             </tr>
         </table>
-        
+
         {% if doc.for_pattern_variation_only or doc.screen_print_machine_emb_only or doc.hand_embroidery_only %}
         <div class="section" style="margin-top: 8px;">
             <div class="section-title">Market Strategy (Suggested Selling)</div>
@@ -536,7 +595,8 @@
                     <td>
                         <div class="price-chip">
                             <label>Standard Variation</label>
-                            <div class="value">{{ frappe.utils.fmt_money(doc.for_pattern_variation_only, currency=doc.currency) }}</div>
+                            <div class="value">{{ frappe.utils.fmt_money(doc.for_pattern_variation_only,
+                                currency=doc.currency) }}</div>
                             <div class="margin">{{ doc.pattern_variation or 0 }}% GP</div>
                         </div>
                     </td>
@@ -545,7 +605,8 @@
                     <td>
                         <div class="price-chip">
                             <label>Screen Print/Emb</label>
-                            <div class="value">{{ frappe.utils.fmt_money(doc.screen_print_machine_emb_only, currency=doc.currency) }}</div>
+                            <div class="value">{{ frappe.utils.fmt_money(doc.screen_print_machine_emb_only,
+                                currency=doc.currency) }}</div>
                             <div class="margin">{{ doc.screen_print_machine_emb_65 or 0 }}% GP</div>
                         </div>
                     </td>
@@ -554,7 +615,8 @@
                     <td>
                         <div class="price-chip">
                             <label>Hand Embroidery</label>
-                            <div class="value">{{ frappe.utils.fmt_money(doc.hand_embroidery_only, currency=doc.currency) }}</div>
+                            <div class="value">{{ frappe.utils.fmt_money(doc.hand_embroidery_only,
+                                currency=doc.currency) }}</div>
                             <div class="margin">{{ doc.hand_embroidery_75 or 0 }}% GP</div>
                         </div>
                     </td>
@@ -563,13 +625,13 @@
             </table>
         </div>
         {% endif %}
-        
+
         {% if doc.important_note %}
         <div class="notes">
             <strong>Notes:</strong> {{ doc.important_note }}
         </div>
         {% endif %}
-        
+
 
     </div>
 
@@ -577,7 +639,7 @@
     <div id="footer-html" class="visible-pdf">
         <table style="width: 100%; border-top: none; margin-top: 5px;">
             <tr>
-                <td style="padding: 5px 0; border: none; font-size: 8pt; text-align: center;">
+                <td style="padding: 5px 0; border: none; font-size: 7.5pt; text-align: center;">
                     {{ footer }}
                 </td>
             </tr>
