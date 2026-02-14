@@ -1,9 +1,15 @@
 <style>
     @media print {
-        @page { size: A4 portrait; margin: 8mm; }
-        .page-break { page-break-before: always; }
+        @page {
+            size: A4 portrait;
+            margin: 8mm;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
     }
-    
+
     :root {
         --primary: #000000;
         --accent: #2c3e50;
@@ -88,9 +94,24 @@
         border-bottom: 1px solid #ddd;
     }
 
-    .swatch-code { font-weight: 800; font-size: 8pt; }
-    .swatch-name { font-size: 7pt; color: #444; }
-    .swatch-qty { font-weight: 700; color: #000; margin-top: 2px; font-size: 7.5pt; border-top: 1px solid #ccc; padding-top: 2px; }
+    .swatch-code {
+        font-weight: 800;
+        font-size: 8pt;
+    }
+
+    .swatch-name {
+        font-size: 7pt;
+        color: #444;
+    }
+
+    .swatch-qty {
+        font-weight: 700;
+        color: #000;
+        margin-top: 2px;
+        font-size: 7.5pt;
+        border-top: 1px solid #ccc;
+        padding-top: 2px;
+    }
 
     .image-well {
         height: 120px;
@@ -100,9 +121,9 @@
         vertical-align: middle;
     }
 
-    .image-well img { 
-        max-width: 100%; 
-        max-height: 150px; 
+    .image-well img {
+        max-width: 100%;
+        max-height: 150px;
     }
 
     .manual-placeholder {
@@ -117,9 +138,28 @@
         box-sizing: border-box;
     }
 
-    .standard-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; border: 1.5px solid #000; table-layout: fixed; }
-    .standard-table th { background: #fff; border: 1px solid #000; padding: 4px; font-size: 7.5pt; text-align: left; }
-    .standard-table td { border: 1px solid #000; padding: 4px; font-size: 7.5pt; vertical-align: top; }
+    .standard-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 8px;
+        border: 1.5px solid #000;
+        table-layout: fixed;
+    }
+
+    .standard-table th {
+        background: #fff;
+        border: 1px solid #000;
+        padding: 4px;
+        font-size: 7.5pt;
+        text-align: left;
+    }
+
+    .standard-table td {
+        border: 1px solid #000;
+        padding: 4px;
+        font-size: 7.5pt;
+        vertical-align: top;
+    }
 
     .gallery-table {
         width: 100%;
@@ -137,9 +177,22 @@
         vertical-align: top;
     }
 
-    .gallery-img img { width: 100%; height: auto; border: 1px solid #ddd; display: block; }
-    .gallery-label { font-size: 6.5pt; font-weight: 700; margin-top: 5px; background: #fff; color: #000; border: 0.5pt solid #000; padding: 2px; }
+    .gallery-img img {
+        width: 100%;
+        height: auto;
+        border: 1px solid #ddd;
+        display: block;
+    }
 
+    .gallery-label {
+        font-size: 6.5pt;
+        font-weight: 700;
+        margin-top: 5px;
+        background: #fff;
+        color: #000;
+        border: 0.5pt solid #000;
+        padding: 2px;
+    }
 </style>
 
 <div class="pps-print-container">
@@ -159,7 +212,8 @@
         <table style="width: 100%; border-collapse: collapse;">
             <tr>
                 <td>
-                    <h1 style="margin: 0; font-size: 11pt; font-weight: 900;">PPS FORMAT <span style="font-weight: 300; font-size: 10pt; color: #666;">/ পিপিএস ফরম্যাট</span></h1>
+                    <h1 style="margin: 0; font-size: 11pt; font-weight: 900;">PPS FORMAT <span
+                            style="font-weight: 300; font-size: 10pt; color: #666;">/ পিপিএস ফরম্যাট</span></h1>
                     <div style="font-size: 8pt; color: #555;">PRE-PRODUCTION SAMPLE & COMPONENT VERIFICATION SHEET</div>
                 </td>
                 <td style="text-align: right; font-size: 8pt; font-weight: 700; vertical-align: bottom;">
@@ -179,7 +233,16 @@
                         <span style="font-weight: 700;">Tech Pack No:</span> {{ doc.tech_pack_no or '-' }}
                     </div>
                     <div style="margin-bottom: 2px; line-height: 1.2;">
-                        <span style="font-weight: 700;">Designer Name:</span> {{ doc.handler_name or doc.handler or '-' }}
+                        <span style="font-weight: 700;">Designer Name:</span> {{ doc.handler_name or doc.handler or '-'
+                        }}
+                    </div>
+                    <div style="margin-bottom: 2px; line-height: 1.2;">
+                        <span style="font-weight: 700;">Pattern Master:</span> {{ doc.pattern_master_name or
+                        doc.pattern_master or '-' }}
+                    </div>
+                    <div style="margin-bottom: 2px; line-height: 1.2;">
+                        <span style="font-weight: 700;">Sample Man:</span> {{ doc.sample_man_name or doc.sample_man or
+                        '-' }}
                     </div>
                     <div style="margin-bottom: 2px; line-height: 1.2;">
                         <span style="font-weight: 700;">Style No:</span> {{ doc.link_nsnp or '-' }}
@@ -197,7 +260,12 @@
                 <!-- Right Column -->
                 <td style="width: 50%; vertical-align: top; padding-left: 8px;">
                     <div style="margin-bottom: 2px; line-height: 1.2;">
-                        <span style="font-weight: 700;">Start Date:</span> {{ frappe.utils.format_date(doc.start_time_date) if doc.start_time_date else '-' }}
+                        <span style="font-weight: 700;">Received Date:</span> {{
+                        frappe.utils.format_date(doc.received_date) if doc.received_date else '-' }}
+                    </div>
+                    <div style="margin-bottom: 2px; line-height: 1.2;">
+                        <span style="font-weight: 700;">Start Date:</span> {{
+                        frappe.utils.format_date(doc.start_time_date) if doc.start_time_date else '-' }}
                     </div>
                     <div style="margin-bottom: 2px; line-height: 1.2;">
                         <span style="font-weight: 700;">Item Name:</span> {{ doc.item_name or doc.item_code or '-' }}
@@ -212,21 +280,69 @@
                         <span style="font-weight: 700;">Side Cut:</span> {{ doc.side_cut or '-' }}
                     </div>
                     <div style="margin-bottom: 2px; line-height: 1.2;">
-                        <span style="font-weight: 700;">Submission Date:</span> {{ frappe.utils.format_date(doc.finish_time_date) if doc.finish_time_date else '-' }}
+                        <span style="font-weight: 700;">Submission Date:</span> {{
+                        frappe.utils.format_date(doc.finish_time_date) if doc.finish_time_date else '-' }}
                     </div>
                     <div style="margin-top: 4px; line-height: 1.4;">
-                        <span style="font-weight: 700;">Status:</span> 
+                        <span style="font-weight: 700;">Status:</span>
                         {% if doc.docstatus == 0 %}
-                            <span style="background: #f39c12; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">DRAFT</span>
+                        <span
+                            style="background: #f39c12; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">DRAFT</span>
                         {% elif doc.docstatus == 1 %}
-                            <span style="background: #27ae60; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">APPROVED</span>
+                        <span
+                            style="background: #27ae60; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">APPROVED</span>
                         {% elif doc.docstatus == 2 %}
-                            <span style="background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">CANCELLED</span>
+                        <span
+                            style="background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">CANCELLED</span>
                         {% endif %}
                     </div>
                 </td>
             </tr>
         </table>
+    </div>
+
+    <!-- NEW ITEM DETAILS SECTION -->
+    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+        <div style="flex: 1; border: 1px solid #000; padding: 6px; border-radius: 4px;">
+            <div
+                style="font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #000; margin-bottom: 4px; font-size: 8pt;">
+                Top Details</div>
+            <div style="font-size: 7pt;">
+                <span style="font-weight: 700;">Color:</span> {{ doc.color or '-' }}<br>
+                <span style="font-weight: 700;">Sleeve:</span> {{ doc.sleeve or '-' }}<br>
+                <span style="font-weight: 700;">Length:</span> {{ doc.length or '-' }}<br>
+                <span style="font-weight: 700;">Lining:</span> {{ doc.lining or '-' }}<br>
+                <span style="font-weight: 700;">Value Addition:</span>
+                {% for row in doc.value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{% else
+                %}-{% endfor %}
+            </div>
+        </div>
+        <div style="flex: 1; border: 1px solid #000; padding: 6px; border-radius: 4px;">
+            <div
+                style="font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #000; margin-bottom: 4px; font-size: 8pt;">
+                Bottom Details</div>
+            <div style="font-size: 7pt;">
+                <span style="font-weight: 700;">Style:</span> {{ doc.bottom_style or '-' }}<br>
+                <span style="font-weight: 700;">Color:</span> {{ doc.bottom_color or '-' }}<br>
+                <span style="font-weight: 700;">Length:</span> {{ doc.bottom_length or '-' }}<br>
+                <span style="font-weight: 700;">Waist:</span> {{ doc.bottom_waist or '-' }}<br>
+                <span style="font-weight: 700;">Value Addition:</span>
+                {% for row in doc.bottom_value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{%
+                else %}-{% endfor %}
+            </div>
+        </div>
+        <div style="flex: 1; border: 1px solid #000; padding: 6px; border-radius: 4px;">
+            <div
+                style="font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #000; margin-bottom: 4px; font-size: 8pt;">
+                Dupatta Details</div>
+            <div style="font-size: 7pt;">
+                <span style="font-weight: 700;">Fabric:</span> {{ doc.dupatta_fabric or '-' }}<br>
+                <span style="font-weight: 700;">Color:</span> {{ doc.dupatta_color or '-' }}<br>
+                <span style="font-weight: 700;">Value Addition:</span>
+                {% for row in doc.dupatta_value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{%
+                else %}-{% endfor %}
+            </div>
+        </div>
     </div>
 
     {% set all_items = (doc.fabrics or []) + (doc.trim_accessories or []) + (doc.fabric_dupatta or []) %}
@@ -236,34 +352,34 @@
         {% for i in range(0, all_items|length, 3) %}
         <tr>
             {% for j in range(0, 3) %}
-            {% if i + j < all_items|length %}
-                {% set item = all_items[i + j] %}
-                {% set item_image = frappe.db.get_value("Item", item.item_code, "image") %}
-                <td style="width: 33.3%;">
-                    <div class="swatch-card">
-                        <div class="swatch-info">
-                            <div class="swatch-code">{{ item.item_code }}</div>
-                            <div class="swatch-name">{{ item.item_name }}</div>
-                            <div class="swatch-qty">
-                                <span>Req: {{ "%.2f"|format(item.quantity|float) }} {{ item.default_unit_of_measurement or item.uom or '' }}</span>
-                                {% if item.actual_quantity %}
-                                <br><span style="color: #444;">Act: {{ "%.2f"|format(item.actual_quantity|float) }} {{ item.default_unit_of_measurement or item.uom or '' }}</span>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="image-well">
-                            {% if item_image %}
-                                <img src="{{ item_image }}">
-                            {% else %}
-                                <div class="manual-placeholder">
-                                    AFFIX SWATCH HERE<br><span style="font-size: 6pt;">এখানে স্যাম্পল লাগান</span>
-                                </div>
+            {% if i + j < all_items|length %} {% set item=all_items[i + j] %} {% set
+                item_image=frappe.db.get_value("Item", item.item_code, "image" ) %} <td style="width: 33.3%;">
+                <div class="swatch-card">
+                    <div class="swatch-info">
+                        <div class="swatch-code">{{ item.item_code }}</div>
+                        <div class="swatch-name">{{ item.item_name }}</div>
+                        <div class="swatch-qty">
+                            <span>Req: {{ "%.2f"|format(item.quantity|float) }} {{ item.default_unit_of_measurement or
+                                item.uom or '' }}</span>
+                            {% if item.actual_quantity %}
+                            <br><span style="color: #444;">Act: {{ "%.2f"|format(item.actual_quantity|float) }} {{
+                                item.default_unit_of_measurement or item.uom or '' }}</span>
                             {% endif %}
                         </div>
                     </div>
+                    <div class="image-well">
+                        {% if item_image %}
+                        <img src="{{ item_image }}">
+                        {% else %}
+                        <div class="manual-placeholder">
+                            AFFIX SWATCH HERE<br><span style="font-size: 6pt;">এখানে স্যাম্পল লাগান</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
                 </td>
-            {% else %}<td style="border: none;">&nbsp;</td>{% endif %}
-            {% endfor %}
+                {% else %}<td style="border: none;">&nbsp;</td>{% endif %}
+                {% endfor %}
         </tr>
         {% endfor %}
     </table>
@@ -299,7 +415,8 @@
     </table>
     {% endif %}
 
-    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; page-break-inside: avoid;">
+    <table
+        style="width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; page-break-inside: avoid;">
         <tr>
             <td style="width: 50%; vertical-align: top; padding-right: 6px;">
                 <div class="section-title" style="margin-top: 0;">Washing Guidelines</div>
@@ -307,7 +424,8 @@
                     <div style="font-size: 7.5pt; column-count: 2; column-gap: 10px;">
                         {% if doc.wash_separately %}<div style="margin-bottom: 2px;">• Wash Separately</div>{% endif %}
                         {% if doc.dry_clean_only %}<div style="margin-bottom: 2px;">• Dry Clean Only</div>{% endif %}
-                        {% if doc.wash_warm_iron_inside_out %}<div style="margin-bottom: 2px;">• Iron Inside Out</div>{% endif %}
+                        {% if doc.wash_warm_iron_inside_out %}<div style="margin-bottom: 2px;">• Iron Inside Out</div>{%
+                        endif %}
                         {% if doc.hand_wash_only %}<div style="margin-bottom: 2px;">• Hand Wash Only</div>{% endif %}
                     </div>
                     {% if doc.note_or_instructions %}
@@ -320,7 +438,8 @@
             {% if doc.pattern_master_note %}
             <td style="width: 50%; vertical-align: top; padding-left: 6px;">
                 <div class="section-title" style="margin-top: 0;">Pattern Master Notes</div>
-                <div style="border: 1.5px solid #000; padding: 8px; font-size: 7.5pt; min-height: 40px; background: #fff;">
+                <div
+                    style="border: 1.5px solid #000; padding: 8px; font-size: 7.5pt; min-height: 40px; background: #fff;">
                     {{ doc.pattern_master_note|safe }}
                 </div>
             </td>
@@ -356,9 +475,11 @@
 
     {% if doc.read_confirm_carefully or doc.docstatus == 1 %}
     <div style="margin-top: 15px; padding: 8px; border: 2pt solid #000; background: #fff; page-break-inside: avoid;">
-        <div style="font-size: 7.5pt; font-weight: 900; text-transform: uppercase; color: #000;">Designer's Disclaimer:</div>
+        <div style="font-size: 7.5pt; font-weight: 900; text-transform: uppercase; color: #000;">Designer's Disclaimer:
+        </div>
         <div style="font-size: 7.5pt; line-height: 1.2;">
-            {{ doc.read_confirm_carefully or 'Please verify all components, sizing, and colors before moving to bulk production. Any deviation must be approved by the design head.' }}
+            {{ doc.read_confirm_carefully or 'Please verify all components, sizing, and colors before moving to bulk
+            production. Any deviation must be approved by the design head.' }}
         </div>
     </div>
     {% endif %}
@@ -366,7 +487,8 @@
     <table class="footer-table" style="width: 100%; margin-top: 10px; border: none; font-size: 7.5pt; color: #555;">
         <tr>
             <td style="border: none;">DRESSUP MANUFACTURING | PPS MODULE</td>
-            <td style="border: none; text-align: right;">PRINTED: {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</td>
+            <td style="border: none; text-align: right;">PRINTED: {{ frappe.utils.now_datetime().strftime("%d-%m-%Y
+                %H:%M") }}</td>
         </tr>
     </table>
 
