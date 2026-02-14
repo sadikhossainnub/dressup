@@ -301,46 +301,60 @@
         </table>
     </div>
 
-    <!-- NEW ITEM DETAILS SECTION -->
-    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-        <div style="flex: 1; border: 1px solid #000; padding: 6px; border-radius: 4px;">
-            <div
-                style="font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #000; margin-bottom: 4px; font-size: 8pt;">
-                Top Details</div>
-            <div style="font-size: 7pt;">
-                <span style="font-weight: 700;">Color:</span> {{ doc.color or '-' }}<br>
-                <span style="font-weight: 700;">Sleeve:</span> {{ doc.sleeve or '-' }}<br>
-                <span style="font-weight: 700;">Length:</span> {{ doc.length or '-' }}<br>
-                <span style="font-weight: 700;">Lining:</span> {{ doc.lining or '-' }}<br>
-                <span style="font-weight: 700;">Value Addition:</span>
-                {% for row in doc.value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{% else
-                %}-{% endfor %}
+    <!-- ITEM DETAILS SECTION -->
+    <div style="display: flex; gap: 10px; margin-bottom: 12px; align-items: stretch;">
+        <!-- Top Details -->
+        <div style="flex: 1; border: 1.2pt solid #000; padding: 8px; border-radius: 4px; background: #fff;">
+            <div style="font-weight: 800; text-transform: uppercase; border-bottom: 1.5pt solid #000; margin-bottom: 6px; font-size: 8.5pt; color: #000;">
+                Top Details
+            </div>
+            <div style="font-size: 7.5pt; line-height: 1.5;">
+                <div style="margin-bottom: 4px; padding-bottom: 3px;">
+                    <span style="font-weight: 700;">Value Addition:</span>
+                    {% for row in doc.value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{% else %}-{% endfor %}
+                </div>
+                <div style="border-top: 0.5pt dashed #ccc; padding-top: 3px;">
+                    <div><span style="font-weight: 700;">Color:</span> {{ doc.color or '-' }}</div>
+                    <div><span style="font-weight: 700;">Length:</span> {{ doc.length or '-' }}</div>
+                    <div><span style="font-weight: 700;">Sleeve:</span> {{ doc.sleeve or '-' }}</div>
+                    <div><span style="font-weight: 700;">Lining:</span> {{ doc.lining or '-' }}</div>
+                </div>
             </div>
         </div>
-        <div style="flex: 1; border: 1px solid #000; padding: 6px; border-radius: 4px;">
-            <div
-                style="font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #000; margin-bottom: 4px; font-size: 8pt;">
-                Bottom Details</div>
-            <div style="font-size: 7pt;">
-                <span style="font-weight: 700;">Style:</span> {{ doc.bottom_style or '-' }}<br>
-                <span style="font-weight: 700;">Color:</span> {{ doc.bottom_color or '-' }}<br>
-                <span style="font-weight: 700;">Length:</span> {{ doc.bottom_length or '-' }}<br>
-                <span style="font-weight: 700;">Waist:</span> {{ doc.bottom_waist or '-' }}<br>
-                <span style="font-weight: 700;">Value Addition:</span>
-                {% for row in doc.bottom_value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{%
-                else %}-{% endfor %}
+
+        <!-- Bottom Details -->
+        <div style="flex: 1; border: 1.2pt solid #000; padding: 8px; border-radius: 4px; background: #fff;">
+            <div style="font-weight: 800; text-transform: uppercase; border-bottom: 1.5pt solid #000; margin-bottom: 6px; font-size: 8.5pt; color: #000;">
+                Bottom Details
+            </div>
+            <div style="font-size: 7.5pt; line-height: 1.5;">
+                <div style="margin-bottom: 4px; padding-bottom: 3px;">
+                    <span style="font-weight: 700;">Bottom Value Addition:</span>
+                    {% for row in doc.bottom_value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{% else %}-{% endfor %}
+                </div>
+                <div style="border-top: 0.5pt dashed #ccc; padding-top: 3px;">
+                    <div><span style="font-weight: 700;">Bottom Color:</span> {{ doc.bottom_color or '-' }}</div>
+                    <div><span style="font-weight: 700;">Bottom Style:</span> {{ doc.bottom_style or '-' }}</div>
+                    <div><span style="font-weight: 700;">Bottom Length:</span> {{ doc.bottom_length or '-' }}</div>
+                    <div><span style="font-weight: 700;">Bottom Waist:</span> {{ doc.bottom_waist or '-' }}</div>
+                </div>
             </div>
         </div>
-        <div style="flex: 1; border: 1px solid #000; padding: 6px; border-radius: 4px;">
-            <div
-                style="font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #000; margin-bottom: 4px; font-size: 8pt;">
-                Dupatta Details</div>
-            <div style="font-size: 7pt;">
-                <span style="font-weight: 700;">Fabric:</span> {{ doc.dupatta_fabric or '-' }}<br>
-                <span style="font-weight: 700;">Color:</span> {{ doc.dupatta_color or '-' }}<br>
-                <span style="font-weight: 700;">Value Addition:</span>
-                {% for row in doc.dupatta_value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{%
-                else %}-{% endfor %}
+
+        <!-- Dupatta Details -->
+        <div style="flex: 1; border: 1.2pt solid #000; padding: 8px; border-radius: 4px; background: #fff;">
+            <div style="font-weight: 800; text-transform: uppercase; border-bottom: 1.5pt solid #000; margin-bottom: 6px; font-size: 8.5pt; color: #000;">
+                Dupatta Details
+            </div>
+            <div style="font-size: 7.5pt; line-height: 1.5;">
+                <div style="margin-bottom: 4px; padding-bottom: 3px;">
+                    <span style="font-weight: 700;">Dupatta Value Addition:</span>
+                    {% for row in doc.dupatta_value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{% else %}-{% endfor %}
+                </div>
+                <div style="border-top: 0.5pt dashed #ccc; padding-top: 3px;">
+                    <div><span style="font-weight: 700;">Dupatta Color:</span> {{ doc.dupatta_color or '-' }}</div>
+                    <div><span style="font-weight: 700;">Dupatta Fabric:</span> {{ doc.dupatta_fabric or '-' }}</div>
+                </div>
             </div>
         </div>
     </div>
