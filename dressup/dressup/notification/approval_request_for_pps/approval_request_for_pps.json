@@ -2,6 +2,7 @@
  "attach_files": "",
  "attach_print": 0,
  "channel": "Email",
+ "condition": "",
  "condition_type": "Python",
  "creation": "2026-02-03 18:18:16.246677",
  "days_in_advance": 0,
@@ -12,11 +13,11 @@
  "event": "Save",
  "idx": 0,
  "is_standard": 1,
- "message": "Add your message here",
- "message_type": "Markdown",
+ "message": "<p>&nbsp;</p>\n<div class=\"container\"><!-- Header Section -->\n<div class=\"header\">\n<h2 style=\"margin: 0; color: #d62828; font-size: 20px;\">Review Required: Cost Estimation Sheet</h2>\n</div>\n<!-- Main Body Section -->\n<div class=\"content\">\n<p>Dear {% if doc.recipient_name %} {{ doc.recipient_name }} {% else %} Sir/Madam {% endif %},</p>\n<p>The<span style=\"font-weight: 400;\">&nbsp;Pre Production Sample &amp; Quality Inspection </span><strong>({{ doc.name or \"New Document\" }})</strong> <span style=\"font-weight: 400;\">is ready and standing in attention for your approval.</span></p>\n<div class=\"highlight-box\">This approved PPS will govern all <strong>bulk production standards</strong>. Your <strong>careful verification</strong> and formal approval are essential to avoid any production deviation.</div>\n<p><span style=\"font-weight: 400;\">Kindly review and bless it with the green signal when convenient.&nbsp;</span>You can access the document directly via the link below:</p>\n<!-- Call to Action Button -->\n<div class=\"button-container\">{% set form_url = frappe.utils.get_url_to_form(doc.doctype, doc.name) %} {% if form_url %} <a class=\"btn\" href=\"{{ form_url }}\"> CLICK HERE TO REVIEW &amp; APPROVE </a> {% else %}\n<p style=\"color: #d62828;\"><em>(Link unavailable, please log in to the system to review)</em></p>\n{% endif %}</div>\n<p><span style=\"font-weight: 400;\">Thank you for your guidance.</span></p>\n<p style=\"margin-top: 25px;\">Best Regards,<br /> <strong>The Designer Team</strong></p>\n</div>\n<!-- Footer Section -->\n<div class=\"footer\">This is an automated notification from Dress Up ERP System.</div>\n</div>",
+ "message_type": "HTML",
  "minutes_offset": 0,
- "modified": "2026-02-03 18:18:16.246677",
- "modified_by": "Administrator",
+ "modified": "2026-02-15 01:37:15.556468",
+ "modified_by": "asif.expo@gmail.com",
  "module": "DressUp",
  "name": "Approval Request for PPS",
  "owner": "Administrator",
@@ -24,11 +25,15 @@
   {
    "receiver_by_document_field": "owner",
    "receiver_by_role": "System Manager"
+  },
+  {
+   "receiver_by_document_field": "owner",
+   "receiver_by_role": "Fashion Designer Manager"
   }
  ],
  "send_system_notification": 1,
  "send_to_all_assignees": 0,
  "sender": "No_Replay",
  "sender_email": "no-reply@dressup.com.bd",
- "subject": "{{ doc.name }} PPS Approval Request"
+ "subject": "PPS Ready for Your Royal Stamp \ud83d\udc51 \u2013 {{ doc.tech_pack_no or doc.name }} | {{ frappe.get_fullname(doc.owner) }}"
 }

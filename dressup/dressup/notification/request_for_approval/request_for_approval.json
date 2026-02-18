@@ -12,11 +12,11 @@
  "event": "Save",
  "idx": 0,
  "is_standard": 1,
- "message": "Recieved a Sketch Spec & Sample Making Sheet Approval Request",
- "message_type": "Plain Text",
+ "message": "<p>&nbsp;</p>\r\n<div class=\"container\"><!-- Header Section -->\r\n<div class=\"header\">\r\n<h2 style=\"margin: 0; color: #d62828; font-size: 20px;\">Review Required: Cost Estimation Sheet</h2>\r\n</div>\r\n<!-- Main Body Section -->\r\n<div class=\"content\">\r\n<p>Dear {% if doc.recipient_name %} {{ doc.recipient_name }} {% else %} Sir/Madam {% endif %},</p>\r\n<p>The <span style=\"font-weight: 400;\">The Sketch Specification Sample Making Sheet</span><strong>&nbsp;({{ doc.name or \"New Document\" }})</strong> <span style=\"font-weight: 400;\">is prepared and ready for your review.</span></p>\r\n<div class=\"highlight-box\">As this document sets the <strong>technical and design direction for sampling</strong>, your careful review and approval are essential before we proceed.</div>\r\n<p>You can access the document directly via the link below:</p>\r\n<!-- Call to Action Button -->\r\n<div class=\"button-container\">{% set form_url = frappe.utils.get_url_to_form(doc.doctype, doc.name) %} {% if form_url %} <a class=\"btn\" href=\"{{ form_url }}\"> CLICK HERE TO REVIEW &amp; APPROVE </a> {% else %}\r\n<p style=\"color: #d62828;\"><em>(Link unavailable, please log in to the system to review)</em></p>\r\n{% endif %}</div>\r\n<p><span style=\"font-weight: 400;\">Thank you for your guidance.</span></p>\r\n<p style=\"margin-top: 25px;\">Best Regards,<br /> <strong>The Designer Team</strong></p>\r\n</div>\r\n<!-- Footer Section -->\r\n<div class=\"footer\">This is an automated notification from Dress Up ERP System.</div>\r\n</div>",
+ "message_type": "HTML",
  "minutes_offset": 0,
- "modified": "2026-02-03 17:20:24.269319",
- "modified_by": "Administrator",
+ "modified": "2026-02-15 01:17:50.878474",
+ "modified_by": "asif.expo@gmail.com",
  "module": "DressUp",
  "name": "Request For Approval",
  "owner": "Administrator",
@@ -34,5 +34,5 @@
  "send_to_all_assignees": 0,
  "sender": "No_Replay",
  "sender_email": "no-reply@dressup.com.bd",
- "subject": "{{ doc.name }} Approval Request"
+ "subject": "Awaiting Your Nod \u2728 \u2013 {{ doc.tech_pack_no or doc.name }} | {{ frappe.get_fullname(doc.owner) }}"
 }

@@ -1,0 +1,21 @@
+<p>&nbsp;</p>
+<div class="container"><!-- Header Section -->
+<div class="header">
+<h2 style="margin: 0; color: #d62828; font-size: 20px;">Review Required: Cost Estimation Sheet</h2>
+</div>
+<!-- Main Body Section -->
+<div class="content">
+<p>Dear {% if doc.recipient_name %} {{ doc.recipient_name }} {% else %} Sir/Madam {% endif %},</p>
+<p>The <span style="font-weight: 400;">The Sketch Specification Sample Making Sheet</span><strong>&nbsp;({{ doc.name or "New Document" }})</strong> <span style="font-weight: 400;">is prepared and ready for your review.</span></p>
+<div class="highlight-box">As this document sets the <strong>technical and design direction for sampling</strong>, your careful review and approval are essential before we proceed.</div>
+<p>You can access the document directly via the link below:</p>
+<!-- Call to Action Button -->
+<div class="button-container">{% set form_url = frappe.utils.get_url_to_form(doc.doctype, doc.name) %} {% if form_url %} <a class="btn" href="{{ form_url }}"> CLICK HERE TO REVIEW &amp; APPROVE </a> {% else %}
+<p style="color: #d62828;"><em>(Link unavailable, please log in to the system to review)</em></p>
+{% endif %}</div>
+<p><span style="font-weight: 400;">Thank you for your guidance.</span></p>
+<p style="margin-top: 25px;">Best Regards,<br /> <strong>The Designer Team</strong></p>
+</div>
+<!-- Footer Section -->
+<div class="footer">This is an automated notification from Dress Up ERP System.</div>
+</div>

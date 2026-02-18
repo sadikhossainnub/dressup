@@ -1,0 +1,21 @@
+<p>&nbsp;</p>
+<div class="container"><!-- Header Section -->
+<div class="header">
+<h2 style="margin: 0; color: #d62828; font-size: 20px;">Review Required: Cost Estimation Sheet</h2>
+</div>
+<!-- Main Body Section -->
+<div class="content">
+<p>Dear {% if doc.recipient_name %} {{ doc.recipient_name }} {% else %} Sir/Madam {% endif %},</p>
+<p>The<span style="font-weight: 400;">&nbsp;Pre Production Sample &amp; Quality Inspection </span><strong>({{ doc.name or "New Document" }})</strong> <span style="font-weight: 400;">is ready and standing in attention for your approval.</span></p>
+<div class="highlight-box">This approved PPS will govern all <strong>bulk production standards</strong>. Your <strong>careful verification</strong> and formal approval are essential to avoid any production deviation.</div>
+<p><span style="font-weight: 400;">Kindly review and bless it with the green signal when convenient.&nbsp;</span>You can access the document directly via the link below:</p>
+<!-- Call to Action Button -->
+<div class="button-container">{% set form_url = frappe.utils.get_url_to_form(doc.doctype, doc.name) %} {% if form_url %} <a class="btn" href="{{ form_url }}"> CLICK HERE TO REVIEW &amp; APPROVE </a> {% else %}
+<p style="color: #d62828;"><em>(Link unavailable, please log in to the system to review)</em></p>
+{% endif %}</div>
+<p><span style="font-weight: 400;">Thank you for your guidance.</span></p>
+<p style="margin-top: 25px;">Best Regards,<br /> <strong>The Designer Team</strong></p>
+</div>
+<!-- Footer Section -->
+<div class="footer">This is an automated notification from Dress Up ERP System.</div>
+</div>
