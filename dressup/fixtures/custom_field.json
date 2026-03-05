@@ -42,5 +42,16 @@
         "fieldtype": "Data",
         "label": "Birth ID",
         "insert_after": "identity_info_col"
+    },
+    {
+        "doctype": "Custom Field",
+        "name": "Payment Entry-custom_rented_asset",
+        "dt": "Payment Entry",
+        "module": "DressUp",
+        "fieldname": "custom_rented_asset",
+        "fieldtype": "Link",
+        "label": "Rented Asset",
+        "options": "Rented Asset",
+        "insert_after": "cost_center"
     }
 ]

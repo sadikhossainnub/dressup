@@ -5,6 +5,14 @@ app_description = "DressUp Manufacturing"
 app_email = "info@primetechbd.xyz"
 app_license = "gpl-3.0"
 
+fixtures = [
+	{
+		"doctype": "Custom Field",
+		"filters": [["module", "=", "DressUp"]],
+	}
+]
+
+
 # Apps
 # ------------------
 

@@ -1,0 +1,382 @@
+{
+    "actions": [],
+    "allow_import": 1,
+    "allow_rename": 1,
+    "autoname": "naming_series:",
+    "creation": "2026-03-06 02:38:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "basic_details_section",
+        "asset_name",
+        "asset_type",
+        "naming_series",
+        "column_break_basic_1",
+        "supplier",
+        "supplier_name",
+        "status",
+        "property_details_section",
+        "address",
+        "column_break_property_1",
+        "area_sqft",
+        "rent_details_section",
+        "monthly_rent",
+        "security_deposit",
+        "column_break_rent_1",
+        "agreement_start_date",
+        "agreement_end_date",
+        "agreement_file",
+        "machinery_details_section",
+        "machine_model",
+        "serial_no",
+        "column_break_machinery_1",
+        "manufacturer",
+        "machine_capacity",
+        "accounting_defaults_section",
+        "company",
+        "rent_expense_account",
+        "security_deposit_account",
+        "column_break_accounting_1",
+        "maintenance_expense_account",
+        "default_cost_center",
+        "default_mode_of_payment",
+        "deposit_status_section",
+        "deposit_paid",
+        "deposit_journal_entry",
+        "column_break_deposit_1",
+        "deposit_refunded",
+        "refund_journal_entry",
+        "totals_section",
+        "total_paid",
+        "total_maintenance_cost",
+        "column_break_totals_1",
+        "outstanding_amount",
+        "notes_section",
+        "notes"
+    ],
+    "fields": [
+        {
+            "fieldname": "basic_details_section",
+            "fieldtype": "Section Break",
+            "label": "Basic Details"
+        },
+        {
+            "fieldname": "asset_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Asset Name",
+            "reqd": 1
+        },
+        {
+            "fieldname": "asset_type",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "in_standard_filter": 1,
+            "label": "Asset Type",
+            "options": "House\nShowroom\nFactory\nWarehouse\nOffice\nMachinery\nOther",
+            "reqd": 1
+        },
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "hidden": 1,
+            "label": "Naming Series",
+            "options": "RA-.####",
+            "print_hide": 1
+        },
+        {
+            "fieldname": "column_break_basic_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "supplier",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "in_standard_filter": 1,
+            "label": "Owner / Landlord (Supplier)",
+            "options": "Supplier",
+            "reqd": 1
+        },
+        {
+            "fetch_from": "supplier.supplier_name",
+            "fieldname": "supplier_name",
+            "fieldtype": "Data",
+            "label": "Supplier Name",
+            "read_only": 1
+        },
+        {
+            "default": "Active",
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "in_standard_filter": 1,
+            "label": "Status",
+            "options": "Active\nExpired\nTerminated"
+        },
+        {
+            "fieldname": "property_details_section",
+            "fieldtype": "Section Break",
+            "label": "Property Details"
+        },
+        {
+            "fieldname": "address",
+            "fieldtype": "Small Text",
+            "label": "Address"
+        },
+        {
+            "fieldname": "column_break_property_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "area_sqft",
+            "fieldtype": "Float",
+            "label": "Area (Sq. Ft.)"
+        },
+        {
+            "fieldname": "rent_details_section",
+            "fieldtype": "Section Break",
+            "label": "Rent & Agreement Details"
+        },
+        {
+            "fieldname": "monthly_rent",
+            "fieldtype": "Currency",
+            "in_list_view": 1,
+            "label": "Monthly Rent",
+            "reqd": 1
+        },
+        {
+            "fieldname": "security_deposit",
+            "fieldtype": "Currency",
+            "label": "Security Deposit"
+        },
+        {
+            "fieldname": "column_break_rent_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "agreement_start_date",
+            "fieldtype": "Date",
+            "label": "Agreement Start Date",
+            "reqd": 1
+        },
+        {
+            "fieldname": "agreement_end_date",
+            "fieldtype": "Date",
+            "label": "Agreement End Date",
+            "reqd": 1
+        },
+        {
+            "fieldname": "agreement_file",
+            "fieldtype": "Attach",
+            "label": "Agreement File"
+        },
+        {
+            "collapsible": 1,
+            "depends_on": "eval:doc.asset_type=='Machinery'",
+            "fieldname": "machinery_details_section",
+            "fieldtype": "Section Break",
+            "label": "Machinery Details"
+        },
+        {
+            "fieldname": "machine_model",
+            "fieldtype": "Data",
+            "label": "Machine Model"
+        },
+        {
+            "fieldname": "serial_no",
+            "fieldtype": "Data",
+            "label": "Serial No"
+        },
+        {
+            "fieldname": "column_break_machinery_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "manufacturer",
+            "fieldtype": "Data",
+            "label": "Manufacturer"
+        },
+        {
+            "fieldname": "machine_capacity",
+            "fieldtype": "Data",
+            "label": "Machine Capacity"
+        },
+        {
+            "fieldname": "accounting_defaults_section",
+            "fieldtype": "Section Break",
+            "label": "Accounting Defaults"
+        },
+        {
+            "fieldname": "company",
+            "fieldtype": "Link",
+            "label": "Company",
+            "options": "Company",
+            "reqd": 1
+        },
+        {
+            "fieldname": "rent_expense_account",
+            "fieldtype": "Link",
+            "label": "Rent Expense Account",
+            "options": "Account"
+        },
+        {
+            "fieldname": "security_deposit_account",
+            "fieldtype": "Link",
+            "label": "Security Deposit Account",
+            "options": "Account"
+        },
+        {
+            "fieldname": "column_break_accounting_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "maintenance_expense_account",
+            "fieldtype": "Link",
+            "label": "Maintenance Expense Account",
+            "options": "Account"
+        },
+        {
+            "fieldname": "default_cost_center",
+            "fieldtype": "Link",
+            "label": "Default Cost Center",
+            "options": "Cost Center"
+        },
+        {
+            "fieldname": "default_mode_of_payment",
+            "fieldtype": "Link",
+            "label": "Default Mode of Payment",
+            "options": "Mode of Payment"
+        },
+        {
+            "fieldname": "deposit_status_section",
+            "fieldtype": "Section Break",
+            "label": "Deposit Status"
+        },
+        {
+            "default": "0",
+            "fieldname": "deposit_paid",
+            "fieldtype": "Check",
+            "label": "Deposit Paid",
+            "read_only": 1
+        },
+        {
+            "fieldname": "deposit_journal_entry",
+            "fieldtype": "Link",
+            "label": "Deposit Journal Entry",
+            "options": "Journal Entry",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_deposit_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "0",
+            "fieldname": "deposit_refunded",
+            "fieldtype": "Check",
+            "label": "Deposit Refunded",
+            "read_only": 1
+        },
+        {
+            "fieldname": "refund_journal_entry",
+            "fieldtype": "Link",
+            "label": "Refund Journal Entry",
+            "options": "Journal Entry",
+            "read_only": 1
+        },
+        {
+            "fieldname": "totals_section",
+            "fieldtype": "Section Break",
+            "label": "Totals"
+        },
+        {
+            "default": "0",
+            "fieldname": "total_paid",
+            "fieldtype": "Currency",
+            "label": "Total Rent Paid",
+            "read_only": 1
+        },
+        {
+            "default": "0",
+            "fieldname": "total_maintenance_cost",
+            "fieldtype": "Currency",
+            "label": "Total Maintenance Cost",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_totals_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "0",
+            "fieldname": "outstanding_amount",
+            "fieldtype": "Currency",
+            "label": "Outstanding Amount",
+            "read_only": 1
+        },
+        {
+            "fieldname": "notes_section",
+            "fieldtype": "Section Break",
+            "label": "Notes"
+        },
+        {
+            "fieldname": "notes",
+            "fieldtype": "Text Editor",
+            "label": "Notes"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2026-03-06 02:38:00.000000",
+    "modified_by": "Administrator",
+    "module": "DressUp",
+    "name": "Rented Asset",
+    "naming_rule": "By \"Naming Series\" field",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Accounts Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Accounts User",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "show_title_field_in_link": 1,
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "title_field": "asset_name",
+    "track_changes": 1
+}

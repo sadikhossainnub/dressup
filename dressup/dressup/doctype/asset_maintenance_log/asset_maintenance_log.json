@@ -1,0 +1,268 @@
+{
+    "actions": [],
+    "allow_import": 1,
+    "autoname": "naming_series:",
+    "creation": "2026-03-06 02:38:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "is_submittable": 1,
+    "field_order": [
+        "details_section",
+        "naming_series",
+        "rented_asset",
+        "asset_name",
+        "asset_type",
+        "column_break_details_1",
+        "maintenance_type",
+        "maintenance_date",
+        "next_maintenance_date",
+        "maintenance_info_section",
+        "description",
+        "column_break_info_1",
+        "cost",
+        "paid_by",
+        "service_provider",
+        "accounting_details_section",
+        "company",
+        "expense_account",
+        "column_break_acct_1",
+        "paid_from_account",
+        "cost_center",
+        "journal_entry",
+        "attachment_section",
+        "attachment",
+        "column_break_attach_1",
+        "remarks",
+        "amended_from"
+    ],
+    "fields": [
+        {
+            "fieldname": "details_section",
+            "fieldtype": "Section Break",
+            "label": "Details"
+        },
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "hidden": 1,
+            "label": "Naming Series",
+            "options": "AML-.####",
+            "print_hide": 1
+        },
+        {
+            "fieldname": "rented_asset",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "in_standard_filter": 1,
+            "label": "Rented Asset",
+            "options": "Rented Asset",
+            "reqd": 1
+        },
+        {
+            "fetch_from": "rented_asset.asset_name",
+            "fieldname": "asset_name",
+            "fieldtype": "Data",
+            "label": "Asset Name",
+            "read_only": 1
+        },
+        {
+            "fetch_from": "rented_asset.asset_type",
+            "fieldname": "asset_type",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Asset Type",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_details_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "maintenance_type",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "in_standard_filter": 1,
+            "label": "Maintenance Type",
+            "options": "Repair\nServicing\nReplacement\nInspection\nOther",
+            "reqd": 1
+        },
+        {
+            "default": "Today",
+            "fieldname": "maintenance_date",
+            "fieldtype": "Date",
+            "in_list_view": 1,
+            "label": "Maintenance Date",
+            "reqd": 1
+        },
+        {
+            "fieldname": "next_maintenance_date",
+            "fieldtype": "Date",
+            "label": "Next Maintenance Date"
+        },
+        {
+            "fieldname": "maintenance_info_section",
+            "fieldtype": "Section Break",
+            "label": "Maintenance Info"
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Small Text",
+            "label": "Description",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_info_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "cost",
+            "fieldtype": "Currency",
+            "in_list_view": 1,
+            "label": "Cost",
+            "reqd": 1
+        },
+        {
+            "default": "Company",
+            "fieldname": "paid_by",
+            "fieldtype": "Select",
+            "in_standard_filter": 1,
+            "label": "Paid By",
+            "options": "Company\nOwner",
+            "reqd": 1
+        },
+        {
+            "fieldname": "service_provider",
+            "fieldtype": "Data",
+            "label": "Service Provider"
+        },
+        {
+            "depends_on": "eval:doc.paid_by=='Company'",
+            "fieldname": "accounting_details_section",
+            "fieldtype": "Section Break",
+            "label": "Accounting Details"
+        },
+        {
+            "fetch_from": "rented_asset.company",
+            "fieldname": "company",
+            "fieldtype": "Link",
+            "label": "Company",
+            "options": "Company",
+            "read_only": 1
+        },
+        {
+            "fetch_from": "rented_asset.maintenance_expense_account",
+            "fieldname": "expense_account",
+            "fieldtype": "Link",
+            "label": "Expense Account",
+            "options": "Account"
+        },
+        {
+            "fieldname": "column_break_acct_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "paid_from_account",
+            "fieldtype": "Link",
+            "label": "Paid From Account",
+            "options": "Account"
+        },
+        {
+            "fetch_from": "rented_asset.default_cost_center",
+            "fieldname": "cost_center",
+            "fieldtype": "Link",
+            "label": "Cost Center",
+            "options": "Cost Center",
+            "read_only": 1
+        },
+        {
+            "fieldname": "journal_entry",
+            "fieldtype": "Link",
+            "label": "Journal Entry",
+            "options": "Journal Entry",
+            "read_only": 1
+        },
+        {
+            "fieldname": "attachment_section",
+            "fieldtype": "Section Break",
+            "label": "Attachments & Remarks"
+        },
+        {
+            "fieldname": "attachment",
+            "fieldtype": "Attach",
+            "label": "Attachment (Bill/Receipt)"
+        },
+        {
+            "fieldname": "column_break_attach_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "remarks",
+            "fieldtype": "Small Text",
+            "label": "Remarks"
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Asset Maintenance Log",
+            "print_hide": 1,
+            "read_only": 1
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2026-03-06 02:38:00.000000",
+    "modified_by": "Administrator",
+    "module": "DressUp",
+    "name": "Asset Maintenance Log",
+    "naming_rule": "By \"Naming Series\" field",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "submit": 1,
+            "cancel": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Accounts Manager",
+            "share": 1,
+            "submit": 1,
+            "cancel": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Accounts User",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1
+}
