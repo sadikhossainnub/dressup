@@ -18,9 +18,9 @@ jobs:
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: 85.190.254.51
-          username: dressup
-          password: 701865
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
           port: 22
           script: |
             set -e
@@ -29,12 +29,20 @@ jobs:
             echo "Time: $(date)"
 
             # Navigate to bench directory
-            cd ${{ secrets.BENCH_PATH || '/home/dressup/frappe-bench' }}
+            cd ${{ secrets.BENCH_PATH }}
 
             # Pull latest code for dressup app
             echo ">>> Pulling latest code..."
-            bench get-app --branch main dressup https://github.com/sadikhossainnub/dressup.git 2>/dev/null || \
-            (cd apps/dressup && git pull origin main)
+            if [ -d "apps/dressup" ]; then
+              echo "App directory exists, pulling latest changes..."
+              cd apps/dressup
+              git fetch origin main
+              git reset --hard origin/main
+              cd ../..
+            else
+              echo "App not found, installing fresh..."
+              bench get-app --branch main https://github.com/sadikhossainnub/dressup.git
+            fi
 
             # Install dependencies (if pyproject.toml changed)
             echo ">>> Installing dependencies..."
