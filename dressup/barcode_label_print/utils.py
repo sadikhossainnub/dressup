@@ -30,7 +30,6 @@ def get_barcode_base64(code_type, code_value):
         if barcode_format == "qrcode":
             return get_qr_base64(code_value)
 
-        rv = BytesIO()
         
         # Create barcode class
         try:
@@ -38,27 +37,26 @@ def get_barcode_base64(code_type, code_value):
         except barcode.errors.BarcodeNotFoundError:
              frappe.throw(f"Barcode type '{code_type}' is not supported.")
         
-        # Generate barcode with proper settings for scanner readability
+        # Generate barcode using ImageWriter (PNG) for scanner readability
+        # PNG produces pixel-perfect bars — SVG gets distorted by CSS scaling
         my_barcode = BarcodeClass(str(code_value), writer=ImageWriter())
         
-        # Writer options for better scanner compatibility
-        # - write_text: False (we show text separately in template)
-        # - module_width: width of each bar (higher = thicker bars, easier to scan)
-        # - module_height: height of bars
-        # - quiet_zone: white space on sides (important for scanners!)
-        # - font_size: 0 if no text
+        # Writer options optimized for barcode scanner readability
         writer_options = {
-            "write_text": False,
-            "module_width": 0.4,
-            "module_height": 12,
-            "quiet_zone": 3,
-            "text_distance": 2,
+            "write_text": False,       # Text shown separately in HTML
+            "module_width": 0.35,      # Bar width in mm — wider bars for reliable scanning
+            "module_height": 12.0,     # Bar height in mm — taller bars improve scan rate
+            "quiet_zone": 3.0,         # Quiet zone in mm — minimum required for scanners
+            "text_distance": 2.0,
+            "dpi": 300,                # High DPI for crisp print output
+            "font_size": 0,            # No text in the image
         }
         
-        # Write to stream with options
+        rv = BytesIO()
         my_barcode.write(rv, options=writer_options)
+        rv.seek(0)
         
-        # Convert to base64
+        # Convert PNG to base64
         img_str = base64.b64encode(rv.getvalue()).decode("utf-8")
         return f"data:image/png;base64,{img_str}"
         

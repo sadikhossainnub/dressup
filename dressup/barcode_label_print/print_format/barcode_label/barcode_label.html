@@ -102,8 +102,16 @@
     }
 
     .barcode-image {
+        width: 100%;
         max-width: 95%;
-        max-height: 8mm; /* Reduced slightly to fit better */
+        height: auto;
+        max-height: 12mm; /* Taller bars = better scanner readability */
+        object-fit: contain;
+        /* Crisp pixel rendering for PNG barcode — prevents browser anti-aliasing */
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
     }
 
     .barcode-text {

@@ -1,0 +1,60 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Production VPS
+
+    steps:
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: 85.190.254.51
+          username: dressup
+          password: 701865
+          port: 22
+          script: |
+            set -e
+
+            echo "=== Starting Deployment ==="
+            echo "Time: $(date)"
+
+            # Navigate to bench directory
+            cd ${{ secrets.BENCH_PATH || '/home/dressup/frappe-bench' }}
+
+            # Pull latest code for dressup app
+            echo ">>> Pulling latest code..."
+            bench get-app --branch main dressup https://github.com/sadikhossainnub/dressup.git 2>/dev/null || \
+            (cd apps/dressup && git pull origin main)
+
+            # Install dependencies (if pyproject.toml changed)
+            echo ">>> Installing dependencies..."
+            bench setup requirements --dev
+
+            # Run migrations
+            echo ">>> Running migrations..."
+            bench --site all migrate
+
+            # Build assets
+            echo ">>> Building assets..."
+            bench build --app dressup
+
+            # Clear cache
+            echo ">>> Clearing cache..."
+            bench --site all clear-cache
+
+            # Restart bench
+            echo ">>> Restarting bench..."
+            sudo supervisorctl restart all
+
+            echo "=== Deployment Complete ==="
+            echo "Time: $(date)"
