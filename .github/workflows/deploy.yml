@@ -36,9 +36,19 @@ jobs:
             if [ -d "apps/dressup" ]; then
               echo "App directory exists, pulling latest changes..."
               cd apps/dressup
-              git fetch origin main
-              git reset --hard origin/main
-              cd ../..
+              # Ensure it's a git repo
+              if [ ! -d ".git" ]; then
+                echo ">>> Warning: apps/dressup is not a git repository. Reinstalling..."
+                cd ../..
+                rm -rf apps/dressup
+                bench get-app --branch main https://github.com/sadikhossainnub/dressup.git
+              else
+                # Ensure origin is set correctly
+                git remote add origin https://github.com/sadikhossainnub/dressup.git 2>/dev/null || git remote set-url origin https://github.com/sadikhossainnub/dressup.git
+                git fetch origin main
+                git reset --hard origin/main
+                cd ../..
+              fi
             else
               echo "App not found, installing fresh..."
               bench get-app --branch main https://github.com/sadikhossainnub/dressup.git
