@@ -72,7 +72,7 @@ jobs:
 
             # Restart bench
             echo ">>> Restarting bench..."
-            sudo supervisorctl restart all
+            echo "${{ secrets.VPS_PASSWORD }}" | sudo -S supervisorctl restart all
 
             echo "=== Deployment Complete ==="
             echo "Time: $(date)"
