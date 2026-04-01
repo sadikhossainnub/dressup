@@ -132,7 +132,7 @@ def make_pre_production_sample(source_name, target_doc=None):
 					"cut_fit_style": "cut_fit_style",
 					"collar_neck_style": "collar_neck_style",
 					"side_cut": "side_cut",
-					"seson": "seson",
+					"session": "session",
 					"sewing_finish": "sewing_finish"
 				},
 				"field_no_map": ["naming_series"],

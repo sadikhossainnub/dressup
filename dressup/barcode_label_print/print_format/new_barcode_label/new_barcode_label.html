@@ -86,9 +86,9 @@
         margin-bottom: 0.5mm;
     }
 
-    .bin-label {
+    .session-label {
         font-weight: 700;
-        font-size: 12px;
+        font-size: 11px;
     }
 
     .description-row {
@@ -149,10 +149,10 @@
                     {% endif %}
                 </div>
 
-                <!-- Code and Bin -->
+                <!-- Code and Session -->
                 <div class="row item-id-row">
                     <span>{{ code_value }}</span>
-                    <span class="bin-label">{{ item_doc.custom_bin or 'A26' }}</span>
+                    <span class="session-label">{{ item.session or '' }}</span>
                 </div>
 
                 <!-- Product Name / Description -->
@@ -167,7 +167,7 @@
                         <span class="price-value">{{ "{:,.2f}".format(item.price) }} + VAT</span>
                     </div>
                     <div class="size-section">
-                        <span class="size-label">S:{{ item_doc.custom_size or '38' }}</span>
+                        <span class="size-label">S:{{ item.size or '' }}</span>
                     </div>
                 </div>
             </div>

@@ -13,7 +13,7 @@
   "designer",
   "designer_name",
   "design_no",
-  "seson",
+  "session",
   "sewing_finish",
   "column_break_nxfb",
   "start_date",
@@ -466,10 +466,10 @@
    "label": "Image Previews"
   },
   {
-   "fieldname": "seson",
+   "fieldname": "session",
    "fieldtype": "Link",
-   "label": "Seson",
-   "options": "Seson"
+   "label": "session",
+   "options": "session"
   },
   {
    "fieldname": "column_break_wtxg",

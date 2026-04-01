@@ -13,6 +13,8 @@
         "batch_no",
         "serial_no",
         "price",
+        "size",
+        "session",
         "expiry_date"
     ],
     "fields": [
@@ -63,6 +65,20 @@
             "fieldtype": "Currency",
             "in_list_view": 1,
             "label": "Price"
+        },
+        {
+            "fetch_from": "item_code.custom_size",
+            "fieldname": "size",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Size"
+        },
+        {
+            "fetch_from": "item_code.session",
+            "fieldname": "session",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Session"
         },
         {
             "fieldname": "expiry_date",

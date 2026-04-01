@@ -12,7 +12,7 @@
   "item_name",
   "designer",
   "design_no",
-  "seson",
+  "session",
   "column_break_1",
   "date",
   "category",
@@ -374,10 +374,10 @@
    "options": "\nHigh Side Slit (above mid-thigh)\nMid Side Slit (around knee level)\nLow Side Slit (below knee / calf level)\nFloor-Length Side Slit (long dresses/gowns)\nSingle Side Slit (left or right)\nDouble Side Slit (both sides)\nSlit-Free / Closed Side (no slit)\nStraight Slit\nCurved Slit\nOverlap Slit / Wrap Slit\nFront-Side Slit (slit placed slightly towards the front)\nSide-Slit with Pleat\nSide-Slit with Button Opening\nSide-Slit with Zipper\nDeep Cut Side Slit (bold, for gowns)\nSide Long Slit\nHigh Slit Kurti Style\nA-Line Kurti Slits\nStraight Kurti Side-Slits\nSide-Slit with Potli Buttons\nSide-Slit with Lace/Border\nFront-Open Style with Side Slits\nDiagonal Side Slit\nAsymmetric Side Slit\nSide-Slit with Tie-Up\nSide-Slit Cut-Out Style (exposes skin at waist/side)\nSide Knot Slit\nSide Drawstring Ruched Slit\nSide Slit with Panel Insert\nSide Slit with Fringe/Tassel Finishing"
   },
   {
-   "fieldname": "seson",
+   "fieldname": "session",
    "fieldtype": "Link",
-   "label": "Season",
-   "options": "Seson"
+   "label": "Session",
+   "options": "Session"
   },
   {
    "fieldname": "sewing_finish",

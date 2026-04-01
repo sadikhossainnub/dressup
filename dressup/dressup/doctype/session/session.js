@@ -1,7 +1,7 @@
 // Copyright (c) 2026, Prime Technology of Bangladesh and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on("Seson", {
+frappe.ui.form.on("session", {
     // refresh(frm) {
 
     // },
