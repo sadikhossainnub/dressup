@@ -67,14 +67,12 @@
             "label": "Price"
         },
         {
-            "fetch_from": "item_code.custom_size",
             "fieldname": "size",
             "fieldtype": "Data",
             "in_list_view": 1,
             "label": "Size"
         },
         {
-            "fetch_from": "item_code.session",
             "fieldname": "session",
             "fieldtype": "Data",
             "in_list_view": 1,
