@@ -223,7 +223,7 @@ class BarcodeLabelPrint(Document):
 							align-items: center;
 							justify-content: center;
 						">
-							<img src='{data['barcode_image']}' style='max-width: 100%; max-height: 100%;' />
+							<img src='{data['barcode_image']}' style='max-width: 95%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges;' />
 						</div>
 					"""
 				

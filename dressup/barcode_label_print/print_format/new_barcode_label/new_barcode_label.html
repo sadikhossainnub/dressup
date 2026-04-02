@@ -73,9 +73,13 @@
     }
 
     .barcode-image {
-        width: 100%;
-        max-width: 100%;
-        height: 10mm;
+        /* Do NOT use width:100% or fixed height — it distorts bar widths
+           and makes the barcode unscannable. Let it render at natural ratio. */
+        max-width: 95%;
+        height: auto;
+        display: block;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
         image-rendering: crisp-edges;
         image-rendering: pixelated;
     }

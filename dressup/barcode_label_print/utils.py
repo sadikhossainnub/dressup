@@ -17,11 +17,9 @@ def get_barcode_base64(code_type, code_value):
         
     try:
         # Map ERPNext/User friendly names to python-barcode names
-        # python-barcode supports: code128, code39, ean, ean13, ean8, gs1, gtinean, isbn, isbn10, isbn13, issn, jan, pzn, upc, upca
-        
         code_type_map = {
             "upc-a": "upca",
-            "jan": "ean13", # JAN is EAN13 with specific prefix
+            "jan": "ean13",
         }
         
         normalized_type = code_type.lower().replace(" ", "")
@@ -30,7 +28,6 @@ def get_barcode_base64(code_type, code_value):
         if barcode_format == "qrcode":
             return get_qr_base64(code_value)
 
-        
         # Create barcode class
         try:
             BarcodeClass = barcode.get_barcode_class(barcode_format)
@@ -38,18 +35,27 @@ def get_barcode_base64(code_type, code_value):
              frappe.throw(f"Barcode type '{code_type}' is not supported.")
         
         # Generate barcode using ImageWriter (PNG) for scanner readability
-        # PNG produces pixel-perfect bars — SVG gets distorted by CSS scaling
         my_barcode = BarcodeClass(str(code_value), writer=ImageWriter())
         
         # Writer options optimized for barcode scanner readability
+        # Key principles:
+        #   - module_width: minimum bar width. Wider = easier to scan.
+        #     0.4mm is safe for most handheld scanners.
+        #   - module_height: height of bars. Taller = more forgiving scan angle.
+        #     15mm gives good scan reliability.
+        #   - quiet_zone: blank space on left/right of barcode.
+        #     Must be at least 10x module_width per ISO standard.
+        #   - dpi: 300 for print. Don't lower this.
+        #   - write_text: False because we render text separately in HTML
+        #     (gives better control over font/positioning).
         writer_options = {
-            "write_text": False,       # Text shown separately in HTML
-            "module_width": 0.35,      # Bar width in mm — wider bars for reliable scanning
-            "module_height": 12.0,     # Bar height in mm — taller bars improve scan rate
-            "quiet_zone": 3.0,         # Quiet zone in mm — minimum required for scanners
+            "write_text": False,
+            "module_width": 0.40,      # mm — wider bars for reliable scanning
+            "module_height": 15.0,     # mm — tall bars improve scan rate
+            "quiet_zone": 4.0,         # mm — adequate quiet zone for scanners
             "text_distance": 2.0,
             "dpi": 300,                # High DPI for crisp print output
-            "font_size": 0,            # No text in the image
+            "font_size": 0,
         }
         
         rv = BytesIO()
@@ -62,7 +68,6 @@ def get_barcode_base64(code_type, code_value):
         
     except Exception as e:
         frappe.log_error(f"Error generating barcode ({code_type}, {code_value}): {str(e)}", "Barcode Generation Error")
-        # Return None so the label can still print without the barcode if it fails
         return None
 
 def get_qr_base64(data):

@@ -1,4 +1,4 @@
-<!-- Barcode Label Print Format - 45mm x 35mm Label -->
+<!-- Barcode Label Print Format -->
 {% set template = frappe.get_doc("Barcode Label Template", doc.label_template) %}
 {% set company = frappe.db.get_default("Company") %}
 
@@ -21,30 +21,31 @@
     body {
         margin: 0 !important;
         padding: 0 !important;
-        background-color: #f5f7fa; /* Preview background */
+        background-color: #f5f7fa;
     }
 
     .label-wrapper {
         display: flex;
         flex-direction: column;
-        align-items: center; /* Center labels in preview */
+        align-items: center;
         padding: 5mm 0;
     }
 
     .barcode-label {
         width: {{ template.label_width }}mm;
         height: {{ template.label_height }}mm;
-        min-width: {{ template.label_width }}mm; /* Prevent collapsing */
+        min-width: {{ template.label_width }}mm;
         min-height: {{ template.label_height }}mm;
         background: #fff;
-        margin-bottom: 5mm; /* Gap between labels in preview */
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Visual aid in preview */
+        margin-bottom: 5mm;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         page-break-after: always;
         overflow: hidden;
         position: relative;
         font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
         color: #1a1a1a;
         padding: 2mm;
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -67,7 +68,7 @@
         width: 100%;
         font-weight: 700;
         font-size: {{ font_size * 0.8 }}px;
-        margin-bottom: 1mm;
+        margin-bottom: 0.5mm;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -76,13 +77,26 @@
     /* Item Details */
     .item-details {
         width: 100%;
-        margin-bottom: 1mm;
+        margin-bottom: 0.5mm;
+    }
+
+    .item-code {
+        font-size: {{ font_size }}px;
+        font-weight: 700;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .item-name {
-        font-size: {{ font_size * 0.8 }}px;
-        font-weight: 500;
+        font-size: {{ font_size * 0.75 }}px;
+        font-weight: 400;
         line-height: 1.1;
+        color: #333;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     /* Price Tag */
@@ -92,22 +106,25 @@
         margin: 0.5mm 0;
     }
 
-    /* Barcode Section */
+    /* Barcode Section — CRITICAL: do NOT stretch the barcode image */
     .barcode-section {
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 1mm;
+        justify-content: center;
+        flex-grow: 1;
+        min-height: 0;
     }
 
     .barcode-image {
-        width: 100%;
+        /* Let the barcode render at its natural aspect ratio.
+           Only constrain max-width so it doesn't overflow the label.
+           NEVER set width:100% — that stretches bars and breaks scanning. */
         max-width: 95%;
         height: auto;
-        max-height: 12mm; /* Taller bars = better scanner readability */
-        object-fit: contain;
-        /* Crisp pixel rendering for PNG barcode — prevents browser anti-aliasing */
+        display: block;
+        /* Crisp pixel rendering — prevents browser anti-aliasing of bars */
         image-rendering: -moz-crisp-edges;
         image-rendering: -webkit-optimize-contrast;
         image-rendering: crisp-edges;
@@ -116,7 +133,10 @@
 
     .barcode-text {
         font-size: {{ font_size * 0.6 }}px;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.5px;
         margin-top: 0.5mm;
+        white-space: nowrap;
     }
 
     /* Print Optimizations */
@@ -130,6 +150,14 @@
         .price-tag {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
+        }
+
+        .barcode-image {
+            /* Ensure crisp rendering in print */
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
         }
     }
 </style>
