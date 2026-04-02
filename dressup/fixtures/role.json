@@ -1,0 +1,12 @@
+[
+ {
+  "doctype": "Role",
+  "name": "Barcode Label Manager",
+  "role_name": "Barcode Label Manager"
+ },
+ {
+  "doctype": "Role",
+  "name": "DressUp Manager",
+  "role_name": "DressUp Manager"
+ }
+]

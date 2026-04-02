@@ -1,225 +1,242 @@
 {
-    "actions": [],
-    "allow_import": 1,
-    "autoname": "naming_series:",
-    "creation": "2026-03-06 02:38:00.000000",
-    "doctype": "DocType",
-    "editable_grid": 1,
-    "engine": "InnoDB",
-    "is_submittable": 1,
-    "field_order": [
-        "details_section",
-        "naming_series",
-        "rented_asset",
-        "asset_name",
-        "asset_type",
-        "previous_agreement_section",
-        "previous_start_date",
-        "previous_end_date",
-        "column_break_prev_1",
-        "previous_rent",
-        "new_agreement_section",
-        "new_start_date",
-        "new_end_date",
-        "column_break_new_1",
-        "new_monthly_rent",
-        "new_advance_amount",
-        "rent_change_percentage",
-        "renewal_details_section",
-        "renewal_agreement_file",
-        "column_break_renewal_1",
-        "remarks",
-        "amended_from"
-    ],
-    "fields": [
-        {
-            "fieldname": "details_section",
-            "fieldtype": "Section Break",
-            "label": "Details"
-        },
-        {
-            "fieldname": "naming_series",
-            "fieldtype": "Select",
-            "hidden": 1,
-            "label": "Naming Series",
-            "options": "RAR-.####",
-            "print_hide": 1
-        },
-        {
-            "fieldname": "rented_asset",
-            "fieldtype": "Link",
-            "in_list_view": 1,
-            "in_standard_filter": 1,
-            "label": "Rented Asset",
-            "options": "Rented Asset",
-            "reqd": 1
-        },
-        {
-            "fetch_from": "rented_asset.asset_name",
-            "fieldname": "asset_name",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Asset Name",
-            "read_only": 1
-        },
-        {
-            "fetch_from": "rented_asset.asset_type",
-            "fieldname": "asset_type",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Asset Type",
-            "read_only": 1
-        },
-        {
-            "fieldname": "previous_agreement_section",
-            "fieldtype": "Section Break",
-            "label": "Previous Agreement"
-        },
-        {
-            "fetch_from": "rented_asset.agreement_start_date",
-            "fieldname": "previous_start_date",
-            "fieldtype": "Date",
-            "label": "Previous Start Date",
-            "read_only": 1
-        },
-        {
-            "fetch_from": "rented_asset.agreement_end_date",
-            "fieldname": "previous_end_date",
-            "fieldtype": "Date",
-            "label": "Previous End Date",
-            "read_only": 1
-        },
-        {
-            "fieldname": "column_break_prev_1",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fetch_from": "rented_asset.monthly_rent",
-            "fieldname": "previous_rent",
-            "fieldtype": "Currency",
-            "label": "Previous Monthly Rent",
-            "read_only": 1
-        },
-        {
-            "fieldname": "new_agreement_section",
-            "fieldtype": "Section Break",
-            "label": "New Agreement"
-        },
-        {
-            "fieldname": "new_start_date",
-            "fieldtype": "Date",
-            "label": "New Start Date",
-            "reqd": 1
-        },
-        {
-            "fieldname": "new_end_date",
-            "fieldtype": "Date",
-            "label": "New End Date",
-            "reqd": 1
-        },
-        {
-            "fieldname": "column_break_new_1",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "new_monthly_rent",
-            "fieldtype": "Currency",
-            "in_list_view": 1,
-            "label": "New Monthly Rent",
-            "reqd": 1
-        },
-        {
-            "fieldname": "new_advance_amount",
-            "fieldtype": "Currency",
-            "label": "New Advance/Deposit Amount"
-        },
-        {
-            "fieldname": "rent_change_percentage",
-            "fieldtype": "Percent",
-            "label": "Rent Change %",
-            "read_only": 1
-        },
-        {
-            "fieldname": "renewal_details_section",
-            "fieldtype": "Section Break",
-            "label": "Renewal Details"
-        },
-        {
-            "fieldname": "renewal_agreement_file",
-            "fieldtype": "Attach",
-            "label": "New Agreement File"
-        },
-        {
-            "fieldname": "column_break_renewal_1",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "remarks",
-            "fieldtype": "Small Text",
-            "label": "Remarks"
-        },
-        {
-            "fieldname": "amended_from",
-            "fieldtype": "Link",
-            "label": "Amended From",
-            "no_copy": 1,
-            "options": "Rent Agreement Renewal",
-            "print_hide": 1,
-            "read_only": 1
-        }
-    ],
-    "index_web_pages_for_search": 1,
-    "links": [],
-    "modified": "2026-03-06 02:38:00.000000",
-    "modified_by": "Administrator",
-    "module": "DressUp",
-    "name": "Rent Agreement Renewal",
-    "naming_rule": "By \"Naming Series\" field",
-    "owner": "Administrator",
-    "permissions": [
-        {
-            "create": 1,
-            "delete": 1,
-            "email": 1,
-            "export": 1,
-            "import": 1,
-            "print": 1,
-            "read": 1,
-            "report": 1,
-            "role": "System Manager",
-            "share": 1,
-            "submit": 1,
-            "cancel": 1,
-            "write": 1
-        },
-        {
-            "create": 1,
-            "delete": 1,
-            "email": 1,
-            "export": 1,
-            "print": 1,
-            "read": 1,
-            "report": 1,
-            "role": "Accounts Manager",
-            "share": 1,
-            "submit": 1,
-            "cancel": 1,
-            "write": 1
-        },
-        {
-            "create": 1,
-            "email": 1,
-            "export": 1,
-            "print": 1,
-            "read": 1,
-            "report": 1,
-            "role": "Accounts User",
-            "share": 1,
-            "write": 1
-        }
-    ],
-    "sort_field": "modified",
-    "sort_order": "DESC",
-    "states": [],
-    "track_changes": 1
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-03-06 02:38:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "details_section",
+  "naming_series",
+  "rented_asset",
+  "asset_name",
+  "asset_type",
+  "previous_agreement_section",
+  "previous_start_date",
+  "previous_end_date",
+  "column_break_prev_1",
+  "previous_rent",
+  "new_agreement_section",
+  "new_start_date",
+  "new_end_date",
+  "column_break_new_1",
+  "new_monthly_rent",
+  "new_advance_amount",
+  "rent_change_percentage",
+  "renewal_details_section",
+  "renewal_agreement_file",
+  "column_break_renewal_1",
+  "remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "RAR-.####",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "rented_asset",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Rented Asset",
+   "options": "Rented Asset",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rented_asset.asset_name",
+   "fieldname": "asset_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Asset Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "rented_asset.asset_type",
+   "fieldname": "asset_type",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Asset Type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "previous_agreement_section",
+   "fieldtype": "Section Break",
+   "label": "Previous Agreement"
+  },
+  {
+   "fetch_from": "rented_asset.agreement_start_date",
+   "fieldname": "previous_start_date",
+   "fieldtype": "Date",
+   "label": "Previous Start Date",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "rented_asset.agreement_end_date",
+   "fieldname": "previous_end_date",
+   "fieldtype": "Date",
+   "label": "Previous End Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_prev_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "rented_asset.monthly_rent",
+   "fieldname": "previous_rent",
+   "fieldtype": "Currency",
+   "label": "Previous Monthly Rent",
+   "read_only": 1
+  },
+  {
+   "fieldname": "new_agreement_section",
+   "fieldtype": "Section Break",
+   "label": "New Agreement"
+  },
+  {
+   "fieldname": "new_start_date",
+   "fieldtype": "Date",
+   "label": "New Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "new_end_date",
+   "fieldtype": "Date",
+   "label": "New End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_new_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "new_monthly_rent",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "New Monthly Rent",
+   "reqd": 1
+  },
+  {
+   "fieldname": "new_advance_amount",
+   "fieldtype": "Currency",
+   "label": "New Advance/Deposit Amount"
+  },
+  {
+   "fieldname": "rent_change_percentage",
+   "fieldtype": "Percent",
+   "label": "Rent Change %",
+   "read_only": 1
+  },
+  {
+   "fieldname": "renewal_details_section",
+   "fieldtype": "Section Break",
+   "label": "Renewal Details"
+  },
+  {
+   "fieldname": "renewal_agreement_file",
+   "fieldtype": "Attach",
+   "label": "New Agreement File"
+  },
+  {
+   "fieldname": "column_break_renewal_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Rent Agreement Renewal",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-03-06 02:38:00.000000",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Rent Agreement Renewal",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "DressUp Manager",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
 }

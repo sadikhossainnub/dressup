@@ -9,6 +9,10 @@ fixtures = [
 	{
 		"doctype": "Custom Field",
 		"filters": [["module", "=", "DressUp"]],
+	},
+	{
+		"doctype": "Role",
+		"filters": [["name", "in", ["Barcode Label Manager", "DressUp Manager"]]]
 	}
 ]
 
