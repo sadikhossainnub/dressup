@@ -1,10 +1,13 @@
-<!-- New Barcode Label Print Format - 45mm x 35mm Label -->
+<!-- New Barcode Label Print Format -->
 {% set template = frappe.get_doc("Barcode Label Template", doc.label_template) %}
 {% set company = frappe.db.get_default("Company") %}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+{% set is_qr_only = (template.barcode_type or '').lower().replace(' ', '') == 'qrcode' %}
+{% set show_extra_qr = template.include_qr_code and not is_qr_only %}
 
 <style>
     @page {
@@ -15,13 +18,13 @@
     body {
         margin: 0 !important;
         padding: 0 !important;
-        background-color: #f5f7fa; /* Preview background */
+        background-color: #f5f7fa;
     }
 
     .label-wrapper {
         display: flex;
         flex-direction: column;
-        align-items: center; /* Center labels in preview */
+        align-items: center;
         padding: 5mm 0;
     }
 
@@ -39,6 +42,7 @@
         font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
         color: #1a1a1a;
         padding: 2mm 3mm;
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -65,18 +69,58 @@
         margin-bottom: 0.5mm;
     }
 
-    .barcode-section {
+    /* Code section — holds barcode and/or QR */
+    .code-section {
         width: 100%;
         display: flex;
         justify-content: center;
+        align-items: center;
         margin-bottom: 1.5mm;
+        gap: 2mm;
+    }
+
+    .code-section.dual {
+        justify-content: space-between;
+    }
+
+    .barcode-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .qr-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
     }
 
     .barcode-image {
-        /* Do NOT use width:100% or fixed height — it distorts bar widths
-           and makes the barcode unscannable. Let it render at natural ratio. */
         max-width: 95%;
         height: auto;
+        display: block;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+    }
+
+    .qr-image {
+        width: {{ (template.label_height * 0.3)|round(0)|int }}mm;
+        height: {{ (template.label_height * 0.3)|round(0)|int }}mm;
+        display: block;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+    }
+
+    .qr-only-image {
+        width: {{ (template.label_height * 0.45)|round(0)|int }}mm;
+        height: {{ (template.label_height * 0.45)|round(0)|int }}mm;
         display: block;
         image-rendering: -moz-crisp-edges;
         image-rendering: -webkit-optimize-contrast;
@@ -100,7 +144,7 @@
         line-height: 1.1;
         margin-bottom: 2mm;
         font-weight: 400;
-        height: 6mm; /* Fixed height to keep items aligned */
+        height: 6mm;
         overflow: hidden;
     }
 
@@ -131,6 +175,13 @@
             print-color-adjust: exact !important;
             background: #fff !important;
         }
+
+        .barcode-image, .qr-image, .qr-only-image {
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
     }
 </style>
 
@@ -143,15 +194,45 @@
             {% if item.batch_no %}{% set code_value = item.batch_no %}{% endif %}
             {% if item.serial_no %}{% set code_value = item.serial_no %}{% endif %}
             
-            {% set barcode_image = get_barcode_base64(template.barcode_type or 'code128', code_value) %}
+            {% if is_qr_only %}
+                {% set qr_image = get_barcode_base64('QR Code', code_value) %}
+            {% else %}
+                {% set barcode_image = get_barcode_base64(template.barcode_type or 'code128', code_value) %}
+                {% if show_extra_qr %}
+                    {% set qr_image = get_barcode_base64('QR Code', code_value) %}
+                {% endif %}
+            {% endif %}
             
             <div class="new-barcode-label">
-                <!-- Barcode at Top -->
-                <div class="barcode-section">
-                    {% if barcode_image %}
-                    <img src="{{ barcode_image }}" class="barcode-image" alt="Barcode" />
-                    {% endif %}
-                </div>
+                <!-- Code at Top -->
+                {% if is_qr_only %}
+                    <div class="code-section">
+                        <div class="barcode-area">
+                            {% if qr_image %}
+                            <img src="{{ qr_image }}" class="qr-only-image" alt="QR Code" />
+                            {% endif %}
+                        </div>
+                    </div>
+                {% elif show_extra_qr %}
+                    <div class="code-section dual">
+                        <div class="barcode-area">
+                            {% if barcode_image %}
+                            <img src="{{ barcode_image }}" class="barcode-image" alt="Barcode" />
+                            {% endif %}
+                        </div>
+                        <div class="qr-area">
+                            {% if qr_image %}
+                            <img src="{{ qr_image }}" class="qr-image" alt="QR Code" />
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="code-section">
+                        {% if barcode_image %}
+                        <img src="{{ barcode_image }}" class="barcode-image" alt="Barcode" />
+                        {% endif %}
+                    </div>
+                {% endif %}
 
                 <!-- Code and Session -->
                 <div class="row item-id-row">

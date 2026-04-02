@@ -12,6 +12,7 @@
         "label_height",
         "font_size",
         "barcode_type",
+        "include_qr_code",
         "include_price",
         "labels_per_row",
         "top_margin",
@@ -61,6 +62,13 @@
             "label": "Barcode Type",
             "options": "Code128\nCode39\nEAN13\nEAN8\nUPC-A\nJAN\nISBN\nQR Code",
             "reqd": 1
+        },
+        {
+            "default": "0",
+            "fieldname": "include_qr_code",
+            "fieldtype": "Check",
+            "label": "Include QR Code",
+            "description": "Show an additional QR code alongside the barcode"
         },
         {
             "default": "0",

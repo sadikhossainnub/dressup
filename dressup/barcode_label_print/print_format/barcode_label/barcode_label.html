@@ -11,6 +11,8 @@
 {% set top_margin = template.top_margin or 0 %}
 {% set left_margin = template.left_margin or 0 %}
 {% set font_size = template.font_size or 10 %}
+{% set is_qr_only = (template.barcode_type or '').lower().replace(' ', '') == 'qrcode' %}
+{% set show_extra_qr = template.include_qr_code and not is_qr_only %}
 
 <style>
     @page {
@@ -106,25 +108,64 @@
         margin: 0.5mm 0;
     }
 
-    /* Barcode Section — CRITICAL: do NOT stretch the barcode image */
-    .barcode-section {
+    /* Code Section — holds barcode and/or QR code */
+    .code-section {
         width: 100%;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
         flex-grow: 1;
         min-height: 0;
+        gap: 2mm;
     }
 
+    /* When showing both barcode + QR side by side */
+    .code-section.dual {
+        justify-content: space-between;
+    }
+
+    .barcode-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .qr-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    /* Barcode image — NEVER stretch width */
     .barcode-image {
-        /* Let the barcode render at its natural aspect ratio.
-           Only constrain max-width so it doesn't overflow the label.
-           NEVER set width:100% — that stretches bars and breaks scanning. */
         max-width: 95%;
         height: auto;
         display: block;
-        /* Crisp pixel rendering — prevents browser anti-aliasing of bars */
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+    }
+
+    /* QR Code image — keep square */
+    .qr-image {
+        width: {{ (template.label_height * 0.35)|round(0)|int }}mm;
+        height: {{ (template.label_height * 0.35)|round(0)|int }}mm;
+        display: block;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+    }
+
+    /* QR-only mode — bigger QR */
+    .qr-only-image {
+        width: {{ (template.label_height * 0.55)|round(0)|int }}mm;
+        height: {{ (template.label_height * 0.55)|round(0)|int }}mm;
+        display: block;
         image-rendering: -moz-crisp-edges;
         image-rendering: -webkit-optimize-contrast;
         image-rendering: crisp-edges;
@@ -152,8 +193,7 @@
             print-color-adjust: exact !important;
         }
 
-        .barcode-image {
-            /* Ensure crisp rendering in print */
+        .barcode-image, .qr-image, .qr-only-image {
             image-rendering: -moz-crisp-edges;
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
@@ -170,7 +210,14 @@
             {% if item.batch_no %}{% set code_value = item.batch_no %}{% endif %}
             {% if item.serial_no %}{% set code_value = item.serial_no %}{% endif %}
             
-            {% set barcode_image = get_barcode_base64(template.barcode_type, code_value) %}
+            {% if is_qr_only %}
+                {% set qr_image = get_barcode_base64('QR Code', code_value) %}
+            {% else %}
+                {% set barcode_image = get_barcode_base64(template.barcode_type, code_value) %}
+                {% if show_extra_qr %}
+                    {% set qr_image = get_barcode_base64('QR Code', code_value) %}
+                {% endif %}
+            {% endif %}
             
             <div class="barcode-label">
                 <!-- Company Name -->
@@ -180,12 +227,10 @@
 
                 <!-- Item Details -->
                 <div class="item-details">
-                    <!-- Item Code -->
                     {% if template.include_item_code and item.item_code %}
                     <div class="item-code">{{ item.item_code }}</div>
                     {% endif %}
 
-                    <!-- Item Name -->
                     {% if template.include_item_name and item.item_name %}
                     <div class="item-name">{{ item.item_name }}</div>
                     {% endif %}
@@ -198,13 +243,43 @@
                 </div>
                 {% endif %}
 
-                <!-- Barcode -->
-                <div class="barcode-section">
-                    {% if barcode_image %}
-                    <img src="{{ barcode_image }}" class="barcode-image" alt="Barcode" />
-                    {% endif %}
-                    <div class="barcode-text">{{ code_value }}</div>
-                </div>
+                <!-- Code Section -->
+                {% if is_qr_only %}
+                    <!-- QR Code Only -->
+                    <div class="code-section">
+                        <div class="barcode-area">
+                            {% if qr_image %}
+                            <img src="{{ qr_image }}" class="qr-only-image" alt="QR Code" />
+                            {% endif %}
+                            <div class="barcode-text">{{ code_value }}</div>
+                        </div>
+                    </div>
+                {% elif show_extra_qr %}
+                    <!-- Barcode + QR Code side by side -->
+                    <div class="code-section dual">
+                        <div class="barcode-area">
+                            {% if barcode_image %}
+                            <img src="{{ barcode_image }}" class="barcode-image" alt="Barcode" />
+                            {% endif %}
+                            <div class="barcode-text">{{ code_value }}</div>
+                        </div>
+                        <div class="qr-area">
+                            {% if qr_image %}
+                            <img src="{{ qr_image }}" class="qr-image" alt="QR Code" />
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <!-- Barcode Only -->
+                    <div class="code-section">
+                        <div class="barcode-area">
+                            {% if barcode_image %}
+                            <img src="{{ barcode_image }}" class="barcode-image" alt="Barcode" />
+                            {% endif %}
+                            <div class="barcode-text">{{ code_value }}</div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
     {% endfor %}
