@@ -237,3 +237,16 @@ class BarcodeLabelPrint(Document):
 		# For print formats, page breaks might be needed.
 		
 		self.preview_html = html
+
+
+@frappe.whitelist()
+def get_items_by_group(item_group):
+	"""Fetch all items from a given Item Group for bulk adding."""
+	items = frappe.get_all(
+		"Item",
+		filters={"item_group": item_group, "disabled": 0},
+		fields=["name as item_code", "item_name", "standard_rate"],
+		order_by="item_name asc",
+		limit_page_length=500
+	)
+	return items
