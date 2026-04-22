@@ -136,15 +136,27 @@
                     <span>{{ item.session or '' }}</span>
                 </div>
 
-                <!-- Description (Wraps to 2 lines) -->
+                <!-- Description (Item Name on line 1, Description on line 2) -->
                 <div class="description">
-                    {{ item.item_name or item_doc.item_name }}
+                    <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600;">
+                        {{ item.item_name or item_doc.item_name }}
+                    </div>
+                    <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9em;">
+                        {{ item_doc.description | striptags or '' }}
+                    </div>
                 </div>
 
-                <!-- Attributes: Color and Size -->
+                <!-- Attributes: C for Color, S for Size -->
                 <div class="attributes">
-                    <span>C: {{ item_doc.color or item.color or 'White' }}</span>
-                    <span>S: {{ item.size or '' }}</span>
+                    {% for attr in item_doc.attributes %}
+                        {% if 'color' in attr.attribute.lower() %}
+                            <span>C: {{ attr.attribute_value }}</span>
+                        {% elif 'size' in attr.attribute.lower() %}
+                            <span>S: {{ attr.attribute_value }}</span>
+                        {% else %}
+                            <span>{{ attr.attribute }}: {{ attr.attribute_value }}</span>
+                        {% endif %}
+                    {% endfor %}
                 </div>
 
                 <!-- Price -->

@@ -53,5 +53,15 @@
         "label": "Rented Asset",
         "options": "Rented Asset",
         "insert_after": "cost_center"
+    },
+    {
+        "doctype": "Custom Field",
+        "name": "Item-session",
+        "dt": "Item",
+        "module": "DressUp",
+        "fieldname": "session",
+        "fieldtype": "Data",
+        "label": "Session",
+        "insert_after": "item_name"
     }
 ]
