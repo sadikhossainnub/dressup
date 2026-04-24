@@ -8,6 +8,7 @@
     "engine": "InnoDB",
     "field_order": [
         "label_template",
+        "price_list",
         "items",
         "preview_html"
     ],
@@ -19,6 +20,13 @@
             "options": "Barcode Label Template",
             "reqd": 1,
             "description": "Select the physical label size template"
+        },
+        {
+            "fieldname": "price_list",
+            "fieldtype": "Link",
+            "label": "Price List",
+            "options": "Price List",
+            "description": "Select Price List to fetch item prices. Falls back to Valuation Rate if no Item Price found."
         },
         {
             "fieldname": "items",

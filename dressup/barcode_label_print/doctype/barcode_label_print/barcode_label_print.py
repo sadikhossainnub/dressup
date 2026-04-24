@@ -278,3 +278,70 @@ def get_serial_nos_for_item(item_code, warehouse=None):
 		limit_page_length=0
 	)
 	return serial_nos
+
+
+@frappe.whitelist()
+def get_item_price(item_code, price_list=None):
+	"""Fetch the best price for an item.
+
+	Priority:
+		1. Item Price from the specified Price List (Selling)
+		2. Valuation Rate from the Item master
+
+	Args:
+		item_code: The Item Code to look up.
+		price_list: Optional Price List name to fetch from.
+
+	Returns:
+		dict with price and source fields.
+	"""
+	price = 0
+	source = "none"
+
+	# Priority 1: Item Price from Price List
+	if price_list:
+		item_price = frappe.db.get_value(
+			"Item Price",
+			{
+				"item_code": item_code,
+				"price_list": price_list,
+				"selling": 1,
+			},
+			"price_list_rate",
+			order_by="valid_from desc",
+		)
+		if item_price:
+			price = item_price
+			source = "item_price"
+
+	# Fallback: try any selling price list if no specific one given
+	if not price and not price_list:
+		item_price = frappe.db.get_value(
+			"Item Price",
+			{
+				"item_code": item_code,
+				"selling": 1,
+			},
+			"price_list_rate",
+			order_by="valid_from desc",
+		)
+		if item_price:
+			price = item_price
+			source = "item_price"
+
+	# Priority 2: Valuation Rate from Item
+	if not price:
+		valuation_rate = frappe.db.get_value("Item", item_code, "valuation_rate")
+		if valuation_rate:
+			price = valuation_rate
+			source = "valuation_rate"
+
+	# Final fallback: standard_rate
+	if not price:
+		standard_rate = frappe.db.get_value("Item", item_code, "standard_rate")
+		if standard_rate:
+			price = standard_rate
+			source = "standard_rate"
+
+	return {"price": price or 0, "source": source}
+

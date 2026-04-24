@@ -121,21 +121,33 @@ frappe.ui.form.on('Barcode Label Print', {
                     return;
                 }
 
-                items_to_add.forEach(function(item) {
-                    let row = frm.add_child('items');
-                    row.item_code = item.item_code;
-                    row.item_name = item.item_name;
-                    row.qty = item.qty || 1;
-                    row.price = item.standard_rate || 0;
+                // Fetch proper prices for all selected items
+                let price_list = frm.doc.price_list || undefined;
+                let promises = items_to_add.map(function(item) {
+                    return frappe.call({
+                        method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_price',
+                        args: { item_code: item.item_code, price_list: price_list },
+                        async: false
+                    });
                 });
 
-                frm.refresh_field('items');
-                frm.dirty();
-                d.hide();
+                Promise.all(promises).then(function(results) {
+                    items_to_add.forEach(function(item, idx) {
+                        let row = frm.add_child('items');
+                        row.item_code = item.item_code;
+                        row.item_name = item.item_name;
+                        row.qty = item.qty || 1;
+                        row.price = results[idx].message ? results[idx].message.price : (item.standard_rate || 0);
+                    });
 
-                frappe.show_alert({
-                    message: __(`${items_to_add.length} item(s) added successfully`),
-                    indicator: 'green'
+                    frm.refresh_field('items');
+                    frm.dirty();
+                    d.hide();
+
+                    frappe.show_alert({
+                        message: __(`${items_to_add.length} item(s) added successfully`),
+                        indicator: 'green'
+                    });
                 });
             }
         });
@@ -407,20 +419,36 @@ frappe.ui.form.on('Barcode Label Print', {
                     freeze_message: __('Fetching items...'),
                     callback: function(r) {
                         if (r.message && r.message.length > 0) {
-                            r.message.forEach(function(item) {
-                                let row = frm.add_child('items');
-                                row.item_code = item.item_code;
-                                row.item_name = item.item_name;
-                                row.qty = values.qty || 1;
-                                row.price = item.standard_rate || 0;
+                            let price_list = frm.doc.price_list || undefined;
+                            let price_promises = r.message.map(function(item) {
+                                return frappe.call({
+                                    method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_price',
+                                    args: { item_code: item.item_code, price_list: price_list },
+                                    async: false
+                                });
                             });
-                            frm.refresh_field('items');
-                            frm.dirty();
-                            d.hide();
 
-                            frappe.show_alert({
-                                message: __(`${r.message.length} item(s) added from ${values.item_group}`),
-                                indicator: 'green'
+                            let items_data = r.message;
+                            let item_group_name = values.item_group;
+                            let print_qty = values.qty || 1;
+
+                            Promise.all(price_promises).then(function(price_results) {
+                                items_data.forEach(function(item, idx) {
+                                    let row = frm.add_child('items');
+                                    row.item_code = item.item_code;
+                                    row.item_name = item.item_name;
+                                    row.qty = print_qty;
+                                    row.price = price_results[idx].message ? price_results[idx].message.price : (item.standard_rate || 0);
+                                });
+
+                                frm.refresh_field('items');
+                                frm.dirty();
+                                d.hide();
+
+                                frappe.show_alert({
+                                    message: __(`${items_data.length} item(s) added from ${item_group_name}`),
+                                    indicator: 'green'
+                                });
                             });
                         } else {
                             frappe.msgprint(__('No items found in this Item Group'));
@@ -495,25 +523,33 @@ frappe.ui.form.on('Barcode Label Print', {
                             return;
                         }
 
-                        // Fetch item details once
-                        frappe.db.get_value('Item', item_code, ['item_name', 'standard_rate'], function(item_r) {
-                            serials.forEach(function(sn) {
-                                let row = frm.add_child('items');
-                                row.item_code = item_code;
-                                row.item_name = item_r ? item_r.item_name : '';
-                                row.serial_no = sn.serial_no;
-                                row.batch_no = sn.batch_no || '';
-                                row.qty = print_qty;
-                                row.price = item_r ? item_r.standard_rate : 0;
-                            });
+                        // Fetch item details and price
+                        let price_list = frm.doc.price_list || undefined;
+                        frappe.db.get_value('Item', item_code, ['item_name'], function(item_r) {
+                            frappe.call({
+                                method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_price',
+                                args: { item_code: item_code, price_list: price_list },
+                                callback: function(price_r) {
+                                    let fetched_price = price_r.message ? price_r.message.price : 0;
+                                    serials.forEach(function(sn) {
+                                        let row = frm.add_child('items');
+                                        row.item_code = item_code;
+                                        row.item_name = item_r ? item_r.item_name : '';
+                                        row.serial_no = sn.serial_no;
+                                        row.batch_no = sn.batch_no || '';
+                                        row.qty = print_qty;
+                                        row.price = fetched_price;
+                                    });
 
-                            frm.refresh_field('items');
-                            frm.dirty();
-                            d.hide();
+                                    frm.refresh_field('items');
+                                    frm.dirty();
+                                    d.hide();
 
-                            frappe.show_alert({
-                                message: __(`${serials.length} serial number(s) added for ${item_code}`),
-                                indicator: 'green'
+                                    frappe.show_alert({
+                                        message: __(`${serials.length} serial number(s) added for ${item_code}`),
+                                        indicator: 'green'
+                                    });
+                                }
                             });
                         });
                     }
@@ -529,10 +565,24 @@ frappe.ui.form.on('Barcode Label Item', {
     item_code: function(frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.item_code) {
-            frappe.db.get_value('Item', row.item_code, ['item_name', 'standard_rate'], function(r) {
+            // Fetch item name
+            frappe.db.get_value('Item', row.item_code, ['item_name'], function(r) {
                 if (r) {
                     frappe.model.set_value(cdt, cdn, 'item_name', r.item_name);
-                    frappe.model.set_value(cdt, cdn, 'price', r.standard_rate);
+                }
+            });
+            // Fetch price: Item Price (Price List) > Valuation Rate > Standard Rate
+            let price_list = frm.doc.price_list || undefined;
+            frappe.call({
+                method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_price',
+                args: {
+                    item_code: row.item_code,
+                    price_list: price_list
+                },
+                callback: function(r) {
+                    if (r.message) {
+                        frappe.model.set_value(cdt, cdn, 'price', r.message.price);
+                    }
                 }
             });
         }
