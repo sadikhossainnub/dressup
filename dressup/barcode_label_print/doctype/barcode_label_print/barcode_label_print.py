@@ -250,3 +250,31 @@ def get_items_by_group(item_group):
 		limit_page_length=500
 	)
 	return items
+
+
+@frappe.whitelist()
+def get_serial_nos_for_item(item_code, warehouse=None):
+	"""Fetch all active (in-stock) serial numbers for a given item.
+
+	Args:
+		item_code: The Item Code to look up serial numbers for.
+		warehouse: Optional warehouse filter.
+
+	Returns:
+		List of dicts with serial_no and warehouse fields.
+	"""
+	filters = {
+		"item_code": item_code,
+		"status": "Active",
+	}
+	if warehouse:
+		filters["warehouse"] = warehouse
+
+	serial_nos = frappe.get_all(
+		"Serial No",
+		filters=filters,
+		fields=["name as serial_no", "warehouse", "batch_no"],
+		order_by="name asc",
+		limit_page_length=0
+	)
+	return serial_nos

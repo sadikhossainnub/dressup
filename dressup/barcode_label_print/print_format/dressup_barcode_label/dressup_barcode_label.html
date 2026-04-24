@@ -1,19 +1,56 @@
 <!-- Dressup Barcode Label Print Format -->
+<!-- Page size and all layout settings come from Barcode Label Template -->
 {% set template = frappe.get_doc("Barcode Label Template", doc.label_template) %}
 
+{# Calculate page dimensions: label size + margins #}
+{% set page_w = template.label_width + (template.left_margin or 0) * 2 %}
+{% set page_h = template.label_height + (template.top_margin or 0) * 2 %}
+
 <style>
+    /* ===== Page Setup — size driven by template ===== */
     @page {
-        margin: 0mm;
-        size: {{ template.label_width }}mm {{ template.label_height }}mm;
+        margin: 0mm !important;
+        padding: 0mm !important;
+        size: {{ page_w }}mm {{ page_h }}mm;
     }
 
-    body {
+    /* ===== Override ALL Frappe default print styles ===== */
+    html, body {
         margin: 0 !important;
         padding: 0 !important;
-        background-color: #fff;
+        background: #fff !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         color: #000;
         -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Kill Frappe's print wrappers that add unwanted space */
+    .print-format,
+    .print-format-gutter,
+    .frappe-control,
+    .page-break {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        min-height: 0 !important;
+    }
+
+    /* ===== Single Label — one per page ===== */
+    .label-page {
+        width: {{ page_w }}mm;
+        height: {{ page_h }}mm;
+        padding: {{ template.top_margin or 0 }}mm {{ template.left_margin or 0 }}mm;
+        box-sizing: border-box;
+        page-break-after: always;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    /* Remove page break on the very last label */
+    .label-page:last-child {
+        page-break-after: auto;
     }
 
     .label-container {
@@ -26,18 +63,21 @@
         justify-content: flex-start;
         align-items: center;
         overflow: hidden;
-        page-break-after: always;
         position: relative;
+        background: #fff;
     }
 
+    /* ===== Label Elements ===== */
     .sku-code {
-        font-size: 11pt;
+        font-size: {{ (template.font_size or 10) * 1.1 }}pt;
         font-weight: 500;
         line-height: 1.1;
         margin-bottom: 0.5mm;
         text-align: center;
         width: 100%;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .barcode-wrapper {
@@ -54,13 +94,14 @@
         height: 100%;
         object-fit: contain;
         image-rendering: pixelated;
+        image-rendering: crisp-edges;
     }
 
     .barcode-details {
         width: 100%;
         display: flex;
         justify-content: space-between;
-        font-size: 13pt;
+        font-size: {{ (template.font_size or 10) * 1.3 }}pt;
         font-weight: 500;
         margin-bottom: 0.5mm;
         padding: 0 0.5mm;
@@ -68,11 +109,11 @@
     }
 
     .description {
-        font-size: 8.5pt;
+        font-size: {{ (template.font_size or 10) * 0.85 }}pt;
         line-height: 1.1;
         text-align: left;
         width: 100%;
-        max-height: 6.5mm; /* Roughly 2 lines */
+        max-height: 6.5mm;
         overflow: hidden;
         margin-bottom: 1mm;
         font-weight: 400;
@@ -82,7 +123,7 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        font-size: 10pt;
+        font-size: {{ template.font_size or 10 }}pt;
         font-weight: 400;
         margin-bottom: 1mm;
         padding: 0 0.5mm;
@@ -91,77 +132,111 @@
     .price-tag {
         width: 100%;
         text-align: center;
-        font-size: 11pt;
+        font-size: {{ (template.font_size or 10) * 1.1 }}pt;
         font-weight: 800;
         margin-top: auto;
         padding-bottom: 0.5mm;
         letter-spacing: 0.2mm;
     }
 
+    /* ===== Print overrides ===== */
     @media print {
-        body { background: #fff !important; }
-        .label-container { 
-            box-shadow: none !important; 
+        html, body {
+            width: {{ page_w }}mm !important;
+            background: #fff !important;
+        }
+        .label-page {
+            box-shadow: none !important;
             margin: 0 !important;
-            page-break-after: always;
+        }
+        /* Hide Frappe print header/footer */
+        .print-heading,
+        .letter-head,
+        .page-break .page-number {
+            display: none !important;
+        }
+    }
+
+    /* ===== Screen preview styling ===== */
+    @media screen {
+        .label-page {
+            border: 1px dashed #ccc;
+            margin-bottom: 5mm;
         }
     }
 </style>
 
 <div class="print-wrapper">
     {% for item in doc.items %}
-        {% set qty = item.qty if item.qty > 0 else 1 %}
         {% set item_doc = frappe.get_doc("Item", item.item_code) %}
+        {% set qty = item.qty if item.qty > 0 else 1 %}
         {% for i in range(qty) %}
+            {# Determine what to encode: serial_no > batch_no > item_code #}
             {% set code_value = item.item_code %}
             {% if item.batch_no %}{% set code_value = item.batch_no %}{% endif %}
             {% if item.serial_no %}{% set code_value = item.serial_no %}{% endif %}
-            
+
             {% set barcode_image = get_barcode_base64(template.barcode_type or 'code128', code_value) %}
-            
-            <div class="label-container">
-                <!-- Top SKU -->
-                <div class="sku-code">{{ item.item_code }}</div>
 
-                <!-- Barcode -->
-                <div class="barcode-wrapper">
-                    {% if barcode_image %}
-                        <img src="{{ barcode_image }}" class="barcode-img" alt="Barcode" />
+            <div class="label-page">
+                <div class="label-container">
+
+                    {# ── Top SKU ── #}
+                    {% if template.include_item_code %}
+                        <div class="sku-code">{{ item.item_code }}</div>
                     {% endif %}
-                </div>
 
-                <!-- Barcode Value and Article No -->
-                <div class="barcode-details">
-                    <span>{{ code_value }}</span>
-                    <span>{{ item.session or '' }}</span>
-                </div>
-
-                <!-- Description (Item Name on line 1, Description on line 2) -->
-                <div class="description">
-                    <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600;">
-                        {{ item.item_name or item_doc.item_name }}
-                    </div>
-                    <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9em;">
-                        {{ item_doc.description | striptags or '' }}
-                    </div>
-                </div>
-
-                <!-- Attributes: C for Color, S for Size -->
-                <div class="attributes">
-                    {% for attr in item_doc.attributes %}
-                        {% if 'color' in attr.attribute.lower() %}
-                            <span>C: {{ attr.attribute_value }}</span>
-                        {% elif 'size' in attr.attribute.lower() %}
-                            <span>S: {{ attr.attribute_value }}</span>
+                    {# ── Barcode ── #}
+                    <div class="barcode-wrapper">
+                        {% if barcode_image %}
+                            <img src="{{ barcode_image }}" class="barcode-img" alt="Barcode" />
                         {% else %}
-                            <span>{{ attr.attribute }}: {{ attr.attribute_value }}</span>
+                            <div style="font-size: 8pt; color: #999;">Barcode unavailable</div>
                         {% endif %}
-                    {% endfor %}
-                </div>
+                    </div>
 
-                <!-- Price -->
-                <div class="price-tag">
-                    BDT: {{ "{:,.0f}".format(item.price) }} + VAT
+                    {# ── Barcode Value & Session ── #}
+                    <div class="barcode-details">
+                        <span>{{ code_value }}</span>
+                        <span>{{ item.session or '' }}</span>
+                    </div>
+
+                    {# ── Description ── #}
+                    {% if template.include_item_name %}
+                        <div class="description">
+                            <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600;">
+                                {{ item.item_name or item_doc.item_name }}
+                            </div>
+                            <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9em;">
+                                {{ (item_doc.description or '') | striptags }}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {# ── Attributes: Color / Size ── #}
+                    <div class="attributes">
+                        {% for attr in item_doc.attributes %}
+                            {% if 'color' in attr.attribute.lower() %}
+                                <span>C: {{ attr.attribute_value }}</span>
+                            {% elif 'size' in attr.attribute.lower() %}
+                                <span>S: {{ item.size or attr.attribute_value }}</span>
+                            {% else %}
+                                <span>{{ attr.attribute }}: {{ attr.attribute_value }}</span>
+                            {% endif %}
+                        {% endfor %}
+                        {# Fallback: if item.size is set but no size attribute exists #}
+                        {% if item.size and not item_doc.attributes | selectattr("attribute", "lower_contains", "size") | list %}
+                            <span>S: {{ item.size }}</span>
+                        {% endif %}
+                    </div>
+
+                    {# ── Price ── #}
+                    {% if template.include_price and (item.price or 0) > 0 %}
+                        <div class="price-tag">
+                            BDT: {{ "{:,.0f}".format(item.price or 0) }} + VAT
+                        </div>
+                    {% endif %}
+
                 </div>
             </div>
         {% endfor %}

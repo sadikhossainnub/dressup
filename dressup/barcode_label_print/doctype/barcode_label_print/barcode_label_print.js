@@ -42,6 +42,11 @@ frappe.ui.form.on('Barcode Label Print', {
                 );
             }, __('Add Items'));
         }
+
+        // Add from Serial Nos button
+        frm.add_custom_button(__('From Serial Nos'), function() {
+            frm.trigger('show_serial_no_dialog');
+        }, __('Add Items'));
     },
 
     show_bulk_add_dialog: function(frm) {
@@ -420,6 +425,97 @@ frappe.ui.form.on('Barcode Label Print', {
                         } else {
                             frappe.msgprint(__('No items found in this Item Group'));
                         }
+                    }
+                });
+            }
+        });
+
+        d.show();
+    },
+
+    show_serial_no_dialog: function(frm) {
+        let d = new frappe.ui.Dialog({
+            title: __('Add All Serial Numbers for an Item'),
+            fields: [
+                {
+                    fieldname: 'item_code',
+                    fieldtype: 'Link',
+                    label: __('Item Code'),
+                    options: 'Item',
+                    reqd: 1,
+                    description: __('Select the item — all its active serial numbers will be added')
+                },
+                {
+                    fieldname: 'col1',
+                    fieldtype: 'Column Break'
+                },
+                {
+                    fieldname: 'warehouse',
+                    fieldtype: 'Link',
+                    label: __('Warehouse'),
+                    options: 'Warehouse',
+                    description: __('Optional: filter by warehouse')
+                },
+                {
+                    fieldname: 'col2',
+                    fieldtype: 'Column Break'
+                },
+                {
+                    fieldname: 'qty',
+                    fieldtype: 'Int',
+                    label: __('Print Qty (per serial)'),
+                    default: 1,
+                    description: __('Number of labels per serial number')
+                }
+            ],
+            primary_action_label: __('Add All Serial Nos'),
+            primary_action: function() {
+                let item_code = d.get_value('item_code');
+                let warehouse = d.get_value('warehouse');
+                let print_qty = d.get_value('qty') || 1;
+
+                if (!item_code) {
+                    frappe.msgprint(__('Please select an Item'));
+                    return;
+                }
+
+                frappe.call({
+                    method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_serial_nos_for_item',
+                    args: {
+                        item_code: item_code,
+                        warehouse: warehouse || undefined
+                    },
+                    freeze: true,
+                    freeze_message: __('Fetching serial numbers...'),
+                    callback: function(r) {
+                        let serials = r.message || [];
+
+                        if (serials.length === 0) {
+                            frappe.msgprint(__('No active serial numbers found for {0}', [item_code]));
+                            return;
+                        }
+
+                        // Fetch item details once
+                        frappe.db.get_value('Item', item_code, ['item_name', 'standard_rate'], function(item_r) {
+                            serials.forEach(function(sn) {
+                                let row = frm.add_child('items');
+                                row.item_code = item_code;
+                                row.item_name = item_r ? item_r.item_name : '';
+                                row.serial_no = sn.serial_no;
+                                row.batch_no = sn.batch_no || '';
+                                row.qty = print_qty;
+                                row.price = item_r ? item_r.standard_rate : 0;
+                            });
+
+                            frm.refresh_field('items');
+                            frm.dirty();
+                            d.hide();
+
+                            frappe.show_alert({
+                                message: __(`${serials.length} serial number(s) added for ${item_code}`),
+                                indicator: 'green'
+                            });
+                        });
                     }
                 });
             }
