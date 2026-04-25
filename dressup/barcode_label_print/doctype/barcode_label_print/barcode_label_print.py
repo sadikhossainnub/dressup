@@ -147,7 +147,7 @@ class BarcodeLabelPrint(Document):
 					height: {template.label_height}mm;
 					box-sizing: border-box;
 					padding: 1.5mm 1mm;
-					font-family: "Segoe UI", Arial, sans-serif;
+					font-family: Arial, sans-serif;
 					background: white;
 					page-break-inside: avoid;
 					border: 1px solid #ccc;
@@ -179,7 +179,7 @@ class BarcodeLabelPrint(Document):
 					label_html += f"""
 						<div style="
 							width: 95%;
-							height: 6mm;
+							height: 3mm;
 							margin: 0 auto;
 							display: flex;
 							justify-content: center;
