@@ -1,36 +1,36 @@
 frappe.ui.form.on('Barcode Label Print', {
-    refresh: function(frm) {
+    refresh: function (frm) {
         frm.trigger('render_preview');
         frm.trigger('add_bulk_buttons');
     },
 
-    label_template: function(frm) {
+    label_template: function (frm) {
         frm.trigger('render_preview');
     },
 
-    render_preview: function(frm) {
+    render_preview: function (frm) {
         if (frm.doc.items && frm.doc.items.length > 0 && frm.doc.label_template) {
             frm.save_or_update();
         }
     },
 
-    add_bulk_buttons: function(frm) {
+    add_bulk_buttons: function (frm) {
         // Bulk Add Items button
-        frm.add_custom_button(__('Bulk Add Items'), function() {
+        frm.add_custom_button(__('Bulk Add Items'), function () {
             frm.trigger('show_bulk_add_dialog');
         }, __('Add Items'));
 
         // Add from Item Group button
-        frm.add_custom_button(__('From Item Group'), function() {
+        frm.add_custom_button(__('From Item Group'), function () {
             frm.trigger('show_item_group_dialog');
         }, __('Add Items'));
 
         // Clear All Items button
         if (frm.doc.items && frm.doc.items.length > 0) {
-            frm.add_custom_button(__('Clear All Items'), function() {
+            frm.add_custom_button(__('Clear All Items'), function () {
                 frappe.confirm(
                     __('Are you sure you want to remove all items?'),
-                    function() {
+                    function () {
                         frm.doc.items = [];
                         frm.refresh_field('items');
                         frm.dirty();
@@ -44,12 +44,12 @@ frappe.ui.form.on('Barcode Label Print', {
         }
 
         // Add from Serial Nos button
-        frm.add_custom_button(__('From Serial Nos'), function() {
+        frm.add_custom_button(__('From Serial Nos'), function () {
             frm.trigger('show_serial_no_dialog');
         }, __('Add Items'));
     },
 
-    show_bulk_add_dialog: function(frm) {
+    show_bulk_add_dialog: function (frm) {
         let d = new frappe.ui.Dialog({
             title: __('Bulk Add Items'),
             size: 'extra-large',
@@ -64,7 +64,7 @@ frappe.ui.form.on('Barcode Label Print', {
                     fieldtype: 'Link',
                     label: __('Item Group'),
                     options: 'Item Group',
-                    change: function() {
+                    change: function () {
                         d.fields_dict.search_items.$input.trigger('input');
                     }
                 },
@@ -112,7 +112,7 @@ frappe.ui.form.on('Barcode Label Print', {
                 }
             ],
             primary_action_label: __('Add to Table'),
-            primary_action: function() {
+            primary_action: function () {
                 let selected = d.selected_items || {};
                 let items_to_add = Object.values(selected);
 
@@ -123,7 +123,7 @@ frappe.ui.form.on('Barcode Label Print', {
 
                 // Fetch proper prices for all selected items
                 let price_list = frm.doc.price_list || undefined;
-                let promises = items_to_add.map(function(item) {
+                let promises = items_to_add.map(function (item) {
                     return frappe.call({
                         method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_price',
                         args: { item_code: item.item_code, price_list: price_list },
@@ -131,8 +131,8 @@ frappe.ui.form.on('Barcode Label Print', {
                     });
                 });
 
-                Promise.all(promises).then(function(results) {
-                    items_to_add.forEach(function(item, idx) {
+                Promise.all(promises).then(function (results) {
+                    items_to_add.forEach(function (item, idx) {
                         let row = frm.add_child('items');
                         row.item_code = item.item_code;
                         row.item_name = item.item_name;
@@ -157,7 +157,7 @@ frappe.ui.form.on('Barcode Label Print', {
 
         // Debounced search
         let search_timeout;
-        d.fields_dict.search_items.$input.on('input', function() {
+        d.fields_dict.search_items.$input.on('input', function () {
             clearTimeout(search_timeout);
             let search_term = $(this).val();
             let item_group = d.get_value('item_group');
@@ -169,7 +169,7 @@ frappe.ui.form.on('Barcode Label Print', {
                 return;
             }
 
-            search_timeout = setTimeout(function() {
+            search_timeout = setTimeout(function () {
                 let filters = {};
                 if (search_term) {
                     filters['name'] = ['like', `%${search_term}%`];
@@ -191,7 +191,7 @@ frappe.ui.form.on('Barcode Label Print', {
                         limit_page_length: 50,
                         order_by: 'item_name asc'
                     },
-                    callback: function(r) {
+                    callback: function (r) {
                         render_search_results(d, r.message || []);
                     }
                 });
@@ -221,7 +221,7 @@ frappe.ui.form.on('Barcode Label Print', {
                     </div>
             `;
 
-            items.forEach(function(item) {
+            items.forEach(function (item) {
                 let is_selected = dialog.selected_items[item.item_code] ? 'checked' : '';
                 html += `
                     <div class="bulk-item-row" style="display: flex; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background 0.15s;" 
@@ -249,7 +249,7 @@ frappe.ui.form.on('Barcode Label Print', {
             dialog.fields_dict.results_html.$wrapper.html(html);
 
             // Click on row to toggle checkbox
-            dialog.fields_dict.results_html.$wrapper.find('.bulk-item-row').on('click', function(e) {
+            dialog.fields_dict.results_html.$wrapper.find('.bulk-item-row').on('click', function (e) {
                 if ($(e.target).is('input[type="checkbox"]')) return;
                 let checkbox = $(this).find('.bulk-item-check');
                 checkbox.prop('checked', !checkbox.prop('checked'));
@@ -257,7 +257,7 @@ frappe.ui.form.on('Barcode Label Print', {
             });
 
             // Handle checkbox changes
-            dialog.fields_dict.results_html.$wrapper.find('.bulk-item-check').on('change', function() {
+            dialog.fields_dict.results_html.$wrapper.find('.bulk-item-check').on('change', function () {
                 let row = $(this).closest('.bulk-item-row');
                 let item_code = row.data('item-code');
                 let item_name = row.data('item-name');
@@ -279,11 +279,11 @@ frappe.ui.form.on('Barcode Label Print', {
             });
 
             // Select All checkbox
-            dialog.fields_dict.results_html.$wrapper.find('.bulk-select-all').on('change', function() {
+            dialog.fields_dict.results_html.$wrapper.find('.bulk-select-all').on('change', function () {
                 let checked = $(this).prop('checked');
                 let qty = dialog.get_value('default_qty') || 1;
 
-                dialog.fields_dict.results_html.$wrapper.find('.bulk-item-check').each(function() {
+                dialog.fields_dict.results_html.$wrapper.find('.bulk-item-check').each(function () {
                     $(this).prop('checked', checked);
                     let row = $(this).closest('.bulk-item-row');
                     let item_code = row.data('item-code');
@@ -327,7 +327,7 @@ frappe.ui.form.on('Barcode Label Print', {
                     </div>
             `;
 
-            keys.forEach(function(key) {
+            keys.forEach(function (key) {
                 let item = selected[key];
                 html += `
                     <div class="selected-item-row" style="display: flex; align-items: center; padding: 6px 12px; border-bottom: 1px solid var(--border-color); font-size: 13px;"
@@ -353,7 +353,7 @@ frappe.ui.form.on('Barcode Label Print', {
             dialog.fields_dict.selected_html.$wrapper.html(html);
 
             // Handle qty change
-            dialog.fields_dict.selected_html.$wrapper.find('.selected-item-qty').on('change', function() {
+            dialog.fields_dict.selected_html.$wrapper.find('.selected-item-qty').on('change', function () {
                 let item_code = $(this).closest('.selected-item-row').data('item-code');
                 let new_qty = parseInt($(this).val()) || 1;
                 if (dialog.selected_items[item_code]) {
@@ -362,7 +362,7 @@ frappe.ui.form.on('Barcode Label Print', {
             });
 
             // Handle remove
-            dialog.fields_dict.selected_html.$wrapper.find('.remove-selected-item').on('click', function() {
+            dialog.fields_dict.selected_html.$wrapper.find('.remove-selected-item').on('click', function () {
                 let item_code = $(this).closest('.selected-item-row').data('item-code');
                 delete dialog.selected_items[item_code];
 
@@ -382,7 +382,7 @@ frappe.ui.form.on('Barcode Label Print', {
         d.$wrapper.find('.modal-dialog').css('max-width', '900px');
     },
 
-    show_item_group_dialog: function(frm) {
+    show_item_group_dialog: function (frm) {
         let d = new frappe.ui.Dialog({
             title: __('Add Items from Item Group'),
             fields: [
@@ -406,7 +406,7 @@ frappe.ui.form.on('Barcode Label Print', {
                 }
             ],
             primary_action_label: __('Add All Items'),
-            primary_action: function() {
+            primary_action: function () {
                 let values = d.get_values();
                 if (!values) return;
 
@@ -417,10 +417,10 @@ frappe.ui.form.on('Barcode Label Print', {
                     },
                     freeze: true,
                     freeze_message: __('Fetching items...'),
-                    callback: function(r) {
+                    callback: function (r) {
                         if (r.message && r.message.length > 0) {
                             let price_list = frm.doc.price_list || undefined;
-                            let price_promises = r.message.map(function(item) {
+                            let price_promises = r.message.map(function (item) {
                                 return frappe.call({
                                     method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_price',
                                     args: { item_code: item.item_code, price_list: price_list },
@@ -432,8 +432,8 @@ frappe.ui.form.on('Barcode Label Print', {
                             let item_group_name = values.item_group;
                             let print_qty = values.qty || 1;
 
-                            Promise.all(price_promises).then(function(price_results) {
-                                items_data.forEach(function(item, idx) {
+                            Promise.all(price_promises).then(function (price_results) {
+                                items_data.forEach(function (item, idx) {
                                     let row = frm.add_child('items');
                                     row.item_code = item.item_code;
                                     row.item_name = item.item_name;
@@ -461,7 +461,7 @@ frappe.ui.form.on('Barcode Label Print', {
         d.show();
     },
 
-    show_serial_no_dialog: function(frm) {
+    show_serial_no_dialog: function (frm) {
         let d = new frappe.ui.Dialog({
             title: __('Add All Serial Numbers for an Item'),
             fields: [
@@ -497,7 +497,7 @@ frappe.ui.form.on('Barcode Label Print', {
                 }
             ],
             primary_action_label: __('Add All Serial Nos'),
-            primary_action: function() {
+            primary_action: function () {
                 let item_code = d.get_value('item_code');
                 let warehouse = d.get_value('warehouse');
                 let print_qty = d.get_value('qty') || 1;
@@ -515,7 +515,7 @@ frappe.ui.form.on('Barcode Label Print', {
                     },
                     freeze: true,
                     freeze_message: __('Fetching serial numbers...'),
-                    callback: function(r) {
+                    callback: function (r) {
                         let serials = r.message || [];
 
                         if (serials.length === 0) {
@@ -525,13 +525,13 @@ frappe.ui.form.on('Barcode Label Print', {
 
                         // Fetch item details and price
                         let price_list = frm.doc.price_list || undefined;
-                        frappe.db.get_value('Item', item_code, ['item_name'], function(item_r) {
+                        frappe.db.get_value('Item', item_code, ['item_name'], function (item_r) {
                             frappe.call({
                                 method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_price',
                                 args: { item_code: item_code, price_list: price_list },
-                                callback: function(price_r) {
+                                callback: function (price_r) {
                                     let fetched_price = price_r.message ? price_r.message.price : 0;
-                                    serials.forEach(function(sn) {
+                                    serials.forEach(function (sn) {
                                         let row = frm.add_child('items');
                                         row.item_code = item_code;
                                         row.item_name = item_r ? item_r.item_name : '';
@@ -560,8 +560,8 @@ frappe.ui.form.on('Barcode Label Print', {
         d.show();
     },
 
-    setup: function(frm) {
-        frm.set_query('color_attribute', 'items', function(doc, cdt, cdn) {
+    setup: function (frm) {
+        frm.set_query('color_attribute', 'items', function (doc, cdt, cdn) {
             let row = locals[cdt][cdn];
             if (row.item_code) {
                 return {
@@ -570,8 +570,8 @@ frappe.ui.form.on('Barcode Label Print', {
                 };
             }
         });
-        
-        frm.set_query('size_attribute', 'items', function(doc, cdt, cdn) {
+
+        frm.set_query('size_attribute', 'items', function (doc, cdt, cdn) {
             let row = locals[cdt][cdn];
             if (row.item_code) {
                 return {
@@ -585,11 +585,11 @@ frappe.ui.form.on('Barcode Label Print', {
 
 frappe.ui.form.on('Barcode Label Item', {
 
-    item_code: function(frm, cdt, cdn) {
+    item_code: function (frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.item_code) {
             // Fetch item name and description
-            frappe.db.get_value('Item', row.item_code, ['item_name', 'description'], function(r) {
+            frappe.db.get_value('Item', row.item_code, ['item_name', 'description'], function (r) {
                 if (r) {
                     frappe.model.set_value(cdt, cdn, 'item_name', r.item_name);
                     frappe.model.set_value(cdt, cdn, 'description', r.description || '');
@@ -603,22 +603,22 @@ frappe.ui.form.on('Barcode Label Item', {
                     item_code: row.item_code,
                     price_list: price_list
                 },
-                callback: function(r) {
+                callback: function (r) {
                     if (r.message) {
                         frappe.model.set_value(cdt, cdn, 'price', r.message.price);
                     }
                 }
             });
-            
+
             // Auto fetch attributes
             frappe.call({
                 method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_attributes_data',
                 args: { item_code: row.item_code },
-                callback: function(r) {
+                callback: function (r) {
                     if (r.message) {
                         let color_set = false;
                         let size_set = false;
-                        r.message.forEach(function(attr) {
+                        r.message.forEach(function (attr) {
                             if (!color_set && attr.attribute.toLowerCase().includes('color')) {
                                 frappe.model.set_value(cdt, cdn, 'color_attribute', attr.attribute);
                                 frappe.model.set_value(cdt, cdn, 'color', attr.attribute_value);
@@ -636,13 +636,13 @@ frappe.ui.form.on('Barcode Label Item', {
         }
     },
 
-    color_attribute: function(frm, cdt, cdn) {
+    color_attribute: function (frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.item_code && row.color_attribute) {
             frappe.call({
                 method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_attributes_data',
                 args: { item_code: row.item_code },
-                callback: function(r) {
+                callback: function (r) {
                     if (r.message) {
                         let attr = r.message.find(a => a.attribute === row.color_attribute);
                         if (attr) frappe.model.set_value(cdt, cdn, 'color', attr.attribute_value);
@@ -654,13 +654,13 @@ frappe.ui.form.on('Barcode Label Item', {
         }
     },
 
-    size_attribute: function(frm, cdt, cdn) {
+    size_attribute: function (frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.item_code && row.size_attribute) {
             frappe.call({
                 method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_attributes_data',
                 args: { item_code: row.item_code },
-                callback: function(r) {
+                callback: function (r) {
                     if (r.message) {
                         let attr = r.message.find(a => a.attribute === row.size_attribute);
                         if (attr) frappe.model.set_value(cdt, cdn, 'size', attr.attribute_value);
@@ -672,10 +672,10 @@ frappe.ui.form.on('Barcode Label Item', {
         }
     },
 
-    batch_no: function(frm, cdt, cdn) {
+    batch_no: function (frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.batch_no) {
-            frappe.db.get_value('Batch', row.batch_no, 'expiry_date', function(r) {
+            frappe.db.get_value('Batch', row.batch_no, 'expiry_date', function (r) {
                 if (r) {
                     frappe.model.set_value(cdt, cdn, 'expiry_date', r.expiry_date);
                 }
