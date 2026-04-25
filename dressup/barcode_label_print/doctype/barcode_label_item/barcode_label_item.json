@@ -13,6 +13,9 @@
         "batch_no",
         "serial_no",
         "price",
+        "color_attribute",
+        "color",
+        "size_attribute",
         "size",
         "session",
         "expiry_date"
@@ -65,6 +68,24 @@
             "fieldtype": "Currency",
             "in_list_view": 1,
             "label": "Price"
+        },
+        {
+            "fieldname": "color_attribute",
+            "fieldtype": "Link",
+            "label": "Color Attribute",
+            "options": "Item Attribute"
+        },
+        {
+            "fieldname": "color",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Color"
+        },
+        {
+            "fieldname": "size_attribute",
+            "fieldtype": "Link",
+            "label": "Size Attribute",
+            "options": "Item Attribute"
         },
         {
             "fieldname": "size",

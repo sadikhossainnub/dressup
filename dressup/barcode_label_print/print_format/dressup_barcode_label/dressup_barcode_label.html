@@ -61,26 +61,26 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        align-items: center;
+        align-items: stretch;
         overflow: hidden;
         position: relative;
         background: #fff;
     }
 
-    /* ===== Label Elements ===== */
-    .sku-code {
+    /* ===== Row 1: Item Code — top center ===== */
+    .row-item-code {
+        text-align: center;
         font-size: {{ (template.font_size or 10) * 1.1 }}pt;
         font-weight: 500;
-        line-height: 1.1;
+        line-height: 1.2;
         margin-bottom: 0.5mm;
-        text-align: center;
-        width: 100%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    .barcode-wrapper {
+    /* ===== Row 2: Barcode image — full width ===== */
+    .row-barcode {
         width: 100%;
         height: 12mm;
         display: flex;
@@ -97,10 +97,12 @@
         image-rendering: crisp-edges;
     }
 
-    .barcode-details {
+    /* ===== Row 3: Serial No (left) + Session (right) ===== */
+    .row-serial-session {
         width: 100%;
         display: flex;
         justify-content: space-between;
+        align-items: baseline;
         font-size: {{ (template.font_size or 10) * 1.3 }}pt;
         font-weight: 500;
         margin-bottom: 0.5mm;
@@ -108,28 +110,62 @@
         line-height: 1;
     }
 
-    .description {
-        font-size: {{ (template.font_size or 10) * 0.85 }}pt;
-        line-height: 1.1;
+    .serial-no {
         text-align: left;
-        width: 100%;
-        max-height: 6.5mm;
+        white-space: nowrap;
         overflow: hidden;
-        margin-bottom: 1mm;
-        font-weight: 400;
+        text-overflow: ellipsis;
+        max-width: 70%;
     }
 
-    .attributes {
+    .session-code {
+        text-align: right;
+        white-space: nowrap;
+        font-weight: 600;
+    }
+
+    /* ===== Row 4: Item Name — bold, single line ===== */
+    .row-item-name {
+        font-size: {{ (template.font_size or 10) * 0.9 }}pt;
+        font-weight: 600;
+        line-height: 1.15;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        padding: 0 0.5mm;
+    }
+
+    /* ===== Row 5: Description — up to 2 lines ===== */
+    .row-description {
+        font-size: {{ (template.font_size or 10) * 0.8 }}pt;
+        font-weight: 400;
+        line-height: 1.15;
+        width: 100%;
+        max-height: 6mm;
+        overflow: hidden;
+        padding: 0 0.5mm;
+        margin-bottom: 0.5mm;
+        /* 2-line clamp */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    /* ===== Row 6: Color (left) + Size (right) ===== */
+    .row-attributes {
         width: 100%;
         display: flex;
         justify-content: space-between;
         font-size: {{ template.font_size or 10 }}pt;
         font-weight: 400;
-        margin-bottom: 1mm;
+        margin-bottom: 0.5mm;
         padding: 0 0.5mm;
+        line-height: 1.2;
     }
 
-    .price-tag {
+    /* ===== Row 7: Price — bottom center, bold ===== */
+    .row-price {
         width: 100%;
         text-align: center;
         font-size: {{ (template.font_size or 10) * 1.1 }}pt;
@@ -181,13 +217,13 @@
             <div class="label-page">
                 <div class="label-container">
 
-                    {# ── Top SKU ── #}
+                    {# ── Row 1: Item Code (top center) ── #}
                     {% if template.include_item_code %}
-                        <div class="sku-code">{{ item.item_code }}</div>
+                        <div class="row-item-code">{{ item.item_code }}</div>
                     {% endif %}
 
-                    {# ── Barcode ── #}
-                    <div class="barcode-wrapper">
+                    {# ── Row 2: Barcode ── #}
+                    <div class="row-barcode">
                         {% if barcode_image %}
                             <img src="{{ barcode_image }}" class="barcode-img" alt="Barcode" />
                         {% else %}
@@ -195,44 +231,45 @@
                         {% endif %}
                     </div>
 
-                    {# ── Barcode Value & Session ── #}
-                    <div class="barcode-details">
-                        <span>{{ code_value }}</span>
-                        <span>{{ item.session or '' }}</span>
+                    {# ── Row 3: Serial No (left) + Session (right) ── #}
+                    <div class="row-serial-session">
+                        <span class="serial-no">{{ code_value }}</span>
+                        <span class="session-code">{{ item.session or '' }}</span>
                     </div>
 
-                    {# ── Description ── #}
+                    {# ── Row 4 & 5: Item Name + Description ── #}
                     {% if template.include_item_name %}
-                        <div class="description">
-                            <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600;">
-                                {{ item.item_name or item_doc.item_name }}
-                            </div>
-                            <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9em;">
-                                {{ (item_doc.description or '') | striptags }}
-                            </div>
+                        <div class="row-item-name">
+                            {{ item.item_name or item_doc.item_name }}
+                        </div>
+                        <div class="row-description">
+                            {{ (item_doc.description or '') | striptags }}
                         </div>
                     {% endif %}
 
-                    {# ── Attributes: Color / Size ── #}
-                    <div class="attributes">
-                        {% for attr in item_doc.attributes %}
-                            {% if 'color' in attr.attribute.lower() %}
-                                <span>C: {{ attr.attribute_value }}</span>
-                            {% elif 'size' in attr.attribute.lower() %}
-                                <span>S: {{ item.size or attr.attribute_value }}</span>
-                            {% else %}
-                                <span>{{ attr.attribute }}: {{ attr.attribute_value }}</span>
-                            {% endif %}
-                        {% endfor %}
-                        {# Fallback: if item.size is set but no size attribute exists #}
-                        {% if item.size and not item_doc.attributes | selectattr("attribute", "lower_contains", "size") | list %}
-                            <span>S: {{ item.size }}</span>
+                    {# ── Row 6: Color (left) + Size (right) ── #}
+                    <div class="row-attributes">
+                        {% set ns = namespace(color=item.color or '', size=item.size or '') %}
+                        
+                        {# Fallback to wildcard search if explicitly empty #}
+                        {% if not ns.color or not ns.size %}
+                            {% for attr in item_doc.attributes %}
+                                {% if not ns.color and 'color' in attr.attribute.lower() %}
+                                    {% set ns.color = attr.attribute_value %}
+                                {% endif %}
+                                {% if not ns.size and 'size' in attr.attribute.lower() %}
+                                    {% set ns.size = attr.attribute_value %}
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
+
+                        <span>C: {{ ns.color }}</span>
+                        <span>S: {{ ns.size }}</span>
                     </div>
 
-                    {# ── Price ── #}
+                    {# ── Row 7: Price (bottom center) ── #}
                     {% if template.include_price and (item.price or 0) > 0 %}
-                        <div class="price-tag">
+                        <div class="row-price">
                             BDT: {{ "{:,.0f}".format(item.price or 0) }} + VAT
                         </div>
                     {% endif %}

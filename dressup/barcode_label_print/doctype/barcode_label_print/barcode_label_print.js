@@ -555,13 +555,34 @@ frappe.ui.form.on('Barcode Label Print', {
                     }
                 });
             }
-        });
-
         d.show();
+    },
+
+    setup: function(frm) {
+        frm.set_query('color_attribute', 'items', function(doc, cdt, cdn) {
+            let row = locals[cdt][cdn];
+            if (row.item_code) {
+                return {
+                    query: "dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_attributes_query",
+                    filters: { item_code: row.item_code }
+                };
+            }
+        });
+        
+        frm.set_query('size_attribute', 'items', function(doc, cdt, cdn) {
+            let row = locals[cdt][cdn];
+            if (row.item_code) {
+                return {
+                    query: "dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_attributes_query",
+                    filters: { item_code: row.item_code }
+                };
+            }
+        });
     }
 });
 
 frappe.ui.form.on('Barcode Label Item', {
+
     item_code: function(frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.item_code) {
@@ -585,6 +606,64 @@ frappe.ui.form.on('Barcode Label Item', {
                     }
                 }
             });
+            
+            // Auto fetch attributes
+            frappe.call({
+                method: 'frappe.client.get_list',
+                args: {
+                    doctype: 'Item Variant Attribute',
+                    filters: { parent: row.item_code, parenttype: 'Item' },
+                    fields: ['attribute', 'attribute_value']
+                },
+                callback: function(r) {
+                    if (r.message) {
+                        let color_set = false;
+                        let size_set = false;
+                        r.message.forEach(function(attr) {
+                            if (!color_set && attr.attribute.toLowerCase().includes('color')) {
+                                frappe.model.set_value(cdt, cdn, 'color_attribute', attr.attribute);
+                                frappe.model.set_value(cdt, cdn, 'color', attr.attribute_value);
+                                color_set = true;
+                            }
+                            if (!size_set && attr.attribute.toLowerCase().includes('size')) {
+                                frappe.model.set_value(cdt, cdn, 'size_attribute', attr.attribute);
+                                frappe.model.set_value(cdt, cdn, 'size', attr.attribute_value);
+                                size_set = true;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    },
+
+    color_attribute: function(frm, cdt, cdn) {
+        let row = locals[cdt][cdn];
+        if (row.item_code && row.color_attribute) {
+            frappe.db.get_value('Item Variant Attribute', 
+                { parent: row.item_code, parenttype: 'Item', attribute: row.color_attribute }, 
+                'attribute_value', 
+                function(r) {
+                    if (r) frappe.model.set_value(cdt, cdn, 'color', r.attribute_value);
+                }
+            );
+        } else if (!row.color_attribute) {
+            frappe.model.set_value(cdt, cdn, 'color', '');
+        }
+    },
+
+    size_attribute: function(frm, cdt, cdn) {
+        let row = locals[cdt][cdn];
+        if (row.item_code && row.size_attribute) {
+            frappe.db.get_value('Item Variant Attribute', 
+                { parent: row.item_code, parenttype: 'Item', attribute: row.size_attribute }, 
+                'attribute_value', 
+                function(r) {
+                    if (r) frappe.model.set_value(cdt, cdn, 'size', r.attribute_value);
+                }
+            );
+        } else if (!row.size_attribute) {
+            frappe.model.set_value(cdt, cdn, 'size', '');
         }
     },
 

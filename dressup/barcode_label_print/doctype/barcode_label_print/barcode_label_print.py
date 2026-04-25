@@ -36,6 +36,8 @@ class BarcodeLabelPrint(Document):
 					"batch_no": item.batch_no,
 					"serial_no": item.serial_no,
 					"price": item.price,
+					"color": item.color,
+					"size": item.size,
 					"expiry_date": item.expiry_date,
 					"company": frappe.defaults.get_user_default("Company"),
 					"barcode_image": barcode_image
@@ -116,115 +118,152 @@ class BarcodeLabelPrint(Document):
 				
 			else:
 				# Fallback to Simple Layout with all checkbox options
+				
+				# Fetch additional item details for preview
+				item_doc = frappe.get_doc("Item", data.get("item_code")) if data.get("item_code") else None
+				description_text = frappe.utils.strip_html_tags(item_doc.description or "") if item_doc else ""
+				
+				# Attributes
+				color_val = data.get("color") or ""
+				size_val = data.get("size") or ""
+				
+				if item_doc and item_doc.attributes:
+					for attr in item_doc.attributes:
+						if not color_val and 'color' in attr.attribute.lower():
+							color_val = attr.attribute_value
+							
+						if not size_val and 'size' in attr.attribute.lower():
+							size_val = attr.attribute_value
+							
+				# Calculate sizes based on font_size
+				base_fs = template.font_size or 10
+				
 				label_html = f"""
 				<div style="
 					width: {template.label_width}mm;
 					height: {template.label_height}mm;
 					box-sizing: border-box;
-					padding: 2mm;
-					font-family: Arial, sans-serif;
-					font-size: {template.font_size}px;
-					overflow: hidden;
+					padding: 1.5mm 2.5mm;
+					font-family: 'Inter', -apple-system, sans-serif;
 					background: white;
 					page-break-inside: avoid;
-					border: 1px solid #000;
+					border: 1px solid #ccc;
 					display: flex;
 					flex-direction: column;
-					justify-content: space-between;
+					justify-content: flex-start;
+					align-items: stretch;
+					overflow: hidden;
 				">
 				"""
 				
-				# Company Name (Top)
-				if template.include_company_name and data.get("company"):
-					label_html += f"""
-						<div style="
-							text-align: center;
-							font-weight: bold;
-							font-size: {template.font_size * 1.1}px;
-							border-bottom: 1px solid #ccc;
-							padding-bottom: 1mm;
-							margin-bottom: 1mm;
-						">{data['company']}</div>
-					"""
-				
-				# Item Name
-				if template.include_item_name and data.get("item_name"):
-					label_html += f"""
-						<div style="
-							text-align: center;
-							font-size: {template.font_size}px;
-							margin-bottom: 1mm;
-							overflow: hidden;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-						">{data['item_name']}</div>
-					"""
-				
-				# Item Code
+				# 1. Item Code (Top Center)
 				if template.include_item_code and data.get("item_code"):
 					label_html += f"""
 						<div style="
 							text-align: center;
-							font-size: {template.font_size * 0.8}px;
-							color: #555;
-							margin-bottom: 1mm;
+							font-size: {base_fs * 1.1}pt;
+							font-weight: 500;
+							line-height: 1.2;
+							margin-bottom: 0.5mm;
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
 						">{data['item_code']}</div>
 					"""
 				
-				# Batch No
-				if template.include_batch_no and data.get("batch_no"):
+				# 2. Barcode
+				if data.get("barcode_image"):
 					label_html += f"""
 						<div style="
-							text-align: center;
-							font-size: {template.font_size * 0.8}px;
-							color: #555;
-						">Batch: {data['batch_no']}</div>
+							width: 100%;
+							height: 12mm;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							margin-bottom: 0.5mm;
+						">
+							<img src='{data['barcode_image']}' style='max-width: 95%; height: 100%; object-fit: contain; image-rendering: pixelated; image-rendering: crisp-edges;' />
+						</div>
 					"""
+					
+				# 3. Serial No (left) + Session (right)
+				serial_display = data.get('serial_no') or data.get('batch_no') or data.get('item_code') or ""
+				session_val = data.get('session') or ""
+				label_html += f"""
+					<div style="
+						width: 100%;
+						display: flex;
+						justify-content: space-between;
+						align-items: baseline;
+						font-size: {base_fs * 1.3}pt;
+						font-weight: 500;
+						margin-bottom: 0.5mm;
+						padding: 0 0.5mm;
+						line-height: 1;
+					">
+						<span style="text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%;">{serial_display}</span>
+						<span style="text-align: right; white-space: nowrap; font-weight: 600;">{session_val}</span>
+					</div>
+				"""
 				
-				# Serial No
-				if template.include_serial_no and data.get("serial_no"):
+				# 4. Item Name + Description
+				if template.include_item_name and data.get("item_name"):
 					label_html += f"""
 						<div style="
-							text-align: center;
-							font-size: {template.font_size * 0.8}px;
-							color: #555;
-						">S/N: {data['serial_no']}</div>
-					"""
-				
-				# Expiry Date
-				if template.include_expiry_date and data.get("expiry_date"):
-					label_html += f"""
+							font-size: {base_fs * 0.9}pt;
+							font-weight: 600;
+							line-height: 1.15;
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							width: 100%;
+							padding: 0 0.5mm;
+						">{data['item_name']}</div>
 						<div style="
-							text-align: center;
-							font-size: {template.font_size * 0.8}px;
-							color: #555;
-						">Exp: {data['expiry_date']}</div>
+							font-size: {base_fs * 0.8}pt;
+							font-weight: 400;
+							line-height: 1.15;
+							width: 100%;
+							max-height: 6mm;
+							overflow: hidden;
+							padding: 0 0.5mm;
+							margin-bottom: 0.5mm;
+							display: -webkit-box;
+							-webkit-line-clamp: 2;
+							-webkit-box-orient: vertical;
+						">{description_text}</div>
 					"""
+					
+				# 5. Attributes (Color + Size)
+				label_html += f"""
+					<div style="
+						width: 100%;
+						display: flex;
+						justify-content: space-between;
+						font-size: {base_fs}pt;
+						font-weight: 400;
+						margin-bottom: 0.5mm;
+						padding: 0 0.5mm;
+						line-height: 1.2;
+					">
+						<span>C: {color_val}</span>
+						<span>S: {size_val}</span>
+					</div>
+				"""
 				
-				# Price
+				# 6. Price
 				if template.include_price and data.get("price"):
 					price_val = frappe.format_value(data['price'], {'fieldtype': 'Currency'})
 					label_html += f"""
 						<div style="
+							width: 100%;
 							text-align: center;
-							font-weight: bold;
-							font-size: {template.font_size * 1.2}px;
-							margin: 1mm 0;
-						">{price_val}</div>
-					"""
-				
-				# Barcode (always at bottom)
-				if data.get("barcode_image"):
-					label_html += f"""
-						<div style="
-							text-align: center;
-							flex-grow: 1;
-							display: flex;
-							align-items: center;
-							justify-content: center;
-						">
-							<img src='{data['barcode_image']}' style='max-width: 95%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges;' />
-						</div>
+							font-size: {base_fs * 1.1}pt;
+							font-weight: 800;
+							margin-top: auto;
+							padding-bottom: 0.5mm;
+							letter-spacing: 0.2mm;
+						">BDT: {int(data['price'])} + VAT</div>
 					"""
 				
 				label_html += "</div>"
@@ -344,4 +383,33 @@ def get_item_price(item_code, price_list=None):
 			source = "standard_rate"
 
 	return {"price": price or 0, "source": source}
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_item_attributes_query(doctype, txt, searchfield, start, page_len, filters):
+	item_code = filters.get("item_code")
+	if not item_code:
+		return []
+
+	# In Frappe, the child table for attributes in Item is 'Item Variant Attribute'
+	# We fetch the attribute names for this specific item
+	attributes = frappe.db.sql("""
+		select attribute 
+		from `tabItem Variant Attribute` 
+		where parent = %s and parenttype = 'Item'
+	""", (item_code,), as_dict=0)
+	
+	if not attributes:
+		return []
+		
+	attr_names = [a[0] for a in attributes]
+	
+	query = """
+		select name from `tabItem Attribute`
+		where name in ({}) and name like %s
+		order by name limit %s offset %s
+	""".format(", ".join(["%s"] * len(attr_names)))
+	
+	args = attr_names + [f"%{txt}%", page_len, start]
+	return frappe.db.sql(query, args)
 
