@@ -413,3 +413,15 @@ def get_item_attributes_query(doctype, txt, searchfield, start, page_len, filter
 	args = attr_names + [f"%{txt}%", page_len, start]
 	return frappe.db.sql(query, args)
 
+
+@frappe.whitelist()
+def get_item_attributes_data(item_code):
+	if not item_code:
+		return []
+		
+	return frappe.db.sql("""
+		select attribute, attribute_value
+		from `tabItem Variant Attribute`
+		where parent = %s and parenttype = 'Item'
+	""", (item_code,), as_dict=1)
+

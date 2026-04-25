@@ -611,12 +611,8 @@ frappe.ui.form.on('Barcode Label Item', {
             
             // Auto fetch attributes
             frappe.call({
-                method: 'frappe.client.get_list',
-                args: {
-                    doctype: 'Item Variant Attribute',
-                    filters: { parent: row.item_code, parenttype: 'Item' },
-                    fields: ['attribute', 'attribute_value']
-                },
+                method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_attributes_data',
+                args: { item_code: row.item_code },
                 callback: function(r) {
                     if (r.message) {
                         let color_set = false;
@@ -642,13 +638,16 @@ frappe.ui.form.on('Barcode Label Item', {
     color_attribute: function(frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.item_code && row.color_attribute) {
-            frappe.db.get_value('Item Variant Attribute', 
-                { parent: row.item_code, parenttype: 'Item', attribute: row.color_attribute }, 
-                'attribute_value', 
-                function(r) {
-                    if (r) frappe.model.set_value(cdt, cdn, 'color', r.attribute_value);
+            frappe.call({
+                method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_attributes_data',
+                args: { item_code: row.item_code },
+                callback: function(r) {
+                    if (r.message) {
+                        let attr = r.message.find(a => a.attribute === row.color_attribute);
+                        if (attr) frappe.model.set_value(cdt, cdn, 'color', attr.attribute_value);
+                    }
                 }
-            );
+            });
         } else if (!row.color_attribute) {
             frappe.model.set_value(cdt, cdn, 'color', '');
         }
@@ -657,13 +656,16 @@ frappe.ui.form.on('Barcode Label Item', {
     size_attribute: function(frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.item_code && row.size_attribute) {
-            frappe.db.get_value('Item Variant Attribute', 
-                { parent: row.item_code, parenttype: 'Item', attribute: row.size_attribute }, 
-                'attribute_value', 
-                function(r) {
-                    if (r) frappe.model.set_value(cdt, cdn, 'size', r.attribute_value);
+            frappe.call({
+                method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_attributes_data',
+                args: { item_code: row.item_code },
+                callback: function(r) {
+                    if (r.message) {
+                        let attr = r.message.find(a => a.attribute === row.size_attribute);
+                        if (attr) frappe.model.set_value(cdt, cdn, 'size', attr.attribute_value);
+                    }
                 }
-            );
+            });
         } else if (!row.size_attribute) {
             frappe.model.set_value(cdt, cdn, 'size', '');
         }
