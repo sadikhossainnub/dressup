@@ -555,6 +555,8 @@ frappe.ui.form.on('Barcode Label Print', {
                     }
                 });
             }
+        });
+
         d.show();
     },
 
