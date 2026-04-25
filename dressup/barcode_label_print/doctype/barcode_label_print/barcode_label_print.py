@@ -38,6 +38,7 @@ class BarcodeLabelPrint(Document):
 					"price": item.price,
 					"color": item.color,
 					"size": item.size,
+					"session": item.session,
 					"expiry_date": item.expiry_date,
 					"company": frappe.defaults.get_user_default("Company"),
 					"barcode_image": barcode_image
@@ -208,7 +209,7 @@ class BarcodeLabelPrint(Document):
 				"""
 				
 				# 4. Item Name + Description
-				if template.include_item_name:
+				if description_text:
 					label_html += f"""
 						<div style="
 							font-size: {base_fs * 0.8}pt;
@@ -243,7 +244,7 @@ class BarcodeLabelPrint(Document):
 				"""
 				
 				# 6. Price
-				if template.include_price and data.get("price"):
+				if data.get("price"):
 					price_val = frappe.format_value(data['price'], {'fieldtype': 'Currency'})
 					label_html += f"""
 						<div style="
