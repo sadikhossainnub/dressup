@@ -43,7 +43,10 @@
     .label-page {
         width: {{ page_w }}mm;
         height: {{ page_h }}mm;
-        padding: {{ template.top_margin or 0 }}mm {{ template.left_margin or 0 }}mm;
+        padding-top: {{ template.top_margin or 0 }}mm;
+        padding-bottom: {{ template.top_margin or 0 }}mm;
+        padding-left: 0.5mm;
+        padding-right: 1.5mm;
         box-sizing: border-box;
         page-break-after: always;
         overflow: hidden;

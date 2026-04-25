@@ -56,7 +56,8 @@ class BarcodeLabelPrint(Document):
 			flex-wrap: wrap;
 			gap: {vertical_gap}mm {horizontal_gap}mm;
 			padding-top: {template.top_margin or 0}mm;
-			padding-left: {template.left_margin or 0}mm;
+			padding-left: 0.5mm;
+			padding-right: 1.5mm;
 		">
 		"""
 		
