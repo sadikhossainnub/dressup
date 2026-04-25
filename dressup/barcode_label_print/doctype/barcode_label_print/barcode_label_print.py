@@ -188,7 +188,7 @@ class BarcodeLabelPrint(Document):
 					"""
 					
 				# 3. Serial No (left) + Session (right)
-				serial_display = data.get('serial_no') or data.get('batch_no') or data.get('item_code') or ""
+				serial_display = data.get('serial_no') or data.get('batch_no') or ""
 				session_val = data.get('session') or ""
 				label_html += f"""
 					<div style="

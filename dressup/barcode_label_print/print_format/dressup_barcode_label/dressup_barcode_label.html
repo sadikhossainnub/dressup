@@ -233,7 +233,9 @@
 
                     {# ── Row 3: Serial No (left) + Session (right) ── #}
                     <div class="row-serial-session">
-                        <span class="serial-no">{{ code_value }}</span>
+                        <span class="serial-no">
+                            {% if code_value != item.item_code %}{{ code_value }}{% endif %}
+                        </span>
                         <span class="session-code">{{ item.session or '' }}</span>
                     </div>
 
