@@ -214,14 +214,14 @@ class BarcodeLabelPrint(Document):
 				if description_text:
 					label_html += f"""
 						<div style="
-							font-size: {base_fs * 0.8}pt;
+							font-size: {base_fs * 0.9}pt;
 							font-weight: 400;
-							line-height: 1.15;
+							line-height: 1;
 							width: 100%;
-							max-height: 6mm;
+							max-height: 4mm;
 							overflow: hidden;
 							padding: 0 0.5mm;
-							margin-bottom: 0.5mm;
+							margin-bottom: 00mm;
 							display: -webkit-box;
 							-webkit-line-clamp: 2;
 							-webkit-box-orient: vertical;
