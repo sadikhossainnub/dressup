@@ -147,7 +147,7 @@ class BarcodeLabelPrint(Document):
 					height: {template.label_height}mm;
 					box-sizing: border-box;
 					padding: 1.5mm 1mm;
-					font-family: "Canva Sans", Arial, sans-serif;
+					font-family: "Segoe UI", Arial, sans-serif;
 					background: white;
 					page-break-inside: avoid;
 					border: 1px solid #ccc;
@@ -178,14 +178,15 @@ class BarcodeLabelPrint(Document):
 				if data.get("barcode_image"):
 					label_html += f"""
 						<div style="
-							width: 100%;
+							width: 95%;
 							height: 6mm;
+							margin: 0 auto;
 							display: flex;
 							justify-content: center;
 							align-items: center;
 							margin-bottom: 0.5mm;
 						">
-							<img src='{data['barcode_image']}' style='max-width: 100%; width: 100%; height: 100%; object-fit: fill; image-rendering: pixelated; image-rendering: crisp-edges;' />
+							<img src='{data['barcode_image']}' style='max-width: 100%; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; image-rendering: crisp-edges;' />
 						</div>
 					"""
 					

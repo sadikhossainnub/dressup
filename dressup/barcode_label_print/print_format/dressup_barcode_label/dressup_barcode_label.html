@@ -21,7 +21,7 @@
         margin: 0 !important;
         padding: 0 !important;
         background: #fff !important;
-        font-family: "Canva Sans", Arial, sans-serif;
+        font-family: "Segoe UI", Arial, sans-serif;
         color: #000;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
@@ -85,9 +85,9 @@
     }
 
     /* ===== Row 2: Barcode image — wider, shorter ===== */
-    .row-barcode {
-        width: 100%;
+        width: 95%;
         height: 6mm;
+        margin: 0 auto;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -97,7 +97,7 @@
     .barcode-img {
         width: 100%;
         height: 100%;
-        object-fit: fill;
+        object-fit: contain;
         image-rendering: pixelated;
         image-rendering: crisp-edges;
     }
