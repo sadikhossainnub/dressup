@@ -72,27 +72,27 @@
     /* ===== Row 1: Item Code — top center ===== */
     .row-item-code {
         text-align: center;
-        font-size: {{ (template.font_size or 10) * 1.1 }}pt;
+        font-size: {{ (template.font_size or 10) * 0.55 }}pt;
         font-weight: 500;
         line-height: 1.2;
-        margin-bottom: 0.5mm;
+        margin-bottom: 0.3mm;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    /* ===== Row 2: Barcode image — full width ===== */
+    /* ===== Row 2: Barcode image — wider, shorter ===== */
     .row-barcode {
         width: 100%;
-        height: 12mm;
+        height: 8mm;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 0.5mm;
+        margin-bottom: 0.3mm;
     }
 
     .barcode-img {
-        width: 95%;
+        width: 100%;
         height: 100%;
         object-fit: contain;
         image-rendering: pixelated;
@@ -105,9 +105,9 @@
         display: flex;
         justify-content: space-between;
         align-items: baseline;
-        font-size: {{ (template.font_size or 10) * 1.3 }}pt;
+        font-size: {{ (template.font_size or 10) * 0.5 }}pt;
         font-weight: 500;
-        margin-bottom: 0.5mm;
+        margin-bottom: 0.3mm;
         padding: 0 0.5mm;
         line-height: 1;
     }
@@ -128,7 +128,7 @@
 
     /* ===== Row 4: Item Name — bold, single line ===== */
     .row-item-name {
-        font-size: {{ (template.font_size or 10) * 0.9 }}pt;
+        font-size: {{ (template.font_size or 10) * 0.45 }}pt;
         font-weight: 600;
         line-height: 1.15;
         white-space: nowrap;
@@ -140,14 +140,14 @@
 
     /* ===== Row 5: Description — up to 2 lines ===== */
     .row-description {
-        font-size: {{ (template.font_size or 10) * 0.8 }}pt;
+        font-size: {{ (template.font_size or 10) * 0.4 }}pt;
         font-weight: 400;
         line-height: 1.15;
         width: 100%;
-        max-height: 6mm;
+        max-height: 5mm;
         overflow: hidden;
         padding: 0 0.5mm;
-        margin-bottom: 0.5mm;
+        margin-bottom: 0.3mm;
         /* 2-line clamp */
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -159,9 +159,9 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        font-size: {{ template.font_size or 10 }}pt;
+        font-size: {{ (template.font_size or 10) * 0.5 }}pt;
         font-weight: 400;
-        margin-bottom: 0.5mm;
+        margin-bottom: 0.3mm;
         padding: 0 0.5mm;
         line-height: 1.2;
     }
@@ -170,10 +170,10 @@
     .row-price {
         width: 100%;
         text-align: center;
-        font-size: {{ (template.font_size or 10) * 1.1 }}pt;
+        font-size: {{ (template.font_size or 10) * 0.55 }}pt;
         font-weight: 800;
         margin-top: auto;
-        padding-bottom: 0.5mm;
+        padding-bottom: 0.3mm;
         letter-spacing: 0.2mm;
     }
 
