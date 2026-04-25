@@ -145,7 +145,7 @@ class BarcodeLabelPrint(Document):
 					width: {template.label_width}mm;
 					height: {template.label_height}mm;
 					box-sizing: border-box;
-					padding: 1.5mm 2.5mm;
+					padding: 1.5mm 1mm;
 					font-family: 'Poppins', -apple-system, sans-serif;
 					background: white;
 					page-break-inside: avoid;
@@ -163,7 +163,7 @@ class BarcodeLabelPrint(Document):
 					label_html += f"""
 						<div style="
 							text-align: center;
-							font-size: {base_fs * 1.1}pt;
+							font-size: {base_fs * 1.3}pt;
 							font-weight: 500;
 							line-height: 1.2;
 							margin-bottom: 0.5mm;
@@ -178,13 +178,13 @@ class BarcodeLabelPrint(Document):
 					label_html += f"""
 						<div style="
 							width: 100%;
-							height: 12mm;
+							height: 6mm;
 							display: flex;
 							justify-content: center;
 							align-items: center;
 							margin-bottom: 0.5mm;
 						">
-							<img src='{data['barcode_image']}' style='max-width: 95%; height: 100%; object-fit: contain; image-rendering: pixelated; image-rendering: crisp-edges;' />
+							<img src='{data['barcode_image']}' style='max-width: 100%; width: 100%; height: 100%; object-fit: fill; image-rendering: pixelated; image-rendering: crisp-edges;' />
 						</div>
 					"""
 					
@@ -197,7 +197,7 @@ class BarcodeLabelPrint(Document):
 						display: flex;
 						justify-content: space-between;
 						align-items: baseline;
-						font-size: {base_fs * 1.3}pt;
+						font-size: {base_fs * 1.5}pt;
 						font-weight: 500;
 						margin-bottom: 0.5mm;
 						padding: 0 0.5mm;

@@ -52,7 +52,7 @@ def get_barcode_base64(code_type, code_value):
             "write_text": False,
             "module_width": 0.40,      # mm — wider bars for reliable scanning
             "module_height": 15.0,     # mm — tall bars improve scan rate
-            "quiet_zone": 4.0,         # mm — adequate quiet zone for scanners
+            "quiet_zone": 1.0,         # mm — adequate quiet zone for scanners
             "text_distance": 2.0,
             "dpi": 300,                # High DPI for crisp print output
             "font_size": 0,
