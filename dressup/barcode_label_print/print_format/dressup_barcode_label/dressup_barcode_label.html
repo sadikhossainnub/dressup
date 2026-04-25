@@ -239,14 +239,12 @@
                         <span class="session-code">{{ item.session or '' }}</span>
                     </div>
 
-                    {# ── Row 4: Description (Replaces Item Name) ── #}
-                    {% if template.include_item_name %}
-                        <div class="row-description">
-                            {{ (item_doc.description or '') | striptags }}
-                        </div>
-                    {% endif %}
+                    {# ── Row 4: Description ── #}
+                    <div class="row-description">
+                        {{ (item_doc.description or '') | striptags }}
+                    </div>
 
-                    {# ── Row 6: Color (left) + Size (right) ── #}
+                    {# ── Row 5: Color (left) + Size (right) ── #}
                     <div class="row-attributes">
                         {% set ns = namespace(color=item.color or '', size=item.size or '') %}
                         
@@ -266,8 +264,8 @@
                         <span>S: {{ ns.size }}</span>
                     </div>
 
-                    {# ── Row 7: Price (bottom center) ── #}
-                    {% if template.include_price and (item.price or 0) > 0 %}
+                    {# ── Row 6: Price (bottom center, bold) ── #}
+                    {% if (item.price or 0) > 0 %}
                         <div class="row-price">
                             BDT: {{ "{:,.0f}".format(item.price or 0) }} + VAT
                         </div>
