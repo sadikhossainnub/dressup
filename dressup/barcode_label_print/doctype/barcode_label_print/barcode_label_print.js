@@ -588,10 +588,11 @@ frappe.ui.form.on('Barcode Label Item', {
     item_code: function(frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.item_code) {
-            // Fetch item name
-            frappe.db.get_value('Item', row.item_code, ['item_name'], function(r) {
+            // Fetch item name and description
+            frappe.db.get_value('Item', row.item_code, ['item_name', 'description'], function(r) {
                 if (r) {
                     frappe.model.set_value(cdt, cdn, 'item_name', r.item_name);
+                    frappe.model.set_value(cdt, cdn, 'description', r.description || '');
                 }
             });
             // Fetch price: Item Price (Price List) > Valuation Rate > Standard Rate

@@ -206,7 +206,6 @@
 
 <div class="print-wrapper">
     {% for item in doc.items %}
-        {% set item_doc = frappe.get_doc("Item", item.item_code) %}
         {% set qty = item.qty if item.qty > 0 else 1 %}
         {% for i in range(qty) %}
             {# Determine what to encode: serial_no > batch_no > item_code #}
@@ -239,29 +238,17 @@
                         <span class="session-code">{{ item.session or '' }}</span>
                     </div>
 
-                    {# ── Row 4: Description ── #}
-                    <div class="row-description">
-                        {{ (item_doc.description or '') | striptags }}
-                    </div>
+                    {# ── Row 4: Description (from child table) ── #}
+                    {% if item.description %}
+                        <div class="row-description">
+                            {{ (item.description or '') | striptags }}
+                        </div>
+                    {% endif %}
 
                     {# ── Row 5: Color (left) + Size (right) ── #}
                     <div class="row-attributes">
-                        {% set ns = namespace(color=item.color or '', size=item.size or '') %}
-                        
-                        {# Fallback to wildcard search if explicitly empty #}
-                        {% if not ns.color or not ns.size %}
-                            {% for attr in item_doc.attributes %}
-                                {% if not ns.color and 'color' in attr.attribute.lower() %}
-                                    {% set ns.color = attr.attribute_value %}
-                                {% endif %}
-                                {% if not ns.size and 'size' in attr.attribute.lower() %}
-                                    {% set ns.size = attr.attribute_value %}
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-
-                        <span>C: {{ ns.color }}</span>
-                        <span>S: {{ ns.size }}</span>
+                        <span>C: {{ item.color or '' }}</span>
+                        <span>S: {{ item.size or '' }}</span>
                     </div>
 
                     {# ── Row 6: Price (bottom center, bold) ── #}

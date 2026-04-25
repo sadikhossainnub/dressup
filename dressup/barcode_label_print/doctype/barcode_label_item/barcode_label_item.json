@@ -8,6 +8,7 @@
     "field_order": [
         "item_code",
         "item_name",
+        "description",
         "qty",
         "column_break_1",
         "batch_no",
@@ -36,6 +37,14 @@
             "in_list_view": 1,
             "label": "Item Name",
             "read_only": 1
+        },
+        {
+            "fetch_from": "item_code.description",
+            "fieldname": "description",
+            "fieldtype": "Small Text",
+            "label": "Description",
+            "read_only": 1,
+            "hidden": 1
         },
         {
             "default": "1",
