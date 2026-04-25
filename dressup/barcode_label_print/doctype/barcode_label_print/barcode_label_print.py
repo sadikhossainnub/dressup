@@ -141,13 +141,13 @@ class BarcodeLabelPrint(Document):
 				base_fs = template.font_size or 10
 				
 				label_html = f"""
-				<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 				<div style="
 					width: {template.label_width}mm;
 					height: {template.label_height}mm;
 					box-sizing: border-box;
 					padding: 1.5mm 1mm;
-					font-family: 'Poppins', -apple-system, sans-serif;
+					font-family: "Canva Sans", Arial, sans-serif;
 					background: white;
 					page-break-inside: avoid;
 					border: 1px solid #ccc;
