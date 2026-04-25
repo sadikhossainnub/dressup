@@ -218,9 +218,7 @@
                 <div class="label-container">
 
                     {# ── Row 1: Item Code (top center) ── #}
-                    {% if template.include_item_code %}
-                        <div class="row-item-code">{{ item.item_code }}</div>
-                    {% endif %}
+                    <div class="row-item-code">{{ item.item_code }}</div>
 
                     {# ── Row 2: Barcode ── #}
                     <div class="row-barcode">
@@ -237,11 +235,8 @@
                         <span class="session-code">{{ item.session or '' }}</span>
                     </div>
 
-                    {# ── Row 4 & 5: Item Name + Description ── #}
+                    {# ── Row 4: Description (Replaces Item Name) ── #}
                     {% if template.include_item_name %}
-                        <div class="row-item-name">
-                            {{ item.item_name or item_doc.item_name }}
-                        </div>
                         <div class="row-description">
                             {{ (item_doc.description or '') | striptags }}
                         </div>

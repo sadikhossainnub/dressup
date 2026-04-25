@@ -157,7 +157,7 @@ class BarcodeLabelPrint(Document):
 				"""
 				
 				# 1. Item Code (Top Center)
-				if template.include_item_code and data.get("item_code"):
+				if data.get("item_code"):
 					label_html += f"""
 						<div style="
 							text-align: center;
@@ -207,18 +207,8 @@ class BarcodeLabelPrint(Document):
 				"""
 				
 				# 4. Item Name + Description
-				if template.include_item_name and data.get("item_name"):
+				if template.include_item_name:
 					label_html += f"""
-						<div style="
-							font-size: {base_fs * 0.9}pt;
-							font-weight: 600;
-							line-height: 1.15;
-							white-space: nowrap;
-							overflow: hidden;
-							text-overflow: ellipsis;
-							width: 100%;
-							padding: 0 0.5mm;
-						">{data['item_name']}</div>
 						<div style="
 							font-size: {base_fs * 0.8}pt;
 							font-weight: 400;
