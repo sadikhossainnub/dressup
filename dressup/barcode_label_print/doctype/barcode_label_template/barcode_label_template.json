@@ -44,7 +44,11 @@
         "company_name_font_size",
         "company_name_font_style",
         "session_font_size",
-        "session_font_style"
+        "session_font_style",
+        "attribute_font_size",
+        "attribute_font_style",
+        "price_font_size",
+        "price_font_style"
     ],
     "fields": [
         {
@@ -277,6 +281,30 @@
             "fieldname": "session_font_style",
             "fieldtype": "Select",
             "label": "Session Font Style",
+            "options": "Normal\nBold\nItalic\nBold Italic"
+        },
+        {
+            "fieldname": "attribute_font_size",
+            "fieldtype": "Float",
+            "label": "Attribute (Color/Size) Font Size"
+        },
+        {
+            "default": "Normal",
+            "fieldname": "attribute_font_style",
+            "fieldtype": "Select",
+            "label": "Attribute Font Style",
+            "options": "Normal\nBold\nItalic\nBold Italic"
+        },
+        {
+            "fieldname": "price_font_size",
+            "fieldtype": "Float",
+            "label": "Price Font Size"
+        },
+        {
+            "default": "Normal",
+            "fieldname": "price_font_style",
+            "fieldtype": "Select",
+            "label": "Price Font Style",
             "options": "Normal\nBold\nItalic\nBold Italic"
         }
     ],

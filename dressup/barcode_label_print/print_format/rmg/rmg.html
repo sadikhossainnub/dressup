@@ -88,13 +88,12 @@
     .row-item-code {
         text-align: center;
         font-size: {{ template.item_code_font_size or ((template.font_size or 10) * 0.75) }}pt;
-        {{ get_font_style(template.item_code_font_style, \'500\') }}
+        {{ get_font_style(template.item_code_font_style, '500') }}
         line-height: 1.2;
         margin-bottom: 0.3mm;
-        white-space: normal;
+        white-space: nowrap;
         overflow: hidden;
-        text-overflow: unset;
-        word-break: break-all;
+        text-overflow: ellipsis;
     }
 
     /* ===== Row 2: Barcode image — wider, shorter ===== */
@@ -132,7 +131,7 @@
     .serial-no {
         text-align: left;
         font-size: {{ template.serial_no_font_size or template.batch_no_font_size or ((template.font_size or 10) * 0.75) }}pt;
-        {{ get_font_style(template.serial_no_font_style or template.batch_no_font_style, \'normal\') }}
+        {{ get_font_style(template.serial_no_font_style or template.batch_no_font_style, 'normal') }}
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -143,13 +142,13 @@
         text-align: right;
         font-size: {{ template.session_font_size or ((template.font_size or 10) * 0.75) }}pt;
         white-space: nowrap;
-        {{ get_font_style(template.session_font_style, \'600\') }}
+        {{ get_font_style(template.session_font_style, '600') }}
     }
 
     /* ===== Row 4: Item Name — bold, single line ===== */
     .row-item-name {
         font-size: {{ template.item_name_font_size or ((template.font_size or 10) * 0.45) }}pt;
-        {{ get_font_style(template.item_name_font_style, \'600\') }}
+        {{ get_font_style(template.item_name_font_style, '600') }}
         line-height: 1.15;
         white-space: nowrap;
         overflow: hidden;
@@ -161,7 +160,7 @@
     /* ===== Row 5: Description — up to 2 lines ===== */
     .row-description {
         font-size: {{ template.description_font_size or ((template.font_size or 10) * 0.8) }}pt;
-        {{ get_font_style(template.description_font_style, \'400\') }}
+        {{ get_font_style(template.description_font_style, '400') }}
         line-height: 1;
         width: 100%;
         max-height: 4mm;
@@ -179,8 +178,8 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        font-size: {{ (template.font_size or 10) * 0.5 }}pt;
-        font-weight: 400;
+        font-size: {{ template.attribute_font_size or ((template.font_size or 10) * 0.5) }}pt;
+        {{ get_font_style(template.attribute_font_style, '400') }}
         margin-bottom: 0.3mm;
         padding: 0 0.5mm;
         line-height: 1.2;
@@ -190,9 +189,9 @@
     .row-price {
         width: 100%;
         text-align: center;
-        font-size: {{ (template.font_size or 10) * 0.55 }}pt;
-        font-weight: 800;
-        margin-top: auto;
+        font-size: {{ template.price_font_size or ((template.font_size or 10) * 0.55) }}pt;
+        {{ get_font_style(template.price_font_style, '800') }}
+        margin-top: 0.5mm;
         padding-bottom: 0.3mm;
         letter-spacing: 0.2mm;
     }
