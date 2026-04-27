@@ -1,0 +1,187 @@
+<!-- Raw Material Barcode Label Print Format -->
+{% set template = frappe.get_doc("Barcode Label Template", doc.label_template) %}
+
+{% macro get_font_style(style_val, default_weight='normal') %}
+    {% if style_val == 'Bold' %}
+        font-weight: bold; font-style: normal;
+    {% elif style_val == 'Italic' %}
+        font-weight: {{ default_weight }}; font-style: italic;
+    {% elif style_val == 'Bold Italic' %}
+        font-weight: bold; font-style: italic;
+    {% else %}
+        font-weight: {{ default_weight }}; font-style: normal;
+    {% endif %}
+{% endmacro %}
+
+{% set page_w = template.label_width + (template.left_margin or 0) + (template.right_margin or 0) %}
+{% set page_h = template.label_height + (template.top_margin or 0) + (template.bottom_margin or 0) %}
+
+<style>
+    @page {
+        margin: 0mm !important;
+        padding: 0mm !important;
+        size: {{ page_w }}mm {{ page_h }}mm;
+    }
+
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        font-family: Arial, sans-serif;
+        color: #000;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .print-format, .print-format-gutter, .frappe-control, .page-break {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        min-height: 0 !important;
+    }
+
+    .label-page {
+        width: {{ page_w }}mm;
+        height: {{ page_h }}mm;
+        padding-top: {{ template.top_margin or 0 }}mm;
+        padding-bottom: {{ template.bottom_margin or 0 }}mm;
+        padding-left: {{ template.left_margin or 0 }}mm;
+        padding-right: {{ template.right_margin or 0 }}mm;
+        box-sizing: border-box;
+        page-break-after: always;
+        overflow: hidden;
+        background: #fff;
+    }
+    .label-page:last-child {
+        page-break-after: auto;
+    }
+
+    .label-container {
+        width: {{ template.label_width }}mm;
+        height: {{ template.label_height }}mm;
+        padding: 1.5mm;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        overflow: hidden;
+        position: relative;
+        background: #fff;
+    }
+
+    /* 1. Item Code - Top Center */
+    .row-item-code {
+        text-align: center;
+        font-size: {{ template.item_code_font_size or ((template.font_size or 10) * 0.9) }}pt;
+        {{ get_font_style(template.item_code_font_style, 'normal') }}
+        margin-bottom: 1.5mm;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* 2. Content Row: QR (left) + Details (right) */
+    .content-row {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 100%;
+        gap: 1.5mm;
+    }
+
+    /* QR Code Wrapper */
+    .qr-wrapper {
+        flex: 0 0 38%; /* roughly 38% of width */
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .qr-img {
+        width: 100%;
+        height: auto;
+        max-height: {{ template.label_height - 5 }}mm; /* prevent overflow */
+        object-fit: contain;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+    }
+
+    /* Details Wrapper */
+    .details-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow: hidden;
+    }
+
+    .item-name {
+        font-size: {{ template.item_name_font_size or ((template.font_size or 10) * 0.75) }}pt;
+        {{ get_font_style(template.item_name_font_style, 'normal') }}
+        line-height: 1.15;
+        margin-bottom: 1.5mm;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .attributes {
+        font-size: {{ template.description_font_size or ((template.font_size or 10) * 0.8) }}pt;
+        line-height: 1.15;
+    }
+
+    @media print {
+        html, body { width: {{ page_w }}mm !important; background: #fff !important; }
+        .label-page { box-shadow: none !important; margin: 0 !important; }
+        .print-heading, .letter-head, .page-break .page-number { display: none !important; }
+    }
+    @media screen {
+        .label-page { border: 1px dashed #ccc; margin-bottom: 5mm; }
+    }
+</style>
+
+<div class="print-wrapper">
+    {% for item in doc.items %}
+        {% set qty = item.qty if item.qty > 0 else 1 %}
+        {% for i in range(qty) %}
+            
+            {% set code_value = item.item_code %}
+            {% if item.batch_no %}{% set code_value = item.batch_no %}{% endif %}
+            {% if item.serial_no %}{% set code_value = item.serial_no %}{% endif %}
+
+            {% set qr_image = get_barcode_base64('QR Code', code_value) %}
+
+            <div class="label-page">
+                <div class="label-container">
+                    
+                    <div class="row-item-code">{{ item.item_code }}</div>
+                    
+                    <div class="content-row">
+                        <div class="qr-wrapper">
+                            {% if qr_image %}
+                                <img src="{{ qr_image }}" class="qr-img" alt="QR Code" />
+                            {% endif %}
+                        </div>
+
+                        <div class="details-wrapper">
+                            <div class="item-name">
+                                ITEM: {{ item.item_name or item.description or '' }}
+                            </div>
+
+                            <div class="attributes">
+                                {% if item.color %}<div>C: {{ item.color }}</div>{% endif %}
+                                {% if item.size %}<div>S: {{ item.size }}</div>{% endif %}
+                                {% if item.batch_no %}<div>B: {{ item.batch_no }}</div>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>

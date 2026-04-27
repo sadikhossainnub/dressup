@@ -1,0 +1,211 @@
+<!-- FMCG Barcode Label — Exact Style from Reference Image -->
+<!-- ERPNext / Frappe Custom Print Format -->
+<!-- DocType: Barcode Label -->
+
+{% set template = frappe.get_doc("Barcode Label Template", doc.label_template) %}
+{% set company   = frappe.db.get_default("Company") %}
+{% set font_size = template.font_size or 11 %}
+{% set is_qr_only    = (template.barcode_type or '').lower().replace(' ', '') == 'qrcode' %}
+{% set show_extra_qr = template.include_qr_code and not is_qr_only %}
+
+<style>
+@page {
+    margin: 0;
+    size: {{ template.label_width }}mm {{ template.label_height }}mm;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: #f0f0f0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000;
+}
+
+/* ── Screen preview wrapper ── */
+.label-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8mm 0;
+    gap: 6mm;
+}
+
+@media print {
+    body { background: transparent !important; }
+    .label-wrapper {
+        padding: 0 !important;
+        gap: 0 !important;
+        display: block !important;
+    }
+}
+
+/* ── Label card ── */
+.barcode-label {
+    width:  {{ template.label_width }}mm;
+    height: {{ template.label_height }}mm;
+    background: #ffffff;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2mm 3mm;
+    page-break-after: always;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+@media print {
+    .barcode-label {
+        box-shadow: none !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}
+
+/* ── Item Code (top center) ── */
+.item-code {
+    width: 100%;
+    text-align: center;
+    font-size: {{ font_size }}px;
+    font-weight: normal;
+    letter-spacing: 0.3px;
+    margin-bottom: 1mm;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Barcode image ── */
+.barcode-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* QR only mode */
+.qr-only-image {
+    width:  {{ (template.label_height * 0.5)|round(0)|int }}mm;
+    height: {{ (template.label_height * 0.5)|round(0)|int }}mm;
+    image-rendering: pixelated;
+    display: block;
+}
+
+/* ── Barcode number row: left = number, right = batch ── */
+.barcode-num-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 0.5mm;
+    margin-bottom: 1.5mm;
+}
+
+.barcode-num-left {
+    font-size: {{ font_size * 0.85 }}px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+}
+
+.barcode-num-right {
+    font-size: {{ font_size * 0.85 }}px;
+    font-family: Arial, sans-serif;
+}
+
+/* ── Item Name (bold) ── */
+.item-name {
+    width: 100%;
+    font-size: {{ font_size * 1.05 }}px;
+    font-weight: bold;
+    margin-bottom: 0.8mm;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── EXP date ── */
+.exp-row {
+    width: 100%;
+    font-size: {{ font_size * 0.9 }}px;
+    margin-bottom: 1mm;
+}
+
+/* ── Price ── */
+.price-row {
+    width: 100%;
+    text-align: center;
+    font-size: {{ font_size * 1.4 }}px;
+    font-weight: bold;
+}
+</style>
+
+<div class="label-wrapper">
+{% for item in doc.items %}
+    {% set qty = item.qty if item.qty > 0 else 1 %}
+    {% for i in range(qty) %}
+
+        {% set code_value = item.item_code %}
+        {% if item.batch_no  %}{% set code_value = item.batch_no  %}{% endif %}
+        {% if item.serial_no %}{% set code_value = item.serial_no %}{% endif %}
+
+        {% if is_qr_only %}
+            {% set qr_image = get_barcode_base64('QR Code', code_value) %}
+        {% else %}
+            {% set barcode_image = get_barcode_base64(template.barcode_type, code_value) %}
+            {% if show_extra_qr %}
+                {% set qr_image = get_barcode_base64('QR Code', code_value) %}
+            {% endif %}
+        {% endif %}
+
+        <div class="barcode-label">
+
+            <!-- 1. Item Code — top center -->
+            {% if template.include_item_code and item.item_code %}
+            <div class="item-code">{{ item.item_code }}</div>
+            {% endif %}
+
+            <!-- 2. Barcode or QR -->
+            {% if is_qr_only %}
+                {% if qr_image %}
+                <img src="{{ qr_image }}" class="qr-only-image" alt="QR" />
+                {% endif %}
+            {% else %}
+                {% if barcode_image %}
+                <img src="{{ barcode_image }}" class="barcode-image" alt="Barcode" />
+                {% endif %}
+            {% endif %}
+
+            <!-- 3. Barcode number (left) + Batch (right) -->
+            <div class="barcode-num-row">
+                <span class="barcode-num-left">{{ code_value }}</span>
+                {% if item.batch_no %}
+                <span class="barcode-num-right">Batch {{ item.batch_no }}</span>
+                {% endif %}
+            </div>
+
+            <!-- 4. Item Name bold -->
+            {% if template.include_item_name and item.item_name %}
+            <div class="item-name">{{ item.item_name }}</div>
+            {% endif %}
+
+            <!-- 5. Expiry Date -->
+            {% if item.expiry_date %}
+            <div class="exp-row">EXP: {{ item.expiry_date | date("MM/YY") }}</div>
+            {% endif %}
+
+            <!-- 6. Price -->
+            {% if template.include_price and item.price %}
+            <div class="price-row">
+                BDT: {{ frappe.format_value(item.price, {'fieldtype': 'Currency'}) }} + VAT
+            </div>
+            {% endif %}
+
+        </div>
+
+    {% endfor %}
+{% endfor %}
+</div>

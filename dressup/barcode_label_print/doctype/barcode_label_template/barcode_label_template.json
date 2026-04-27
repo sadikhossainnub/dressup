@@ -16,7 +16,9 @@
         "include_price",
         "labels_per_row",
         "top_margin",
+        "bottom_margin",
         "left_margin",
+        "right_margin",
         "vertical_gap",
         "horizontal_gap",
         "column_break_1",
@@ -25,7 +27,24 @@
         "include_batch_no",
         "include_serial_no",
         "include_expiry_date",
-        "include_company_name"
+        "include_company_name",
+        "section_break_font_sizes",
+        "item_code_font_size",
+        "item_code_font_style",
+        "item_name_font_size",
+        "item_name_font_style",
+        "description_font_size",
+        "description_font_style",
+        "batch_no_font_size",
+        "batch_no_font_style",
+        "serial_no_font_size",
+        "serial_no_font_style",
+        "expiry_date_font_size",
+        "expiry_date_font_style",
+        "company_name_font_size",
+        "company_name_font_style",
+        "session_font_size",
+        "session_font_style"
     ],
     "fields": [
         {
@@ -90,9 +109,21 @@
         },
         {
             "default": "0",
+            "fieldname": "bottom_margin",
+            "fieldtype": "Float",
+            "label": "Bottom Margin (mm)"
+        },
+        {
+            "default": "0",
             "fieldname": "left_margin",
             "fieldtype": "Float",
             "label": "Left Margin (mm)"
+        },
+        {
+            "default": "0",
+            "fieldname": "right_margin",
+            "fieldtype": "Float",
+            "label": "Right Margin (mm)"
         },
         {
             "default": "0",
@@ -145,6 +176,108 @@
             "fieldname": "include_company_name",
             "fieldtype": "Check",
             "label": "Include Company Name"
+        },
+        {
+            "fieldname": "section_break_font_sizes",
+            "fieldtype": "Section Break",
+            "label": "Individual Font Sizes & Styles"
+        },
+        {
+            "fieldname": "item_code_font_size",
+            "fieldtype": "Float",
+            "label": "Item Code Font Size",
+            "description": "Leave blank to use default calculated font size"
+        },
+        {
+            "default": "Normal",
+            "fieldname": "item_code_font_style",
+            "fieldtype": "Select",
+            "label": "Item Code Font Style",
+            "options": "Normal\nBold\nItalic\nBold Italic"
+        },
+        {
+            "fieldname": "item_name_font_size",
+            "fieldtype": "Float",
+            "label": "Item Name Font Size"
+        },
+        {
+            "default": "Normal",
+            "fieldname": "item_name_font_style",
+            "fieldtype": "Select",
+            "label": "Item Name Font Style",
+            "options": "Normal\nBold\nItalic\nBold Italic"
+        },
+        {
+            "fieldname": "description_font_size",
+            "fieldtype": "Float",
+            "label": "Description Font Size"
+        },
+        {
+            "default": "Normal",
+            "fieldname": "description_font_style",
+            "fieldtype": "Select",
+            "label": "Description Font Style",
+            "options": "Normal\nBold\nItalic\nBold Italic"
+        },
+        {
+            "fieldname": "batch_no_font_size",
+            "fieldtype": "Float",
+            "label": "Batch No Font Size"
+        },
+        {
+            "default": "Normal",
+            "fieldname": "batch_no_font_style",
+            "fieldtype": "Select",
+            "label": "Batch No Font Style",
+            "options": "Normal\nBold\nItalic\nBold Italic"
+        },
+        {
+            "fieldname": "serial_no_font_size",
+            "fieldtype": "Float",
+            "label": "Serial No Font Size"
+        },
+        {
+            "default": "Normal",
+            "fieldname": "serial_no_font_style",
+            "fieldtype": "Select",
+            "label": "Serial No Font Style",
+            "options": "Normal\nBold\nItalic\nBold Italic"
+        },
+        {
+            "fieldname": "expiry_date_font_size",
+            "fieldtype": "Float",
+            "label": "Expiry Date Font Size"
+        },
+        {
+            "default": "Normal",
+            "fieldname": "expiry_date_font_style",
+            "fieldtype": "Select",
+            "label": "Expiry Date Font Style",
+            "options": "Normal\nBold\nItalic\nBold Italic"
+        },
+        {
+            "fieldname": "company_name_font_size",
+            "fieldtype": "Float",
+            "label": "Company Name Font Size"
+        },
+        {
+            "default": "Normal",
+            "fieldname": "company_name_font_style",
+            "fieldtype": "Select",
+            "label": "Company Name Font Style",
+            "options": "Normal\nBold\nItalic\nBold Italic"
+        },
+        {
+            "fieldname": "session_font_size",
+            "fieldtype": "Float",
+            "label": "Session Font Size"
+        },
+        {
+            "default": "Normal",
+            "fieldname": "session_font_style",
+            "fieldtype": "Select",
+            "label": "Session Font Style",
+            "options": "Normal\nBold\nItalic\nBold Italic"
         }
     ],
     "index_web_pages_for_search": 1,

@@ -20,26 +20,26 @@ class BarcodeLabelPrint(Document):
 		items_data = []
 		for item in self.items:
 			# Determine code value
-			code_value = item.item_code
-			if item.batch_no:
-				code_value = item.batch_no
-			if item.serial_no:
-				code_value = item.serial_no
+			code_value = item.get("item_code")
+			if item.get("batch_no"):
+				code_value = item.get("batch_no")
+			if item.get("serial_no"):
+				code_value = item.get("serial_no")
 				
 			barcode_image = get_barcode_base64(template.barcode_type, code_value)
 			
 			qty = item.qty if item.qty > 0 else 1
 			for _ in range(qty):
 				items_data.append({
-					"item_code": item.item_code,
-					"item_name": item.item_name,
-					"batch_no": item.batch_no,
-					"serial_no": item.serial_no,
-					"price": item.price,
-					"color": item.color,
-					"size": item.size,
-					"session": item.session,
-					"expiry_date": item.expiry_date,
+					"item_code": item.get("item_code"),
+					"item_name": item.get("item_name"),
+					"batch_no": item.get("batch_no"),
+					"serial_no": item.get("serial_no"),
+					"price": item.get("price"),
+					"color": item.get("color"),
+					"size": item.get("size"),
+					"session": item.get("session"),
+					"expiry_date": item.get("expiry_date"),
 					"company": frappe.defaults.get_user_default("Company"),
 					"barcode_image": barcode_image
 				})
