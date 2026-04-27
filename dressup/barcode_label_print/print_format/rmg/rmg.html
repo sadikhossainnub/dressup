@@ -180,9 +180,9 @@
         justify-content: space-between;
         font-size: {{ template.attribute_font_size or ((template.font_size or 10) * 0.5) }}pt;
         {{ get_font_style(template.attribute_font_style, '400') }}
-        margin-bottom: 0.3mm;
+        margin-bottom: 0 mm;
         padding: 0 0.5mm;
-        line-height: 1.2;
+        line-height: 1;
     }
 
     /* ===== Row 7: Price — bottom center, bold ===== */
@@ -191,8 +191,8 @@
         text-align: center;
         font-size: {{ template.price_font_size or ((template.font_size or 10) * 0.55) }}pt;
         {{ get_font_style(template.price_font_style, '800') }}
-        margin-top: 0.5mm;
-        padding-bottom: 0.3mm;
+        margin-top: 0 mm;
+        padding-bottom: 0mm;
         letter-spacing: 0.2mm;
     }
 
