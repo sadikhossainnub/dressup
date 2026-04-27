@@ -4,9 +4,21 @@
 
 {% set template = frappe.get_doc("Barcode Label Template", doc.label_template) %}
 {% set company   = frappe.db.get_default("Company") %}
-{% set font_size = template.font_size or 11 %}
+{% set font_size = template.font_size or 10 %}
 {% set is_qr_only    = (template.barcode_type or '').lower().replace(' ', '') == 'qrcode' %}
 {% set show_extra_qr = template.include_qr_code and not is_qr_only %}
+
+{% macro get_font_style(style_val, default_weight='normal') %}
+    {% if style_val == 'Bold' %}
+        font-weight: bold; font-style: normal;
+    {% elif style_val == 'Italic' %}
+        font-weight: {{ default_weight }}; font-style: italic;
+    {% elif style_val == 'Bold Italic' %}
+        font-weight: bold; font-style: italic;
+    {% else %}
+        font-weight: {{ default_weight }}; font-style: normal;
+    {% endif %}
+{% endmacro %}
 
 <style>
 @page {
@@ -68,8 +80,8 @@ body {
 .item-code {
     width: 100%;
     text-align: center;
-    font-size: {{ font_size }}px;
-    font-weight: normal;
+    font-size: {{ template.item_code_font_size or font_size }}pt;
+    {{ get_font_style(template.item_code_font_style, 'normal') }}
     letter-spacing: 0.3px;
     margin-bottom: 1mm;
     white-space: nowrap;
@@ -79,8 +91,8 @@ body {
 
 /* ── Barcode image ── */
 .barcode-image {
-    width: 100%;
-    height: auto;
+    width: {{ template.barcode_image_width ~ "mm" if template.barcode_image_width else "100%" }};
+    height: {{ template.barcode_image_height ~ "mm" if template.barcode_image_height else "auto" }};
     display: block;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
@@ -89,8 +101,8 @@ body {
 
 /* QR only mode */
 .qr-only-image {
-    width:  {{ (template.label_height * 0.5)|round(0)|int }}mm;
-    height: {{ (template.label_height * 0.5)|round(0)|int }}mm;
+    width:  {{ template.barcode_image_width ~ "mm" if template.barcode_image_width else (template.label_height * 0.5)|round(0)|int ~ "mm" }};
+    height: {{ template.barcode_image_height ~ "mm" if template.barcode_image_height else (template.label_height * 0.5)|round(0)|int ~ "mm" }};
     image-rendering: pixelated;
     display: block;
 }
@@ -106,21 +118,23 @@ body {
 }
 
 .barcode-num-left {
-    font-size: {{ font_size * 0.85 }}px;
+    font-size: {{ template.serial_no_font_size or (font_size * 0.85) }}pt;
+    {{ get_font_style(template.serial_no_font_style, 'normal') }}
     font-family: 'Courier New', monospace;
     letter-spacing: 0.5px;
 }
 
 .barcode-num-right {
-    font-size: {{ font_size * 0.85 }}px;
+    font-size: {{ template.batch_no_font_size or (font_size * 0.85) }}pt;
+    {{ get_font_style(template.batch_no_font_style, 'normal') }}
     font-family: Arial, sans-serif;
 }
 
 /* ── Item Name (bold) ── */
 .item-name {
     width: 100%;
-    font-size: {{ font_size * 1.05 }}px;
-    font-weight: bold;
+    font-size: {{ template.item_name_font_size or (font_size * 1.05) }}pt;
+    {{ get_font_style(template.item_name_font_style, 'bold') }}
     margin-bottom: 0.8mm;
     white-space: nowrap;
     overflow: hidden;
@@ -130,7 +144,8 @@ body {
 /* ── EXP date ── */
 .exp-row {
     width: 100%;
-    font-size: {{ font_size * 0.9 }}px;
+    font-size: {{ template.expiry_date_font_size or (font_size * 0.9) }}pt;
+    {{ get_font_style(template.expiry_date_font_style, 'normal') }}
     margin-bottom: 1mm;
 }
 
@@ -138,8 +153,8 @@ body {
 .price-row {
     width: 100%;
     text-align: center;
-    font-size: {{ font_size * 1.4 }}px;
-    font-weight: bold;
+    font-size: {{ template.price_font_size or (font_size * 1.4) }}pt;
+    {{ get_font_style(template.price_font_style, 'bold') }}
 }
 </style>
 
@@ -188,13 +203,13 @@ body {
             </div>
 
             <!-- 4. Item Name bold -->
-            {% if template.include_item_name and item.item_name %}
-            <div class="item-name">{{ item.item_name }}</div>
+            {% if template.include_item_name and (item.item_name or item.description) %}
+            <div class="item-name">{{ item.item_name or item.description }}</div>
             {% endif %}
 
             <!-- 5. Expiry Date -->
-            {% if item.expiry_date %}
-            <div class="exp-row">EXP: {{ item.expiry_date | date("MM/YY") }}</div>
+            {% if template.include_expiry_date and item.expiry_date %}
+            <div class="exp-row">EXP: {{ frappe.utils.formatdate(item.expiry_date, "MM/YY") }}</div>
             {% endif %}
 
             <!-- 6. Price -->

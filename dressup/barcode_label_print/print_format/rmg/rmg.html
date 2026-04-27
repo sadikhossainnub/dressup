@@ -98,8 +98,8 @@
 
     /* ===== Row 2: Barcode image — wider, shorter ===== */
     .row-barcode {
-        width: 100%;
-        height: 8mm;
+        width: {{ template.barcode_image_width ~ "mm" if template.barcode_image_width else "100%" }};
+        height: {{ template.barcode_image_height ~ "mm" if template.barcode_image_height else "8mm" }};
         margin: 0 auto;
         display: flex;
         justify-content: center;

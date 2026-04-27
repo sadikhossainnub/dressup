@@ -101,8 +101,8 @@
     }
 
     .qr-img {
-        width: 100%;
-        height: auto;
+        width: {{ template.barcode_image_width ~ "mm" if template.barcode_image_width else "100%" }};
+        height: {{ template.barcode_image_height ~ "mm" if template.barcode_image_height else "auto" }};
         max-height: {{ template.label_height - 5 }}mm; /* prevent overflow */
         object-fit: contain;
         image-rendering: pixelated;
@@ -130,7 +130,8 @@
     }
 
     .attributes {
-        font-size: {{ template.description_font_size or ((template.font_size or 10) * 0.8) }}pt;
+        font-size: {{ template.attribute_font_size or ((template.font_size or 10) * 0.8) }}pt;
+        {{ get_font_style(template.attribute_font_style, 'normal') }}
         line-height: 1.15;
     }
 

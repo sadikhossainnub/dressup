@@ -111,7 +111,8 @@
         {
             "fieldname": "expiry_date",
             "fieldtype": "Date",
-            "label": "Expiry Date"
+            "label": "Expiry Date",
+            "fetch_from": "batch_no.expiry_date"
         }
     ],
     "index_web_pages_for_search": 1,
