@@ -57,7 +57,7 @@ frappe.ui.form.on('Barcode Label Print', {
                 );
             }, __('Add Items'));
 
-            // Sync Attributes button
+            // Sync Attributes button (Standalone)
             frm.add_custom_button(__('Sync Attributes'), function () {
                 update_child_attributes(frm, 'color_attribute', 'color_attribute', 'color');
                 update_child_attributes(frm, 'size_attribute', 'size_attribute', 'size');
@@ -67,7 +67,7 @@ frappe.ui.form.on('Barcode Label Print', {
                     message: __('Syncing attributes from parent...'),
                     indicator: 'blue'
                 });
-            }, __('Add Items'));
+            });
         }
 
         // Add from Serial Nos button
