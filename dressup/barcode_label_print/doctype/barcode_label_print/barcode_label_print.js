@@ -640,7 +640,7 @@ frappe.ui.form.on('Barcode Label Item', {
                                 frappe.model.set_value(cdt, cdn, 'size', attr.attribute_value);
                                 size_set = true;
                             }
-                            if (!base_set && attr.attribute.toLowerCase().includes('base')) {
+                            if (!base_set && attr.attribute.toLowerCase().includes('base material')) {
                                 frappe.model.set_value(cdt, cdn, 'base_attribute', attr.attribute);
                                 frappe.model.set_value(cdt, cdn, 'base', attr.attribute_value);
                                 base_set = true;

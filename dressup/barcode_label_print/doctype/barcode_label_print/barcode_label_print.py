@@ -138,6 +138,9 @@ class BarcodeLabelPrint(Document):
 							
 						if not size_val and 'size' in attr.attribute.lower():
 							size_val = attr.attribute_value
+
+						if not base_val and 'base material' in attr.attribute.lower():
+							base_val = attr.attribute_value
 							
 				# Calculate sizes based on font_size
 				base_fs = template.font_size or 10
