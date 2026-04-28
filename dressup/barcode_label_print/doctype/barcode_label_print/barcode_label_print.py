@@ -437,26 +437,27 @@ def get_bulk_attributes_data(item_codes, attribute):
 		import json
 		item_codes = json.loads(item_codes)
 	
+	# Clean item codes
+	item_codes = [i for i in item_codes if i]
+	if not item_codes:
+		return {}
+	
 	results = {}
 	
-	# Fetch from Variant Table
-	variant_attrs = frappe.db.sql("""
-		select parent, attribute_value from `tabItem Variant Attribute`
-		where parent in %s and attribute = %s
-	""", (tuple(item_codes), attribute), as_dict=1)
-	
-	for d in variant_attrs:
-		results[d.parent] = d.attribute_value
+	# Fetch from Item Variant Attribute (Used for both variants and standard items in many setups)
+	# Using lower() for attribute name matching to be more resilient
+	try:
+		attrs = frappe.db.sql("""
+			select parent, attribute_value 
+			from `tabItem Variant Attribute`
+			where parent in %s 
+			and (attribute = %s or lower(attribute) = lower(%s))
+		""", (tuple(item_codes), attribute, attribute), as_dict=1)
 		
-	# Check remaining in Item Item Attribute table
-	remaining = [i for i in item_codes if i not in results]
-	if remaining:
-		item_attrs = frappe.db.sql("""
-			select parent, attribute_value from `tabItem Item Attribute`
-			where parent in %s and attribute = %s
-		""", (tuple(remaining), attribute), as_dict=1)
-		for d in item_attrs:
+		for d in attrs:
 			results[d.parent] = d.attribute_value
+	except Exception:
+		pass
 			
 	return results
 
