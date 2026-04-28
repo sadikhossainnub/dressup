@@ -19,7 +19,8 @@
         "size_attribute",
         "size",
         "session",
-        "expiry_date"
+        "expiry_date",
+        "base_for_attribute"
     ],
     "fields": [
         {
@@ -113,12 +114,24 @@
             "fieldtype": "Date",
             "label": "Expiry Date",
             "fetch_from": "batch_no.expiry_date"
+        },
+        {
+            "fieldname": "base_attribute",
+            "fieldtype": "Link",
+            "label": "Base Attribute",
+            "options": "Item Attribute"
+        },
+        {
+            "fieldname": "base",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Base"
         }
     ],
     "index_web_pages_for_search": 1,
     "istable": 1,
     "links": [],
-    "modified": "2024-05-22 12:00:00.000000",
+    "modified": "2026-04-28 15:30:00.000000",
     "modified_by": "Administrator",
     "module": "Barcode Label Print",
     "name": "Barcode Label Item",

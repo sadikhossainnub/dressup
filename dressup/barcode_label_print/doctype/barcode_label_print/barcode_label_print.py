@@ -38,6 +38,7 @@ class BarcodeLabelPrint(Document):
 					"price": item.get("price"),
 					"color": item.get("color"),
 					"size": item.get("size"),
+					"base": item.get("base"),
 					"session": item.get("session"),
 					"expiry_date": item.get("expiry_date"),
 					"company": frappe.defaults.get_user_default("Company"),
@@ -128,6 +129,7 @@ class BarcodeLabelPrint(Document):
 				# Attributes
 				color_val = data.get("color") or ""
 				size_val = data.get("size") or ""
+				base_val = data.get("base") or ""
 				
 				if item_doc and item_doc.attributes:
 					for attr in item_doc.attributes:
@@ -242,6 +244,7 @@ class BarcodeLabelPrint(Document):
 					">
 						<span>C: {color_val}</span>
 						<span>S: {size_val}</span>
+						<span>B: {base_val}</span>
 					</div>
 				"""
 				
