@@ -136,7 +136,7 @@ class BarcodeLabelPrint(Document):
 						if not color_val and 'color' in attr.attribute.lower():
 							color_val = attr.attribute_value
 							
-						if not size_val and 'size' in attr.attribute.lower():
+						if not size_val and any(x in attr.attribute.lower() for x in ['size', 'shape', 'motifs']):
 							size_val = attr.attribute_value
 
 						if not base_val and 'base material' in attr.attribute.lower():

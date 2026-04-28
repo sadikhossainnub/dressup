@@ -635,7 +635,9 @@ frappe.ui.form.on('Barcode Label Item', {
                                 frappe.model.set_value(cdt, cdn, 'color', attr.attribute_value);
                                 color_set = true;
                             }
-                            if (!size_set && attr.attribute.toLowerCase().includes('size')) {
+                            if (!size_set && (attr.attribute.toLowerCase().includes('size') || 
+                                attr.attribute.toLowerCase().includes('shape') || 
+                                attr.attribute.toLowerCase().includes('motifs'))) {
                                 frappe.model.set_value(cdt, cdn, 'size_attribute', attr.attribute);
                                 frappe.model.set_value(cdt, cdn, 'size', attr.attribute_value);
                                 size_set = true;
