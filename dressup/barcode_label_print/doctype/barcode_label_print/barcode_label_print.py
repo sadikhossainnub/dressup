@@ -275,7 +275,7 @@ def get_items_by_group(item_group):
 		filters={"item_group": item_group, "disabled": 0},
 		fields=["name as item_code", "item_name", "standard_rate"],
 		order_by="item_name asc",
-		limit_page_length=500
+		limit_page_length=2000
 	)
 	return items
 

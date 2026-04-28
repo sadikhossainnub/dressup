@@ -215,7 +215,7 @@ frappe.ui.form.on('Barcode Label Print', {
                             'name': ['like', `%${search_term}%`]
                         } : undefined,
                         fields: ['name as item_code', 'item_name', 'item_group', 'standard_rate'],
-                        limit_page_length: 50,
+                        limit_page_length: 2000,
                         order_by: 'item_name asc'
                     },
                     callback: function (r) {
