@@ -423,8 +423,7 @@ frappe.ui.form.on('Barcode Label Print', {
                             let price_promises = r.message.map(function (item) {
                                 return frappe.call({
                                     method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_price',
-                                    args: { item_code: item.item_code, price_list: price_list },
-                                    async: false
+                                    args: { item_code: item.item_code, price_list: price_list }
                                 });
                             });
 
@@ -433,6 +432,7 @@ frappe.ui.form.on('Barcode Label Print', {
                             let print_qty = values.qty || 1;
 
                             Promise.all(price_promises).then(function (price_results) {
+                                frm.bulk_adding = true;
                                 items_data.forEach(function (item, idx) {
                                     let row = frm.add_child('items');
                                     row.item_code = item.item_code;
@@ -440,6 +440,7 @@ frappe.ui.form.on('Barcode Label Print', {
                                     row.qty = print_qty;
                                     row.price = price_results[idx].message ? price_results[idx].message.price : (item.standard_rate || 0);
                                 });
+                                frm.bulk_adding = false;
 
                                 frm.refresh_field('items');
                                 frm.dirty();
@@ -531,6 +532,7 @@ frappe.ui.form.on('Barcode Label Print', {
                                 args: { item_code: item_code, price_list: price_list },
                                 callback: function (price_r) {
                                     let fetched_price = price_r.message ? price_r.message.price : 0;
+                                    frm.bulk_adding = true;
                                     serials.forEach(function (sn) {
                                         let row = frm.add_child('items');
                                         row.item_code = item_code;
@@ -540,6 +542,7 @@ frappe.ui.form.on('Barcode Label Print', {
                                         row.qty = print_qty;
                                         row.price = fetched_price;
                                     });
+                                    frm.bulk_adding = false;
 
                                     frm.refresh_field('items');
                                     frm.dirty();
@@ -596,6 +599,7 @@ frappe.ui.form.on('Barcode Label Print', {
 frappe.ui.form.on('Barcode Label Item', {
 
     item_code: function (frm, cdt, cdn) {
+        if (frm.bulk_adding) return;
         let row = locals[cdt][cdn];
         if (row.item_code) {
             // Fetch item name and description

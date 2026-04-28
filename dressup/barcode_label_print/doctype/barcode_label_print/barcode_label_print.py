@@ -418,10 +418,22 @@ def get_item_attributes_query(doctype, txt, searchfield, start, page_len, filter
 def get_item_attributes_data(item_code):
 	if not item_code:
 		return []
-		
-	return frappe.db.sql("""
+	
+	# First try Item Variant Attribute (for variant items)
+	result = frappe.db.sql("""
 		select attribute, attribute_value
 		from `tabItem Variant Attribute`
 		where parent = %s and parenttype = 'Item'
 	""", (item_code,), as_dict=1)
-
+	
+	if result:
+		return result
+	
+	# Fallback: check Item Item Attribute (for template/standard items)
+	result = frappe.db.sql("""
+		select attribute, attribute_value
+		from `tabItem Item Attribute`
+		where parent = %s and parenttype = 'Item'
+	""", (item_code,), as_dict=1)
+	
+	return result
