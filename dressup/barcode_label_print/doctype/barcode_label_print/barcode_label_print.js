@@ -107,6 +107,18 @@ frappe.ui.form.on('Barcode Label Print', {
                     }
                 );
             }, __('Add Items'));
+
+            // Sync Attributes button
+            frm.add_custom_button(__('Sync Attributes'), function () {
+                if (frm.doc.color_attribute) frm.trigger('update_all_colors');
+                if (frm.doc.size_attribute) frm.trigger('update_all_sizes');
+                if (frm.doc.base_attribute) frm.trigger('update_all_bases');
+                
+                frappe.show_alert({
+                    message: __('Syncing attributes from parent...'),
+                    indicator: 'blue'
+                });
+            }, __('Add Items'));
         }
 
         // Add from Serial Nos button
