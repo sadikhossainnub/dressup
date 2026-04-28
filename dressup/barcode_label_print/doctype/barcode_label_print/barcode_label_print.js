@@ -72,6 +72,8 @@ frappe.ui.form.on('Barcode Label Print', {
         });
     },
 
+
+
     render_preview: function (frm) {
         if (frm.doc.items && frm.doc.items.length > 0 && frm.doc.label_template) {
             frm.save_or_update();
@@ -491,21 +493,7 @@ frappe.ui.form.on('Barcode Label Print', {
                                 });
                             });
 
-                            let attr_promises = r.message.map(function (item) {
-                                return frappe.call({
-                                    method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_attributes_data',
-                                    args: { item_code: item.item_code }
-                                });
-                            });
-
-                            let items_data = r.message;
-                            let item_group_name = values.item_group;
-                            let print_qty = values.qty || 1;
-
-                            Promise.all([...price_promises, ...attr_promises]).then(function (results) {
-                                let price_results = results.slice(0, items_data.length);
-                                let attr_results = results.slice(items_data.length);
-
+                            Promise.all(price_promises).then(function (price_results) {
                                 frm.bulk_adding = true;
                                 items_data.forEach(function (item, idx) {
                                     let row = frm.add_child('items');
@@ -513,38 +501,6 @@ frappe.ui.form.on('Barcode Label Print', {
                                     row.item_name = item.item_name;
                                     row.qty = print_qty;
                                     row.price = price_results[idx].message ? price_results[idx].message.price : (item.standard_rate || 0);
-
-                                    // Set attributes
-                                    let attrs = attr_results[idx].message || [];
-                                    let color_set = false, size_set = false, base_set = false;
-                                    
-                                    // 1. Parent Overrides
-                                    if (frm.doc.color_attribute) {
-                                        let a = attrs.find(x => x.attribute === frm.doc.color_attribute);
-                                        if (a) { row.color_attribute = a.attribute; row.color = a.attribute_value; color_set = true; }
-                                    }
-                                    if (frm.doc.size_attribute) {
-                                        let a = attrs.find(x => x.attribute === frm.doc.size_attribute);
-                                        if (a) { row.size_attribute = a.attribute; row.size = a.attribute_value; size_set = true; }
-                                    }
-                                    if (frm.doc.base_attribute) {
-                                        let a = attrs.find(x => x.attribute === frm.doc.base_attribute);
-                                        if (a) { row.base_attribute = a.attribute; row.base = a.attribute_value; base_set = true; }
-                                    }
-
-                                    // 2. Fallback
-                                    attrs.forEach(function (a) {
-                                        let attr_lc = a.attribute.toLowerCase();
-                                        if (!color_set && attr_lc.includes('color code')) {
-                                            row.color_attribute = a.attribute; row.color = a.attribute_value; color_set = true;
-                                        }
-                                        if (!size_set && (attr_lc.includes('size') || attr_lc.includes('shape') || attr_lc.includes('motifs'))) {
-                                            row.size_attribute = a.attribute; row.size = a.attribute_value; size_set = true;
-                                        }
-                                        if (!base_set && attr_lc.includes('base material')) {
-                                            row.base_attribute = a.attribute; row.base = a.attribute_value; base_set = true;
-                                        }
-                                    });
                                 });
                                 frm.bulk_adding = false;
 
@@ -639,65 +595,25 @@ frappe.ui.form.on('Barcode Label Print', {
                                 callback: function (price_r) {
                                     let fetched_price = price_r.message ? price_r.message.price : 0;
                                     
-                                    // Fetch attributes for this item
-                                    frappe.call({
-                                        method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_attributes_data',
-                                        args: { item_code: item_code },
-                                        callback: function (attr_r) {
-                                            let attrs = attr_r.message || [];
-                                            
-                                            frm.bulk_adding = true;
-                                            serials.forEach(function (sn) {
-                                                let row = frm.add_child('items');
-                                                row.item_code = item_code;
-                                                row.item_name = item_r ? item_r.item_name : '';
-                                                row.serial_no = sn.serial_no;
-                                                row.batch_no = sn.batch_no || '';
-                                                row.qty = print_qty;
-                                                row.price = fetched_price;
+                                    frm.bulk_adding = true;
+                                    serials.forEach(function (sn) {
+                                        let row = frm.add_child('items');
+                                        row.item_code = item_code;
+                                        row.item_name = item_r ? item_r.item_name : '';
+                                        row.serial_no = sn.serial_no;
+                                        row.batch_no = sn.batch_no || '';
+                                        row.qty = print_qty;
+                                        row.price = fetched_price;
+                                    });
+                                    frm.bulk_adding = false;
 
-                                                // Set attributes based on priority
-                                                let color_set = false, size_set = false, base_set = false;
-                                                
-                                                // 1. Parent Overrides
-                                                if (frm.doc.color_attribute) {
-                                                    let a = attrs.find(x => x.attribute === frm.doc.color_attribute);
-                                                    if (a) { row.color_attribute = a.attribute; row.color = a.attribute_value; color_set = true; }
-                                                }
-                                                if (frm.doc.size_attribute) {
-                                                    let a = attrs.find(x => x.attribute === frm.doc.size_attribute);
-                                                    if (a) { row.size_attribute = a.attribute; row.size = a.attribute_value; size_set = true; }
-                                                }
-                                                if (frm.doc.base_attribute) {
-                                                    let a = attrs.find(x => x.attribute === frm.doc.base_attribute);
-                                                    if (a) { row.base_attribute = a.attribute; row.base = a.attribute_value; base_set = true; }
-                                                }
+                                    frm.refresh_field('items');
+                                    frm.dirty();
+                                    d.hide();
 
-                                                // 2. Fallback
-                                                attrs.forEach(function (a) {
-                                                    let attr_lc = a.attribute.toLowerCase();
-                                                    if (!color_set && attr_lc.includes('color code')) {
-                                                        row.color_attribute = a.attribute; row.color = a.attribute_value; color_set = true;
-                                                    }
-                                                    if (!size_set && (attr_lc.includes('size') || attr_lc.includes('shape') || attr_lc.includes('motifs'))) {
-                                                        row.size_attribute = a.attribute; row.size = a.attribute_value; size_set = true;
-                                                    }
-                                                    if (!base_set && attr_lc.includes('base material')) {
-                                                        row.base_attribute = a.attribute; row.base = a.attribute_value; base_set = true;
-                                                    }
-                                                });
-                                            });
-                                            frm.bulk_adding = false;
-
-                                            frm.refresh_field('items');
-                                            frm.dirty();
-                                            d.hide();
-
-                                            frappe.show_alert({
-                                                message: __(`${serials.length} serial number(s) added for ${item_code}`),
-                                                indicator: 'green'
-                                            });
-                                        }
+                                    frappe.show_alert({
+                                        message: __(`${serials.length} serial number(s) added for ${item_code}`),
+                                        indicator: 'green'
                                     });
                                 }
                             });
@@ -770,65 +686,6 @@ frappe.ui.form.on('Barcode Label Item', {
                     }
                 }
             });
-
-            // Auto fetch attributes
-            frappe.call({
-                method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_item_attributes_data',
-                args: { item_code: row.item_code },
-                callback: function (r) {
-                    if (r.message) {
-                        let color_set = false;
-                        let size_set = false;
-                        let base_set = false;
-                        // 1. Priority: Parent Document Attributes
-                        if (frm.doc.color_attribute) {
-                            let attr = r.message.find(a => a.attribute === frm.doc.color_attribute);
-                            if (attr) {
-                                frappe.model.set_value(cdt, cdn, 'color_attribute', attr.attribute);
-                                frappe.model.set_value(cdt, cdn, 'color', attr.attribute_value);
-                                color_set = true;
-                            }
-                        }
-                        if (frm.doc.size_attribute) {
-                            let attr = r.message.find(a => a.attribute === frm.doc.size_attribute);
-                            if (attr) {
-                                frappe.model.set_value(cdt, cdn, 'size_attribute', attr.attribute);
-                                frappe.model.set_value(cdt, cdn, 'size', attr.attribute_value);
-                                size_set = true;
-                            }
-                        }
-                        if (frm.doc.base_attribute) {
-                            let attr = r.message.find(a => a.attribute === frm.doc.base_attribute);
-                            if (attr) {
-                                frappe.model.set_value(cdt, cdn, 'base_attribute', attr.attribute);
-                                frappe.model.set_value(cdt, cdn, 'base', attr.attribute_value);
-                                base_set = true;
-                            }
-                        }
-
-                        // 2. Fallback: Automatic Detection
-                        r.message.forEach(function (attr) {
-                            if (!color_set && attr.attribute.toLowerCase().includes('color code')) {
-                                frappe.model.set_value(cdt, cdn, 'color_attribute', attr.attribute);
-                                frappe.model.set_value(cdt, cdn, 'color', attr.attribute_value);
-                                color_set = true;
-                            }
-                            if (!size_set && (attr.attribute.toLowerCase().includes('size') || 
-                                attr.attribute.toLowerCase().includes('shape') || 
-                                attr.attribute.toLowerCase().includes('motifs'))) {
-                                frappe.model.set_value(cdt, cdn, 'size_attribute', attr.attribute);
-                                frappe.model.set_value(cdt, cdn, 'size', attr.attribute_value);
-                                size_set = true;
-                            }
-                            if (!base_set && attr.attribute.toLowerCase().includes('base material')) {
-                                frappe.model.set_value(cdt, cdn, 'base_attribute', attr.attribute);
-                                frappe.model.set_value(cdt, cdn, 'base', attr.attribute_value);
-                                base_set = true;
-                            }
-                        });
-                    }
-                }
-            });
         }
     },
 
@@ -885,6 +742,8 @@ frappe.ui.form.on('Barcode Label Item', {
             frappe.model.set_value(cdt, cdn, 'base', '');
         }
     },
+
+
 
     serial_no: function (frm, cdt, cdn) {
         let row = locals[cdt][cdn];

@@ -123,25 +123,11 @@ class BarcodeLabelPrint(Document):
 				# Fallback to Simple Layout with all checkbox options
 				
 				# Fetch additional item details for preview
-				item_doc = frappe.get_doc("Item", data.get("item_code")) if data.get("item_code") else None
-				description_text = frappe.utils.strip_html_tags(item_doc.description or "") if item_doc else ""
-				
-				# Attributes
+				# Attributes (use data values directly, no auto-fetch)
 				color_val = data.get("color") or ""
 				size_val = data.get("size") or ""
 				base_val = data.get("base") or ""
 				
-				if item_doc and item_doc.attributes:
-					for attr in item_doc.attributes:
-						if not color_val and 'color code' in attr.attribute.lower():
-							color_val = attr.attribute_value
-							
-						if not size_val and any(x in attr.attribute.lower() for x in ['size', 'shape', 'motifs']):
-							size_val = attr.attribute_value
-
-						if not base_val and 'base material' in attr.attribute.lower():
-							base_val = attr.attribute_value
-							
 				# Calculate sizes based on font_size
 				base_fs = template.font_size or 10
 				
@@ -470,3 +456,6 @@ def get_bulk_attributes_data(item_codes, attribute):
 			results[d.parent] = d.attribute_value
 			
 	return results
+
+
+
