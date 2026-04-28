@@ -633,6 +633,33 @@ frappe.ui.form.on('Barcode Label Item', {
                         let color_set = false;
                         let size_set = false;
                         let base_set = false;
+                        // 1. Priority: Parent Document Attributes
+                        if (frm.doc.color_attribute) {
+                            let attr = r.message.find(a => a.attribute === frm.doc.color_attribute);
+                            if (attr) {
+                                frappe.model.set_value(cdt, cdn, 'color_attribute', attr.attribute);
+                                frappe.model.set_value(cdt, cdn, 'color', attr.attribute_value);
+                                color_set = true;
+                            }
+                        }
+                        if (frm.doc.size_attribute) {
+                            let attr = r.message.find(a => a.attribute === frm.doc.size_attribute);
+                            if (attr) {
+                                frappe.model.set_value(cdt, cdn, 'size_attribute', attr.attribute);
+                                frappe.model.set_value(cdt, cdn, 'size', attr.attribute_value);
+                                size_set = true;
+                            }
+                        }
+                        if (frm.doc.base_attribute) {
+                            let attr = r.message.find(a => a.attribute === frm.doc.base_attribute);
+                            if (attr) {
+                                frappe.model.set_value(cdt, cdn, 'base_attribute', attr.attribute);
+                                frappe.model.set_value(cdt, cdn, 'base', attr.attribute_value);
+                                base_set = true;
+                            }
+                        }
+
+                        // 2. Fallback: Automatic Detection
                         r.message.forEach(function (attr) {
                             if (!color_set && attr.attribute.toLowerCase().includes('color code')) {
                                 frappe.model.set_value(cdt, cdn, 'color_attribute', attr.attribute);

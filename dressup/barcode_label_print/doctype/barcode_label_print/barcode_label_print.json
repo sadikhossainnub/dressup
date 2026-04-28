@@ -9,7 +9,15 @@
     "field_order": [
         "label_template",
         "price_list",
+        "attributes_section",
+        "color_attribute",
+        "column_break_attr",
+        "size_attribute",
+        "column_break_attr2",
+        "base_attribute",
+        "items_section",
         "items",
+        "preview_html_section",
         "preview_html"
     ],
     "fields": [
@@ -29,10 +37,51 @@
             "description": "Select Price List to fetch item prices. Falls back to Valuation Rate if no Item Price found."
         },
         {
+            "fieldname": "attributes_section",
+            "fieldtype": "Section Break",
+            "label": "Default Attributes"
+        },
+        {
+            "fieldname": "color_attribute",
+            "fieldtype": "Link",
+            "label": "Color Attribute",
+            "options": "Item Attribute"
+        },
+        {
+            "fieldname": "column_break_attr",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "size_attribute",
+            "fieldtype": "Link",
+            "label": "Size Attribute",
+            "options": "Item Attribute"
+        },
+        {
+            "fieldname": "column_break_attr2",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "base_attribute",
+            "fieldtype": "Link",
+            "label": "Base Attribute",
+            "options": "Item Attribute"
+        },
+        {
+            "fieldname": "items_section",
+            "fieldtype": "Section Break",
+            "label": "Items"
+        },
+        {
             "fieldname": "items",
             "fieldtype": "Table",
             "label": "Items",
             "options": "Barcode Label Item"
+        },
+        {
+            "fieldname": "preview_html_section",
+            "fieldtype": "Section Break",
+            "label": "Preview"
         },
         {
             "fieldname": "preview_html",
