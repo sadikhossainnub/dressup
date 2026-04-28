@@ -495,14 +495,24 @@ frappe.ui.form.on('Barcode Label Print', {
 
                             Promise.all(price_promises).then(function (price_results) {
                                 frm.bulk_adding = true;
-                                items_data.forEach(function (item, idx) {
+                                r.message.forEach(function (item, idx) {
                                     let row = frm.add_child('items');
                                     row.item_code = item.item_code;
                                     row.item_name = item.item_name;
-                                    row.qty = print_qty;
+                                    row.qty = values.qty;
                                     row.price = price_results[idx].message ? price_results[idx].message.price : (item.standard_rate || 0);
+                                    
+                                    // Inherit parent attributes
+                                    if (frm.doc.color_attribute) row.color_attribute = frm.doc.color_attribute;
+                                    if (frm.doc.size_attribute) row.size_attribute = frm.doc.size_attribute;
+                                    if (frm.doc.base_attribute) row.base_attribute = frm.doc.base_attribute;
                                 });
                                 frm.bulk_adding = false;
+
+                                // Trigger mass update to fetch values for newly added items
+                                if (frm.doc.color_attribute) frm.trigger('update_all_colors');
+                                if (frm.doc.size_attribute) frm.trigger('update_all_sizes');
+                                if (frm.doc.base_attribute) frm.trigger('update_all_bases');
 
                                 frm.refresh_field('items');
                                 frm.dirty();
@@ -604,8 +614,18 @@ frappe.ui.form.on('Barcode Label Print', {
                                         row.batch_no = sn.batch_no || '';
                                         row.qty = print_qty;
                                         row.price = fetched_price;
+
+                                        // Inherit parent attributes
+                                        if (frm.doc.color_attribute) row.color_attribute = frm.doc.color_attribute;
+                                        if (frm.doc.size_attribute) row.size_attribute = frm.doc.size_attribute;
+                                        if (frm.doc.base_attribute) row.base_attribute = frm.doc.base_attribute;
                                     });
                                     frm.bulk_adding = false;
+
+                                    // Trigger mass update to fetch values for newly added items
+                                    if (frm.doc.color_attribute) frm.trigger('update_all_colors');
+                                    if (frm.doc.size_attribute) frm.trigger('update_all_sizes');
+                                    if (frm.doc.base_attribute) frm.trigger('update_all_bases');
 
                                     frm.refresh_field('items');
                                     frm.dirty();
@@ -686,6 +706,18 @@ frappe.ui.form.on('Barcode Label Item', {
                     }
                 }
             });
+
+            // Inherit parent attributes
+            if (frm.doc.color_attribute) {
+                frappe.model.set_value(cdt, cdn, 'color_attribute', frm.doc.color_attribute);
+                // Trigger for color_attribute will handle the value fetch
+            }
+            if (frm.doc.size_attribute) {
+                frappe.model.set_value(cdt, cdn, 'size_attribute', frm.doc.size_attribute);
+            }
+            if (frm.doc.base_attribute) {
+                frappe.model.set_value(cdt, cdn, 'base_attribute', frm.doc.base_attribute);
+            }
         }
     },
 
