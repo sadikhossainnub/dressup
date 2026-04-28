@@ -20,7 +20,8 @@
         "size",
         "session",
         "expiry_date",
-        "base_for_attribute"
+        "base_attribute",
+        "base"
     ],
     "fields": [
         {
