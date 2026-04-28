@@ -123,6 +123,9 @@ class BarcodeLabelPrint(Document):
 				# Fallback to Simple Layout with all checkbox options
 				
 				# Fetch additional item details for preview
+				item_doc = frappe.get_doc("Item", data.get("item_code")) if data.get("item_code") else None
+				description_text = frappe.utils.strip_html_tags(item_doc.description or "") if item_doc else ""
+
 				# Attributes (use data values directly, no auto-fetch)
 				color_val = data.get("color") or ""
 				size_val = data.get("size") or ""
