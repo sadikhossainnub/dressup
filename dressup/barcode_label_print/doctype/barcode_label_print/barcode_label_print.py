@@ -437,3 +437,36 @@ def get_item_attributes_data(item_code):
 	""", (item_code,), as_dict=1)
 	
 	return result
+
+
+@frappe.whitelist()
+def get_bulk_attributes_data(item_codes, attribute):
+	if not item_codes or not attribute:
+		return {}
+	
+	if isinstance(item_codes, str):
+		import json
+		item_codes = json.loads(item_codes)
+	
+	results = {}
+	
+	# Fetch from Variant Table
+	variant_attrs = frappe.db.sql("""
+		select parent, attribute_value from `tabItem Variant Attribute`
+		where parent in %s and attribute = %s
+	""", (tuple(item_codes), attribute), as_dict=1)
+	
+	for d in variant_attrs:
+		results[d.parent] = d.attribute_value
+		
+	# Check remaining in Item Item Attribute table
+	remaining = [i for i in item_codes if i not in results]
+	if remaining:
+		item_attrs = frappe.db.sql("""
+			select parent, attribute_value from `tabItem Item Attribute`
+			where parent in %s and attribute = %s
+		""", (tuple(remaining), attribute), as_dict=1)
+		for d in item_attrs:
+			results[d.parent] = d.attribute_value
+			
+	return results

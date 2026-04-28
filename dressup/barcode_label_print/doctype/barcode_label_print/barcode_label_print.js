@@ -8,6 +8,70 @@ frappe.ui.form.on('Barcode Label Print', {
         frm.trigger('render_preview');
     },
 
+    color_attribute: function (frm) {
+        frm.trigger('update_all_colors');
+    },
+
+    size_attribute: function (frm) {
+        frm.trigger('update_all_sizes');
+    },
+
+    base_attribute: function (frm) {
+        frm.trigger('update_all_bases');
+    },
+
+    update_all_colors: function (frm) {
+        frm.trigger('update_child_attributes', {
+            parent_attr: 'color_attribute',
+            child_attr: 'color_attribute',
+            child_val: 'color'
+        });
+    },
+
+    update_all_sizes: function (frm) {
+        frm.trigger('update_child_attributes', {
+            parent_attr: 'size_attribute',
+            child_attr: 'size_attribute',
+            child_val: 'size'
+        });
+    },
+
+    update_all_bases: function (frm) {
+        frm.trigger('update_child_attributes', {
+            parent_attr: 'base_attribute',
+            child_attr: 'base_attribute',
+            child_val: 'base'
+        });
+    },
+
+    update_child_attributes: function (frm, args) {
+        let attribute_name = frm.doc[args.parent_attr];
+        if (!attribute_name || !frm.doc.items || frm.doc.items.length === 0) return;
+
+        let item_codes = [...new Set(frm.doc.items.map(i => i.item_code).filter(i => i))];
+        if (item_codes.length === 0) return;
+
+        frappe.call({
+            method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_bulk_attributes_data',
+            args: {
+                item_codes: item_codes,
+                attribute: attribute_name
+            },
+            freeze: true,
+            freeze_message: __('Updating {0}...', [args.child_val]),
+            callback: function (r) {
+                if (r.message) {
+                    frm.doc.items.forEach(row => {
+                        let val = r.message[row.item_code] || '';
+                        frappe.model.set_value(row.doctype, row.name, args.child_attr, attribute_name);
+                        frappe.model.set_value(row.doctype, row.name, args.child_val, val);
+                    });
+                    frm.refresh_field('items');
+                }
+            }
+        });
+    },
+
     render_preview: function (frm) {
         if (frm.doc.items && frm.doc.items.length > 0 && frm.doc.label_template) {
             frm.save_or_update();
