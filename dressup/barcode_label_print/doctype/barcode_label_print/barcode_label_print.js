@@ -886,6 +886,17 @@ frappe.ui.form.on('Barcode Label Item', {
         }
     },
 
+    serial_no: function (frm, cdt, cdn) {
+        let row = locals[cdt][cdn];
+        if (row.serial_no) {
+            frappe.db.get_value('Serial No', row.serial_no, ['batch_no'], function (r) {
+                if (r && r.batch_no) {
+                    frappe.model.set_value(cdt, cdn, 'batch_no', r.batch_no);
+                }
+            });
+        }
+    },
+
     batch_no: function (frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.batch_no) {
