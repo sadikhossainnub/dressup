@@ -9,80 +9,19 @@ frappe.ui.form.on('Barcode Label Print', {
     },
 
     color_attribute: function (frm) {
-        frm.trigger('update_all_colors');
+        console.log('Color Attribute Changed:', frm.doc.color_attribute);
+        update_child_attributes(frm, 'color_attribute', 'color_attribute', 'color');
     },
 
     size_attribute: function (frm) {
-        frm.trigger('update_all_sizes');
+        console.log('Size Attribute Changed:', frm.doc.size_attribute);
+        update_child_attributes(frm, 'size_attribute', 'size_attribute', 'size');
     },
 
     base_attribute: function (frm) {
-        frm.trigger('update_all_bases');
+        console.log('Base Attribute Changed:', frm.doc.base_attribute);
+        update_child_attributes(frm, 'base_attribute', 'base_attribute', 'base');
     },
-
-    update_all_colors: function (frm) {
-        frm.trigger('update_child_attributes', {
-            parent_attr: 'color_attribute',
-            child_attr: 'color_attribute',
-            child_val: 'color'
-        });
-    },
-
-    update_all_sizes: function (frm) {
-        frm.trigger('update_child_attributes', {
-            parent_attr: 'size_attribute',
-            child_attr: 'size_attribute',
-            child_val: 'size'
-        });
-    },
-
-    update_all_bases: function (frm) {
-        frm.trigger('update_child_attributes', {
-            parent_attr: 'base_attribute',
-            child_attr: 'base_attribute',
-            child_val: 'base'
-        });
-    },
-
-    update_child_attributes: function (frm, args) {
-        let attribute_name = frm.doc[args.parent_attr];
-        if (!frm.doc.items || frm.doc.items.length === 0) return;
-
-        // If attribute is cleared, clear all child rows
-        if (!attribute_name) {
-            frm.doc.items.forEach(row => {
-                frappe.model.set_value(row.doctype, row.name, args.child_attr, '');
-                frappe.model.set_value(row.doctype, row.name, args.child_val, '');
-            });
-            frm.refresh_field('items');
-            return;
-        }
-
-        let item_codes = [...new Set(frm.doc.items.map(i => i.item_code).filter(i => i))];
-        if (item_codes.length === 0) return;
-
-        frappe.call({
-            method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_bulk_attributes_data',
-            args: {
-                item_codes: item_codes,
-                attribute: attribute_name
-            },
-            freeze: true,
-            freeze_message: __('Updating {0}...', [args.child_val]),
-            callback: function (r) {
-                if (r.message) {
-                    frm.doc.items.forEach(row => {
-                        let val = r.message[row.item_code] || '';
-                        frappe.model.set_value(row.doctype, row.name, args.child_attr, attribute_name);
-                        frappe.model.set_value(row.doctype, row.name, args.child_val, val);
-                    });
-                    frm.refresh_field('items');
-                }
-            }
-        });
-    },
-
-
 
     render_preview: function (frm) {
         if (frm.doc.items && frm.doc.items.length > 0 && frm.doc.label_template) {
@@ -120,9 +59,9 @@ frappe.ui.form.on('Barcode Label Print', {
 
             // Sync Attributes button
             frm.add_custom_button(__('Sync Attributes'), function () {
-                if (frm.doc.color_attribute) frm.trigger('update_all_colors');
-                if (frm.doc.size_attribute) frm.trigger('update_all_sizes');
-                if (frm.doc.base_attribute) frm.trigger('update_all_bases');
+                update_child_attributes(frm, 'color_attribute', 'color_attribute', 'color');
+                update_child_attributes(frm, 'size_attribute', 'size_attribute', 'size');
+                update_child_attributes(frm, 'base_attribute', 'base_attribute', 'base');
                 
                 frappe.show_alert({
                     message: __('Syncing attributes from parent...'),
@@ -532,9 +471,9 @@ frappe.ui.form.on('Barcode Label Print', {
                                 frm.bulk_adding = false;
 
                                 // Trigger mass update to fetch values for newly added items
-                                if (frm.doc.color_attribute) frm.trigger('update_all_colors');
-                                if (frm.doc.size_attribute) frm.trigger('update_all_sizes');
-                                if (frm.doc.base_attribute) frm.trigger('update_all_bases');
+                                update_child_attributes(frm, 'color_attribute', 'color_attribute', 'color');
+                                update_child_attributes(frm, 'size_attribute', 'size_attribute', 'size');
+                                update_child_attributes(frm, 'base_attribute', 'base_attribute', 'base');
 
                                 frm.refresh_field('items');
                                 frm.dirty();
@@ -645,9 +584,9 @@ frappe.ui.form.on('Barcode Label Print', {
                                     frm.bulk_adding = false;
 
                                     // Trigger mass update to fetch values for newly added items
-                                    if (frm.doc.color_attribute) frm.trigger('update_all_colors');
-                                    if (frm.doc.size_attribute) frm.trigger('update_all_sizes');
-                                    if (frm.doc.base_attribute) frm.trigger('update_all_bases');
+                                    update_child_attributes(frm, 'color_attribute', 'color_attribute', 'color');
+                                    update_child_attributes(frm, 'size_attribute', 'size_attribute', 'size');
+                                    update_child_attributes(frm, 'base_attribute', 'base_attribute', 'base');
 
                                     frm.refresh_field('items');
                                     frm.dirty();
@@ -833,3 +772,50 @@ frappe.ui.form.on('Barcode Label Item', {
         }
     }
 });
+
+/**
+ * Global helper function for attribute synchronization
+ */
+function update_child_attributes(frm, parent_attr, child_attr, child_val) {
+    let attribute_name = frm.doc[parent_attr];
+    console.log(`Syncing ${child_val} for ${attribute_name}`);
+
+    if (!frm.doc.items || frm.doc.items.length === 0) return;
+
+    // If attribute is cleared, clear all child rows
+    if (!attribute_name) {
+        console.log('Clearing attribute values in child table');
+        frm.doc.items.forEach(row => {
+            frappe.model.set_value(row.doctype, row.name, child_attr, '');
+            frappe.model.set_value(row.doctype, row.name, child_val, '');
+        });
+        frm.refresh_field('items');
+        return;
+    }
+
+    let item_codes = [...new Set(frm.doc.items.map(i => i.item_code).filter(i => i))];
+    if (item_codes.length === 0) return;
+
+    console.log('Fetching bulk attributes for items:', item_codes);
+
+    frappe.call({
+        method: 'dressup.barcode_label_print.doctype.barcode_label_print.barcode_label_print.get_bulk_attributes_data',
+        args: {
+            item_codes: item_codes,
+            attribute: attribute_name
+        },
+        freeze: true,
+        freeze_message: __('Updating {0}...', [child_val]),
+        callback: function (r) {
+            console.log('Bulk attribute data received:', r.message);
+            if (r.message) {
+                frm.doc.items.forEach(row => {
+                    let val = r.message[row.item_code] || '';
+                    frappe.model.set_value(row.doctype, row.name, child_attr, attribute_name);
+                    frappe.model.set_value(row.doctype, row.name, child_val, val);
+                });
+                frm.refresh_field('items');
+            }
+        }
+    });
+}
