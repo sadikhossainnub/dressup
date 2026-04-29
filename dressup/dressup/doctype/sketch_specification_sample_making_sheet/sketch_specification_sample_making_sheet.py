@@ -96,7 +96,7 @@ def generate_design_no(designer):
 		else:
 			next_num = 1
 			
-		return f"{prefix}{str(next_num).zfill(4)}"
+		return f"{prefix}{str(next_num).zfill(2)}"
 	return None
 
 @frappe.whitelist()
