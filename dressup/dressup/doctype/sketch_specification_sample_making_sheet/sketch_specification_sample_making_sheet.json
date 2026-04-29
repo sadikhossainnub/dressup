@@ -21,6 +21,9 @@
   "cut_fit_style",
   "collar_neck_style",
   "side_cut",
+  "bottom_waist",
+  "bottom_style",
+  "sleeve",
   "submission_date",
   "design_section",
   "column_break_vrud",
@@ -186,10 +189,10 @@
   },
   {
    "fieldname": "category",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Category",
-   "options": "Item Group",
+   "label": "Category (Temporary)",
+   "options": "Name",
    "reqd": 1
   },
   {
@@ -256,8 +259,7 @@
    "fieldtype": "Float",
    "in_list_view": 1,
    "in_preview": 1,
-   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CF \u09b9\u09c7\u09ae)",
-   "reqd": 1
+   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CF \u09b9\u09c7\u09ae)"
   },
   {
    "fieldname": "cf_length",
@@ -277,8 +279,7 @@
   {
    "fieldname": "bust",
    "fieldtype": "Float",
-   "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (High Hip)",
-   "reqd": 1
+   "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (High Hip)"
   },
   {
    "fieldname": "upper_hip",
@@ -308,14 +309,12 @@
   {
    "fieldname": "front_neck_depth_s",
    "fieldtype": "Float",
-   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Collar Width)",
-   "reqd": 1
+   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Collar Width)"
   },
   {
    "fieldname": "back_neck_depth_s",
    "fieldtype": "Float",
-   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u0989\u099a\u09cd\u099a\u09a4\u09be (Collar Height)",
-   "reqd": 1
+   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u0989\u099a\u09cd\u099a\u09a4\u09be (Collar Height)"
   },
   {
    "fieldname": "collar_width_height",
@@ -468,8 +467,8 @@
   {
    "fieldname": "session",
    "fieldtype": "Link",
-   "label": "session",
-   "options": "session"
+   "label": "Session",
+   "options": "Session"
   },
   {
    "fieldname": "column_break_wtxg",
@@ -510,7 +509,7 @@
   {
    "fieldname": "item_name",
    "fieldtype": "Data",
-   "label": "Item Name",
+   "label": "Item Name (Temporary)",
    "reqd": 1
   },
   {
@@ -581,21 +580,21 @@
    "fieldname": "side_cut",
    "fieldtype": "Select",
    "label": "Side Cut",
-   "options": "\nHigh Side Slit (above mid-thigh)\nMid Side Slit (around knee level)\nLow Side Slit (below knee / calf level)\nFloor-Length Side Slit (long dresses/gowns)\nSingle Side Slit (left or right)\nDouble Side Slit (both sides)\nSlit-Free / Closed Side (no slit)\nStraight Slit\nCurved Slit\nOverlap Slit / Wrap Slit\nFront-Side Slit (slit placed slightly towards the front)\nSide-Slit with Pleat\nSide-Slit with Button Opening\nSide-Slit with Zipper\nDeep Cut Side Slit (bold, for gowns)\nSide Long Slit\nHigh Slit Kurti Style\nA-Line Kurti Slits\nStraight Kurti Side-Slits\nSide-Slit with Potli Buttons\nSide-Slit with Lace/Border\nFront-Open Style with Side Slits\nDiagonal Side Slit\nAsymmetric Side Slit\nSide-Slit with Tie-Up\nSide-Slit Cut-Out Style (exposes skin at waist/side)\nSide Knot Slit\nSide Drawstring Ruched Slit\nSide Slit with Panel Insert\nSide Slit with Fringe/Tassel Finishing"
+   "options": "\nA-Line Kurti Slits\nAsymmetric Side Slit\nCurved Slit\nDeep Cut Side Slit (bold, for gowns)\nDiagonal Side Slit\nDouble Side Slit (both sides)\nFloor-Length Side Slit (long dresses/gowns)\nFront-Open Style with Side Slits\nFront-Side Slit (slit placed slightly towards the front)\nHigh Side Slit (above mid-thigh)\nHigh Slit Kurti Style\nLow Side Slit (below knee / calf level)\nMid Side Slit (around knee level)\nOverlap Slit / Wrap Slit\nSide Knot Slit\nSide Long Slit\nSide Slit Cut-Out Style (exposes skin at waist/side)\nSide Slit with Button Opening\nSide Slit with Fringe/Tassel Finishing\nSide Slit with Lace/Border\nSide Slit with Panel Insert\nSide Slit with Pleat\nSide Slit with Tie-Up\nSide Slit with Zipper\nSide Drawstring Ruched Slit\nSingle Side Slit (left or right)\nSlit-Free / Closed Side (no slit)\nStraight Kurti Side-Slits\nStraight Slit\nOther"
   },
   {
    "fieldname": "collar_neck_style",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Collar/ Neck Style",
-   "options": "\nRound Neck / Crew Neck\nV-Neck\nU-Neck\nScoop Neck\nSquare Neck\nBoat Neck / Bateau Neck\nSweetheart Neck\nKeyhole Neck\nDeep V-Neck\nHigh Neck\nMock Neck\nTurtle Neck\nHalter Neck\nOff-Shoulder\nCold Shoulder\nOne-Shoulder\nAsymmetric Neck\nBardot Neck\nCowl Neck\nPlunge Neck\nIllusion Neck (mesh/lace)\nSurplice / Wrap Neck\nShirt Collar\nPointed Collar\nSpread Collar\nBand Collar\nMandarin Collar\nPeter Pan Collar\nNotched Collar\nShawl Collar\nKurti Round Neck\nKurti V-Neck\nKurti Sweetheart\nMughal Neck\nPotli Button Neck\nHenley Neck\nChikankari Neck\nZari/Zardozi Embellished Neck\nBindiya Neck\nKeyhole Kurti Neck\nQueen Anne Neck\nOff-Shoulder Ruffle Neck\nStrapless / Tube Neck\nCorset Neck\nLace Appliqu\u00e9 Neck\nCollared Deep-V\nButterfly Neck\nMesh High-Neck\nNotched V-Neck"
+   "options": "\nAsymmetric Neck\nBand Collar\nBardot Neck\nBindiya Neck\nBoat Neck / Bateau Neck\nButterfly Neck\nChikankari Neck\nCold Shoulder\nCollared Deep-V\nCorset Neck\nCowl Neck\nDeep V-Neck\nHalter Neck\nHenley Neck\nHigh Neck\nIllusion Neck (mesh/lace)\nKeyhole Kurti Neck\nKeyhole Neck\nKurti Round Neck\nKurti Sweetheart\nKurti V-Neck\nLace Appliqu\u00e9 Neck\nMandarin Collar\nMesh High-Neck\nMock Neck\nMughal Neck\nNotched Collar\nNotched V-Neck\nOff-Shoulder\nOff-Shoulder Ruffle Neck\nOne-Shoulder\nPeter Pan Collar\nPlunge Neck\nPointed Collar\nPotli Button Neck\nQueen Anne Neck\nRound Neck / Crew Neck\nScoop Neck\nShawl Collar\nShirt Collar\nSpread Collar\nSquare Neck\nStrapless / Tube Neck\nSurplice / Wrap Neck\nSweetheart Neck\nTurtle Neck\nU-Neck\nV-Neck\nZari/Zardozi Embellished Neck\nOther"
   },
   {
    "fieldname": "cut_fit_style",
-   "fieldtype": "Link",
+   "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Cut/ Fit Style",
-   "options": "Cut Fit"
+   "options": "\nAbaya Fit\nA-Line\nAnarkali\nAngrakha Cut\nAsymmetrical Cut\nAthletic Fit\nBody Fit\nBox Fit\nBoxy Fit\nCape Style\nClassic Fit\nComfort Fit\nEmpire Line\nFlared\nGathered Fit\nHigh-Low Cut\nKaftan Fit\nKalidar\nKurta Fit\nLayered Cut\nLong Fit\nLoose Fit\nModern Fit\nModest Fit\nOversized Fit\nPanel Cut\nPanjabi Fit\nPathani Fit\nPeplum Fit\nPleated Fit\nPrincess Cut\nRegular Fit\nRelaxed Fit\nSherwani Fit\nShort Fit\nSlim Fit\nStraight Cut\nStraight Fit\nStructured Fit\nTailored Fit\nTapered Fit\nUmbrella Cut\nUnstructured Fit\nWrap Style\nOthers"
   },
   {
    "fieldname": "column_break_vrud",
@@ -888,13 +887,31 @@
   {
    "fieldname": "data_znsh",
    "fieldtype": "Data"
+  },
+  {
+   "fieldname": "bottom_waist",
+   "fieldtype": "Select",
+   "label": "Bottom Waist",
+   "options": "\nAsymmetric Waist\nBack Zip Waist\nBelt Loop Waist\nBelted Waist\nButton Closure Waist\nButton Fly Waist\nButton Placket Waist\nContoured Waistband\nCorset Waist\nDori Waist\nDrawstring Waist\nElastic Back Waist\nElastic Waist\nFixed Waistband\nFull Elastic Waist\nGathered Waist\nHalf Elastic Waist\nHigh Waist\nHook & Bar Waist\nHook & Eye Waist\nLow Rise\nLow Waist\nMid Rise\nMid Waist\nNaada Waist\nNatural Waist\nPaperbag Waist\nPleated Waist\nSide Zip Waist\nSmocked Waist\nStretch Waist\nSuper High Waist\nTie Waist\nUltra Low Rise\nUltra Low Waist\nWrap Waist\nZip Fly Waist\nOther"
+  },
+  {
+   "fieldname": "bottom_style",
+   "fieldtype": "Select",
+   "label": "Bottom Style",
+   "options": "\nA-Line\nAfghani\nBell Bottom\nBermuda\nBootcut\nCapri\nCargo\nCarrot Fit\nChuridar\nCigarette\nCulottes\nDhoti\nFarshi\nFlared\nGathered\nGharara\nHarem\nJeggings\nJogger\nLayered\nLeggings\nLoose Fit\nPalazzo\nPanelled\nPatiala\nPegged\nPlazo\nPleated\nRegular Fit\nRelaxed Fit\nSalwar\nSharara\nShorts\nSkinny\nSkort\nSlim Fit\nStraight\nTapered\nTrack Pant\nTreggings\nTulip\nWide Leg\nWrap Style\nOther"
+  },
+  {
+   "fieldname": "sleeve",
+   "fieldtype": "Select",
+   "label": "Sleeve",
+   "options": "\nBalloon Sleeve\nBatwing Sleeve\nBell Sleeve\nBishop Sleeve\nButterfly Sleeve\nButtoned Cuff Sleeve\nCap Sleeve\nCape Sleeve\nChuridar Sleeve\nCold Shoulder Sleeve\nCuff Sleeve\nCut-Out Sleeve\nDolman Sleeve\nDouble-Layer Sleeve\nElbow-Length Sleeve\nExtended Shoulder Sleeve\nFlared Sleeve\nFrench Cuff Sleeve\nFull Sleeve\nJuliet Sleeve\nKaftan Sleeve\nKimono Sleeve\nKoti Sleeve\nLace Sleeve\nLantern Sleeve\nLeg-of-Mutton Sleeve\nLong Sleeve\nOff-Shoulder Sleeve\nOne-Shoulder Sleeve\nOpen Sleeve\nPoet Sleeve\nPuff Sleeve\nRuffle Sleeve\nSet-in Sleeve\nSheer Sleeve\nShort Sleeve\nShrug Style Sleeve\nSlashed Sleeve\nSleeveless\nSlim Fit Sleeve\nSlit Sleeve\nSplit Sleeve\nTailored Sleeve\nThree-Quarter Sleeve\nTie-Up Sleeve\nTiered Sleeve\nTrumpet Sleeve\nUmbrella Sleeve\nOther"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-03 18:54:37.894855",
+ "modified": "2026-04-29 22:55:37.582625",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification Sample Making Sheet",
