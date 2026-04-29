@@ -165,7 +165,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Designer",
-   "link_filters": "[[\"Employee\",\"department\",\"=\",\"Fashion Design - DU\"]]",
+   "link_filters": "[[\"Employee\",\"department\",\"=\",\"Fashion Design\"]]",
    "options": "Employee",
    "reqd": 1
   },
@@ -180,6 +180,7 @@
    "fetch_from": "designer.employee_number",
    "fieldname": "design_no",
    "fieldtype": "Data",
+   "in_global_search": 1,
    "label": "Style No:",
    "reqd": 1
   },
@@ -911,7 +912,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-29 22:55:37.582625",
+ "modified": "2026-04-29 23:05:48.490798",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification Sample Making Sheet",
