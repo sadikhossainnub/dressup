@@ -131,6 +131,11 @@ frappe.ui.form.on("Pre Production Sample", {
 						frm.set_value('start_time_date', frappe.datetime.now_datetime());
 					}
 
+					// Set style fields
+					if (tech_pack.bottom_waist) frm.set_value('bottom_waist', tech_pack.bottom_waist);
+					if (tech_pack.bottom_style) frm.set_value('bottom_style', tech_pack.bottom_style);
+					if (tech_pack.sleeve) frm.set_value('sleeve', tech_pack.sleeve);
+
 					frappe.show_alert({ message: __('Tech Pack data fetched successfully'), indicator: 'green' });
 				}
 			}

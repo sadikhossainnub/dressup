@@ -19,6 +19,9 @@
   "cut_fit_style",
   "collar_neck_style",
   "side_cut",
+  "bottom_waist",
+  "bottom_style",
+  "sleeve",
   "sewing_finish",
   "materials_section",
   "materials",
@@ -463,6 +466,27 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fetch_from": "tech_pack_no.bottom_waist",
+   "fieldname": "bottom_waist",
+   "fieldtype": "Select",
+   "label": "Bottom Waist",
+   "options": "\nAsymmetric Waist\nBack Zip Waist\nBelt Loop Waist\nBelted Waist\nButton Closure Waist\nButton Fly Waist\nButton Placket Waist\nContoured Waistband\nCorset Waist\nDori Waist\nDrawstring Waist\nElastic Back Waist\nElastic Waist\nFixed Waistband\nFull Elastic Waist\nGathered Waist\nHalf Elastic Waist\nHigh Waist\nHook & Bar Waist\nHook & Eye Waist\nLow Rise\nLow Waist\nMid Rise\nMid Waist\nNaada Waist\nNatural Waist\nPaperbag Waist\nPleated Waist\nSide Zip Waist\nSmocked Waist\nStretch Waist\nSuper High Waist\nTie Waist\nUltra Low Rise\nUltra Low Waist\nWrap Waist\nZip Fly Waist\nOther"
+  },
+  {
+   "fetch_from": "tech_pack_no.bottom_style",
+   "fieldname": "bottom_style",
+   "fieldtype": "Select",
+   "label": "Bottom Style",
+   "options": "\nA-Line\nAfghani\nBell Bottom\nBermuda\nBootcut\nCapri\nCargo\nCarrot Fit\nChuridar\nCigarette\nCulottes\nDhoti\nFarshi\nFlared\nGathered\nGharara\nHarem\nJeggings\nJogger\nLayered\nLeggings\nLoose Fit\nPalazzo\nPanelled\nPatiala\nPegged\nPlazo\nPleated\nRegular Fit\nRelaxed Fit\nSalwar\nSharara\nShorts\nSkinny\nSkort\nSlim Fit\nStraight\nTapered\nTrack Pant\nTreggings\nTulip\nWide Leg\nWrap Style\nOther"
+  },
+  {
+   "fetch_from": "tech_pack_no.sleeve",
+   "fieldname": "sleeve",
+   "fieldtype": "Select",
+   "label": "Sleeve",
+   "options": "\nBalloon Sleeve\nBatwing Sleeve\nBell Sleeve\nBishop Sleeve\nButterfly Sleeve\nButtoned Cuff Sleeve\nCap Sleeve\nCape Sleeve\nChuridar Sleeve\nCold Shoulder Sleeve\nCuff Sleeve\nCut-Out Sleeve\nDolman Sleeve\nDouble-Layer Sleeve\nElbow-Length Sleeve\nExtended Shoulder Sleeve\nFlared Sleeve\nFrench Cuff Sleeve\nFull Sleeve\nJuliet Sleeve\nKaftan Sleeve\nKimono Sleeve\nKoti Sleeve\nLace Sleeve\nLantern Sleeve\nLeg-of-Mutton Sleeve\nLong Sleeve\nOff-Shoulder Sleeve\nOne-Shoulder Sleeve\nOpen Sleeve\nPoet Sleeve\nPuff Sleeve\nRuffle Sleeve\nSet-in Sleeve\nSheer Sleeve\nShort Sleeve\nShrug Style Sleeve\nSlashed Sleeve\nSleeveless\nSlim Fit Sleeve\nSlit Sleeve\nSplit Sleeve\nTailored Sleeve\nThree-Quarter Sleeve\nTie-Up Sleeve\nTiered Sleeve\nTrumpet Sleeve\nUmbrella Sleeve\nOther"
   },
   {
    "fieldname": "section_break_stcm",
