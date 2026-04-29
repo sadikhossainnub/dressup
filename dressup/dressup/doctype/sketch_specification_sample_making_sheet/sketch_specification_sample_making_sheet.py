@@ -77,7 +77,7 @@ class SketchSpecificationSampleMakingSheet(Document):
 def generate_design_no(designer):
 	abbr = frappe.db.get_value("Employee", designer, "abbr")
 	if abbr:
-		date_str = frappe.utils.now_datetime().strftime("%d.%m.%y")
+		date_str = frappe.utils.now_datetime().strftime("%m.%y")
 		prefix = f"{abbr}-{date_str}."
 		
 		# Find the last sequence number for this prefix
