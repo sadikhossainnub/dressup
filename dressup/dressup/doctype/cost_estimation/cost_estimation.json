@@ -359,10 +359,11 @@
    "label": "Category"
   },
   {
+   "fetch_from": "tech_pack_no.cut_fit_style",
    "fieldname": "cut_fit_style",
-   "fieldtype": "Link",
+   "fieldtype": "Select",
    "label": "Cut/ Fit Style",
-   "options": "Cut Fit"
+   "options": "\nAbaya Fit\nA-Line\nAnarkali\nAngrakha Cut\nAsymmetrical Cut\nAthletic Fit\nBody Fit\nBox Fit\nBoxy Fit\nCape Style\nClassic Fit\nComfort Fit\nEmpire Line\nFlared\nGathered Fit\nHigh-Low Cut\nKaftan Fit\nKalidar\nKurta Fit\nLayered Cut\nLong Fit\nLoose Fit\nModern Fit\nModest Fit\nOversized Fit\nPanel Cut\nPanjabi Fit\nPathani Fit\nPeplum Fit\nPleated Fit\nPrincess Cut\nRegular Fit\nRelaxed Fit\nSherwani Fit\nShort Fit\nSlim Fit\nStraight Cut\nStraight Fit\nStructured Fit\nTailored Fit\nTapered Fit\nUmbrella Cut\nUnstructured Fit\nWrap Style\nOthers"
   },
   {
    "fieldname": "collar_neck_style",
