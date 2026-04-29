@@ -241,6 +241,19 @@
             <tr>
                 <!-- Left Column -->
                 <td style="width: 50%; vertical-align: top; padding-right: 8px;">
+                    <div style="margin-bottom: 4px; line-height: 1.4;">
+                        <span style="font-weight: 700;">Status:</span>
+                        {% if doc.docstatus == 0 %}
+                        <span
+                            style="background: #f39c12; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">DRAFT</span>
+                        {% elif doc.docstatus == 1 %}
+                        <span
+                            style="background: #27ae60; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">APPROVED</span>
+                        {% elif doc.docstatus == 2 %}
+                        <span
+                            style="background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">CANCELLED</span>
+                        {% endif %}
+                    </div>
                     <div style="margin-bottom: 2px; line-height: 1.2;">
                         <span style="font-weight: 700;">Tech Pack No:</span> {{ doc.tech_pack_no or '-' }}
                     </div>
@@ -276,6 +289,9 @@
                         frappe.utils.format_date(doc.received_date) if doc.received_date else '-' }}
                     </div>
                     <div style="margin-bottom: 2px; line-height: 1.2;">
+                        <span style="font-weight: 700;">Submission Date:</span> {{ frappe.utils.format_date(doc.finish_time_date) if doc.finish_time_date else '-' }}
+                    </div>
+                    <div style="margin-bottom: 2px; line-height: 1.2;">
                         <span style="font-weight: 700;">Start Date:</span> {{
                         frappe.utils.format_date(doc.start_time_date) if doc.start_time_date else '-' }}
                     </div>
@@ -299,22 +315,6 @@
                     </div>
                     <div style="margin-bottom: 2px; line-height: 1.2;">
                         <span style="font-weight: 700;">Sleeve:</span> {{ doc.sleeve or '-' }}
-                    </div>
-                    <div style="margin-bottom: 2px; line-height: 1.2;">
-                        <span style="font-weight: 700;">Submission Date:</span> {{ frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '-' }}
-                    </div>
-                    <div style="margin-top: 4px; line-height: 1.4;">
-                        <span style="font-weight: 700;">Status:</span>
-                        {% if doc.docstatus == 0 %}
-                        <span
-                            style="background: #f39c12; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">DRAFT</span>
-                        {% elif doc.docstatus == 1 %}
-                        <span
-                            style="background: #27ae60; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">APPROVED</span>
-                        {% elif doc.docstatus == 2 %}
-                        <span
-                            style="background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 7pt;">CANCELLED</span>
-                        {% endif %}
                     </div>
                 </td>
             </tr>
