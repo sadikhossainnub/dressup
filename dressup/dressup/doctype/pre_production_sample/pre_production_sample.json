@@ -217,7 +217,7 @@
             "fieldname": "session",
             "fieldtype": "Link",
             "label": "Season",
-            "options": "session"
+            "options": "Session"
         },
         {
             "fieldname": "sewing_finish",

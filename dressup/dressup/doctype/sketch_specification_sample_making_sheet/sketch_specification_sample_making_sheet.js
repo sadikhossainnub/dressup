@@ -22,6 +22,14 @@ frappe.ui.form.on('Sketch Specification Sample Making Sheet', {
 				}
 			});
 
+			frm.add_custom_button(__('Item'), function () {
+				frappe.model.open_mapped_doc({
+					method: 'dressup.dressup.doctype.sketch_specification_sample_making_sheet.sketch_specification_sample_making_sheet.make_item',
+					frm: frm
+				});
+			}, __('Create'));
+
+
 		}
 		toggle_color_fields(frm);
 		render_image_previews(frm);

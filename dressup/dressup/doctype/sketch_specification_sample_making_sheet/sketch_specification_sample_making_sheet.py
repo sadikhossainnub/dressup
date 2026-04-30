@@ -144,3 +144,26 @@ def make_cost_estimation(source_name, target_doc=None):
 		target_doc
 	)
 	return cost_est
+
+@frappe.whitelist()
+def make_item(source_name, target_doc=None):
+	from frappe.model.mapper import get_mapped_doc  # type: ignore
+
+	item = get_mapped_doc(
+		"Sketch Specification Sample Making Sheet",
+		source_name,
+		{
+			"Sketch Specification Sample Making Sheet": {
+				"doctype": "Item",
+				"field_map": {
+					"item_name": "item_name",
+					"name": "item_code",
+					"category": "item_group",
+					"image": "image"
+				}
+			}
+		},
+		target_doc
+	)
+	return item
+
