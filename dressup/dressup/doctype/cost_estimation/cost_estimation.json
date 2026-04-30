@@ -11,6 +11,7 @@
   "tech_pack_no",
   "item_name",
   "designer",
+  "designer_name",
   "design_no",
   "session",
   "column_break_1",
@@ -119,9 +120,18 @@
   {
    "fetch_from": "tech_pack_no.designer",
    "fieldname": "designer",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Designer:",
+   "link_filters": "[[\"Employee\",\"department\",\"=\",\"Fashion Design\"]]",
+   "options": "Employee",
    "reqd": 1
+  },
+  {
+   "fetch_from": "tech_pack_no.designer_name",
+   "fieldname": "designer_name",
+   "fieldtype": "Data",
+   "label": "Designer Name",
+   "read_only": 1
   },
   {
    "fieldname": "materials_section",
