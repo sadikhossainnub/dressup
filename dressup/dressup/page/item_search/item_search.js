@@ -27,14 +27,14 @@ class ItemSearch {
 			<div class="search-section text-center py-5">
 				<h2 class="mb-4">Scan Barcode</h2>
 				<div class="input-group search-input-group mx-auto" style="max-width: 500px;">
-					<input type="text" class="form-control form-control-lg barcode-input" placeholder="Scan or type barcode..." autofocus>
+					<input type="text" class="form-control form-control-lg barcode-input" placeholder="Scan Barcode, Serial, Batch or Item..." autofocus>
 					<div class="input-group-append">
 						<button class="btn btn-primary btn-lg btn-search" type="button">
 							<i class="fa fa-search"></i>
 						</button>
 					</div>
 				</div>
-				<p class="mt-3 text-muted">Scan an item barcode to see stock availability and details.</p>
+				<p class="mt-3 text-muted">Scan an item barcode, serial number, or batch to see stock details.</p>
 			</div>
 			<div class="result-section mt-5" style="display: none;">
 				<!-- Item details will be rendered here -->

@@ -6,20 +6,28 @@ def get_item_details(barcode):
     if not barcode:
         return None
 
-    # Search for item by barcode or item_code
+    # Search for item by various identifiers
     # 1. Search in Item Barcode child table
     item_code = frappe.db.get_value("Item Barcode", {"barcode": barcode}, "parent")
     
-    # 2. Search in Item Barcode field (if any custom field exists)
+    # 2. Search in Serial No
+    if not item_code:
+        item_code = frappe.db.get_value("Serial No", barcode, "item_code")
+        
+    # 3. Search in Batch
+    if not item_code:
+        item_code = frappe.db.get_value("Batch", barcode, "item_code")
+
+    # 4. Search in Item Barcode field (if any custom field exists)
     if not item_code:
         item_code = frappe.db.get_value("Item", {"barcode": barcode}, "name")
     
-    # 3. Check if barcode is actually the item_code (name)
+    # 5. Check if barcode is actually the item_code (name)
     if not item_code:
         if frappe.db.exists("Item", barcode):
             item_code = barcode
             
-    # 4. Search by item_name (fuzzy or exact)
+    # 6. Search by item_name (fuzzy or exact)
     if not item_code:
         item_code = frappe.db.get_value("Item", {"item_name": barcode}, "name")
 
