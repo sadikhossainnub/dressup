@@ -8,28 +8,50 @@ def get_item_details(barcode):
 
     # Search for item by various identifiers
     # 1. Search in Item Barcode child table
-    item_code = frappe.db.get_value("Item Barcode", {"barcode": barcode}, "parent")
+    try:
+        item_code = frappe.db.get_value("Item Barcode", {"barcode": barcode}, "parent")
+    except Exception:
+        item_code = None
     
-    # 2. Search in Serial No
-    if not item_code:
-        item_code = frappe.db.get_value("Serial No", barcode, "item_code")
+    # 2. Search in Serial No (check if field exists)
+    if not item_code and frappe.db.exists("DocType", "Serial No"):
+        try:
+            item_code = frappe.db.get_value("Serial No", barcode, "item_code")
+        except Exception:
+            # Maybe the field is 'item'?
+            try:
+                item_code = frappe.db.get_value("Serial No", barcode, "item")
+            except Exception:
+                pass
         
-    # 3. Search in Batch
-    if not item_code:
-        item_code = frappe.db.get_value("Batch", barcode, "item_code")
+    # 3. Search in Batch (check if field exists)
+    if not item_code and frappe.db.exists("DocType", "Batch"):
+        try:
+            item_code = frappe.db.get_value("Batch", barcode, "item_code")
+        except Exception:
+            try:
+                item_code = frappe.db.get_value("Batch", barcode, "item")
+            except Exception:
+                pass
 
     # 4. Search in Item Barcode field (if any custom field exists)
     if not item_code:
-        item_code = frappe.db.get_value("Item", {"barcode": barcode}, "name")
+        try:
+            item_code = frappe.db.get_value("Item", {"barcode": barcode}, "name")
+        except Exception:
+            pass
     
     # 5. Check if barcode is actually the item_code (name)
     if not item_code:
         if frappe.db.exists("Item", barcode):
             item_code = barcode
             
-    # 6. Search by item_name (fuzzy or exact)
+    # 6. Search by item_name
     if not item_code:
-        item_code = frappe.db.get_value("Item", {"item_name": barcode}, "name")
+        try:
+            item_code = frappe.db.get_value("Item", {"item_name": barcode}, "name")
+        except Exception:
+            pass
 
     if not item_code:
         return None
@@ -37,17 +59,10 @@ def get_item_details(barcode):
     item = frappe.get_doc("Item", item_code)
     
     # Get stock details
-    stock_details = frappe.db.sql("""
-        SELECT 
-            warehouse, 
-            actual_qty as qty,
-            reserved_qty,
-            projected_qty
-        FROM 
-            tabBin 
-        WHERE 
-            item_code = %s AND actual_qty > 0
-    """, (item_code,), as_dict=1)
+    stock_details = frappe.get_all("Bin", 
+        filters={"item_code": item_code, "actual_qty": [">", 0]},
+        fields=["warehouse", "actual_qty as qty", "reserved_qty", "projected_qty"]
+    )
 
     return {
         "item_code": item.item_code,
