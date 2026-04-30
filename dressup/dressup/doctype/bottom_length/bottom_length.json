@@ -66,6 +66,14 @@
             "role": "DressUp Manager",
             "share": 1,
             "write": 1
+        },
+        {
+            "read": 1,
+            "role": "Fashion Designer"
+        },
+        {
+            "read": 1,
+            "role": "Fashion Designer Manager"
         }
     ],
     "show_title_field_in_link": 1,
