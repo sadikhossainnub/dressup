@@ -100,6 +100,13 @@ frappe.ui.form.on("Cost Estimation", {
 					}
 				}
 			});
+
+			frm.add_custom_button(__('Item'), function () {
+				frappe.model.open_mapped_doc({
+					method: 'dressup.dressup.doctype.cost_estimation.cost_estimation.make_item',
+					frm: frm
+				});
+			}, __('Create'));
 		}
 	},
 	calculate_total_fabric(frm) {

@@ -158,3 +158,25 @@ def make_pre_production_sample(source_name, target_doc=None):
 	)
 	
 	return doclist
+
+@frappe.whitelist()
+def make_item(source_name, target_doc=None):
+	from frappe.model.mapper import get_mapped_doc  # type: ignore
+
+	item = get_mapped_doc(
+		"Cost Estimation",
+		source_name,
+		{
+			"Cost Estimation": {
+				"doctype": "Item",
+				"field_map": {
+					"item_name": "item_name",
+					"tech_pack_no": "item_code",
+					"category": "item_group",
+					"session": "session"
+				}
+			}
+		},
+		target_doc
+	)
+	return item
