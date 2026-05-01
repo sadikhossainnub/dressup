@@ -86,6 +86,14 @@ frappe.ui.form.on("Pre Production Sample", {
 					frm.trigger('add_default_size_chart');
 				}
 			}, 500);
+
+			if (!frm.doc.link_nsnp) {
+				frappe.db.get_single_value("Dressup Settings", "default_pps_inspection").then(value => {
+					if (value) {
+						frm.set_value("link_nsnp", value);
+					}
+				});
+			}
 		}
 	},
 
@@ -114,9 +122,9 @@ frappe.ui.form.on("Pre Production Sample", {
 
 					// Auto-populate Quality Inspection Template
 					if (!frm.doc.link_nsnp) {
-						frappe.db.get_list('Quality Inspection Template', { limit: 1 }).then(templates => {
-							if (templates.length > 0) {
-								frm.set_value('link_nsnp', templates[0].name);
+						frappe.db.get_single_value("Dressup Settings", "default_pps_inspection").then(value => {
+							if (value) {
+								frm.set_value('link_nsnp', value);
 							}
 						});
 					}

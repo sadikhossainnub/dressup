@@ -67,6 +67,9 @@ def get_item_details(barcode):
     # Get reservation details
     reservations = get_reservation_details(item_code)
 
+    # Get item prices
+    prices = get_item_prices(item_code)
+
     return {
         "item_code": item.item_code,
         "item_name": item.item_name,
@@ -76,8 +79,60 @@ def get_item_details(barcode):
         "uom": item.stock_uom,
         "brand": item.brand,
         "item_group": item.item_group,
-        "reservations": reservations
+        "reservations": reservations,
+        "prices": prices
     }
+
+
+def get_item_prices(item_code):
+    """Get all active prices for an item from Item Price doctype."""
+    today = frappe.utils.today()
+
+    try:
+        price_list = frappe.get_all(
+            "Item Price",
+            filters={
+                "item_code": item_code,
+                "valid_from": ["<=", today],
+            },
+            or_filters={
+                "valid_upto": [">=", today],
+                "valid_upto": ["is", "not set"],
+            },
+            fields=[
+                "price_list", "price_list_rate", "currency",
+                "selling", "buying", "uom",
+                "valid_from", "valid_upto"
+            ],
+            order_by="selling desc, price_list_rate asc"
+        )
+    except Exception:
+        # Fallback: fetch without date filters
+        price_list = frappe.get_all(
+            "Item Price",
+            filters={"item_code": item_code},
+            fields=[
+                "price_list", "price_list_rate", "currency",
+                "selling", "buying", "uom",
+                "valid_from", "valid_upto"
+            ],
+            order_by="selling desc, price_list_rate asc"
+        )
+
+    prices = []
+    for p in price_list:
+        price_type = "Selling" if p.selling else ("Buying" if p.buying else "N/A")
+        prices.append({
+            "price_list": p.price_list or "",
+            "rate": p.price_list_rate or 0,
+            "currency": p.currency or "",
+            "type": price_type,
+            "uom": p.uom or "",
+            "valid_from": str(p.valid_from) if p.valid_from else "",
+            "valid_upto": str(p.valid_upto) if p.valid_upto else "",
+        })
+
+    return prices
 
 
 def get_reservation_details(item_code):

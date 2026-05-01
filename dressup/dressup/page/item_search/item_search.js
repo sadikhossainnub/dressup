@@ -24,8 +24,8 @@ class ItemSearch {
 
 	make_ui() {
 		this.wrapper.find('.layout-main-section').empty().append(`
-			<div class="search-section text-center py-5">
-				<h2 class="mb-4 search-title">Scan Barcode</h2>
+			<div class="search-section text-center py-3">
+				<h2 class="mb-2 search-title">Scan Barcode</h2>
 				<div class="input-group search-input-group mx-auto">
 					<input type="text" class="form-control form-control-lg barcode-input" placeholder="Scan Barcode, Serial, Batch or Item..." autofocus>
 					<div class="input-group-append">
@@ -34,13 +34,13 @@ class ItemSearch {
 						</button>
 					</div>
 				</div>
-				<p class="mt-3 text-muted search-hint">Scan an item barcode, serial number, or batch to see stock details.</p>
+				<p class="mt-2 text-muted search-hint">Scan an item barcode, serial number, or batch to see stock details.</p>
 			</div>
-			<div class="result-section mt-5" style="display: none;">
+			<div class="result-section mt-3" style="display: none;">
 				<!-- Item details will be rendered here -->
 			</div>
-			<div class="empty-state text-center mt-5" style="display: none;">
-				<div class="text-muted py-5">
+			<div class="empty-state text-center mt-3" style="display: none;">
+				<div class="text-muted py-3">
 					<i class="fa fa-search fa-4x mb-3"></i>
 					<h4>No Item Found</h4>
 					<p>We couldn't find an item matching that barcode.</p>
@@ -103,6 +103,7 @@ class ItemSearch {
 		this.$result_section.empty().show();
 
 		let stock_html = this.build_stock_html(data);
+		let price_html = this.build_price_html(data);
 		let reservation_html = this.build_reservation_html(data);
 
 		let html = `
@@ -111,9 +112,9 @@ class ItemSearch {
 					<div class="row">
 						<div class="col-12 col-md-4 text-center item-image-col">
 							${data.image ? `
-								<img src="${data.image}" class="img-fluid rounded item-image mb-3" style="max-height: 250px;">
+								<img src="${data.image}" class="img-fluid rounded item-image mb-2" style="max-height: 200px;">
 							` : `
-								<div class="img-placeholder rounded mb-3">
+								<div class="img-placeholder rounded mb-2">
 									<i class="fa fa-cube fa-5x text-light"></i>
 								</div>
 							`}
@@ -122,12 +123,12 @@ class ItemSearch {
 							<div class="d-flex justify-content-between align-items-start flex-wrap item-header">
 								<div class="item-title-block">
 									<h3 class="mb-1 item-name-heading">${data.item_name}</h3>
-									<p class="text-muted mb-3 item-code-text">${data.item_code}</p>
+									<p class="text-muted mb-2 item-code-text">${data.item_code}</p>
 								</div>
 								<span class="badge badge-primary p-2 item-group-badge">${data.item_group}</span>
 							</div>
 							
-							<div class="row mb-4 item-meta-row">
+							<div class="row mb-2 item-meta-row">
 								<div class="col-6 col-sm-4">
 									<small class="text-muted d-block">UOM</small>
 									<strong>${data.uom}</strong>
@@ -147,9 +148,11 @@ class ItemSearch {
 						</div>
 					</div>
 					
-					<hr class="my-4">
+					<hr class="my-2">
 					
 					${stock_html}
+
+					${price_html}
 
 					${reservation_html}
 				</div>
@@ -197,8 +200,8 @@ class ItemSearch {
 		`).join('');
 
 		return `
-			<div class="stock-section mt-4">
-				<h5 class="mb-3">Warehouse Stock</h5>
+			<div class="stock-section mt-2">
+				<h5 class="mb-2">Warehouse Stock</h5>
 				<!-- Desktop table view -->
 				<div class="stock-table-container d-none d-md-block">
 					<table class="table table-hover">
@@ -225,6 +228,79 @@ class ItemSearch {
 				<!-- Mobile card view -->
 				<div class="stock-cards-container d-md-none">
 					${stock_cards_html}
+				</div>
+			</div>
+		`;
+	}
+
+	build_price_html(data) {
+		if (!data.prices || data.prices.length === 0) {
+			return '';
+		}
+
+		// Desktop table rows
+		let table_rows = data.prices.map(p => `
+			<tr>
+				<td>${p.price_list}</td>
+				<td>
+					<span class="price-type-badge price-type-${p.type.toLowerCase()}">${p.type}</span>
+				</td>
+				<td class="text-right font-weight-bold">${p.currency} ${format_number(p.rate)}</td>
+				<td>${p.uom || '-'}</td>
+				<td class="text-muted">${p.valid_from || '-'}</td>
+				<td class="text-muted">${p.valid_upto || '-'}</td>
+			</tr>
+		`).join('');
+
+		// Mobile cards
+		let mobile_cards = data.prices.map(p => `
+			<div class="price-card">
+				<div class="price-card-header">
+					<span class="font-weight-bold">${p.price_list}</span>
+					<span class="price-type-badge price-type-${p.type.toLowerCase()}">${p.type}</span>
+				</div>
+				<div class="price-card-rate">
+					${p.currency} <strong>${format_number(p.rate)}</strong>
+					${p.uom ? `<small class="text-muted">/ ${p.uom}</small>` : ''}
+				</div>
+				${(p.valid_from || p.valid_upto) ? `
+					<div class="price-card-validity text-muted">
+						<i class="fa fa-calendar"></i>
+						${p.valid_from || '...'} — ${p.valid_upto || '...'}
+					</div>
+				` : ''}
+			</div>
+		`).join('');
+
+		return `
+			<hr class="my-2">
+			<div class="price-section mt-2">
+				<h5 class="mb-2">
+					<i class="fa fa-tag text-success"></i> Item Prices
+				</h5>
+
+				<!-- Desktop table -->
+				<div class="price-table-container d-none d-md-block">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Price List</th>
+								<th>Type</th>
+								<th class="text-right">Rate</th>
+								<th>UOM</th>
+								<th>Valid From</th>
+								<th>Valid Upto</th>
+							</tr>
+						</thead>
+						<tbody>
+							${table_rows}
+						</tbody>
+					</table>
+				</div>
+
+				<!-- Mobile cards -->
+				<div class="price-cards-container d-md-none">
+					${mobile_cards}
 				</div>
 			</div>
 		`;
@@ -293,8 +369,8 @@ class ItemSearch {
 		`).join('');
 
 		return `
-			<hr class="my-4">
-			<div class="reservation-section mt-4">
+			<hr class="my-2">
+			<div class="reservation-section mt-2">
 				<div class="reservation-header">
 					<h5 class="mb-0">
 						<i class="fa fa-lock text-warning"></i> Reserved Stock
@@ -305,7 +381,7 @@ class ItemSearch {
 				</div>
 
 				<!-- Desktop table -->
-				<div class="reservation-table-container d-none d-md-block mt-3">
+				<div class="reservation-table-container d-none d-md-block mt-2">
 					<table class="table table-hover">
 						<thead>
 							<tr>
@@ -327,7 +403,7 @@ class ItemSearch {
 				</div>
 
 				<!-- Mobile cards -->
-				<div class="reservation-cards-container d-md-none mt-3">
+				<div class="reservation-cards-container d-md-none mt-2">
 					${mobile_cards}
 				</div>
 			</div>
@@ -398,7 +474,7 @@ class ItemSearch {
 			}
 			.img-placeholder {
 				background: #e9ecef;
-				height: 250px;
+				height: 180px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -426,7 +502,7 @@ class ItemSearch {
 			/* ===== Stock Table (Desktop) ===== */
 			.stock-table-container {
 				background: white;
-				padding: 20px;
+				padding: 12px;
 				border-radius: 10px;
 			}
 
@@ -434,18 +510,18 @@ class ItemSearch {
 			.stock-cards-container {
 				display: flex;
 				flex-direction: column;
-				gap: 10px;
+				gap: 8px;
 			}
 			.stock-card {
 				background: white;
 				border: 1px solid #e9ecef;
 				border-radius: 10px;
-				padding: 14px;
+				padding: 10px;
 			}
 			.stock-card-warehouse {
 				font-weight: 600;
 				font-size: 14px;
-				margin-bottom: 10px;
+				margin-bottom: 6px;
 				display: flex;
 				align-items: center;
 				word-break: break-word;
@@ -469,13 +545,71 @@ class ItemSearch {
 				font-size: 14px;
 			}
 
+			/* ===== Price Section ===== */
+			.price-table-container {
+				background: white;
+				padding: 12px;
+				border-radius: 10px;
+			}
+			.price-type-badge {
+				display: inline-block;
+				padding: 2px 8px;
+				border-radius: 12px;
+				font-size: 11px;
+				font-weight: 600;
+				white-space: nowrap;
+			}
+			.price-type-badge.price-type-selling {
+				background: #d4edda;
+				color: #155724;
+			}
+			.price-type-badge.price-type-buying {
+				background: #cce5ff;
+				color: #004085;
+			}
+			.price-type-badge.price-type-n\/a {
+				background: #e9ecef;
+				color: #6c757d;
+			}
+			.price-cards-container {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+			.price-card {
+				background: white;
+				border: 1px solid #e9ecef;
+				border-radius: 10px;
+				padding: 10px;
+			}
+			.price-card-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 6px;
+			}
+			.price-card-rate {
+				font-size: 16px;
+				margin-bottom: 4px;
+			}
+			.price-card-validity {
+				font-size: 12px;
+			}
+			.price-card-validity i {
+				width: 16px;
+				margin-right: 4px;
+			}
+			.price-section h5 i {
+				margin-right: 6px;
+			}
+
 			/* ===== Reservation Section ===== */
 			.reservation-header {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				flex-wrap: wrap;
-				gap: 10px;
+				gap: 6px;
 			}
 			.reservation-header h5 i {
 				margin-right: 6px;
@@ -486,7 +620,7 @@ class ItemSearch {
 			}
 			.reservation-table-container {
 				background: white;
-				padding: 20px;
+				padding: 12px;
 				border-radius: 10px;
 			}
 			.reservation-link {
@@ -525,7 +659,7 @@ class ItemSearch {
 			.reservation-cards-container {
 				display: flex;
 				flex-direction: column;
-				gap: 12px;
+				gap: 8px;
 			}
 			.reservation-card {
 				background: white;
@@ -591,8 +725,8 @@ class ItemSearch {
 					padding: 0 10px;
 				}
 				.search-section {
-					padding-top: 24px !important;
-					padding-bottom: 24px !important;
+					padding-top: 16px !important;
+					padding-bottom: 16px !important;
 				}
 				.search-title {
 					font-size: 22px;
@@ -614,13 +748,13 @@ class ItemSearch {
 
 				/* Item card mobile tweaks */
 				.item-card .card-body {
-					padding: 16px;
+					padding: 12px;
 				}
 				.item-image-col {
-					margin-bottom: 16px;
+					margin-bottom: 10px;
 				}
 				.img-placeholder {
-					height: 180px;
+					height: 150px;
 				}
 				.item-image {
 					max-height: 200px !important;
@@ -632,7 +766,7 @@ class ItemSearch {
 					font-size: 13px;
 				}
 				.item-header {
-					gap: 8px;
+					gap: 4px;
 				}
 				.item-group-badge {
 					font-size: 12px;
