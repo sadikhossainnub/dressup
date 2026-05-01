@@ -64,6 +64,9 @@ def get_item_details(barcode):
         fields=["warehouse", "actual_qty as qty", "reserved_qty", "projected_qty"]
     )
 
+    # Get reservation details
+    reservations = get_reservation_details(item_code)
+
     return {
         "item_code": item.item_code,
         "item_name": item.item_name,
@@ -72,5 +75,99 @@ def get_item_details(barcode):
         "stock": stock_details,
         "uom": item.stock_uom,
         "brand": item.brand,
-        "item_group": item.item_group
+        "item_group": item.item_group,
+        "reservations": reservations
     }
+
+
+def get_reservation_details(item_code):
+    """Get stock reservation details for an item from Stock Reservation Entry and Sales Orders."""
+    reservations = []
+
+    # 1. Get from Stock Reservation Entry (if doctype exists)
+    if frappe.db.exists("DocType", "Stock Reservation Entry"):
+        try:
+            sre_list = frappe.get_all(
+                "Stock Reservation Entry",
+                filters={
+                    "item_code": item_code,
+                    "status": ["in", ["Reserved", "Partially Reserved", "Partially Delivered"]],
+                    "docstatus": 1
+                },
+                fields=[
+                    "name", "voucher_type", "voucher_no", "warehouse",
+                    "reserved_qty", "delivered_qty", "status",
+                    "creation", "owner"
+                ],
+                order_by="creation desc"
+            )
+
+            for sre in sre_list:
+                remaining = (sre.reserved_qty or 0) - (sre.delivered_qty or 0)
+                if remaining > 0:
+                    customer = ""
+                    if sre.voucher_type == "Sales Order" and sre.voucher_no:
+                        customer = frappe.db.get_value("Sales Order", sre.voucher_no, "customer_name") or ""
+
+                    # Get full name of the user who created the reservation
+                    reserved_by = frappe.db.get_value("User", sre.owner, "full_name") or sre.owner or ""
+
+                    reservations.append({
+                        "source": "Stock Reservation",
+                        "reference_type": sre.voucher_type or "",
+                        "reference_name": sre.voucher_no or "",
+                        "warehouse": sre.warehouse or "",
+                        "reserved_qty": sre.reserved_qty or 0,
+                        "delivered_qty": sre.delivered_qty or 0,
+                        "remaining_qty": remaining,
+                        "customer": customer,
+                        "reserved_by": reserved_by,
+                        "status": sre.status,
+                        "date": str(sre.creation.date()) if sre.creation else ""
+                    })
+        except Exception:
+            pass
+
+    # 2. If no Stock Reservation Entries, fall back to Sales Order Items with pending delivery
+    if not reservations:
+        try:
+            pending_so_items = frappe.db.sql("""
+                SELECT
+                    so.name as sales_order,
+                    so.customer_name,
+                    so.transaction_date,
+                    so.owner as so_owner,
+                    soi.warehouse,
+                    soi.qty,
+                    soi.delivered_qty,
+                    (soi.qty - soi.delivered_qty) as pending_qty,
+                    soi.stock_reserved_qty
+                FROM `tabSales Order Item` soi
+                JOIN `tabSales Order` so ON so.name = soi.parent
+                WHERE soi.item_code = %s
+                    AND so.docstatus = 1
+                    AND so.status NOT IN ('Completed', 'Cancelled', 'Closed')
+                    AND soi.delivered_qty < soi.qty
+                ORDER BY so.transaction_date DESC
+            """, item_code, as_dict=True)
+
+            for row in pending_so_items:
+                reserved_by = frappe.db.get_value("User", row.so_owner, "full_name") or row.so_owner or ""
+
+                reservations.append({
+                    "source": "Sales Order",
+                    "reference_type": "Sales Order",
+                    "reference_name": row.sales_order,
+                    "warehouse": row.warehouse or "",
+                    "reserved_qty": row.qty or 0,
+                    "delivered_qty": row.delivered_qty or 0,
+                    "remaining_qty": row.pending_qty or 0,
+                    "customer": row.customer_name or "",
+                    "reserved_by": reserved_by,
+                    "status": "Pending Delivery",
+                    "date": str(row.transaction_date) if row.transaction_date else ""
+                })
+        except Exception:
+            pass
+
+    return reservations
