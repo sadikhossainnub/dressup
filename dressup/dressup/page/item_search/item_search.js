@@ -350,23 +350,45 @@ class ItemSearch {
 			/* ===== Search Section ===== */
 			.search-input-group {
 				max-width: 500px;
+				display: flex;
+				align-items: stretch;
 			}
 			.search-input-group .form-control {
 				border-radius: 10px 0 0 10px;
 				border: 2px solid #e9ecef;
+				border-right: none;
 				box-shadow: none;
 				transition: border-color 0.2s;
 				font-size: 16px;
+				height: auto;
+				padding: 12px 16px;
 			}
 			.search-input-group .form-control:focus {
-				border-color: var(--primary-color);
+				border-color: var(--primary-color, #2490EF);
+				box-shadow: none;
 			}
-			.search-input-group .btn {
+			.search-input-group .form-control:focus + .input-group-append .btn-search {
+				border-color: var(--primary-color, #2490EF);
+			}
+			.search-input-group .input-group-append {
+				display: flex;
+			}
+			.search-input-group .btn-search {
 				border-radius: 0 10px 10px 0;
-				padding-left: 25px;
-				padding-right: 25px;
-				min-width: 50px;
-				min-height: 48px;
+				padding: 12px 24px;
+				min-width: 54px;
+				border: 2px solid var(--primary-color, #2490EF);
+				background-color: var(--primary-color, #2490EF);
+				color: white;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 16px;
+				transition: background-color 0.2s, border-color 0.2s;
+			}
+			.search-input-group .btn-search:hover {
+				background-color: var(--primary-color-dark, #1a73e8);
+				border-color: var(--primary-color-dark, #1a73e8);
 			}
 
 			/* ===== Item Card ===== */
@@ -586,9 +608,8 @@ class ItemSearch {
 					padding: 10px 14px;
 					height: auto;
 				}
-				.search-input-group .btn {
-					padding-left: 16px;
-					padding-right: 16px;
+				.search-input-group .btn-search {
+					padding: 12px 16px;
 				}
 
 				/* Item card mobile tweaks */
