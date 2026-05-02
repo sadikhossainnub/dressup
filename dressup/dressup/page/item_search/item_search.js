@@ -34,6 +34,7 @@ class ItemSearch {
 						</button>
 					</div>
 				</div>
+				<div class="suggestions-container mx-auto" style="display: none;"></div>
 				<p class="mt-2 text-muted search-hint">Scan an item barcode, serial number, or batch to see stock details.</p>
 			</div>
 			<div class="result-section mt-3" style="display: none;">
@@ -49,6 +50,7 @@ class ItemSearch {
 		`);
 
 		this.$barcode_input = this.wrapper.find('.barcode-input');
+		this.$suggestions_container = this.wrapper.find('.suggestions-container');
 		this.$result_section = this.wrapper.find('.result-section');
 		this.$empty_state = this.wrapper.find('.empty-state');
 
@@ -60,19 +62,87 @@ class ItemSearch {
 
 		this.$barcode_input.on('keypress', function(e) {
 			if (e.which === 13) {
+				me.$suggestions_container.hide();
 				me.search();
 			}
 		});
 
+		this.$barcode_input.on('input', function() {
+			me.on_input_change();
+		});
+
 		this.wrapper.find('.btn-search').on('click', function() {
+			me.$suggestions_container.hide();
 			me.search();
 		});
 
+		// Close suggestions on outside click
+		$(document).on('click', (e) => {
+			if (!$(e.target).closest('.search-input-group, .suggestions-container').length) {
+				this.$suggestions_container.hide();
+			}
+		});
+
 		// Auto-focus input on page click (good for physical scanners)
-		$(document).on('click', () => {
-			if (!$(event.target).is('input, textarea, select')) {
+		$(document).on('click', (event) => {
+			if (!$(event.target).is('input, textarea, select, .suggestion-item')) {
 				this.$barcode_input.focus();
 			}
+		});
+	}
+
+	on_input_change() {
+		let query = this.$barcode_input.val().trim();
+		
+		if (this.suggestion_timeout) {
+			clearTimeout(this.suggestion_timeout);
+		}
+
+		if (!query || query.length < 2) {
+			this.$suggestions_container.hide().empty();
+			return;
+		}
+
+		this.suggestion_timeout = setTimeout(() => {
+			this.fetch_suggestions(query);
+		}, 300);
+	}
+
+	fetch_suggestions(query) {
+		frappe.call({
+			method: 'dressup.dressup.page.item_search.item_search.get_suggestions',
+			args: { query: query },
+			callback: (r) => {
+				if (r.message && r.message.length > 0) {
+					this.render_suggestions(r.message);
+				} else {
+					this.$suggestions_container.hide().empty();
+				}
+			}
+		});
+	}
+
+	render_suggestions(suggestions) {
+		let html = suggestions.map(s => `
+			<div class="suggestion-item d-flex align-items-center" data-value="${s.value}">
+				<div class="suggestion-icon">
+					<i class="fa ${s.type === 'Barcode' ? 'fa-barcode' : 'fa-tag'}"></i>
+				</div>
+				<div class="suggestion-text">
+					<div class="suggestion-label">${s.label}</div>
+					<div class="suggestion-type text-muted small">${s.type}</div>
+				</div>
+			</div>
+		`).join('');
+
+		this.$suggestions_container.html(html).show();
+
+		let me = this;
+		this.$suggestions_container.find('.suggestion-item').on('click', function() {
+			let val = $(this).attr('data-value');
+			me.$barcode_input.val(val);
+			me.$suggestions_container.hide();
+			me.search();
 		});
 	}
 
@@ -465,6 +535,53 @@ class ItemSearch {
 			.search-input-group .btn-search:hover {
 				background-color: var(--primary-color-dark, #1a73e8);
 				border-color: var(--primary-color-dark, #1a73e8);
+			}
+
+			/* ===== Suggestions ===== */
+			.suggestions-container {
+				max-width: 500px;
+				background: white;
+				border: 1px solid #e9ecef;
+				border-radius: 0 0 10px 10px;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+				text-align: left;
+				z-index: 1000;
+				position: relative;
+				margin-top: -2px;
+				overflow: hidden;
+			}
+			.suggestion-item {
+				padding: 10px 15px;
+				cursor: pointer;
+				transition: background-color 0.2s;
+				border-bottom: 1px solid #f8f9fa;
+			}
+			.suggestion-item:last-child {
+				border-bottom: none;
+			}
+			.suggestion-item:hover {
+				background-color: #f1f3f5;
+			}
+			.suggestion-icon {
+				width: 30px;
+				height: 30px;
+				background: #f8f9fa;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-right: 12px;
+				color: #6c757d;
+			}
+			.suggestion-label {
+				font-weight: 500;
+				font-size: 14px;
+				color: #212529;
+			}
+			.suggestion-type {
+				font-size: 11px;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
 			}
 
 			/* ===== Item Card ===== */

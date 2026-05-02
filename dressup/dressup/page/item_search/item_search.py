@@ -226,3 +226,53 @@ def get_reservation_details(item_code):
             pass
 
     return reservations
+
+
+@frappe.whitelist()
+def get_suggestions(query):
+    if not query or len(query) < 2:
+        return []
+
+    # 1. Search by Item Code or Item Name
+    items = frappe.get_all(
+        "Item",
+        filters=[
+            ["disabled", "=", 0],
+            ["has_variants", "=", 0],
+            ["name", "like", f"%{query}%"],
+        ],
+        or_filters=[
+            ["item_name", "like", f"%{query}%"],
+        ],
+        fields=["name", "item_name"],
+        limit=10
+    )
+
+    suggestions = []
+    for item in items:
+        suggestions.append({
+            "value": item.name,
+            "label": f"{item.item_name} ({item.name})",
+            "type": "Item"
+        })
+
+    # 2. Search by Barcode
+    barcodes = frappe.get_all(
+        "Item Barcode",
+        filters=[
+            ["barcode", "like", f"%{query}%"]
+        ],
+        fields=["barcode", "parent"],
+        limit=5
+    )
+
+    for b in barcodes:
+        # Avoid duplicate item suggestions if item_code matches
+        if not any(s["value"] == b.barcode for s in suggestions):
+            suggestions.append({
+                "value": b.barcode,
+                "label": f"Barcode: {b.barcode} ({b.parent})",
+                "type": "Barcode"
+            })
+
+    return suggestions
