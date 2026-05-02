@@ -230,23 +230,18 @@ def get_reservation_details(item_code):
 
 @frappe.whitelist()
 def get_suggestions(query):
-    if not query or len(query) < 2:
+    if not query or len(query) < 1:
         return []
 
-    # 1. Search by Item Code or Item Name
-    items = frappe.get_all(
-        "Item",
-        filters=[
-            ["disabled", "=", 0],
-            ["has_variants", "=", 0],
-            ["name", "like", f"%{query}%"],
-        ],
-        or_filters=[
-            ["item_name", "like", f"%{query}%"],
-        ],
-        fields=["name", "item_name"],
-        limit=10
-    )
+    # 1. Search by Item Code or Item Name using SQL for better OR handling
+    items = frappe.db.sql("""
+        SELECT name, item_name 
+        FROM `tabItem` 
+        WHERE (name LIKE %s OR item_name LIKE %s)
+          AND disabled = 0 
+          AND has_variants = 0
+        LIMIT 10
+    """, (f"%{query}%", f"%{query}%"), as_dict=True)
 
     suggestions = []
     for item in items:
@@ -256,22 +251,22 @@ def get_suggestions(query):
             "type": "Item"
         })
 
-    # 2. Search by Barcode
-    barcodes = frappe.get_all(
-        "Item Barcode",
-        filters=[
-            ["barcode", "like", f"%{query}%"]
-        ],
-        fields=["barcode", "parent"],
-        limit=5
-    )
+    # 2. Search by Barcode - join with Item to ensure it's active
+    barcodes = frappe.db.sql("""
+        SELECT ib.barcode, ib.parent as item_code
+        FROM `tabItem Barcode` ib
+        JOIN `tabItem` i ON ib.parent = i.name
+        WHERE ib.barcode LIKE %s
+          AND i.disabled = 0
+        LIMIT 5
+    """, (f"%{query}%",), as_dict=True)
 
     for b in barcodes:
-        # Avoid duplicate item suggestions if item_code matches
+        # Avoid duplicate item suggestions
         if not any(s["value"] == b.barcode for s in suggestions):
             suggestions.append({
                 "value": b.barcode,
-                "label": f"Barcode: {b.barcode} ({b.parent})",
+                "label": f"Barcode: {b.barcode} ({b.item_code})",
                 "type": "Barcode"
             })
 

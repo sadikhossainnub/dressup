@@ -84,8 +84,13 @@ class ItemSearch {
 		});
 
 		// Auto-focus input on page click (good for physical scanners)
+		// But don't focus if user is trying to select/copy text or clicking result section
 		$(document).on('click', (event) => {
-			if (!$(event.target).is('input, textarea, select, .suggestion-item')) {
+			let is_input = $(event.target).is('input, textarea, select, .suggestion-item');
+			let is_result = $(event.target).closest('.result-section').length > 0;
+			let has_selection = window.getSelection().toString().length > 0;
+
+			if (!is_input && !is_result && !has_selection) {
 				this.$barcode_input.focus();
 			}
 		});
@@ -98,7 +103,7 @@ class ItemSearch {
 			clearTimeout(this.suggestion_timeout);
 		}
 
-		if (!query || query.length < 2) {
+		if (!query || query.length < 1) {
 			this.$suggestions_container.hide().empty();
 			return;
 		}
@@ -494,6 +499,9 @@ class ItemSearch {
 			}
 
 			/* ===== Search Section ===== */
+			.search-section {
+				position: relative;
+			}
 			.search-input-group {
 				max-width: 500px;
 				display: flex;
@@ -543,12 +551,16 @@ class ItemSearch {
 				background: white;
 				border: 1px solid #e9ecef;
 				border-radius: 0 0 10px 10px;
-				box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+				box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 				text-align: left;
 				z-index: 1000;
-				position: relative;
+				position: absolute;
+				left: 0;
+				right: 0;
+				margin: 0 auto;
 				margin-top: -2px;
-				overflow: hidden;
+				overflow-y: auto;
+				max-height: 300px;
 			}
 			.suggestion-item {
 				padding: 10px 15px;
