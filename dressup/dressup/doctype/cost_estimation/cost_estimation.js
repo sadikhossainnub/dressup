@@ -81,6 +81,27 @@ frappe.ui.form.on("Cost Estimation Material", {
 
 frappe.ui.form.on("Cost Estimation", {
 	refresh: function (frm) {
+		let stock_status = frm.doc.stock_reservation_status;
+		if (stock_status && frm.fields_dict.stock_reservation_status && frm.fields_dict.stock_reservation_status.$input) {
+			let bg_color = "#f4f5f6";
+			let text_color = "#1f272e";
+			if (stock_status === "Reserved") {
+				bg_color = "#e8f5e9";
+				text_color = "#2e7d32";
+			} else if (stock_status === "Partially Reserved") {
+				bg_color = "#fff3e0";
+				text_color = "#ef6c00";
+			} else if (stock_status === "Unreserved") {
+				bg_color = "#ffebee";
+				text_color = "#c62828";
+			}
+			frm.fields_dict.stock_reservation_status.$input.css({
+				"background-color": bg_color,
+				"color": text_color,
+				"font-weight": "bold"
+			});
+		}
+
 		frm.set_query("tech_pack_no", () => {
 			return {
 				filters: {
