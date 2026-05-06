@@ -5,14 +5,18 @@ from frappe import _
 
 def get_data():
 	return {
-		'fieldname': 'reference_name',
+		'fieldname': 'pre_production_sample',
 		'non_standard_fieldnames': {
 			'Quality Inspection': 'reference_name'
 		},
 		'transactions': [
 			{
-				'label': _('Quality Inspection'),
+				'label': _('Quality'),
 				'items': ['Quality Inspection']
+			},
+			{
+				'label': _('Manufacturing'),
+				'items': ['BOM', 'Work Order']
 			}
 		]
 	}

@@ -34,6 +34,18 @@ frappe.ui.form.on("Pre Production Sample", {
 					reference_name: frm.doc.name
 				});
 			});
+
+			if (!frm.doc.sample_bom) {
+				frm.add_custom_button(__('Sample BOM'), function() {
+					create_bom(frm, "Sample Making");
+				}, __('Create'));
+			}
+
+			if (!frm.doc.production_bom) {
+				frm.add_custom_button(__('Production BOM'), function() {
+					create_bom(frm, "Bulk Production");
+				}, __('Create'));
+			}
 		}
 
 		// Add Full Tech Pack Print Button
@@ -182,4 +194,16 @@ function calculate_child_amount(frm, cdt, cdn) {
 	let row = locals[cdt][cdn];
 	let amount = (flt(row.actual_quantity) || 0) * (flt(row.rate) || 0);
 	frappe.model.set_value(cdt, cdn, "amount", amount);
+}
+
+function create_bom(frm, bom_type) {
+	frappe.call({
+		method: 'dressup.dressup.doctype.pre_production_sample.pre_production_sample.make_bom',
+		args: { source_name: frm.doc.name, bom_type: bom_type },
+		callback: function(r) {
+			if (r.message) {
+				frappe.set_route('Form', 'BOM', r.message);
+			}
+		}
+	});
 }

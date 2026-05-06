@@ -8,13 +8,15 @@
  "field_order": [
   "item_code",
   "item_name",
+  "warehouse",
   "qty",
   "rate",
   "amount",
   "column_break_yhjp",
   "item_group",
   "uom",
-  "stock_in_hand"
+  "stock_in_hand",
+  "reserved_qty"
  ],
  "fields": [
   {
@@ -41,6 +43,13 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Item Name"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Warehouse",
+   "options": "Warehouse"
   },
   {
    "fetch_from": "item_code.item_group",
@@ -81,6 +90,12 @@
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Rate"
+  },
+  {
+   "fieldname": "reserved_qty",
+   "fieldtype": "Float",
+   "label": "Reserved Qty",
+   "read_only": 1
   }
  ],
  "grid_page_length": 100,

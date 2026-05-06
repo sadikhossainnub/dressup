@@ -8,12 +8,15 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
+  "company",
   "tech_pack_no",
   "item_name",
   "designer",
   "designer_name",
   "design_no",
   "session",
+  "reserve_stock",
+  "stock_reservation_status",
   "column_break_1",
   "date",
   "category",
@@ -89,6 +92,14 @@
    "in_list_view": 1,
    "label": "Series",
    "options": "CE-.DD.-.MM.-.YY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
    "reqd": 1
   },
   {
@@ -398,6 +409,20 @@
    "fieldtype": "Select",
    "label": "Sewing Finish",
    "options": "Ready to Wear\nKaktarua\nUnstitched"
+  },
+  {
+   "default": "0",
+   "fieldname": "reserve_stock",
+   "fieldtype": "Check",
+   "label": "Reserve Stock"
+  },
+  {
+   "default": "Unreserved",
+   "fieldname": "stock_reservation_status",
+   "fieldtype": "Select",
+   "label": "Stock Reservation Status",
+   "options": "Unreserved\nPartially Reserved\nReserved",
+   "read_only": 1
   },
   {
    "fieldname": "workstation_section",

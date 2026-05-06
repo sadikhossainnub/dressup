@@ -5,7 +5,10 @@ from frappe import _
 
 def get_data():
 	return {
-		'fieldname': 'tech_pack_no',
+		'fieldname': 'cost_estimation',
+		'non_standard_fieldnames': {
+			'Pre Production Sample': 'cost_estimation'
+		},
 		'transactions': [
 			{
 				'label': _('PPS'),

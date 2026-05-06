@@ -14,6 +14,20 @@ class PreProductionSample(Document):
 			for size in ['36', '38', '40', '42','44']:
 				self.append('size_chart_in_inch', {'size_chart_in_inch': size})
 	
+	def after_insert(self):
+		"""When PPS is created from CE, release stock reservation"""
+		if self.cost_estimation:
+			self.release_stock_reservation()
+
+	def release_stock_reservation(self):
+		"""Cancel stock reservation entries from parent Cost Estimation"""
+		ce = frappe.get_doc("Cost Estimation", self.cost_estimation)
+		ce.cancel_stock_reservation_entries()
+		frappe.msgprint(
+			f"Stock reservation from {self.cost_estimation} has been released",
+			indicator="green", alert=True
+		)
+	
 	def validate(self):
 		"""Auto-populate fields from Tech Pack"""
 		if self.tech_pack_no and not self.is_new():
@@ -152,3 +166,56 @@ def make_quality_inspection(source_name, target_doc=None):
 	)
 	
 	return doclist
+
+@frappe.whitelist()
+def make_bom(source_name, bom_type="Sample Making"):
+	"""Create BOM from PPS - Sample or Bulk"""
+	from frappe.utils import flt
+	
+	pps = frappe.get_doc("Pre Production Sample", source_name)
+
+	bom_items = []
+	for table in ['fabrics', 'trim_accessories', 'fabric_dupatta']:
+		for row in (pps.get(table) or []):
+			if row.item_code:
+				qty = flt(row.actual_quantity) or flt(row.quantity)
+				if qty > 0:
+					bom_items.append({
+						"item_code": row.item_code,
+						"qty": qty,
+						"uom": row.default_unit_of_measurement,
+						"rate": flt(row.rate)
+					})
+
+	bom = frappe.get_doc({
+		"doctype": "BOM",
+		"item": pps.item_code,
+		"quantity": 1,
+		"company": frappe.defaults.get_defaults().company,
+		"items": bom_items,
+		"pre_production_sample": pps.name,
+		"custom_tech_pack_no": pps.tech_pack_no,
+		"bom_type": bom_type,
+		"is_default": 1 if bom_type == "Bulk Production" else 0
+	})
+	bom.insert()
+
+	# Link back to PPS
+	if bom_type == "Sample Making":
+		pps.db_set("sample_bom", bom.name)
+	else:
+		pps.db_set("production_bom", bom.name)
+
+	return bom.name
+
+def link_work_order_to_pps(doc, method):
+	"""Auto-link Work Order to PPS when created from BOM"""
+	if doc.bom_no:
+		pps = frappe.db.get_value("BOM", doc.bom_no,
+			["pre_production_sample", "custom_tech_pack_no"], as_dict=True)
+		if pps and pps.pre_production_sample:
+			doc.db_set("pre_production_sample", pps.pre_production_sample)
+			doc.db_set("custom_tech_pack_no", pps.custom_tech_pack_no)
+			# Update PPS work_order field
+			frappe.db.set_value("Pre Production Sample",
+				pps.pre_production_sample, "work_order", doc.name)

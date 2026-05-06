@@ -82,6 +82,24 @@ frappe.ui.form.on("Cost Estimation", {
 			};
 		});
 
+		frm.set_query("warehouse", "materials", () => {
+			return {
+				filters: {
+					company: frm.doc.company,
+					is_group: 0
+				}
+			};
+		});
+
+		frm.set_query("warehouse", "accessories", () => {
+			return {
+				filters: {
+					company: frm.doc.company,
+					is_group: 0
+				}
+			};
+		});
+
 		if (frm.doc.docstatus === 1) {
 			frappe.call({
 				method: 'frappe.client.get_count',

@@ -149,13 +149,11 @@ override_doctype_class = {
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Work Order": {
+		"after_insert": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.link_work_order_to_pps"
+	}
+}
 
 # Scheduled Tasks
 # ---------------

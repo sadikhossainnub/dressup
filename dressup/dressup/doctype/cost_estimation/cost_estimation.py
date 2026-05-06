@@ -94,6 +94,71 @@ class CostEstimation(Document):
 		if flt(self.total_fabric) == 0 and flt(self.total_trim_and_accessories) == 0:
 			frappe.throw("Total cost cannot be zero")
 
+	def on_submit(self):
+		if self.reserve_stock:
+			self.create_stock_reservation_entries()
+
+	def on_cancel(self):
+		self.cancel_stock_reservation_entries()
+
+	def create_stock_reservation_entries(self):
+		"""Create Stock Reservation Entry for each item in materials and accessories"""
+		has_reservation = False
+		
+		# Process Materials
+		for item in self.materials:
+			if item.item_code and item.warehouse and flt(item.qty) > 0:
+				self.create_reservation_entry(item.item_code, item.warehouse, item.qty, item)
+				has_reservation = True
+		
+		# Process Accessories
+		for item in self.accessories:
+			if item.itemcode and item.warehouse and flt(item.qty) > 0:
+				self.create_reservation_entry(item.itemcode, item.warehouse, item.qty, item)
+				has_reservation = True
+
+		if has_reservation:
+			self.db_set("stock_reservation_status", "Reserved")
+		
+	def create_reservation_entry(self, item_code, warehouse, qty, row):
+		"""Helper to create a single Stock Reservation Entry"""
+		sre = frappe.get_doc({
+			"doctype": "Stock Reservation Entry",
+			"item_code": item_code,
+			"warehouse": warehouse,
+			"voucher_type": self.doctype,
+			"voucher_no": self.name,
+			"voucher_detail_no": row.name,
+			"reserved_qty": qty,
+			"company": self.company,
+			"status": "Reserved"
+		})
+		sre.insert(ignore_permissions=True)
+		sre.submit()
+		row.db_set("reserved_qty", qty)
+
+	def cancel_stock_reservation_entries(self):
+		"""Cancel and delete all associated Stock Reservation Entries"""
+		entries = frappe.get_all("Stock Reservation Entry", filters={
+			"voucher_type": self.doctype,
+			"voucher_no": self.name,
+			"docstatus": ["<", 2]
+		})
+		
+		for entry in entries:
+			sre = frappe.get_doc("Stock Reservation Entry", entry.name)
+			if sre.docstatus == 1:
+				sre.cancel()
+			frappe.delete_doc("Stock Reservation Entry", entry.name)
+		
+		self.db_set("stock_reservation_status", "Unreserved")
+		
+		# Reset reserved_qty in child tables
+		for item in self.materials:
+			item.db_set("reserved_qty", 0)
+		for item in self.accessories:
+			item.db_set("reserved_qty", 0)
+
 
 @frappe.whitelist()
 def make_pre_production_sample(source_name, target_doc=None):
@@ -127,6 +192,7 @@ def make_pre_production_sample(source_name, target_doc=None):
 			"Cost Estimation": {
 				"doctype": "Pre Production Sample",
 				"field_map": {
+					"name": "cost_estimation",
 					"category": "category",
 					"item_name": "item_name",
 					"cut_fit_style": "cut_fit_style",

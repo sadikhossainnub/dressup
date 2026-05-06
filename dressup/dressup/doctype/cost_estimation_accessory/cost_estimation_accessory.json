@@ -7,9 +7,11 @@
  "field_order": [
   "itemcode",
   "item_name",
+  "warehouse",
   "qty",
   "rate",
-  "amount"
+  "amount",
+  "reserved_qty"
  ],
  "fields": [
   {
@@ -24,6 +26,13 @@
    "fieldname": "item_name",
    "fieldtype": "Data",
    "label": "Item Name"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Warehouse",
+   "options": "Warehouse"
   },
   {
    "fieldname": "qty",
@@ -43,6 +52,12 @@
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reserved_qty",
+   "fieldtype": "Float",
+   "label": "Reserved Qty",
    "read_only": 1
   }
  ],
