@@ -15,7 +15,8 @@ class CostEstimation(Document):
 		self.calculate_total_tailoring()
 		self.calculate_total_finishing()
 		self.calculate_suggested_selling_prices()
-	
+
+
 	def calculate_total_fabric(self):
 		"""Calculate total fabric cost from materials table"""
 		total = 0
