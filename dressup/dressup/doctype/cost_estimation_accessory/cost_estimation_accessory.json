@@ -11,6 +11,7 @@
   "qty",
   "rate",
   "amount",
+  "stock_in_hand",
   "reserved_qty"
  ],
  "fields": [
@@ -52,6 +53,14 @@
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "stock_in_hand",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Stock in Hand",
+   "precision": "2",
    "read_only": 1
   },
   {

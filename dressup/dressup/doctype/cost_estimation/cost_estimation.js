@@ -5,6 +5,13 @@ frappe.ui.form.on("Cost Estimation Accessory", {
 	itemcode(frm, cdt, cdn) {
 		let row = locals[cdt][cdn];
 		if (row.itemcode) {
+			frappe.call({
+				method: "erpnext.stock.utils.get_latest_stock_qty",
+				args: { item_code: row.itemcode },
+				callback(r) {
+					frappe.model.set_value(cdt, cdn, "stock_in_hand", r.message || 0);
+				}
+			});
 			frappe.db.get_value("Item Price", { item_code: row.itemcode }, "price_list_rate", (r) => {
 				if (r && r.price_list_rate) {
 					frappe.model.set_value(cdt, cdn, "rate", r.price_list_rate);

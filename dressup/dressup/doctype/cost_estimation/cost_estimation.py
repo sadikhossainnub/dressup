@@ -86,6 +86,20 @@ class CostEstimation(Document):
 		else:
 			self.hand_embroidery_only = 0
 	
+	def on_update(self):
+		"""Auto create/cancel stock reservation on save based on reserve_stock checkbox"""
+		if self.reserve_stock:
+			# Cancel existing reservations first (to handle item changes)
+			self._cancel_existing_reservations()
+			# Create fresh reservations
+			self.create_stock_reservation_entries()
+			frappe.msgprint("Stock Reservation Entries created successfully.", indicator="green", alert=True)
+		else:
+			# If reserve_stock is unchecked, cancel any existing reservations
+			if self._has_existing_reservations():
+				self._cancel_existing_reservations()
+				frappe.msgprint("Stock Reservation Entries cancelled.", indicator="orange", alert=True)
+
 	def before_submit(self):
 		"""Validation before submission"""
 		if not self.materials and not self.accessories:
@@ -95,11 +109,42 @@ class CostEstimation(Document):
 			frappe.throw("Total cost cannot be zero")
 
 	def on_submit(self):
-		if self.reserve_stock:
+		"""Ensure stock reservation on submit if checked and not already reserved"""
+		if self.reserve_stock and not self._has_existing_reservations():
 			self.create_stock_reservation_entries()
 
 	def on_cancel(self):
 		self.cancel_stock_reservation_entries()
+
+	def _has_existing_reservations(self):
+		"""Check if any active Stock Reservation Entries exist for this document"""
+		return frappe.db.exists("Stock Reservation Entry", {
+			"voucher_type": self.doctype,
+			"voucher_no": self.name,
+			"docstatus": ["<", 2]
+		})
+
+	def _cancel_existing_reservations(self):
+		"""Cancel and delete all associated Stock Reservation Entries, reset child table qty"""
+		entries = frappe.get_all("Stock Reservation Entry", filters={
+			"voucher_type": self.doctype,
+			"voucher_no": self.name,
+			"docstatus": ["<", 2]
+		})
+
+		for entry in entries:
+			sre = frappe.get_doc("Stock Reservation Entry", entry.name)
+			if sre.docstatus == 1:
+				sre.cancel()
+			frappe.delete_doc("Stock Reservation Entry", entry.name)
+
+		self.db_set("stock_reservation_status", "Unreserved")
+
+		# Reset reserved_qty in child tables
+		for item in self.materials:
+			item.db_set("reserved_qty", 0)
+		for item in self.accessories:
+			item.db_set("reserved_qty", 0)
 
 	def create_stock_reservation_entries(self):
 		"""Create Stock Reservation Entry for each item in materials and accessories"""
@@ -139,25 +184,7 @@ class CostEstimation(Document):
 
 	def cancel_stock_reservation_entries(self):
 		"""Cancel and delete all associated Stock Reservation Entries"""
-		entries = frappe.get_all("Stock Reservation Entry", filters={
-			"voucher_type": self.doctype,
-			"voucher_no": self.name,
-			"docstatus": ["<", 2]
-		})
-		
-		for entry in entries:
-			sre = frappe.get_doc("Stock Reservation Entry", entry.name)
-			if sre.docstatus == 1:
-				sre.cancel()
-			frappe.delete_doc("Stock Reservation Entry", entry.name)
-		
-		self.db_set("stock_reservation_status", "Unreserved")
-		
-		# Reset reserved_qty in child tables
-		for item in self.materials:
-			item.db_set("reserved_qty", 0)
-		for item in self.accessories:
-			item.db_set("reserved_qty", 0)
+		self._cancel_existing_reservations()
 
 
 @frappe.whitelist()

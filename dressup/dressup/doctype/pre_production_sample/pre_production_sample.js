@@ -164,6 +164,18 @@ frappe.ui.form.on("Pre Production Sample", {
 });
 
 frappe.ui.form.on("PPS Fabric Item", {
+	item_code: function(frm, cdt, cdn) {
+		let row = locals[cdt][cdn];
+		if (row.item_code) {
+			frappe.call({
+				method: "erpnext.stock.utils.get_latest_stock_qty",
+				args: { item_code: row.item_code },
+				callback(r) {
+					frappe.model.set_value(cdt, cdn, "stock_in_hand", r.message || 0);
+				}
+			});
+		}
+	},
 	actual_quantity: function (frm, cdt, cdn) {
 		calculate_child_amount(frm, cdt, cdn);
 	},
@@ -173,6 +185,18 @@ frappe.ui.form.on("PPS Fabric Item", {
 });
 
 frappe.ui.form.on("PPS Trim Accessories Item", {
+	item_code: function(frm, cdt, cdn) {
+		let row = locals[cdt][cdn];
+		if (row.item_code) {
+			frappe.call({
+				method: "erpnext.stock.utils.get_latest_stock_qty",
+				args: { item_code: row.item_code },
+				callback(r) {
+					frappe.model.set_value(cdt, cdn, "stock_in_hand", r.message || 0);
+				}
+			});
+		}
+	},
 	actual_quantity: function (frm, cdt, cdn) {
 		calculate_child_amount(frm, cdt, cdn);
 	},
@@ -182,6 +206,18 @@ frappe.ui.form.on("PPS Trim Accessories Item", {
 });
 
 frappe.ui.form.on("Fabric Dupatta", {
+	item_code: function(frm, cdt, cdn) {
+		let row = locals[cdt][cdn];
+		if (row.item_code) {
+			frappe.call({
+				method: "erpnext.stock.utils.get_latest_stock_qty",
+				args: { item_code: row.item_code },
+				callback(r) {
+					frappe.model.set_value(cdt, cdn, "stock_in_hand", r.message || 0);
+				}
+			});
+		}
+	},
 	actual_quantity: function (frm, cdt, cdn) {
 		calculate_child_amount(frm, cdt, cdn);
 	},

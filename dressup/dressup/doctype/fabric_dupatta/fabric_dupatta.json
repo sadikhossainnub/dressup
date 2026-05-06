@@ -10,6 +10,7 @@
   "item_name",
   "default_unit_of_measurement",
   "item_group",
+  "stock_in_hand",
   "quantity",
   "actual_quantity",
   "rate",
@@ -44,6 +45,14 @@
    "fieldname": "item_group",
    "fieldtype": "Data",
    "label": "Item Group",
+   "read_only": 1
+  },
+  {
+   "fieldname": "stock_in_hand",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Stock in Hand",
+   "precision": "2",
    "read_only": 1
   },
   {
