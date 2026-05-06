@@ -168,6 +168,10 @@ class CostEstimation(Document):
 		
 	def create_reservation_entry(self, item_code, warehouse, qty, row):
 		"""Helper to create a single Stock Reservation Entry"""
+		from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import get_available_qty_to_reserve
+		
+		available_qty = get_available_qty_to_reserve(item_code, warehouse)
+
 		sre = frappe.get_doc({
 			"doctype": "Stock Reservation Entry",
 			"item_code": item_code,
@@ -176,6 +180,8 @@ class CostEstimation(Document):
 			"voucher_no": self.name,
 			"voucher_detail_no": row.name,
 			"reserved_qty": qty,
+			"voucher_qty": qty,
+			"available_qty": available_qty,
 			"company": self.company,
 			"status": "Reserved"
 		})
