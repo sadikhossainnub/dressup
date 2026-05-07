@@ -145,3 +145,10 @@ def make_cost_estimation(source_name, target_doc=None):
 	)
 	return cost_est
 
+@frappe.whitelist()
+def trigger_request_for_approval(docname):
+	doc = frappe.get_doc("Sketch Specification Sample Making Sheet", docname)
+	notification = frappe.get_doc("Notification", "Request For Approval")
+	notification.send(doc)
+	return True
+
