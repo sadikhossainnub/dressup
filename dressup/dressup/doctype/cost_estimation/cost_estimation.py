@@ -280,3 +280,11 @@ def make_item(source_name, target_doc=None):
 		target_doc
 	)
 	return item
+
+
+@frappe.whitelist()
+def trigger_request_for_approval(docname):
+	doc = frappe.get_doc("Cost Estimation", docname)
+	notification = frappe.get_doc("Notification", "Cost Estamitation Approval")
+	notification.send(doc)
+	return True
