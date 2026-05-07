@@ -208,11 +208,11 @@ def make_bom(source_name, bom_type="Sample Making"):
 		"is_default": 1 if bom_type == "Bulk Production" else 0
 	}
 
-	# Populate both legacy and custom fields when present (some sites have both).
-	if frappe.db.has_column("BOM", "custom_pre_production_sample"):
-		bom_data["custom_pre_production_sample"] = pps.name
+	# Prefer legacy fieldname without custom_ prefix.
 	if frappe.db.has_column("BOM", "pre_production_sample"):
 		bom_data["pre_production_sample"] = pps.name
+	elif frappe.db.has_column("BOM", "custom_pre_production_sample"):
+		bom_data["custom_pre_production_sample"] = pps.name
 
 	if frappe.db.has_column("BOM", "custom_tech_pack_no"):
 		bom_data["custom_tech_pack_no"] = pps.tech_pack_no
@@ -242,7 +242,7 @@ def link_work_order_to_pps(doc, method):
 
 	fields = []
 	bom_pps_field = None
-	for fieldname in ("custom_pre_production_sample", "pre_production_sample"):
+	for fieldname in ("pre_production_sample", "custom_pre_production_sample"):
 		if frappe.db.has_column("BOM", fieldname):
 			bom_pps_field = fieldname
 			fields.append(fieldname)
@@ -273,9 +273,9 @@ def link_work_order_to_pps(doc, method):
 	# 2) Carry PPS link from BOM -> Work Order and update PPS.work_order
 	pps_name = bom_data.get(bom_pps_field) if bom_pps_field else None
 	if pps_name:
-		if frappe.db.has_column("Work Order", "custom_pre_production_sample"):
-			doc.db_set("custom_pre_production_sample", pps_name)
 		if frappe.db.has_column("Work Order", "pre_production_sample"):
 			doc.db_set("pre_production_sample", pps_name)
+		elif frappe.db.has_column("Work Order", "custom_pre_production_sample"):
+			doc.db_set("custom_pre_production_sample", pps_name)
 
 		frappe.db.set_value("Pre Production Sample", pps_name, "work_order", doc.name)
