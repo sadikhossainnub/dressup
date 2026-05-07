@@ -110,11 +110,14 @@ frappe.ui.form.on("Pre Production Sample", {
 	},
 
 	add_default_size_chart(frm) {
-		const sizes = ['36', '38', '40', '42'];
+		const sizes = ['36', '38', '40', '42', '44'];
+		const existing_sizes = new Set((frm.doc.size_chart_in_inch || []).map((row) => row.size_chart_in_inch));
 		sizes.forEach(size => {
-			frm.add_child('size_chart_in_inch', {
-				size_chart_in_inch: size
-			});
+			if (!existing_sizes.has(size)) {
+				frm.add_child('size_chart_in_inch', {
+					size_chart_in_inch: size
+				});
+			}
 		});
 		frm.refresh_field('size_chart_in_inch');
 	},

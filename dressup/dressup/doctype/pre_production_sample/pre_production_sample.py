@@ -30,7 +30,7 @@ class PreProductionSample(Document):
 	
 	def validate(self):
 		"""Auto-populate fields from Tech Pack"""
-		if self.tech_pack_no and not self.is_new():
+		if self.tech_pack_no:
 			self.fetch_tech_pack_data()
 	
 	def fetch_tech_pack_data(self):
@@ -75,13 +75,15 @@ class PreProductionSample(Document):
 			frappe.throw("PPS Back image is mandatory for submission")
 		
 		# Check if Quality Inspection exists and is submitted
-		qi = frappe.db.exists("Quality Inspection", {
+		qi = frappe.db.get_value("Quality Inspection", {
 			"reference_type": "Pre Production Sample",
 			"reference_name": self.name,
 			"docstatus": 1
-		})
+		}, ["name", "status"], as_dict=True)
 		if not qi:
 			frappe.throw("Please create and submit Quality Inspection before submitting PPS")
+		if qi.status != "Accepted":
+			frappe.throw(f"Quality Inspection must be Accepted before submitting PPS. Current status: {qi.status}")
 		
 		# Auto-set finish time
 		if not self.finish_time_date:
@@ -91,6 +93,16 @@ class PreProductionSample(Document):
 		"""Create Stock Entry for material issue"""
 		if not self.source_warehouse:
 			frappe.throw("Source Warehouse is required for stock reduction")
+		company = frappe.defaults.get_defaults().company
+		if not company:
+			frappe.throw("Default Company is not configured. Please set a default company before submitting PPS")
+
+		expense_account = frappe.db.get_value("Company", company, "default_expense_account")
+		if not expense_account:
+			frappe.throw(
+				f"Default Expense Account is not set for company {company}. "
+				"Please configure Company.default_expense_account"
+			)
 		
 		# Collect all items with actual quantity > 0
 		items = []
@@ -106,7 +118,7 @@ class PreProductionSample(Document):
 							"uom": row.default_unit_of_measurement,
 							"s_warehouse": self.source_warehouse,
 							"t_warehouse": None,
-							"expense_account": frappe.db.get_value("Company", frappe.defaults.get_defaults().company, "default_expense_account") or "Cost of Goods Sold - DT"
+							"expense_account": expense_account,
 						})
 		
 		if not items:
@@ -116,7 +128,7 @@ class PreProductionSample(Document):
 		stock_entry = frappe.get_doc({
 			"doctype": "Stock Entry",
 			"stock_entry_type": "Material Issue",
-			"company": frappe.defaults.get_defaults().company,
+			"company": company,
 			"items": items,
 			"remarks": f"Issued for Pre Production Sample: {self.name}"
 		})
@@ -212,16 +224,37 @@ def link_work_order_to_pps(doc, method):
 	"""Auto-link Work Order to PPS when created from BOM"""
 	if not doc.bom_no:
 		return
-	if not frappe.db.has_column("BOM", "custom_pre_production_sample"):
+
+	bom_pps_field = None
+	for fieldname in ("custom_pre_production_sample", "pre_production_sample"):
+		if frappe.db.has_column("BOM", fieldname):
+			bom_pps_field = fieldname
+			break
+	if not bom_pps_field:
 		return
-	fields = ["custom_pre_production_sample"]
+
+	fields = [bom_pps_field]
 	if frappe.db.has_column("BOM", "custom_tech_pack_no"):
 		fields.append("custom_tech_pack_no")
-	pps = frappe.db.get_value("BOM", doc.bom_no, fields, as_dict=True)
-	if pps and pps.custom_pre_production_sample:
-		doc.db_set("custom_pre_production_sample", pps.custom_pre_production_sample)
-		if pps.get("custom_tech_pack_no") and frappe.db.has_column("Work Order", "custom_tech_pack_no"):
-			doc.db_set("custom_tech_pack_no", pps.custom_tech_pack_no)
-		# Update PPS work_order field
-		frappe.db.set_value("Pre Production Sample",
-			pps.custom_pre_production_sample, "work_order", doc.name)
+
+	bom_data = frappe.db.get_value("BOM", doc.bom_no, fields, as_dict=True)
+	if not bom_data:
+		return
+
+	pps_name = bom_data.get(bom_pps_field)
+	if not pps_name:
+		return
+
+	work_order_pps_field = None
+	for fieldname in ("custom_pre_production_sample", "pre_production_sample"):
+		if frappe.db.has_column("Work Order", fieldname):
+			work_order_pps_field = fieldname
+			break
+	if work_order_pps_field:
+		doc.db_set(work_order_pps_field, pps_name)
+
+	if bom_data.get("custom_tech_pack_no") and frappe.db.has_column("Work Order", "custom_tech_pack_no"):
+		doc.db_set("custom_tech_pack_no", bom_data.custom_tech_pack_no)
+
+	# Update PPS work_order field
+	frappe.db.set_value("Pre Production Sample", pps_name, "work_order", doc.name)
