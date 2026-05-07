@@ -210,12 +210,18 @@ def make_bom(source_name, bom_type="Sample Making"):
 
 def link_work_order_to_pps(doc, method):
 	"""Auto-link Work Order to PPS when created from BOM"""
-	if doc.bom_no:
-		pps = frappe.db.get_value("BOM", doc.bom_no,
-			["custom_pre_production_sample", "custom_tech_pack_no"], as_dict=True)
-		if pps and pps.custom_pre_production_sample:
-			doc.db_set("custom_pre_production_sample", pps.custom_pre_production_sample)
+	if not doc.bom_no:
+		return
+	if not frappe.db.has_column("BOM", "custom_pre_production_sample"):
+		return
+	fields = ["custom_pre_production_sample"]
+	if frappe.db.has_column("BOM", "custom_tech_pack_no"):
+		fields.append("custom_tech_pack_no")
+	pps = frappe.db.get_value("BOM", doc.bom_no, fields, as_dict=True)
+	if pps and pps.custom_pre_production_sample:
+		doc.db_set("custom_pre_production_sample", pps.custom_pre_production_sample)
+		if pps.get("custom_tech_pack_no") and frappe.db.has_column("Work Order", "custom_tech_pack_no"):
 			doc.db_set("custom_tech_pack_no", pps.custom_tech_pack_no)
-			# Update PPS work_order field
-			frappe.db.set_value("Pre Production Sample",
-				pps.custom_pre_production_sample, "work_order", doc.name)
+		# Update PPS work_order field
+		frappe.db.set_value("Pre Production Sample",
+			pps.custom_pre_production_sample, "work_order", doc.name)

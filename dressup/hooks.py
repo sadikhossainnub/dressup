@@ -95,7 +95,7 @@ jinja = {
 # ------------
 
 # before_install = "dressup.install.before_install"
-# after_install = "dressup.install.after_install"
+after_install = "dressup.setup_custom_fields.execute"
 
 # Uninstallation
 # ------------
