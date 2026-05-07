@@ -208,14 +208,10 @@ def make_bom(source_name, bom_type="Sample Making"):
 		"is_default": 1 if bom_type == "Bulk Production" else 0
 	}
 
-	# Prefer legacy fieldname without custom_ prefix.
+	# Use only legacy fieldnames (no custom_ prefix).
 	if frappe.db.has_column("BOM", "pre_production_sample"):
 		bom_data["pre_production_sample"] = pps.name
-	elif frappe.db.has_column("BOM", "custom_pre_production_sample"):
-		bom_data["custom_pre_production_sample"] = pps.name
 
-	if frappe.db.has_column("BOM", "custom_tech_pack_no"):
-		bom_data["custom_tech_pack_no"] = pps.tech_pack_no
 	if frappe.db.has_column("BOM", "tech_pack_no"):
 		bom_data["tech_pack_no"] = pps.tech_pack_no
 
@@ -242,18 +238,14 @@ def link_work_order_to_pps(doc, method):
 
 	fields = []
 	bom_pps_field = None
-	for fieldname in ("pre_production_sample", "custom_pre_production_sample"):
-		if frappe.db.has_column("BOM", fieldname):
-			bom_pps_field = fieldname
-			fields.append(fieldname)
-			break
+	if frappe.db.has_column("BOM", "pre_production_sample"):
+		bom_pps_field = "pre_production_sample"
+		fields.append("pre_production_sample")
 
 	bom_tech_pack_field = None
-	for fieldname in ("custom_tech_pack_no", "tech_pack_no"):
-		if frappe.db.has_column("BOM", fieldname):
-			bom_tech_pack_field = fieldname
-			fields.append(fieldname)
-			break
+	if frappe.db.has_column("BOM", "tech_pack_no"):
+		bom_tech_pack_field = "tech_pack_no"
+		fields.append("tech_pack_no")
 
 	if not fields:
 		return
@@ -263,10 +255,8 @@ def link_work_order_to_pps(doc, method):
 		return
 
 	# 1) Carry tech pack from BOM -> Work Order
-	tech_pack_no = bom_data.get("custom_tech_pack_no") or bom_data.get("tech_pack_no")
+	tech_pack_no = bom_data.get("tech_pack_no")
 	if tech_pack_no:
-		if frappe.db.has_column("Work Order", "custom_tech_pack_no"):
-			doc.db_set("custom_tech_pack_no", tech_pack_no)
 		if frappe.db.has_column("Work Order", "tech_pack_no"):
 			doc.db_set("tech_pack_no", tech_pack_no)
 
@@ -275,7 +265,5 @@ def link_work_order_to_pps(doc, method):
 	if pps_name:
 		if frappe.db.has_column("Work Order", "pre_production_sample"):
 			doc.db_set("pre_production_sample", pps_name)
-		elif frappe.db.has_column("Work Order", "custom_pre_production_sample"):
-			doc.db_set("custom_pre_production_sample", pps_name)
 
 		frappe.db.set_value("Pre Production Sample", pps_name, "work_order", doc.name)

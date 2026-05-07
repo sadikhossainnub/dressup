@@ -5,14 +5,10 @@ frappe.ui.form.on("BOM", {
 
 	setup_pps_mapping(frm) {
 		// When a PPS is selected on BOM, auto-set Tech Pack No from PPS.tech_pack_no.
-		// Supports both legacy and custom fieldnames across different databases.
-		const pps_field = frm.doc.hasOwnProperty("pre_production_sample")
-			? "pre_production_sample"
-			: (frm.doc.hasOwnProperty("custom_pre_production_sample") ? "custom_pre_production_sample" : null);
+		// Uses only legacy fieldnames.
+		if (!frm.doc.hasOwnProperty("pre_production_sample")) return;
 
-		if (!pps_field) return;
-
-		frm.set_query(pps_field, () => ({
+		frm.set_query("pre_production_sample", () => ({
 			filters: {
 				docstatus: 1,
 			},
@@ -23,9 +19,7 @@ frappe.ui.form.on("BOM", {
 		set_tech_pack_from_pps(frm, frm.doc.pre_production_sample);
 	},
 
-	custom_pre_production_sample(frm) {
-		set_tech_pack_from_pps(frm, frm.doc.custom_pre_production_sample);
-	},
+	// Only legacy fieldnames are supported
 });
 
 function set_tech_pack_from_pps(frm, pps_name) {
@@ -35,12 +29,7 @@ function set_tech_pack_from_pps(frm, pps_name) {
 		const tech_pack_no = r && r.tech_pack_no ? r.tech_pack_no : null;
 		if (!tech_pack_no) return;
 
-		if (frm.doc.hasOwnProperty("custom_tech_pack_no")) {
-			frm.set_value("custom_tech_pack_no", tech_pack_no);
-		}
-		if (frm.doc.hasOwnProperty("tech_pack_no")) {
-			frm.set_value("tech_pack_no", tech_pack_no);
-		}
+		if (frm.doc.hasOwnProperty("tech_pack_no")) frm.set_value("tech_pack_no", tech_pack_no);
 	});
 }
 
