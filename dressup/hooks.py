@@ -157,6 +157,9 @@ doc_events = {
 	"*": {
 		"on_update": "dressup.utils.workflow_tracker.track_workflow_action"
 	},
+	"BOM": {
+		"before_cancel": "dressup.utils.bom_cancel.cancel_linked_pps_and_qi"
+	},
 	"Work Order": {
 		"after_insert": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.link_work_order_to_pps"
 	}
