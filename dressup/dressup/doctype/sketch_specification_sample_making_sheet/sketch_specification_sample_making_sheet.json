@@ -131,6 +131,40 @@
   "cuff_width",
   "cuff_opening",
   "pocket_length",
+  "inner_koti_measurements_section",
+  "inner_column_break_eghr",
+  "ik_full_length",
+  "ik_cf_length",
+  "ik_cb_length",
+  "ik_waist_circumstance",
+  "ik_bust",
+  "ik_upper_hip",
+  "ik_lower_hip",
+  "ik_front_neck_depth",
+  "ik_back_neck_depth",
+  "ik_shoulder_tip_to_side_waist",
+  "ik_front_neck_depth_s",
+  "ik_back_neck_depth_s",
+  "ik_collar_width_height",
+  "ik_button_placket_length",
+  "ik_button_placket_width",
+  "inner_column_break_wtxg",
+  "ik_hem",
+  "ik_shoulder_drop",
+  "ik_shoulder",
+  "ik_armhole",
+  "ik_full_length_arm",
+  "ik_biceps",
+  "ik_elbow",
+  "ik_armhole_arm",
+  "ik_cuff_length",
+  "ik_cuff_width",
+  "ik_cuff_opening",
+  "ik_pocket_length",
+  "ik_pocket_width",
+  "ik_pocket_opening",
+  "ik_pocket_placket",
+  "ik_shoulder_tip_to_pocket_starting",
   "bottom_section",
   "column_break_lvwn",
   "length_bottom",
@@ -251,6 +285,7 @@
    "label": "Tie & Dye"
   },
   {
+   "collapsible": 1,
    "fieldname": "measurements_section",
    "fieldtype": "Section Break",
    "label": "Measurements"
@@ -413,6 +448,176 @@
    "label": "\u0995\u09cb\u09ae\u09b0 (Relaxed \u00d72)"
   },
   {
+   "collapsible": 1,
+   "fieldname": "inner_koti_measurements_section",
+   "fieldtype": "Section Break",
+   "label": "Inner/Koti Measurements"
+  },
+  {
+   "fieldname": "inner_column_break_eghr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ik_full_length",
+   "fieldtype": "Float",
+   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CF \u09b9\u09c7\u09ae)"
+  },
+  {
+   "fieldname": "ik_cf_length",
+   "fieldtype": "Float",
+   "label": "CB \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CB \u09b9\u09c7\u09ae)"
+  },
+  {
+   "fieldname": "ik_cb_length",
+   "fieldtype": "Float",
+   "label": "\u09ac\u0995\u09cd\u09b7 (Chest)"
+  },
+  {
+   "fieldname": "ik_waist_circumstance",
+   "fieldtype": "Float",
+   "label": "\u0995\u09cb\u09ae\u09b0 (Waist)"
+  },
+  {
+   "fieldname": "ik_bust",
+   "fieldtype": "Float",
+   "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (High Hip)"
+  },
+  {
+   "fieldname": "ik_upper_hip",
+   "fieldtype": "Float",
+   "label": "\u09a8\u09bf\u09ae\u09cd\u09a8 \u09b9\u09bf\u09aa (Low Hip)"
+  },
+  {
+   "fieldname": "ik_lower_hip",
+   "fieldtype": "Float",
+   "label": "\u09b9\u09c7\u09ae \u09b8\u09c1\u0987\u09aa (Hem Sweep)"
+  },
+  {
+   "fieldname": "ik_front_neck_depth",
+   "fieldtype": "Float",
+   "label": "\u09b8\u09be\u09ae\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Front Neck Drop)"
+  },
+  {
+   "fieldname": "ik_back_neck_depth",
+   "fieldtype": "Float",
+   "label": "\u09aa\u09bf\u099b\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Back Neck Drop)"
+  },
+  {
+   "fieldname": "ik_shoulder_tip_to_side_waist",
+   "fieldtype": "Float",
+   "label": "\u0997\u09b2\u09be\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Neck Width)"
+  },
+  {
+   "fieldname": "ik_front_neck_depth_s",
+   "fieldtype": "Float",
+   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Collar Width)"
+  },
+  {
+   "fieldname": "ik_back_neck_depth_s",
+   "fieldtype": "Float",
+   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u0989\u099a\u09cd\u099a\u09a4\u09be (Collar Height)"
+  },
+  {
+   "fieldname": "ik_collar_width_height",
+   "fieldtype": "Float",
+   "label": "\u0995\u09be\u0981\u09a7 \u09a5\u09c7\u0995\u09c7 \u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Shoulder to Shoulder)"
+  },
+  {
+   "fieldname": "ik_button_placket_length",
+   "fieldtype": "Float",
+   "label": "\u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09a2\u09be\u09b2/\u09a1\u09cd\u09b0\u09aa (Shoulder Drop)"
+  },
+  {
+   "fieldname": "ik_button_placket_width",
+   "fieldtype": "Float",
+   "label": "\u0986\u09b0\u09cd\u09ae\u09b9\u09cb\u09b2\u09c7\u09b0 \u0997\u09ad\u09c0\u09b0\u09a4\u09be (Armhole Depth)"
+  },
+  {
+   "fieldname": "inner_column_break_wtxg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ik_hem",
+   "fieldtype": "Float",
+   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Button Placket Length)"
+  },
+  {
+   "fieldname": "ik_shoulder_drop",
+   "fieldtype": "Float",
+   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Button Placket Width)"
+  },
+  {
+   "fieldname": "ik_shoulder",
+   "fieldtype": "Float",
+   "label": "\u09b8\u09cd\u09b2\u09bf\u09ad\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Sleeve Length)"
+  },
+  {
+   "fieldname": "ik_armhole",
+   "fieldtype": "Float",
+   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (Bicep)"
+  },
+  {
+   "fieldname": "ik_full_length_arm",
+   "fieldtype": "Float",
+   "label": "\u098f\u09b2\u09ac\u09cb (Elbow)"
+  },
+  {
+   "fieldname": "ik_biceps",
+   "fieldtype": "Float",
+   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (\u00d72)"
+  },
+  {
+   "fieldname": "ik_elbow",
+   "fieldtype": "Float",
+   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Pocket Length)"
+  },
+  {
+   "fieldname": "ik_armhole_arm",
+   "fieldtype": "Float",
+   "label": "\u0995\u09be\u09ab \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Cuff Opening)"
+  },
+  {
+   "fieldname": "ik_cuff_length",
+   "fieldtype": "Float",
+   "label": "\u09aa\u0995\u09c7\u099f \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Pocket Opening)"
+  },
+  {
+   "fieldname": "ik_cuff_width",
+   "fieldtype": "Float",
+   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u0985\u09ab\u09b8\u09cd\u09a5\u09be\u09a8 (Pocket Position)"
+  },
+  {
+   "fieldname": "ik_cuff_opening",
+   "fieldtype": "Float",
+   "label": "\u0986\u0989\u099f\u09b8\u09bf\u09ae (Outseam)"
+  },
+  {
+   "fieldname": "ik_pocket_length",
+   "fieldtype": "Float",
+   "label": "\u0987\u09a8\u09b8\u09bf\u09ae (Inseam)"
+  },
+  {
+   "fieldname": "ik_pocket_width",
+   "fieldtype": "Float",
+   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Pocket Width)"
+  },
+  {
+   "fieldname": "ik_pocket_opening",
+   "fieldtype": "Float",
+   "label": "\u09ac\u09cd\u09af\u09be\u0995 \u09b0\u09be\u0987\u099c (Back Rise)"
+  },
+  {
+   "fieldname": "ik_pocket_placket",
+   "fieldtype": "Float",
+   "label": "\u0995\u09be\u09ab\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Cuff Length)"
+  },
+  {
+   "fieldname": "ik_shoulder_tip_to_pocket_starting",
+   "fieldtype": "Float",
+   "label": "\u0995\u09cb\u09ae\u09b0 (Relaxed \u00d72)"
+  },
+  {
+   "collapsible": 1,
    "fieldname": "bottom_section",
    "fieldtype": "Section Break",
    "label": "BOTTOM"
