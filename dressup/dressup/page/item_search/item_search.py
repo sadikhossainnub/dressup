@@ -58,14 +58,32 @@ def get_item_details(barcode):
 
     item = frappe.get_doc("Item", item_code)
     
-    # Get stock details
-    stock_details = frappe.get_all("Bin", 
-        filters={"item_code": item_code, "actual_qty": [">", 0]},
-        fields=["warehouse", "actual_qty as qty", "reserved_qty", "projected_qty"]
-    )
-
     # Get reservation details
     reservations = get_reservation_details(item_code)
+
+    # Get stock details
+    stock_details = frappe.get_all(
+        "Bin",
+        filters={"item_code": item_code, "actual_qty": [">", 0]},
+        fields=["warehouse", "actual_qty as qty", "reserved_qty"],
+    )
+
+    # Reserved qty from live reservations (pending qty), grouped by warehouse.
+    reserved_by_warehouse = {}
+    for reservation in reservations:
+        warehouse = reservation.get("warehouse")
+        if not warehouse:
+            continue
+        reserved_by_warehouse[warehouse] = reserved_by_warehouse.get(warehouse, 0) + (
+            reservation.get("remaining_qty") or 0
+        )
+
+    for stock in stock_details:
+        bin_reserved = stock.get("reserved_qty") or 0
+        live_reserved = reserved_by_warehouse.get(stock.get("warehouse"), 0)
+        effective_reserved = live_reserved if live_reserved > 0 else bin_reserved
+        stock["reserved_qty"] = effective_reserved
+        stock["unreserved_qty"] = (stock.get("qty") or 0) - effective_reserved
 
     # Get item prices
     prices = get_item_prices(item_code)

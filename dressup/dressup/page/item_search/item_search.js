@@ -264,11 +264,11 @@ class ItemSearch {
 					</div>
 					<div class="stock-card-detail">
 						<small class="text-muted">Reserved</small>
-						<strong>${s.reserved_qty || 0}</strong>
+						<strong>${s.reserved_qty || 0} ${data.uom}</strong>
 					</div>
 					<div class="stock-card-detail">
-						<small class="text-muted">Projected</small>
-						<strong>${s.projected_qty || 0}</strong>
+						<small class="text-muted">Unreserved Qty</small>
+						<strong>${s.unreserved_qty || 0} ${data.uom}</strong>
 					</div>
 				</div>
 			</div>
@@ -285,7 +285,7 @@ class ItemSearch {
 								<th>Warehouse</th>
 								<th class="text-right">Available Qty</th>
 								<th class="text-right">Reserved</th>
-								<th class="text-right">Projected</th>
+								<th class="text-right">Unreserved Qty</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -293,8 +293,8 @@ class ItemSearch {
 								<tr>
 									<td><span class="indicator-pill ${s.qty > 0 ? 'green' : 'red'}"></span> ${s.warehouse}</td>
 									<td class="text-right font-weight-bold">${s.qty} ${data.uom}</td>
-									<td class="text-right">${s.reserved_qty || 0}</td>
-									<td class="text-right">${s.projected_qty || 0}</td>
+									<td class="text-right">${s.reserved_qty || 0} ${data.uom}</td>
+									<td class="text-right">${s.unreserved_qty || 0} ${data.uom}</td>
 								</tr>
 							`).join('')}
 						</tbody>
