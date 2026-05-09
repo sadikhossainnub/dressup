@@ -47,6 +47,26 @@
         "dupatta_value_addition",
         "dupatta_color",
         "dupatta_fabric",
+        "workstation_section",
+        "cutting",
+        "fusing_bundling",
+        "sewing",
+        "machine_embroidery",
+        "hand_embroidery",
+        "column_break_oweg",
+        "hand_work",
+        "screen_print",
+        "block_print",
+        "tiedye",
+        "karchupi",
+        "finishing_section",
+        "wash_iron",
+        "column_break_miob",
+        "qc_packaging",
+        "column_break_uglg",
+        "transportation",
+        "column_break_svkd",
+        "total_finishing",
         "production_section",
         "fabrics",
         "trim_accessories",
@@ -135,6 +155,114 @@
             "fieldname": "finish_time_date",
             "fieldtype": "Datetime",
             "label": "Finish Time & Date:",
+            "read_only": 1
+        },
+        {
+            "fieldname": "workstation_section",
+            "fieldtype": "Section Break",
+            "label": "Workstation Charges"
+        },
+        {
+            "default": "0",
+            "fieldname": "cutting",
+            "fieldtype": "Check",
+            "label": "Cutting"
+        },
+        {
+            "default": "0",
+            "fieldname": "fusing_bundling",
+            "fieldtype": "Check",
+            "label": "Fusing & Bundling"
+        },
+        {
+            "default": "0",
+            "fieldname": "sewing",
+            "fieldtype": "Check",
+            "label": "Sewing"
+        },
+        {
+            "default": "0",
+            "fieldname": "machine_embroidery",
+            "fieldtype": "Check",
+            "label": "Machine Embroidery"
+        },
+        {
+            "default": "0",
+            "fieldname": "hand_embroidery",
+            "fieldtype": "Check",
+            "label": "Hand Embroidery"
+        },
+        {
+            "fieldname": "column_break_oweg",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "0",
+            "fieldname": "hand_work",
+            "fieldtype": "Check",
+            "label": "Hand Work"
+        },
+        {
+            "default": "0",
+            "fieldname": "screen_print",
+            "fieldtype": "Check",
+            "label": "Screen Print"
+        },
+        {
+            "default": "0",
+            "fieldname": "block_print",
+            "fieldtype": "Check",
+            "label": "Block Print"
+        },
+        {
+            "default": "0",
+            "fieldname": "tiedye",
+            "fieldtype": "Check",
+            "label": "Tie & Dye"
+        },
+        {
+            "default": "0",
+            "fieldname": "karchupi",
+            "fieldtype": "Check",
+            "label": "Karchupi"
+        },
+        {
+            "fieldname": "finishing_section",
+            "fieldtype": "Section Break",
+            "label": "Total Finishing"
+        },
+        {
+            "fieldname": "wash_iron",
+            "fieldtype": "Currency",
+            "label": "Wash & Iron"
+        },
+        {
+            "fieldname": "column_break_miob",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "qc_packaging",
+            "fieldtype": "Currency",
+            "label": "QC & Packaging"
+        },
+        {
+            "fieldname": "column_break_uglg",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "transportation",
+            "fieldtype": "Currency",
+            "label": "Transportation"
+        },
+        {
+            "fieldname": "column_break_svkd",
+            "fieldtype": "Column Break",
+            "read_only": 1
+        },
+        {
+            "fieldname": "total_finishing",
+            "fieldtype": "Currency",
+            "label": "Total Finishing",
             "read_only": 1
         },
         {
@@ -494,7 +622,7 @@
     "index_web_pages_for_search": 1,
     "is_submittable": 1,
     "links": [],
-    "modified": "2026-02-14 18:28:30.160476",
+    "modified": "2026-05-10 01:03:00.000000",
     "modified_by": "Administrator",
     "module": "DressUp",
     "name": "Pre Production Sample",

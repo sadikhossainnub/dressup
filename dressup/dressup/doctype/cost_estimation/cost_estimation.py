@@ -233,7 +233,23 @@ def make_pre_production_sample(source_name, target_doc=None):
 					"collar_neck_style": "collar_neck_style",
 					"side_cut": "side_cut",
 					"session": "session",
-					"sewing_finish": "sewing_finish"
+					"sewing_finish": "sewing_finish",
+					# Workstation Charges
+					"cutting": "cutting",
+					"fusing_bundling": "fusing_bundling",
+					"sewing": "sewing",
+					"machine_embroidery": "machine_embroidery",
+					"hand_embroidery": "hand_embroidery",
+					"hand_work": "hand_work",
+					"screen_print": "screen_print",
+					"block_print": "block_print",
+					"tiedye": "tiedye",
+					"karchupi": "karchupi",
+					# Total Finishing
+					"wash_iron": "wash_iron",
+					"qc_packaging": "qc_packaging",
+					"transportation": "transportation",
+					"total_finishing": "total_finishing"
 				},
 				"field_no_map": ["naming_series"],
 				"validation": {"docstatus": ["=", 1]}
@@ -254,7 +270,8 @@ def make_pre_production_sample(source_name, target_doc=None):
 			}
 		},
 		target_doc,
-		set_missing_values
+		set_missing_values,
+		ignore_permissions=True
 	)
 	
 	return doclist
