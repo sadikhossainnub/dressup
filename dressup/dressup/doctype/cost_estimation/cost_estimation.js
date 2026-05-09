@@ -6,10 +6,20 @@ frappe.ui.form.on("Cost Estimation Accessory", {
 		let row = locals[cdt][cdn];
 		if (row.itemcode) {
 			frappe.call({
-				method: "erpnext.stock.utils.get_latest_stock_qty",
-				args: { item_code: row.itemcode },
+				method: "frappe.client.get_list",
+				args: {
+					doctype: "Bin",
+					filters: { item_code: row.itemcode },
+					fields: ["actual_qty"]
+				},
 				callback(r) {
-					frappe.model.set_value(cdt, cdn, "stock_in_hand", r.message || 0);
+					let total_qty = 0;
+					if (r.message) {
+						r.message.forEach(bin => {
+							total_qty += (bin.actual_qty || 0);
+						});
+					}
+					frappe.model.set_value(cdt, cdn, "stock_in_hand", total_qty);
 				}
 			});
 			frappe.db.get_value("Item Price", { item_code: row.itemcode }, "price_list_rate", (r) => {
@@ -45,10 +55,20 @@ frappe.ui.form.on("Cost Estimation Material", {
 		let row = locals[cdt][cdn];
 		if (row.item_code) {
 			frappe.call({
-				method: "erpnext.stock.utils.get_latest_stock_qty",
-				args: { item_code: row.item_code },
+				method: "frappe.client.get_list",
+				args: {
+					doctype: "Bin",
+					filters: { item_code: row.item_code },
+					fields: ["actual_qty"]
+				},
 				callback(r) {
-					frappe.model.set_value(cdt, cdn, "stock_in_hand", r.message || 0);
+					let total_qty = 0;
+					if (r.message) {
+						r.message.forEach(bin => {
+							total_qty += (bin.actual_qty || 0);
+						});
+					}
+					frappe.model.set_value(cdt, cdn, "stock_in_hand", total_qty);
 				}
 			});
 			frappe.db.get_value("Item Price", { item_code: row.item_code }, "price_list_rate", (r) => {

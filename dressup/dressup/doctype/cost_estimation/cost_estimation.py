@@ -202,10 +202,15 @@ def make_pre_production_sample(source_name, target_doc=None):
 		target.start_time_date = now()
 		target.read_confirm_carefully = "I confirm that all measurements, materials, and specifications have been reviewed and are accurate."
 		
-		# Get first Quality Inspection Template
-		quality_templates = frappe.get_all("Quality Inspection Template", limit=1)
-		if quality_templates:
-			target.link_nsnp = quality_templates[0].name
+		# Get default Quality Inspection Template from Dressup Settings
+		default_inspection = frappe.db.get_single_value("Dressup Settings", "default_pps_inspection")
+		if default_inspection:
+			target.link_nsnp = default_inspection
+		else:
+			# Fallback: get first available template
+			quality_templates = frappe.get_all("Quality Inspection Template", limit=1)
+			if quality_templates:
+				target.link_nsnp = quality_templates[0].name
 		
 		# Add default size chart rows
 		for size in ['36', '38', '40', '42', '44','46']:
