@@ -249,7 +249,18 @@ def make_pre_production_sample(source_name, target_doc=None):
 					"wash_iron": "wash_iron",
 					"qc_packaging": "qc_packaging",
 					"transportation": "transportation",
-					"total_finishing": "total_finishing"
+					"total_finishing": "total_finishing",
+					# Workstation Charges Estimation
+					"cutting_f": "cutting_f",
+					"sewing_f": "sewing_f",
+					"hand_work_estimation": "hand_work_estimation",
+					"machine_embroidery_f": "machine_embroidery_f",
+					"hand_embroidery_f": "hand_embroidery_f",
+					"karchupi_f": "karchupi_f",
+					"screen_print_f": "screen_print_f",
+					"block_print_f": "block_print_f",
+					"tie_dye": "tie_dye",
+					"total_tailoring": "total_tailoring"
 				},
 				"field_no_map": ["naming_series"],
 				"validation": {"docstatus": ["=", 1]}

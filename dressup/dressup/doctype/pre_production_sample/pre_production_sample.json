@@ -59,6 +59,20 @@
         "block_print",
         "tiedye",
         "karchupi",
+        "value_addition_section",
+        "cutting_f",
+        "sewing_f",
+        "hand_work_estimation",
+        "column_break_nxdh",
+        "machine_embroidery_f",
+        "hand_embroidery_f",
+        "karchupi_f",
+        "column_break_lntb",
+        "screen_print_f",
+        "block_print_f",
+        "tie_dye",
+        "section_break_zbnn",
+        "total_tailoring",
         "finishing_section",
         "wash_iron",
         "column_break_miob",
@@ -160,7 +174,7 @@
         {
             "fieldname": "workstation_section",
             "fieldtype": "Section Break",
-            "label": "Workstation Charges"
+            "label": "Workstation"
         },
         {
             "default": "0",
@@ -234,6 +248,92 @@
             "fieldname": "karchupi",
             "fieldtype": "Check",
             "label": "Karchupi",
+            "read_only": 1
+        },
+        {
+            "fieldname": "value_addition_section",
+            "fieldtype": "Section Break",
+            "label": "Workstation Charges"
+        },
+        {
+            "depends_on": "eval:doc.cutting == \"1\"",
+            "fieldname": "cutting_f",
+            "fieldtype": "Currency",
+            "label": "Cutting Estimation",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.sewing == \"1\"",
+            "fieldname": "sewing_f",
+            "fieldtype": "Currency",
+            "label": "Sewing Estimation",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.hand_work == \"1\"",
+            "fieldname": "hand_work_estimation",
+            "fieldtype": "Currency",
+            "label": "Hand Work",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_nxdh",
+            "fieldtype": "Column Break"
+        },
+        {
+            "depends_on": "eval:doc.machine_embroidery == \"1\"",
+            "fieldname": "machine_embroidery_f",
+            "fieldtype": "Currency",
+            "label": "Machine Embroidery",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.hand_embroidery == \"1\"",
+            "fieldname": "hand_embroidery_f",
+            "fieldtype": "Currency",
+            "label": " Hand Embroidery",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.karchupi == \"1\"",
+            "fieldname": "karchupi_f",
+            "fieldtype": "Currency",
+            "label": "Karchupi",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_lntb",
+            "fieldtype": "Column Break"
+        },
+        {
+            "depends_on": "eval:doc.screen_print == \"1\"",
+            "fieldname": "screen_print_f",
+            "fieldtype": "Currency",
+            "label": "Screen Print",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.block_print == \"1\"",
+            "fieldname": "block_print_f",
+            "fieldtype": "Currency",
+            "label": "Block Print",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.tiedye == \"1\"",
+            "fieldname": "tie_dye",
+            "fieldtype": "Currency",
+            "label": " Tie & Dye",
+            "read_only": 1
+        },
+        {
+            "fieldname": "section_break_zbnn",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "total_tailoring",
+            "fieldtype": "Currency",
+            "label": "Total Workstation Charges",
             "read_only": 1
         },
         {
