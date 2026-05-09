@@ -64,15 +64,17 @@
 <table style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     <tbody>
         <!-- Row 2: 2-Column Split for Measurements and Image -->
+        {% set sketch_doc = frappe.get_doc("Sketch Specification Sample Making Sheet", doc.tech_pack_no) if doc.tech_pack_no else None %}
+        {% if sketch_doc %}
         <tr>
             <td style="border:none; padding:10px 0; vertical-align: top;">
                 <!-- Right Column (Image) - Floating -->
                 <div style="float: right; width: 58%; margin-left: 2%;">
                     <div class="design-image-container">
-                        {% if doc.image %}
-                            <img src="{{ frappe.utils.get_url(doc.image) }}" class="design-image" style="max-width: 100%; height: auto;">
-                        {% elif doc.additional_images and doc.additional_images[0] %}
-                             <img src="{{ frappe.utils.get_url(doc.additional_images[0].image) }}" class="design-image" style="max-width: 100%; height: auto;">
+                        {% if sketch_doc.image %}
+                            <img src="{{ frappe.utils.get_url(sketch_doc.image) }}" class="design-image" style="max-width: 100%; height: auto;">
+                        {% elif sketch_doc.additional_images and sketch_doc.additional_images[0] %}
+                             <img src="{{ frappe.utils.get_url(sketch_doc.additional_images[0].image) }}" class="design-image" style="max-width: 100%; height: auto;">
                         {% else %}
                             <div style="padding: 100px; color: #ccc; border: 1px dashed #ccc; text-align: center;">No Main Image Selected</div>
                         {% endif %}
@@ -118,8 +120,8 @@
                         ('shoulder_tip_to_pocket_starting', 'কোমর (Relaxed ×2)')
                     ] %}
                     {% for f, l in m_defs %}
-                        {% if doc.get(f) %}
-                            {% set _ = measurement_items.append((l, doc.get(f))) %}
+                        {% if sketch_doc.get(f) %}
+                            {% set _ = measurement_items.append((l, sketch_doc.get(f))) %}
                         {% endif %}
                     {% endfor %}
 
@@ -171,8 +173,8 @@
                         ('ik_shoulder_tip_to_pocket_starting', 'কোমর (Relaxed ×2)')
                     ] %}
                     {% for f, l in ik_defs %}
-                        {% if doc.get(f) %}
-                            {% set _ = inner_items.append((l, doc.get(f))) %}
+                        {% if sketch_doc.get(f) %}
+                            {% set _ = inner_items.append((l, sketch_doc.get(f))) %}
                         {% endif %}
                     {% endfor %}
 
@@ -206,8 +208,8 @@
                         ('pocket_depth', 'পকেটের গভীরতা')
                     ] %}
                     {% for f, l in b_defs %}
-                        {% if doc.get(f) %}
-                            {% set _ = bottom_items.append((l, doc.get(f))) %}
+                        {% if sketch_doc.get(f) %}
+                            {% set _ = bottom_items.append((l, sketch_doc.get(f))) %}
                         {% endif %}
                     {% endfor %}
 
@@ -226,5 +228,6 @@
                 </div>
             </td>
         </tr>
+        {% endif %}
     </tbody>
 </table>

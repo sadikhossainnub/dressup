@@ -207,10 +207,7 @@ def make_pre_production_sample(source_name, target_doc=None):
 		if default_inspection:
 			target.link_nsnp = default_inspection
 		else:
-			# Fallback: get first available template
-			quality_templates = frappe.get_all("Quality Inspection Template", limit=1)
-			if quality_templates:
-				target.link_nsnp = quality_templates[0].name
+			frappe.throw("Please set the Default PPS Inspection in DressUp Settings.")
 		
 		# Add default size chart rows
 		for size in ['36', '38', '40', '42', '44','46']:
