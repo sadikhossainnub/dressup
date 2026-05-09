@@ -311,6 +311,60 @@
                         </div>
                         {% endif %}
 
+                        <!-- Inner/Koti Measurements -->
+                        {% set inner_items = [] %}
+                        {% set ik_defs = [
+                            ('ik_full_length', 'দৈর্ঘ্য (HPS → CF হেম)'),
+                            ('ik_cf_length', 'CB দৈর্ঘ্য (HPS → CB হেম)'),
+                            ('ik_cb_length', 'বক্ষ (Chest)'),
+                            ('ik_waist_circumstance', 'কোমর (Waist)'),
+                            ('ik_bust', 'উচ্চ হিপ (High Hip)'),
+                            ('ik_upper_hip', 'নিম্ন হিপ (Low Hip)'),
+                            ('ik_lower_hip', 'হেম সুইপ (Hem Sweep)'),
+                            ('ik_front_neck_depth', 'সামনের গলার ড্রপ (Front Neck Drop)'),
+                            ('ik_back_neck_depth', 'পিছনের গলার ড্রপ (Back Neck Drop)'),
+                            ('ik_shoulder_tip_to_side_waist', 'গলার প্রস্থ (Neck Width)'),
+                            ('ik_front_neck_depth_s', 'কলারের প্রস্থ (Collar Width)'),
+                            ('ik_back_neck_depth_s', 'কলারের উচ্চতা (Collar Height)'),
+                            ('ik_collar_width_height', 'কাঁধ থেকে কাঁধের প্রস্থ (Shoulder to Shoulder)'),
+                            ('ik_button_placket_length', 'কাঁধের ঢাল/ড্রপ (Shoulder Drop)'),
+                            ('ik_button_placket_width', 'আর্মহোলের গভীরতা (Armhole Depth)'),
+                            ('ik_hem', 'বাটন প্ল্যাকেটের দৈর্ঘ্য (Button Placket Length)'),
+                            ('ik_shoulder_drop', 'বাটন প্ল্যাকেটের প্রস্থ (Button Placket Width)'),
+                            ('ik_shoulder', 'স্লিভের দৈর্ঘ্য (Sleeve Length)'),
+                            ('ik_armhole', 'বাইসেপ (Bicep)'),
+                            ('ik_full_length_arm', 'এলবো (Elbow)'),
+                            ('ik_armhole_arm', 'কাফ ওপেনিং (Cuff Opening)'),
+                            ('ik_biceps', 'বাইসেপ (×2)'),
+                            ('ik_elbow', 'পকেটের দৈর্ঘ্য (Pocket Length)'),
+                            ('ik_cuff_length', 'পকেট ওপেনিং (Pocket Opening)'),
+                            ('ik_cuff_width', 'পকেটের অবস্থান (Pocket Position)'),
+                            ('ik_cuff_opening', 'আউটসিম (Outseam)'),
+                            ('ik_pocket_length', 'ইনসিম (Inseam)'),
+                            ('ik_pocket_width', 'পকেটের প্রস্থ (Pocket Width)'),
+                            ('ik_pocket_opening', 'ব্যাক রাইজ (Back Rise)'),
+                            ('ik_pocket_placket', 'কাফের দৈর্ঘ্য (Cuff Length)'),
+                            ('ik_shoulder_tip_to_pocket_starting', 'কোমর (Relaxed ×2)')
+                        ] %}
+                        {% for f, l in ik_defs %}
+                            {% if doc.get(f) %}
+                                {% set _ = inner_items.append((l, doc.get(f))) %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if inner_items %}
+                        <div style="margin-top: 10px;"></div>
+                        <div class="section-header" style="page-break-after: avoid; font-size: 8.5pt;">Inner/Koti Measurements:</div>
+                        <div style="column-count: 2; column-gap: 10px;">
+                        {% for label, val in inner_items %}
+                        <div style="display: flex; justify-content: space-between; border-bottom: 0.5px solid var(--border-color); font-size: 6pt; page-break-inside: avoid; padding: 0.5px 0;">
+                            <span>{{ label }}</span>
+                            <span class="val">{{ val }}</span>
+                        </div>
+                        {% endfor %}
+                        </div>
+                        {% endif %}
+
                         <!-- Bottom Specifications (Optional: Also moved to Left Column to fulfill "page divided into 2 columns") -->
                         {% set bottom_items = [] %}
                         {% set b_defs = [
