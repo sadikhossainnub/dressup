@@ -166,31 +166,36 @@
             "default": "0",
             "fieldname": "cutting",
             "fieldtype": "Check",
-            "label": "Cutting"
+            "label": "Cutting",
+            "read_only": 1
         },
         {
             "default": "0",
             "fieldname": "fusing_bundling",
             "fieldtype": "Check",
-            "label": "Fusing & Bundling"
+            "label": "Fusing & Bundling",
+            "read_only": 1
         },
         {
             "default": "0",
             "fieldname": "sewing",
             "fieldtype": "Check",
-            "label": "Sewing"
+            "label": "Sewing",
+            "read_only": 1
         },
         {
             "default": "0",
             "fieldname": "machine_embroidery",
             "fieldtype": "Check",
-            "label": "Machine Embroidery"
+            "label": "Machine Embroidery",
+            "read_only": 1
         },
         {
             "default": "0",
             "fieldname": "hand_embroidery",
             "fieldtype": "Check",
-            "label": "Hand Embroidery"
+            "label": "Hand Embroidery",
+            "read_only": 1
         },
         {
             "fieldname": "column_break_oweg",
@@ -200,31 +205,36 @@
             "default": "0",
             "fieldname": "hand_work",
             "fieldtype": "Check",
-            "label": "Hand Work"
+            "label": "Hand Work",
+            "read_only": 1
         },
         {
             "default": "0",
             "fieldname": "screen_print",
             "fieldtype": "Check",
-            "label": "Screen Print"
+            "label": "Screen Print",
+            "read_only": 1
         },
         {
             "default": "0",
             "fieldname": "block_print",
             "fieldtype": "Check",
-            "label": "Block Print"
+            "label": "Block Print",
+            "read_only": 1
         },
         {
             "default": "0",
             "fieldname": "tiedye",
             "fieldtype": "Check",
-            "label": "Tie & Dye"
+            "label": "Tie & Dye",
+            "read_only": 1
         },
         {
             "default": "0",
             "fieldname": "karchupi",
             "fieldtype": "Check",
-            "label": "Karchupi"
+            "label": "Karchupi",
+            "read_only": 1
         },
         {
             "fieldname": "finishing_section",
@@ -234,7 +244,8 @@
         {
             "fieldname": "wash_iron",
             "fieldtype": "Currency",
-            "label": "Wash & Iron"
+            "label": "Wash & Iron",
+            "read_only": 1
         },
         {
             "fieldname": "column_break_miob",
@@ -243,7 +254,8 @@
         {
             "fieldname": "qc_packaging",
             "fieldtype": "Currency",
-            "label": "QC & Packaging"
+            "label": "QC & Packaging",
+            "read_only": 1
         },
         {
             "fieldname": "column_break_uglg",
@@ -252,7 +264,8 @@
         {
             "fieldname": "transportation",
             "fieldtype": "Currency",
-            "label": "Transportation"
+            "label": "Transportation",
+            "read_only": 1
         },
         {
             "fieldname": "column_break_svkd",
