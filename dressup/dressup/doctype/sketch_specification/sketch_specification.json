@@ -191,7 +191,7 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Tech Pack No.",
-   "options": "TP-.1000#",
+   "options": "TP.#####",
    "reqd": 1
   },
   {
@@ -691,8 +691,7 @@
   },
   {
    "fieldname": "text_editor_noaa",
-   "fieldtype": "Text Editor",
-   "set_only_once": 1
+   "fieldtype": "Text Editor"
   },
   {
    "default": "0",
@@ -1117,7 +1116,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-29 23:05:48.490798",
+ "modified": "2026-05-10 15:06:11.180471",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification",
@@ -1162,7 +1161,6 @@
    "amend": 1,
    "cancel": 1,
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "import": 1,
@@ -1179,7 +1177,6 @@
    "amend": 1,
    "cancel": 1,
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "import": 1,
@@ -1196,7 +1193,6 @@
    "amend": 1,
    "cancel": 1,
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "import": 1,
@@ -1213,7 +1209,6 @@
    "amend": 1,
    "cancel": 1,
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "import": 1,
