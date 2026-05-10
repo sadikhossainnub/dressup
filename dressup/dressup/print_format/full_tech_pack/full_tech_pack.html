@@ -7,75 +7,64 @@
 </td></tr></tfoot>
 <tbody><tr><td class="page-content">
 
-<div
-    style="border: 1px solid #000; width: 100%; margin-top: 10px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-    <div
-        style="text-align: center; font-size: 16px; font-weight: bold; padding: 4px 0; border-bottom: 1px solid #ccc; text-transform: uppercase;">
-        TECH PACK
-    </div>
-    <div style="text-align: center; font-size: 12px; padding: 4px 0;">
-        REF: {{ doc.name }} | DATE: {{ frappe.utils.formatdate(doc.creation, "dd MMM yyyy") }}
-    </div>
-</div>
-
 {% set sketch_doc = frappe.get_doc("Sketch Specification", doc.tech_pack_no) if doc.tech_pack_no else None %}
 <table
-    style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; margin-top: 10px;">
+    style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; margin-top: 10px; border: 1.5px solid #000;">
     <tbody>
-        <tr>
-            <td style="border: 1px solid #ccc; padding: 5px; width: 33%;">Status: {{ doc.status or doc.workflow_state or
-                '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px; width: 33%;">Cut/ Fit Style: {{ doc.cut_fit_style or '' }}
+        <tr style="border-bottom: 1px solid #000;">
+            <td colspan="3" style="text-align: center; font-size: 16px; font-weight: bold; padding: 4px 0; text-transform: uppercase;">
+                TECH PACK
             </td>
-            <td style="border: 1px solid #ccc; padding: 5px; width: 34%;">Pattern Master: {{ doc.pattern_master_name or
-                '' }}</td>
         </tr>
-        <tr>
-            <td style="border: 1px solid #ccc; padding: 5px;">Tech Pack No: {{ doc.tech_pack_no or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Collar/ Neck Style: {{ doc.collar_neck_style or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Sample Man: {{ doc.sample_man_name or '' }}</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ccc; padding: 5px;">Designer Name: {{ doc.designer_name or doc.owner or '' }}
+        <tr style="border-bottom: 1px solid #000;">
+            <td colspan="3" style="text-align: center; font-size: 12px; padding: 4px 0;">
+                REF: {{ doc.name }} | DATE: {{ frappe.utils.formatdate(doc.creation, "dd MMM yyyy") }}
             </td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Side Cut: {{ doc.side_cut or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Handler: {{ doc.handler_name or doc.handler or '' }}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #000;">
+            <td style="padding: 5px 8px; width: 33%;"><strong>Status:</strong> {{ doc.status or doc.workflow_state or '' }}</td>
+            <td style="padding: 5px 8px; width: 33%;"><strong>Cut/ Fit Style:</strong> {{ doc.cut_fit_style or '' }}</td>
+            <td style="padding: 5px 8px; width: 34%;"><strong>Pattern Master:</strong> {{ doc.pattern_master_name or '' }}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #000;">
+            <td style="padding: 5px 8px;"><strong>Tech Pack No:</strong> {{ doc.tech_pack_no or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>Collar/ Neck Style:</strong> {{ doc.collar_neck_style or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>Sample Man:</strong> {{ doc.sample_man_name or '' }}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #000;">
+            <td style="padding: 5px 8px;"><strong>Designer Name:</strong> {{ doc.designer_name or doc.owner or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>Side Cut:</strong> {{ doc.side_cut or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>Handler:</strong> {{ doc.handler_name or doc.handler or '' }}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #000;">
+            <td style="padding: 5px 8px;"><strong>Style No:</strong> {{ doc.style_no or doc.naming_series or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>Sleeve:</strong> {{ doc.sleeve or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>Sketch Submission Date:</strong> {{ frappe.utils.formatdate(sketch_doc.submission_date) if sketch_doc and sketch_doc.submission_date else '' }}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #000;">
+            <td style="padding: 5px 8px;"><strong>Category:</strong> {{ doc.category or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>Bottom Style:</strong> {{ doc.bottom_style or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>Costing Submit Date:</strong> {{ frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if doc.cost_estimation else '' }}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #000;">
+            <td style="padding: 5px 8px;"><strong>Season:</strong> {{ doc.session or doc.season or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>Bottom Waist:</strong> {{ doc.bottom_waist or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>PPS Submission Date:</strong> {{ frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #000;">
+            <td style="padding: 5px 8px;"><strong>Sewing Finish:</strong> {{ doc.sewing_finish or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>Sketch Ref:</strong> {{ doc.sketch_ref or '' }}</td>
+            <td style="padding: 5px 8px;"></td>
+        </tr>
+        <tr style="border-bottom: 1px solid #000;">
+            <td style="padding: 5px 8px;"></td>
+            <td style="padding: 5px 8px;"><strong>Costing Ref:</strong> {{ doc.costing_ref or '' }}</td>
+            <td style="padding: 5px 8px;"><strong>Workstations:</strong> Cutting, Sewing</td>
         </tr>
         <tr>
-            <td style="border: 1px solid #ccc; padding: 5px;">Style No: {{ doc.style_no or doc.naming_series or '' }}
-            </td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Sleeve: {{ doc.sleeve or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Sketch Submission Date: {{
-                frappe.utils.formatdate(sketch_doc.submission_date) if sketch_doc and sketch_doc.submission_date else ''
-                }}</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ccc; padding: 5px;">Category: {{ doc.category or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Bottom Style: {{ doc.bottom_style or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Costing Submit Date: {{
-                frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if
-                doc.cost_estimation else '' }}</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ccc; padding: 5px;">Season: {{ doc.session or doc.season or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Bottom Waist: {{ doc.bottom_waist or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">PPS Submission Date: {{
-                frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ccc; padding: 5px;">Sewing Finish: {{ doc.sewing_finish or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Sketch Ref: {{ doc.sketch_ref or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;"></td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ccc; padding: 5px;"></td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Costing Ref: {{ doc.costing_ref or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Workstations: Cutting, Sewing</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ccc; padding: 5px;"></td>
-            <td style="border: 1px solid #ccc; padding: 5px;"></td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Screen Print, Block Print</td>
+            <td style="padding: 5px 8px;"></td>
+            <td style="padding: 5px 8px;"></td>
+            <td style="padding: 5px 8px;">Screen Print, Block Print</td>
         </tr>
     </tbody>
 </table>
