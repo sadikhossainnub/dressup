@@ -2,8 +2,10 @@
     {{ letter_head }}
 </div>
 
-<div style="border: 1px solid #000; width: 100%; margin-top: 10px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-    <div style="text-align: center; font-size: 16px; font-weight: bold; padding: 4px 0; border-bottom: 1px solid #ccc; text-transform: uppercase;">
+<div
+    style="border: 1px solid #000; width: 100%; margin-top: 10px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    <div
+        style="text-align: center; font-size: 16px; font-weight: bold; padding: 4px 0; border-bottom: 1px solid #ccc; text-transform: uppercase;">
         TECH PACK
     </div>
     <div style="text-align: center; font-size: 12px; padding: 4px 0;">
@@ -11,12 +13,17 @@
     </div>
 </div>
 
-<table style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; margin-top: 10px;">
+{% set sketch_doc = frappe.get_doc("Sketch Specification", doc.tech_pack_no) if doc.tech_pack_no else None %}
+<table
+    style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; margin-top: 10px;">
     <tbody>
         <tr>
-            <td style="border: 1px solid #ccc; padding: 5px; width: 33%;">Status: {{ doc.status or doc.workflow_state or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px; width: 33%;">Cut/ Fit Style: {{ doc.cut_fit_style or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px; width: 34%;">Pattern Master: {{ doc.pattern_master_name or '' }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px; width: 33%;">Status: {{ doc.status or doc.workflow_state or
+                '' }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px; width: 33%;">Cut/ Fit Style: {{ doc.cut_fit_style or '' }}
+            </td>
+            <td style="border: 1px solid #ccc; padding: 5px; width: 34%;">Pattern Master: {{ doc.pattern_master_name or
+                '' }}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ccc; padding: 5px;">Tech Pack No: {{ doc.tech_pack_no or '' }}</td>
@@ -24,24 +31,31 @@
             <td style="border: 1px solid #ccc; padding: 5px;">Sample Man: {{ doc.sample_man_name or '' }}</td>
         </tr>
         <tr>
-            <td style="border: 1px solid #ccc; padding: 5px;">Designer Name: {{ doc.designer_name or doc.owner or '' }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px;">Designer Name: {{ doc.designer_name or doc.owner or '' }}
+            </td>
             <td style="border: 1px solid #ccc; padding: 5px;">Side Cut: {{ doc.side_cut or '' }}</td>
             <td style="border: 1px solid #ccc; padding: 5px;">Handler: {{ doc.handler_name or doc.handler or '' }}</td>
         </tr>
         <tr>
-            <td style="border: 1px solid #ccc; padding: 5px;">Style No: {{ doc.style_no or doc.naming_series or '' }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px;">Style No: {{ doc.style_no or doc.naming_series or '' }}
+            </td>
             <td style="border: 1px solid #ccc; padding: 5px;">Sleeve: {{ doc.sleeve or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Sketch Submission Date: {{ frappe.utils.formatdate(sketch_doc.submission_date) if sketch_doc.submission_date else '' }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px;">Sketch Submission Date: {{
+                frappe.utils.formatdate(sketch_doc.submission_date) if sketch_doc and sketch_doc.submission_date else ''
+                }}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ccc; padding: 5px;">Category: {{ doc.category or '' }}</td>
             <td style="border: 1px solid #ccc; padding: 5px;">Bottom Style: {{ doc.bottom_style or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">Costing Submit Date: {{ frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if doc.cost_estimation else '' }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px;">Costing Submit Date: {{
+                frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if
+                doc.cost_estimation else '' }}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ccc; padding: 5px;">Season: {{ doc.session or doc.season or '' }}</td>
             <td style="border: 1px solid #ccc; padding: 5px;">Bottom Waist: {{ doc.bottom_waist or '' }}</td>
-            <td style="border: 1px solid #ccc; padding: 5px;">PPS Submission Date: {{ frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px;">PPS Submission Date: {{
+                frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ccc; padding: 5px;">Sewing Finish: {{ doc.sewing_finish or '' }}</td>
@@ -64,7 +78,7 @@
 <table style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     <tbody>
         <!-- Row 2: 2-Column Split for Measurements and Image -->
-        {% set sketch_doc = frappe.get_doc("Sketch Specification", doc.tech_pack_no) if doc.tech_pack_no else None %}
+        {# sketch_doc already set above #}
         {% if sketch_doc %}
         <tr>
             <td style="border:none; padding:10px 0; vertical-align: top;">
@@ -72,25 +86,31 @@
                 <div style="float: right; width: 58%; margin-left: 2%;">
                     <div class="design-image-container">
                         {% if sketch_doc.image %}
-                            <img src="{{ frappe.utils.get_url(sketch_doc.image) }}" class="design-image" style="max-width: 100%; height: auto;">
+                        <img src="{{ frappe.utils.get_url(sketch_doc.image) }}" class="design-image"
+                            style="max-width: 100%; height: auto;">
                         {% elif sketch_doc.additional_images and sketch_doc.additional_images[0] %}
-                             <img src="{{ frappe.utils.get_url(sketch_doc.additional_images[0].image) }}" class="design-image" style="max-width: 100%; height: auto;">
+                        <img src="{{ frappe.utils.get_url(sketch_doc.additional_images[0].image) }}"
+                            class="design-image" style="max-width: 100%; height: auto;">
                         {% else %}
-                            <div style="padding: 100px; color: #ccc; border: 1px dashed #ccc; text-align: center;">No Main Image Selected</div>
+                        <div style="padding: 100px; color: #ccc; border: 1px dashed #ccc; text-align: center;">No Main
+                            Image Selected</div>
                         {% endif %}
                     </div>
 
                     <!-- Finishing Charges -->
                     <div style="margin-top: 15px;"></div>
-                    <div class="section-header" style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">Finishing Charges / ফিনিশিং খরচ</div>
+                    <div class="section-header"
+                        style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">
+                        Finishing Charges / ফিনিশিং খরচ</div>
                     <div style="column-count: 1;">
                         {% set f_defs = [
-                            ('wash_iron', 'Wash & Iron'),
-                            ('qc_packaging', 'QC & Packaging'),
-                            ('transportation', 'Transportation')
+                        ('wash_iron', 'Wash & Iron'),
+                        ('qc_packaging', 'QC & Packaging'),
+                        ('transportation', 'Transportation')
                         ] %}
                         {% for f, l in f_defs %}
-                        <div style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
+                        <div
+                            style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
                             <span>{{ l }}</span>
                             <span class="val">{{ doc.get(f) or '0' }}</span>
                         </div>
@@ -105,162 +125,174 @@
                     <!-- Body Measurements (Moved to Left Column) -->
                     {% set measurement_items = [] %}
                     {% set m_defs = [
-                        ('full_length', 'দৈর্ঘ্য (HPS → CF হেম)'),
-                        ('cf_length', 'CB দৈর্ঘ্য (HPS → CB হেম)'),
-                        ('cb_length', 'বক্ষ (Chest)'),
-                        ('waist_circumstance', 'কোমর (Waist)'),
-                        ('bust', 'উচ্চ হিপ (High Hip)'),
-                        ('upper_hip', 'নিম্ন হিপ (Low Hip)'),
-                        ('lower_hip', 'হেম সুইপ (Hem Sweep)'),
-                        ('front_neck_depth', 'সামনের গলার ড্রপ (Front Neck Drop)'),
-                        ('back_neck_depth', 'পিছনের গলার ড্রপ (Back Neck Drop)'),
-                        ('shoulder_tip_to_side_waist', 'গলার প্রস্থ (Neck Width)'),
-                        ('front_neck_depth_s', 'কলারের প্রস্থ (Collar Width)'),
-                        ('back_neck_depth_s', 'কলারের উচ্চতা (Collar Height)'),
-                        ('collar_width_height', 'কাঁধ থেকে কাঁধের প্রস্থ (Shoulder to Shoulder)'),
-                        ('button_placket_length', 'কাঁধের ঢাল/ড্রপ (Shoulder Drop)'),
-                        ('button_placket_width', 'আর্মহোলের গভীরতা (Armhole Depth)'),
-                        ('hem', 'বাটন প্ল্যাকেটের দৈর্ঘ্য (Button Placket Length)'),
-                        ('shoulder_drop', 'বাটন প্ল্যাকেটের প্রস্থ (Button Placket Width)'),
-                        ('shoulder', 'স্লিভের দৈর্ঘ্য (Sleeve Length)'),
-                        ('armhole', 'বাইসেপ (Bicep)'),
-                        ('full_length_arm', 'এলবো (Elbow)'),
-                        ('armhole_arm', 'কাফ ওপেনিং (Cuff Opening)'),
-                        ('biceps', 'বাইসেপ (×2)'),
-                        ('elbow', 'পকেটের দৈর্ঘ্য (Pocket Length)'),
-                        ('cuff_length', 'পকেট ওপেনিং (Pocket Opening)'),
-                        ('cuff_width', 'পকেটের অবস্থান (Pocket Position)'),
-                        ('cuff_opening', 'আউটসিম (Outseam)'),
-                        ('pocket_length', 'ইনসিম (Inseam)'),
-                        ('pocket_width', 'পকেটের প্রস্থ (Pocket Width)'),
-                        ('pocket_opening', 'ব্যাক রাইজ (Back Rise)'),
-                        ('pocket_placket', 'কাফের দৈর্ঘ্য (Cuff Length)'),
-                        ('shoulder_tip_to_pocket_starting', 'কোমর (Relaxed ×2)')
+                    ('full_length', 'দৈর্ঘ্য (HPS → CF হেম)'),
+                    ('cf_length', 'CB দৈর্ঘ্য (HPS → CB হেম)'),
+                    ('cb_length', 'বক্ষ (Chest)'),
+                    ('waist_circumstance', 'কোমর (Waist)'),
+                    ('bust', 'উচ্চ হিপ (High Hip)'),
+                    ('upper_hip', 'নিম্ন হিপ (Low Hip)'),
+                    ('lower_hip', 'হেম সুইপ (Hem Sweep)'),
+                    ('front_neck_depth', 'সামনের গলার ড্রপ (Front Neck Drop)'),
+                    ('back_neck_depth', 'পিছনের গলার ড্রপ (Back Neck Drop)'),
+                    ('shoulder_tip_to_side_waist', 'গলার প্রস্থ (Neck Width)'),
+                    ('front_neck_depth_s', 'কলারের প্রস্থ (Collar Width)'),
+                    ('back_neck_depth_s', 'কলারের উচ্চতা (Collar Height)'),
+                    ('collar_width_height', 'কাঁধ থেকে কাঁধের প্রস্থ (Shoulder to Shoulder)'),
+                    ('button_placket_length', 'কাঁধের ঢাল/ড্রপ (Shoulder Drop)'),
+                    ('button_placket_width', 'আর্মহোলের গভীরতা (Armhole Depth)'),
+                    ('hem', 'বাটন প্ল্যাকেটের দৈর্ঘ্য (Button Placket Length)'),
+                    ('shoulder_drop', 'বাটন প্ল্যাকেটের প্রস্থ (Button Placket Width)'),
+                    ('shoulder', 'স্লিভের দৈর্ঘ্য (Sleeve Length)'),
+                    ('armhole', 'বাইসেপ (Bicep)'),
+                    ('full_length_arm', 'এলবো (Elbow)'),
+                    ('armhole_arm', 'কাফ ওপেনিং (Cuff Opening)'),
+                    ('biceps', 'বাইসেপ (×2)'),
+                    ('elbow', 'পকেটের দৈর্ঘ্য (Pocket Length)'),
+                    ('cuff_length', 'পকেট ওপেনিং (Pocket Opening)'),
+                    ('cuff_width', 'পকেটের অবস্থান (Pocket Position)'),
+                    ('cuff_opening', 'আউটসিম (Outseam)'),
+                    ('pocket_length', 'ইনসিম (Inseam)'),
+                    ('pocket_width', 'পকেটের প্রস্থ (Pocket Width)'),
+                    ('pocket_opening', 'ব্যাক রাইজ (Back Rise)'),
+                    ('pocket_placket', 'কাফের দৈর্ঘ্য (Cuff Length)'),
+                    ('shoulder_tip_to_pocket_starting', 'কোমর (Relaxed ×2)')
                     ] %}
                     {% for f, l in m_defs %}
-                        {% if sketch_doc.get(f) %}
-                            {% set _ = measurement_items.append((l, sketch_doc.get(f))) %}
-                        {% endif %}
+                    {% if sketch_doc.get(f) %}
+                    {% set _ = measurement_items.append((l, sketch_doc.get(f))) %}
+                    {% endif %}
                     {% endfor %}
 
                     {% if measurement_items %}
-                    <div class="section-header" style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">Body Measurements:</div>
+                    <div class="section-header"
+                        style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">Body
+                        Measurements:</div>
                     <div style="column-count: 2; column-gap: 10px;">
-                    {% for label, val in measurement_items %}
-                    <div style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
-                        <span>{{ label }}</span>
-                        <span class="val">{{ val }}</span>
-                    </div>
-                    {% endfor %}
+                        {% for label, val in measurement_items %}
+                        <div
+                            style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
+                            <span>{{ label }}</span>
+                            <span class="val">{{ val }}</span>
+                        </div>
+                        {% endfor %}
                     </div>
                     {% endif %}
 
                     <!-- Inner/Koti Measurements -->
                     {% set inner_items = [] %}
                     {% set ik_defs = [
-                        ('ik_full_length', 'দৈর্ঘ্য (HPS → CF হেম)'),
-                        ('ik_cf_length', 'CB দৈর্ঘ্য (HPS → CB হেম)'),
-                        ('ik_cb_length', 'বক্ষ (Chest)'),
-                        ('ik_waist_circumstance', 'কোমর (Waist)'),
-                        ('ik_bust', 'উচ্চ হিপ (High Hip)'),
-                        ('ik_upper_hip', 'নিম্ন হিপ (Low Hip)'),
-                        ('ik_lower_hip', 'হেম সুইপ (Hem Sweep)'),
-                        ('ik_front_neck_depth', 'সামনের গলার ড্রপ (Front Neck Drop)'),
-                        ('ik_back_neck_depth', 'পিছনের গলার ড্রপ (Back Neck Drop)'),
-                        ('ik_shoulder_tip_to_side_waist', 'গলার প্রস্থ (Neck Width)'),
-                        ('ik_front_neck_depth_s', 'কলারের প্রস্থ (Collar Width)'),
-                        ('ik_back_neck_depth_s', 'কলারের উচ্চতা (Collar Height)'),
-                        ('ik_collar_width_height', 'কাঁধ থেকে কাঁধের প্রস্থ (Shoulder to Shoulder)'),
-                        ('ik_button_placket_length', 'কাঁধের ঢাল/ড্রপ (Shoulder Drop)'),
-                        ('ik_button_placket_width', 'আর্মহোলের গভীরতা (Armhole Depth)'),
-                        ('ik_hem', 'বাটন প্ল্যাকেটের দৈর্ঘ্য (Button Placket Length)'),
-                        ('ik_shoulder_drop', 'বাটন প্ল্যাকেটের প্রস্থ (Button Placket Width)'),
-                        ('ik_shoulder', 'স্লিভের দৈর্ঘ্য (Sleeve Length)'),
-                        ('ik_armhole', 'বাইসেপ (Bicep)'),
-                        ('ik_full_length_arm', 'এলবো (Elbow)'),
-                        ('ik_armhole_arm', 'কাফ ওপেনিং (Cuff Opening)'),
-                        ('ik_biceps', 'বাইসেপ (×2)'),
-                        ('ik_elbow', 'পকেটের দৈর্ঘ্য (Pocket Length)'),
-                        ('ik_cuff_length', 'পকেট ওপেনিং (Pocket Opening)'),
-                        ('ik_cuff_width', 'পকেটের অবস্থান (Pocket Position)'),
-                        ('ik_cuff_opening', 'আউটসিম (Outseam)'),
-                        ('ik_pocket_length', 'ইনসিম (Inseam)'),
-                        ('ik_pocket_width', 'পকেটের প্রস্থ (Pocket Width)'),
-                        ('ik_pocket_opening', 'ব্যাক রাইজ (Back Rise)'),
-                        ('ik_pocket_placket', 'কাফের দৈর্ঘ্য (Cuff Length)'),
-                        ('ik_shoulder_tip_to_pocket_starting', 'কোমর (Relaxed ×2)')
+                    ('ik_full_length', 'দৈর্ঘ্য (HPS → CF হেম)'),
+                    ('ik_cf_length', 'CB দৈর্ঘ্য (HPS → CB হেম)'),
+                    ('ik_cb_length', 'বক্ষ (Chest)'),
+                    ('ik_waist_circumstance', 'কোমর (Waist)'),
+                    ('ik_bust', 'উচ্চ হিপ (High Hip)'),
+                    ('ik_upper_hip', 'নিম্ন হিপ (Low Hip)'),
+                    ('ik_lower_hip', 'হেম সুইপ (Hem Sweep)'),
+                    ('ik_front_neck_depth', 'সামনের গলার ড্রপ (Front Neck Drop)'),
+                    ('ik_back_neck_depth', 'পিছনের গলার ড্রপ (Back Neck Drop)'),
+                    ('ik_shoulder_tip_to_side_waist', 'গলার প্রস্থ (Neck Width)'),
+                    ('ik_front_neck_depth_s', 'কলারের প্রস্থ (Collar Width)'),
+                    ('ik_back_neck_depth_s', 'কলারের উচ্চতা (Collar Height)'),
+                    ('ik_collar_width_height', 'কাঁধ থেকে কাঁধের প্রস্থ (Shoulder to Shoulder)'),
+                    ('ik_button_placket_length', 'কাঁধের ঢাল/ড্রপ (Shoulder Drop)'),
+                    ('ik_button_placket_width', 'আর্মহোলের গভীরতা (Armhole Depth)'),
+                    ('ik_hem', 'বাটন প্ল্যাকেটের দৈর্ঘ্য (Button Placket Length)'),
+                    ('ik_shoulder_drop', 'বাটন প্ল্যাকেটের প্রস্থ (Button Placket Width)'),
+                    ('ik_shoulder', 'স্লিভের দৈর্ঘ্য (Sleeve Length)'),
+                    ('ik_armhole', 'বাইসেপ (Bicep)'),
+                    ('ik_full_length_arm', 'এলবো (Elbow)'),
+                    ('ik_armhole_arm', 'কাফ ওপেনিং (Cuff Opening)'),
+                    ('ik_biceps', 'বাইসেপ (×2)'),
+                    ('ik_elbow', 'পকেটের দৈর্ঘ্য (Pocket Length)'),
+                    ('ik_cuff_length', 'পকেট ওপেনিং (Pocket Opening)'),
+                    ('ik_cuff_width', 'পকেটের অবস্থান (Pocket Position)'),
+                    ('ik_cuff_opening', 'আউটসিম (Outseam)'),
+                    ('ik_pocket_length', 'ইনসিম (Inseam)'),
+                    ('ik_pocket_width', 'পকেটের প্রস্থ (Pocket Width)'),
+                    ('ik_pocket_opening', 'ব্যাক রাইজ (Back Rise)'),
+                    ('ik_pocket_placket', 'কাফের দৈর্ঘ্য (Cuff Length)'),
+                    ('ik_shoulder_tip_to_pocket_starting', 'কোমর (Relaxed ×2)')
                     ] %}
                     {% for f, l in ik_defs %}
-                        {% if sketch_doc.get(f) %}
-                            {% set _ = inner_items.append((l, sketch_doc.get(f))) %}
-                        {% endif %}
+                    {% if sketch_doc.get(f) %}
+                    {% set _ = inner_items.append((l, sketch_doc.get(f))) %}
+                    {% endif %}
                     {% endfor %}
 
                     {% if inner_items %}
                     <div style="margin-top: 10px;"></div>
-                    <div class="section-header" style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">Inner/Koti Measurements:</div>
+                    <div class="section-header"
+                        style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">
+                        Inner/Koti Measurements:</div>
                     <div style="column-count: 2; column-gap: 10px;">
-                    {% for label, val in inner_items %}
-                    <div style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
-                        <span>{{ label }}</span>
-                        <span class="val">{{ val }}</span>
-                    </div>
-                    {% endfor %}
+                        {% for label, val in inner_items %}
+                        <div
+                            style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
+                            <span>{{ label }}</span>
+                            <span class="val">{{ val }}</span>
+                        </div>
+                        {% endfor %}
                     </div>
                     {% endif %}
 
                     <!-- Bottom Specifications (Optional: Also moved to Left Column to fulfill "page divided into 2 columns") -->
                     {% set bottom_items = [] %}
                     {% set b_defs = [
-                        ('length_bottom', 'দৈর্ঘ্য (Length)'),
-                        ('pocket_wid', 'ফ্রন্ট রাইজ (Front Rise)'),
-                        ('komor', 'কোমর (Stretched ×2)'),
-                        ('high_hip', 'উচ্চ হিপ (×2)'),
-                        ('low_hip', 'নিম্ন হিপ (×2)'),
-                        ('thigh_uru', 'উরু (Thigh ×2)'),
-                        ('knee_x2', 'হাঁটু (Knee ×2)'),
-                        ('leg_opening_x2', 'লেগ ওপেনিং (×2)'),
-                        ('elasticrubber_width', 'ইলাস্টিক/রাবারের প্রস্থ'),
-                        ('beltloop_width', 'বেল্ট/লুপের প্রস্থ'),
-                        ('wb_to_pocket_opening', 'ওয়েস্টব্যান্ড থেকে পকেট ওপেনিং পর্যন্ত দূরত্ব'),
-                        ('pocket_depth', 'পকেটের গভীরতা')
+                    ('length_bottom', 'দৈর্ঘ্য (Length)'),
+                    ('pocket_wid', 'ফ্রন্ট রাইজ (Front Rise)'),
+                    ('komor', 'কোমর (Stretched ×2)'),
+                    ('high_hip', 'উচ্চ হিপ (×2)'),
+                    ('low_hip', 'নিম্ন হিপ (×2)'),
+                    ('thigh_uru', 'উরু (Thigh ×2)'),
+                    ('knee_x2', 'হাঁটু (Knee ×2)'),
+                    ('leg_opening_x2', 'লেগ ওপেনিং (×2)'),
+                    ('elasticrubber_width', 'ইলাস্টিক/রাবারের প্রস্থ'),
+                    ('beltloop_width', 'বেল্ট/লুপের প্রস্থ'),
+                    ('wb_to_pocket_opening', 'ওয়েস্টব্যান্ড থেকে পকেট ওপেনিং পর্যন্ত দূরত্ব'),
+                    ('pocket_depth', 'পকেটের গভীরতা')
                     ] %}
                     {% for f, l in b_defs %}
-                        {% if sketch_doc.get(f) %}
-                            {% set _ = bottom_items.append((l, sketch_doc.get(f))) %}
-                        {% endif %}
+                    {% if sketch_doc.get(f) %}
+                    {% set _ = bottom_items.append((l, sketch_doc.get(f))) %}
+                    {% endif %}
                     {% endfor %}
 
                     {% if bottom_items %}
                     <div style="margin-top: 10px;"></div>
-                    <div class="section-header" style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">Bottom Specifications:</div>
+                    <div class="section-header"
+                        style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">Bottom
+                        Specifications:</div>
                     <div style="column-count: 2; column-gap: 10px;">
-                    {% for label, val in bottom_items %}
-                    <div style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
-                        <span>{{ label }}</span>
-                        <span class="val">{{ val }}</span>
-                    </div>
-                    {% endfor %}
+                        {% for label, val in bottom_items %}
+                        <div
+                            style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
+                            <span>{{ label }}</span>
+                            <span class="val">{{ val }}</span>
+                        </div>
+                        {% endfor %}
                     </div>
                     {% endif %}
 
                     <!-- Tailoring Charges -->
                     <div style="margin-top: 10px;"></div>
-                    <div class="section-header" style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">Tailoring Charges / সেলাই খরচ:</div>
+                    <div class="section-header"
+                        style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">
+                        Tailoring Charges / সেলাই খরচ:</div>
                     <div style="column-count: 1;">
                         {% set t_defs = [
-                            ('cutting_f', 'Cutting Charge'),
-                            ('sewing_f', 'Sewing Charge'),
-                            ('machine_embroidery_f', 'Machine Embroidery'),
-                            ('hand_embroidery_f', 'Hand Embroidery'),
-                            ('hand_work_estimation', 'Hand Work'),
-                            ('karchupi_f', 'Karchupi'),
-                            ('screen_print_f', 'Screen Print'),
-                            ('block_print_f', 'Block Print'),
-                            ('tie_dye', 'Tie & Dye')
+                        ('cutting_f', 'Cutting Charge'),
+                        ('sewing_f', 'Sewing Charge'),
+                        ('machine_embroidery_f', 'Machine Embroidery'),
+                        ('hand_embroidery_f', 'Hand Embroidery'),
+                        ('hand_work_estimation', 'Hand Work'),
+                        ('karchupi_f', 'Karchupi'),
+                        ('screen_print_f', 'Screen Print'),
+                        ('block_print_f', 'Block Print'),
+                        ('tie_dye', 'Tie & Dye')
                         ] %}
                         {% for f, l in t_defs %}
-                        <div style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
+                        <div
+                            style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
                             <span>{{ l }}</span>
                             <span class="val">{{ doc.get(f) or '0' }}</span>
                         </div>
@@ -291,9 +323,11 @@
             <tr>
                 <td style="padding: 4px; border: 1px solid #ccc;">{{ item.item_code or '' }}</td>
                 <td style="padding: 4px; border: 1px solid #ccc;">{{ item.item_name or '' }}</td>
-                <td style="padding: 4px; border: 1px solid #ccc; text-align: center;">{{ item.default_unit_of_measurement or '' }}</td>
+                <td style="padding: 4px; border: 1px solid #ccc; text-align: center;">{{
+                    item.default_unit_of_measurement or '' }}</td>
                 <td style="padding: 4px; border: 1px solid #ccc; text-align: right;">{{ item.quantity or '0' }}</td>
-                <td style="padding: 4px; border: 1px solid #ccc; text-align: right;">{{ item.actual_quantity or '0' }}</td>
+                <td style="padding: 4px; border: 1px solid #ccc; text-align: right;">{{ item.actual_quantity or '0' }}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -303,7 +337,8 @@
 
 {% if doc.trim_accessories %}
 <div style="margin-top: 15px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; page-break-inside: avoid;">
-    <div style="font-weight: bold; font-size: 10px; margin-bottom: 5px; text-transform: uppercase;">Trim & Accessories</div>
+    <div style="font-weight: bold; font-size: 10px; margin-bottom: 5px; text-transform: uppercase;">Trim & Accessories
+    </div>
     <table style="width: 100%; border-collapse: collapse; font-size: 9px; text-align: left;">
         <thead>
             <tr style="background-color: #f2f2f2;">
@@ -319,9 +354,11 @@
             <tr>
                 <td style="padding: 4px; border: 1px solid #ccc;">{{ item.item_code or '' }}</td>
                 <td style="padding: 4px; border: 1px solid #ccc;">{{ item.item_name or '' }}</td>
-                <td style="padding: 4px; border: 1px solid #ccc; text-align: center;">{{ item.default_unit_of_measurement or '' }}</td>
+                <td style="padding: 4px; border: 1px solid #ccc; text-align: center;">{{
+                    item.default_unit_of_measurement or '' }}</td>
                 <td style="padding: 4px; border: 1px solid #ccc; text-align: right;">{{ item.quantity or '0' }}</td>
-                <td style="padding: 4px; border: 1px solid #ccc; text-align: right;">{{ item.actual_quantity or '0' }}</td>
+                <td style="padding: 4px; border: 1px solid #ccc; text-align: right;">{{ item.actual_quantity or '0' }}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -363,64 +400,151 @@
 </div>
 
 <style>
-    .swatch-grid-table { width: 100%; border-collapse: separate; border-spacing: 5px; margin-left: -5px; table-layout: fixed; }
-    .swatch-card { border: 1px solid #000; border-radius: 4px; background: #fff; page-break-inside: avoid; }
-    .swatch-info { padding: 8px; background: #fff; border-bottom: 1px solid #ddd; }
-    .swatch-code { font-weight: 800; font-size: 8pt; }
-    .swatch-name { font-size: 7pt; color: #444; }
-    .swatch-qty { font-weight: 700; color: #000; margin-top: 2px; font-size: 7.5pt; border-top: 1px solid #ccc; padding-top: 2px; }
-    .image-well { height: 160px; background: #fff; padding: 2px; text-align: center; display: flex; align-items: center; justify-content: center; overflow: hidden; border-top: 1px solid #000; }
-    .image-well img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .manual-placeholder { border: 1.5px dashed #ccc; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #999; font-size: 6.5pt; text-align: center; box-sizing: border-box; }
-    .standard-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; border: 1.5px solid #000; table-layout: fixed; }
-    .standard-table th { background: #fff; border: 1px solid #000; padding: 4px; font-size: 7.5pt; text-align: left; }
-    .standard-table td { border: 1px solid #000; padding: 4px; font-size: 7.5pt; vertical-align: top; }
+    .swatch-grid-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 5px;
+        margin-left: -5px;
+        table-layout: fixed;
+    }
+
+    .swatch-card {
+        border: 1px solid #000;
+        border-radius: 4px;
+        background: #fff;
+        page-break-inside: avoid;
+    }
+
+    .swatch-info {
+        padding: 8px;
+        background: #fff;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .swatch-code {
+        font-weight: 800;
+        font-size: 8pt;
+    }
+
+    .swatch-name {
+        font-size: 7pt;
+        color: #444;
+    }
+
+    .swatch-qty {
+        font-weight: 700;
+        color: #000;
+        margin-top: 2px;
+        font-size: 7.5pt;
+        border-top: 1px solid #ccc;
+        padding-top: 2px;
+    }
+
+    .image-well {
+        height: 160px;
+        background: #fff;
+        padding: 2px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-top: 1px solid #000;
+    }
+
+    .image-well img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+
+    .manual-placeholder {
+        border: 1.5px dashed #ccc;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-size: 6.5pt;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .standard-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 8px;
+        border: 1.5px solid #000;
+        table-layout: fixed;
+    }
+
+    .standard-table th {
+        background: #fff;
+        border: 1px solid #000;
+        padding: 4px;
+        font-size: 7.5pt;
+        text-align: left;
+    }
+
+    .standard-table td {
+        border: 1px solid #000;
+        padding: 4px;
+        font-size: 7.5pt;
+        vertical-align: top;
+    }
 </style>
 
 {% set all_items = (doc.fabrics or []) + (doc.trim_accessories or []) %}
 {% if all_items %}
-<div style="margin-top: 20px; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Component Swatches / উপকরণের সোয়াচ</div>
+<div
+    style="margin-top: 20px; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    Component Swatches / উপকরণের সোয়াচ</div>
 <table class="swatch-grid-table" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     {% for i in range(0, all_items|length, 3) %}
     <tr>
         {% for j in range(0, 3) %}
-            {% if i + j < all_items|length %} 
-                {% set item=all_items[i + j] %} 
-                {% set item_image=frappe.db.get_value("Item", item.item_code, "image" ) %} 
-                <td style="width: 33.3%; vertical-align: top;">
-                    <div class="swatch-card">
-                        <div class="swatch-info">
-                            <div class="swatch-code">{{ item.item_code }}</div>
-                            <div class="swatch-name">{{ item.item_name }}</div>
-                            <div class="swatch-qty">
-                                <span>Req: {{ "%.2f"|format(item.quantity|float) if item.quantity else '0.00' }} {{ item.default_unit_of_measurement or item.uom or '' }}</span>
-                                {% if item.actual_quantity %}
-                                <br><span style="color: #444;">Act: {{ "%.2f"|format(item.actual_quantity|float) }} {{ item.default_unit_of_measurement or item.uom or '' }}</span>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="image-well">
-                            {% if item_image %}
-                            <img src="{{ item_image }}">
-                            {% else %}
-                            <div class="manual-placeholder">
-                                AFFIX SWATCH HERE<br><span style="font-size: 6pt;">এখানে স্যাম্পল লাগান</span>
-                            </div>
-                            {% endif %}
-                        </div>
+        {% if i + j < all_items|length %} {% set item=all_items[i + j] %} {% set item_image=frappe.db.get_value("Item",
+            item.item_code, "image" ) %} <td style="width: 33.3%; vertical-align: top;">
+            <div class="swatch-card">
+                <div class="swatch-info">
+                    <div class="swatch-code">{{ item.item_code }}</div>
+                    <div class="swatch-name">{{ item.item_name }}</div>
+                    <div class="swatch-qty">
+                        <span>Req: {{ "%.2f"|format(item.quantity|float) if item.quantity else '0.00' }} {{
+                            item.default_unit_of_measurement or item.uom or '' }}</span>
+                        {% if item.actual_quantity %}
+                        <br><span style="color: #444;">Act: {{ "%.2f"|format(item.actual_quantity|float) }} {{
+                            item.default_unit_of_measurement or item.uom or '' }}</span>
+                        {% endif %}
                     </div>
-                </td>
+                </div>
+                <div class="image-well">
+                    {% if item_image %}
+                    <img src="{{ item_image }}">
+                    {% else %}
+                    <div class="manual-placeholder">
+                        AFFIX SWATCH HERE<br><span style="font-size: 6pt;">এখানে স্যাম্পল লাগান</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            </td>
             {% else %}
-                <td style="border: none;">&nbsp;</td>
+            <td style="border: none;">&nbsp;</td>
             {% endif %}
-        {% endfor %}
+            {% endfor %}
     </tr>
     {% endfor %}
 </table>
 {% endif %}
 
 {% if doc.size_chart_in_inch %}
-<div style="margin-top: 20px; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Actual Size Chart / সাইজ চার্ট</div>
+<div
+    style="margin-top: 20px; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    Actual Size Chart / সাইজ চার্ট</div>
 <table class="standard-table" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     <thead>
         <tr>
@@ -449,15 +573,19 @@
 </table>
 {% endif %}
 
-<table style="width: 100%; border-collapse: collapse; margin-top: 20px; table-layout: fixed; page-break-inside: avoid; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+<table
+    style="width: 100%; border-collapse: collapse; margin-top: 20px; table-layout: fixed; page-break-inside: avoid; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     <tr>
         <td style="width: 50%; vertical-align: top; padding-right: 6px;">
-            <div style="margin-top: 0; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase;">Washing Guidelines</div>
+            <div
+                style="margin-top: 0; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase;">
+                Washing Guidelines</div>
             <div style="border: 1.5px solid #000; padding: 8px; background: #fff; min-height: 40px;">
                 <div style="font-size: 10px; column-count: 2; column-gap: 10px;">
                     {% if doc.wash_separately %}<div style="margin-bottom: 2px;">• Wash Separately</div>{% endif %}
                     {% if doc.dry_clean_only %}<div style="margin-bottom: 2px;">• Dry Clean Only</div>{% endif %}
-                    {% if doc.wash_warm_iron_inside_out %}<div style="margin-bottom: 2px;">• Iron Inside Out</div>{% endif %}
+                    {% if doc.wash_warm_iron_inside_out %}<div style="margin-bottom: 2px;">• Iron Inside Out</div>{%
+                    endif %}
                     {% if doc.hand_wash_only %}<div style="margin-bottom: 2px;">• Hand Wash Only</div>{% endif %}
                 </div>
                 {% if doc.note_or_instructions %}
@@ -469,7 +597,9 @@
         </td>
         {% if doc.pattern_master_note %}
         <td style="width: 50%; vertical-align: top; padding-left: 6px;">
-            <div style="margin-top: 0; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase;">Pattern Master Notes</div>
+            <div
+                style="margin-top: 0; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase;">
+                Pattern Master Notes</div>
             <div style="border: 1.5px solid #000; padding: 8px; font-size: 10px; min-height: 40px; background: #fff;">
                 {{ doc.pattern_master_note|safe }}
             </div>
@@ -482,24 +612,35 @@
 </table>
 
 {% if doc.pps_front or doc.pps_back %}
-<div style="margin-top: 20px; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">PPS Gallery / পিপিএস গ্যালারি</div>
-<table style="width: 100%; border-collapse: separate; border-spacing: 12px 0; margin-left: -6px; table-layout: fixed; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+<div
+    style="margin-top: 20px; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    PPS Gallery / পিপিএস গ্যালারি</div>
+<table
+    style="width: 100%; border-collapse: separate; border-spacing: 12px 0; margin-left: -6px; table-layout: fixed; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     <tr>
         {% if doc.pps_front %}
-        <td style="border: 1px solid #000; padding: 5px; background: #fff; text-align: center; vertical-align: top; height: 220px; width: 50%;">
+        <td
+            style="border: 1px solid #000; padding: 5px; background: #fff; text-align: center; vertical-align: top; height: 220px; width: 50%;">
             <div style="height: 190px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                <img src="{{ frappe.utils.get_url(doc.pps_front) }}" style="width: 100%; height: 100%; object-fit: contain; background: #fdfdfd; display: block;">
+                <img src="{{ frappe.utils.get_url(doc.pps_front) }}"
+                    style="width: 100%; height: 100%; object-fit: contain; background: #fdfdfd; display: block;">
             </div>
-            <div style="font-size: 9px; font-weight: bold; margin-top: 5px; background: #fff; color: #000; border: 1px solid #000; padding: 2px;">FRONT VIEW</div>
+            <div
+                style="font-size: 9px; font-weight: bold; margin-top: 5px; background: #fff; color: #000; border: 1px solid #000; padding: 2px;">
+                FRONT VIEW</div>
         </td>
         {% endif %}
-        
+
         {% if doc.pps_back %}
-        <td style="border: 1px solid #000; padding: 5px; background: #fff; text-align: center; vertical-align: top; height: 220px; width: 50%;">
+        <td
+            style="border: 1px solid #000; padding: 5px; background: #fff; text-align: center; vertical-align: top; height: 220px; width: 50%;">
             <div style="height: 190px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                <img src="{{ frappe.utils.get_url(doc.pps_back) }}" style="width: 100%; height: 100%; object-fit: contain; background: #fdfdfd; display: block;">
+                <img src="{{ frappe.utils.get_url(doc.pps_back) }}"
+                    style="width: 100%; height: 100%; object-fit: contain; background: #fdfdfd; display: block;">
             </div>
-            <div style="font-size: 9px; font-weight: bold; margin-top: 5px; background: #fff; color: #000; border: 1px solid #000; padding: 2px;">BACK VIEW</div>
+            <div
+                style="font-size: 9px; font-weight: bold; margin-top: 5px; background: #fff; color: #000; border: 1px solid #000; padding: 2px;">
+                BACK VIEW</div>
         </td>
         {% endif %}
     </tr>
