@@ -8,7 +8,7 @@ import random
 
 from frappe.model.naming import make_autoname
 
-class SketchSpecificationSampleMakingSheet(Document):
+class SketchSpecification(Document):
 	def before_insert(self):
 		if not self.designer:
 			employee = frappe.get_value("Employee", {"user_id": frappe.session.user}, "name")
@@ -30,10 +30,10 @@ class SketchSpecificationSampleMakingSheet(Document):
 			pass
 
 		cost_est = get_mapped_doc(
-			"Sketch Specification Sample Making Sheet",
+			"Sketch Specification",
 			self.name,
 			{
-				"Sketch Specification Sample Making Sheet": {
+				"Sketch Specification": {
 					"doctype": "Cost Estimation",
 					"field_map": {
 						"name": "tech_pack_no",
@@ -85,7 +85,7 @@ def generate_design_no(designer):
 		
 		# Find the last sequence number for this prefix
 		last_design_no = frappe.db.sql("""
-			select design_no from `tabSketch Specification Sample Making Sheet`
+			select design_no from `tabSketch Specification`
 			where design_no like %s
 			order by design_no desc limit 1
 		""", (f"{prefix}%",), as_dict=False)
@@ -107,10 +107,10 @@ def make_cost_estimation(source_name, target_doc=None):
 	from frappe.model.mapper import get_mapped_doc  # type: ignore
 
 	cost_est = get_mapped_doc(
-		"Sketch Specification Sample Making Sheet",
+		"Sketch Specification",
 		source_name,
 		{
-			"Sketch Specification Sample Making Sheet": {
+			"Sketch Specification": {
 				"doctype": "Cost Estimation",
 				"field_map": {
 					"name": "tech_pack_no",
@@ -147,7 +147,7 @@ def make_cost_estimation(source_name, target_doc=None):
 
 @frappe.whitelist()
 def trigger_request_for_approval(docname):
-	doc = frappe.get_doc("Sketch Specification Sample Making Sheet", docname)
+	doc = frappe.get_doc("Sketch Specification", docname)
 	notification = frappe.get_doc("Notification", "Request For Approval")
 	notification.send(doc)
 	return True

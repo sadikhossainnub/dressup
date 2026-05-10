@@ -5,5 +5,5 @@ import frappe
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestSketchSpecificationSampleMakingSheet(FrappeTestCase):
+class TestSketchSpecification(FrappeTestCase):
 	pass

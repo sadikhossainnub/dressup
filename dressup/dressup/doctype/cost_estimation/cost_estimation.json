@@ -107,7 +107,7 @@
             "fieldtype": "Link",
             "in_list_view": 1,
             "label": "Tech Pack No:",
-            "options": "Sketch Specification Sample Making Sheet",
+            "options": "Sketch Specification",
             "reqd": 1
         },
         {

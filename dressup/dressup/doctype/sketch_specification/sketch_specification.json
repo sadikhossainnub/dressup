@@ -920,7 +920,7 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Sketch Specification Sample Making Sheet",
+   "options": "Sketch Specification",
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
@@ -1120,7 +1120,7 @@
  "modified": "2026-04-29 23:05:48.490798",
  "modified_by": "Administrator",
  "module": "DressUp",
- "name": "Sketch Specification Sample Making Sheet",
+ "name": "Sketch Specification",
  "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [

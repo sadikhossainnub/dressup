@@ -1,7 +1,7 @@
 // Copyright (c) 2024, DressUp and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on('Sketch Specification Sample Making Sheet', {
+frappe.ui.form.on('Sketch Specification', {
 	refresh: function (frm) {
 		if (frm.doc.docstatus === 1) {
 			frappe.call({
@@ -14,7 +14,7 @@ frappe.ui.form.on('Sketch Specification Sample Making Sheet', {
 					if (!r.message || r.message === 0) {
 						frm.add_custom_button(__('Cost Estimation'), function () {
 							frappe.model.open_mapped_doc({
-								method: 'dressup.dressup.doctype.sketch_specification_sample_making_sheet.sketch_specification_sample_making_sheet.make_cost_estimation',
+								method: 'dressup.dressup.doctype.sketch_specification.sketch_specification.make_cost_estimation',
 								frm: frm
 							});
 						}, __('Create'));
@@ -26,7 +26,7 @@ frappe.ui.form.on('Sketch Specification Sample Making Sheet', {
 		if (!frm.is_new() && frm.doc.docstatus === 0) {
 			frm.add_custom_button(__('Request for Approval'), function() {
 				frappe.call({
-					method: 'dressup.dressup.doctype.sketch_specification_sample_making_sheet.sketch_specification_sample_making_sheet.trigger_request_for_approval',
+					method: 'dressup.dressup.doctype.sketch_specification.sketch_specification.trigger_request_for_approval',
 					args: {
 						docname: frm.doc.name
 					},
@@ -60,7 +60,7 @@ frappe.ui.form.on('Sketch Specification Sample Making Sheet', {
 			// Generate design no if empty OR if it's currently an Employee ID (EID-xxxx)
 			if (!frm.doc.design_no || frm.doc.design_no.startsWith('EID-')) {
 				frappe.call({
-					method: 'dressup.dressup.doctype.sketch_specification_sample_making_sheet.sketch_specification_sample_making_sheet.generate_design_no',
+					method: 'dressup.dressup.doctype.sketch_specification.sketch_specification.generate_design_no',
 					args: { designer: frm.doc.designer },
 					callback: function (r) {
 						if (r.message) {

@@ -34,12 +34,12 @@ class PreProductionSample(Document):
 			self.fetch_tech_pack_data()
 	
 	def fetch_tech_pack_data(self):
-		"""Fetch data from Sketch Specification Sample Making Sheet"""
+		"""Fetch data from Sketch Specification"""
 		if not self.tech_pack_no:
 			return
 		
 		try:
-			tech_pack = frappe.get_doc("Sketch Specification Sample Making Sheet", self.tech_pack_no)
+			tech_pack = frappe.get_doc("Sketch Specification", self.tech_pack_no)
 			
 			# Auto-populate Quality Inspection Template if not set
 			if not self.link_nsnp:

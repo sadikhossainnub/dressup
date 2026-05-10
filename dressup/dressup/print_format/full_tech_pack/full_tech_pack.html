@@ -64,7 +64,7 @@
 <table style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     <tbody>
         <!-- Row 2: 2-Column Split for Measurements and Image -->
-        {% set sketch_doc = frappe.get_doc("Sketch Specification Sample Making Sheet", doc.tech_pack_no) if doc.tech_pack_no else None %}
+        {% set sketch_doc = frappe.get_doc("Sketch Specification", doc.tech_pack_no) if doc.tech_pack_no else None %}
         {% if sketch_doc %}
         <tr>
             <td style="border:none; padding:10px 0; vertical-align: top;">

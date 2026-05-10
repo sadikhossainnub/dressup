@@ -1,4 +1,4 @@
-frappe.listview_settings['Sketch Specification Sample Making Sheet'] = {
+frappe.listview_settings['Sketch Specification'] = {
 	get_indicator: function (doc) {
 		if (doc.docstatus == 1) {
 			return [__("Submitted"), "green", "docstatus,=,1"];

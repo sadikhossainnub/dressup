@@ -155,7 +155,7 @@ frappe.ui.form.on("Pre Production Sample", {
 		frappe.call({
 			method: 'frappe.client.get',
 			args: {
-				doctype: 'Sketch Specification Sample Making Sheet',
+				doctype: 'Sketch Specification',
 				name: frm.doc.tech_pack_no
 			},
 			callback(r) {

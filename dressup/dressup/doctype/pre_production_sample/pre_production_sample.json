@@ -434,7 +434,7 @@
             "fieldname": "tech_pack_no",
             "fieldtype": "Link",
             "label": "Tech Pack No",
-            "options": "Sketch Specification Sample Making Sheet",
+            "options": "Sketch Specification",
             "reqd": 1
         },
         {
