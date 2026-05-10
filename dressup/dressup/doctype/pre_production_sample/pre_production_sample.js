@@ -48,6 +48,33 @@ frappe.ui.form.on("Pre Production Sample", {
 			}
 		}
 
+		// Fetch from Cost Estimation button
+		if (!frm.is_new() && frm.doc.cost_estimation) {
+			frm.add_custom_button(__('Fetch from Cost Estimation'), function () {
+				frappe.call({
+					method: 'frappe.client.get',
+					args: {
+						doctype: 'Cost Estimation',
+						name: frm.doc.cost_estimation,
+						fields: ['designer', 'designer_name', 'design_no']
+					},
+					callback(r) {
+						if (r.message) {
+							let ce = r.message;
+							frm.set_value('designer', ce.designer || '');
+							frm.set_value('designer_name', ce.designer_name || '');
+							frm.set_value('style_no', ce.design_no || '');
+							frm.dirty();
+							frappe.show_alert({
+								message: __('Designer and Style No fetched from Cost Estimation'),
+								indicator: 'green'
+							});
+						}
+					}
+				});
+			}, __('Get'));
+		}
+
 		// Add Full Tech Pack Print Button
 		if (!frm.is_new()) {
 			frm.add_custom_button(__('Print Master Tech Pack'), function () {
