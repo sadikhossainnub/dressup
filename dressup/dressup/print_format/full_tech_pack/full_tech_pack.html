@@ -1,6 +1,11 @@
-<div class="letter-head">
-    {{ letter_head }}
-</div>
+<table class="page-wrapper">
+<thead><tr><td class="page-header-space">
+    <div class="page-header">{{ letter_head }}</div>
+</td></tr></thead>
+<tfoot><tr><td class="page-footer-space">
+    <div class="page-footer">{{ letter_head }}</div>
+</td></tr></tfoot>
+<tbody><tr><td class="page-content">
 
 <div
     style="border: 1px solid #000; width: 100%; margin-top: 10px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
@@ -495,6 +500,27 @@
         font-size: 7.5pt;
         vertical-align: top;
     }
+
+    /* Repeating header/footer on every printed page */
+    .page-wrapper {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .page-wrapper > thead { display: table-header-group; }
+    .page-wrapper > tfoot { display: table-footer-group; }
+    .page-wrapper > tbody { display: table-row-group; }
+    .page-header-space, .page-footer-space {
+        padding: 0;
+        border: none;
+    }
+    .page-header, .page-footer {
+        width: 100%;
+    }
+    .page-content {
+        padding: 0;
+        border: none;
+        vertical-align: top;
+    }
 </style>
 
 {% set all_items = (doc.fabrics or []) + (doc.trim_accessories or []) %}
@@ -646,3 +672,90 @@
     </tr>
 </table>
 {% endif %}
+
+{% set qi_name = frappe.db.get_value("Quality Inspection", {"reference_type": "Pre Production Sample", "reference_name": doc.name, "docstatus": 1}, "name") %}
+{% if qi_name %}
+{% set qi = frappe.get_doc("Quality Inspection", qi_name) %}
+<div style="margin-top: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; page-break-inside: avoid;">
+    <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase;">
+        Quality Inspection / কোয়ালিটি ইন্সপেকশন
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; font-size: 9px; margin-bottom: 10px;">
+        <tr>
+            <td style="border: 1px solid #ccc; padding: 5px; width: 25%;">QI No: {{ qi.name }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px; width: 25%;">Date: {{ frappe.utils.formatdate(qi.report_date) if qi.report_date else '' }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px; width: 25%;">Type: {{ qi.inspection_type or '' }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px; width: 25%; font-weight: bold;">
+                Status:
+                <span style="color: {{ '#166534' if qi.status == 'Accepted' else '#991b1b' }};">{{ qi.status }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ccc; padding: 5px;">Inspected By: {{ frappe.get_fullname(qi.inspected_by) if qi.inspected_by else '' }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px;">Sample Size: {{ qi.sample_size or '' }}</td>
+            <td style="border: 1px solid #ccc; padding: 5px;" colspan="2">Template: {{ qi.quality_inspection_template or '' }}</td>
+        </tr>
+    </table>
+
+    {% if qi.readings %}
+    <table class="standard-table" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+        <thead>
+            <tr style="background-color: #f2f2f2;">
+                <th style="width: 5%; text-align: center;">#</th>
+                <th style="width: 25%;">Parameter</th>
+                <th style="width: 30%;">Acceptance Criteria</th>
+                <th style="width: 25%;">Readings</th>
+                <th style="width: 15%; text-align: center;">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in qi.readings %}
+            <tr>
+                <td style="text-align: center;">{{ loop.index }}</td>
+                <td>
+                    <div style="font-weight: 700;">{{ row.specification }}</div>
+                    {% if row.parameter_group %}
+                    <div style="font-size: 6.5pt; color: #666;">{{ row.parameter_group }}</div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if row.numeric %}
+                    <span style="font-size: 6.5pt; color: #888;">RANGE:</span> {{ row.min_value }} – {{ row.max_value }}
+                    {% else %}
+                    {{ row.value or row.acceptance_formula or '—' }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if row.reading_value %}
+                    <span style="background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-family: monospace; font-weight: 600;">{{ row.reading_value }}</span>
+                    {% else %}
+                    {% for i in range(1, 11) %}
+                    {% set rv = row.get("reading_" ~ i) %}
+                    {% if rv %}
+                    <span style="background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-family: monospace; font-weight: 600; margin-right: 2px;">{{ rv }}</span>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </td>
+                <td style="text-align: center;">
+                    <span style="font-weight: 700; font-size: 7pt; padding: 2px 6px; border-radius: 3px; color: {{ '#166534' if row.status == 'Accepted' else '#991b1b' }}; background: {{ '#dcfce7' if row.status == 'Accepted' else '#fee2e2' }};">
+                        {{ row.status }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if qi.remarks %}
+    <div style="margin-top: 5px; border: 1px solid #ccc; padding: 6px; font-size: 9px; background: #fffbeb;">
+        <strong>QI Remarks:</strong> {{ qi.remarks }}
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+</td></tr></tbody>
+</table>
