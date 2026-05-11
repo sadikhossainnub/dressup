@@ -385,37 +385,13 @@
 {%- set lh = frappe.get_doc("Letter Head", doc.letter_head) if (doc.letter_head and not no_letter_head) else None %}
 
 <table class="page-wrapper">
-  <thead>
-    <tr>
-      <td class="page-header-space">
-        <div class="page-header">
-          {% if lh and lh.content %}
-            <div style="margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #e0e4ef;">
-              {{ lh.content }}
-            </div>
-          {% endif %}
-        </div>
-      </td>
-    </tr>
-  </thead>
-
-  <tfoot>
-    <tr>
-      <td class="page-footer-space">
-        <div class="page-footer">
-          {% if lh and lh.footer %}
-            <div style="margin-top: 14px; padding-top: 10px; border-top: 1px solid #e0e4ef; text-align: center; font-size: 7.5pt; color: #888; line-height: 1.7;">
-              {{ lh.footer }}
-            </div>
-          {% endif %}
-        </div>
-      </td>
-    </tr>
-  </tfoot>
-
-  <tbody>
-    <tr>
-      <td class="page-content">
+<thead><tr><td class="page-header-space">
+    <div class="page-header">{{ letter_head }}</div>
+</td></tr></thead>
+<tfoot><tr><td class="page-footer-space">
+    <div class="page-footer">{{ footer }}</div>
+</td></tr></tfoot>
+<tbody><tr><td class="page-content">
         <div class="po-wrapper">
 
   <!-- ── HEADER ── -->
