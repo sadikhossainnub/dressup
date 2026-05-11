@@ -16,9 +16,9 @@
 <table style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; border: 1px solid #000;">
     <tbody>
         <tr>
-            <td style="padding: 1px 8px 3px 8px; width: 33%;">Status: {{ doc.status or doc.workflow_state or '' }}</td>
-            <td style="padding: 1px 8px 3px 8px; width: 33%;">Cut/ Fit Style: {{ doc.cut_fit_style or '' }}</td>
-            <td style="padding: 1px 8px 3px 8px; width: 34%;">Pattern Master: {{ doc.pattern_master_name or '' }}</td>
+            <td style="padding: 1px 8px; width: 33%;">Status: {{ doc.status or doc.workflow_state or '' }}</td>
+            <td style="padding: 1px 8px; width: 33%;">Cut/ Fit Style: {{ doc.cut_fit_style or '' }}</td>
+            <td style="padding: 1px 8px; width: 34%;">Pattern Master: {{ doc.pattern_master_name or '' }}</td>
         </tr>
         <tr>
             <td style="padding: 1px 8px;">Tech Pack No: {{ doc.tech_pack_no or '' }}</td>
@@ -51,9 +51,9 @@
             <td style="padding: 1px 8px;">Workstations: Cutting, Sewing, Screen Print, Block Print</td>
         </tr>
         <tr>
-            <td style="padding: 1px 8px 8px 8px;">Sewing Finish: {{ doc.sewing_finish or '' }}</td>
-            <td style="padding: 1px 8px 8px 8px;">Costing Ref: {{ doc.costing_ref or '' }}</td>
-            <td style="padding: 1px 8px 8px 8px;"></td>
+            <td style="padding: 1px 8px;">Sewing Finish: {{ doc.sewing_finish or '' }}</td>
+            <td style="padding: 1px 8px;">Costing Ref: {{ doc.costing_ref or '' }}</td>
+            <td style="padding: 1px 8px;"></td>
         </tr>
     </tbody>
 </table>
