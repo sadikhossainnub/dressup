@@ -1,6 +1,8 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
+  @page { margin: 0; }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body, .print-format {
@@ -373,7 +375,7 @@
 <div class="po-wrapper">
 
   {%- set company_doc = frappe.get_doc("Company", doc.company) %}
-  {%- set lh = frappe.get_doc("Letter Head", doc.letter_head) if doc.letter_head else None %}
+  {%- set lh = frappe.get_doc("Letter Head", doc.letter_head) if (doc.letter_head and not no_letter_head) else None %}
 
   <!-- ── LETTERHEAD HEADER ── -->
   {% if lh and lh.content %}
@@ -382,20 +384,33 @@
 
   <!-- ── HEADER ── -->
   <div class="po-header">
-    <div class="po-company-block">
-      {% if company_doc.company_logo %}
-        <img src="{{ company_doc.company_logo }}" style="height:42px; margin-bottom:6px; display:block;" alt="logo">
-      {% endif %}
-      <div class="company-name">{{ doc.company }}</div>
-      <div class="company-meta">
-        {% set addr = frappe.get_doc("Address", doc.company_address) if doc.company_address else None %}
-        {% if addr %}
-          {{ addr.address_line1 }}{% if addr.address_line2 %}, {{ addr.address_line2 }}{% endif %}<br>
-          {{ addr.city }}{% if addr.state %}, {{ addr.state }}{% endif %} – {{ addr.pincode }}<br>
+    <!-- ── SUPPLIER & DELIVERY INFO ── -->
+    <div class="po-info-band" style="margin-bottom: 0; border: none; display: flex; flex-direction: column; gap: 8px; width: 60%;">
+      <div class="info-card" style="border: none; padding: 0;">
+        <div class="card-label" style="margin-bottom: 2px;">&#x1F4E6; Supplier</div>
+        <div class="card-name" style="font-size: 9pt;">{{ doc.supplier }}</div>
+        {% set sup_addr = frappe.get_doc("Address", doc.supplier_address) if doc.supplier_address else None %}
+        {% if sup_addr %}
+          <div class="card-detail" style="font-size: 8pt;">
+            {{ sup_addr.address_line1 }}{% if sup_addr.address_line2 %}, {{ sup_addr.address_line2 }}{% endif %}<br>
+            {{ sup_addr.city }}{% if sup_addr.state %}, {{ sup_addr.state }}{% endif %}
+            {% if sup_addr.pincode %} – {{ sup_addr.pincode }}{% endif %}
+          </div>
         {% endif %}
-        {% if company_doc.phone_no %}Tel: {{ company_doc.phone_no }}&nbsp;&nbsp;{% endif %}
-        {% if company_doc.email %}Email: {{ company_doc.email }}{% endif %}
-        {% if company_doc.tax_id %}<br>BIN: {{ company_doc.tax_id }}{% endif %}
+      </div>
+      <div class="info-card" style="border: none; padding: 0;">
+        <div class="card-label" style="margin-bottom: 2px;">&#x1F69A; Deliver To</div>
+        <div class="card-name" style="font-size: 9pt;">{{ doc.company }}</div>
+        {% set ship_addr = frappe.get_doc("Address", doc.shipping_address) if doc.shipping_address else None %}
+        {% if ship_addr %}
+          <div class="card-detail" style="font-size: 8pt;">
+            {{ ship_addr.address_line1 }}{% if ship_addr.address_line2 %}, {{ ship_addr.address_line2 }}{% endif %}<br>
+            {{ ship_addr.city }}{% if ship_addr.state %}, {{ ship_addr.state }}{% endif %}
+            {% if ship_addr.pincode %} – {{ ship_addr.pincode }}{% endif %}
+          </div>
+        {% else %}
+          <div class="card-detail" style="font-size: 8pt;">{{ doc.set_warehouse }}</div>
+        {% endif %}
       </div>
     </div>
     <div class="po-title-block">
@@ -411,38 +426,6 @@
     </div>
   </div>
 
-  <!-- ── SUPPLIER & DELIVERY INFO ── -->
-  <div class="po-info-band">
-    <div class="info-card">
-      <div class="card-label">&#x1F4E6; Supplier</div>
-      <div class="card-name">{{ doc.supplier }}</div>
-      {% set sup_addr = frappe.get_doc("Address", doc.supplier_address) if doc.supplier_address else None %}
-      {% if sup_addr %}
-        <div class="card-detail">
-          {{ sup_addr.address_line1 }}{% if sup_addr.address_line2 %}, {{ sup_addr.address_line2 }}{% endif %}<br>
-          {{ sup_addr.city }}{% if sup_addr.state %}, {{ sup_addr.state }}{% endif %}
-          {% if sup_addr.pincode %} – {{ sup_addr.pincode }}{% endif %}
-        </div>
-      {% endif %}
-      {% if doc.supplier_email %}
-        <div class="card-detail">{{ doc.supplier_email }}</div>
-      {% endif %}
-    </div>
-    <div class="info-card">
-      <div class="card-label">&#x1F69A; Deliver To</div>
-      <div class="card-name">{{ doc.company }}</div>
-      {% set ship_addr = frappe.get_doc("Address", doc.shipping_address) if doc.shipping_address else None %}
-      {% if ship_addr %}
-        <div class="card-detail">
-          {{ ship_addr.address_line1 }}{% if ship_addr.address_line2 %}, {{ ship_addr.address_line2 }}{% endif %}<br>
-          {{ ship_addr.city }}{% if ship_addr.state %}, {{ ship_addr.state }}{% endif %}
-          {% if ship_addr.pincode %} – {{ ship_addr.pincode }}{% endif %}
-        </div>
-      {% else %}
-        <div class="card-detail">{{ doc.set_warehouse }}</div>
-      {% endif %}
-    </div>
-  </div>
 
   <!-- ── META ROW ── -->
   <div class="po-meta-row">
