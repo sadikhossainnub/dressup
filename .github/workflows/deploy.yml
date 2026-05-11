@@ -61,17 +61,10 @@ jobs:
               bench get-app --branch main https://github.com/sadikhossainnub/dressup.git
             fi
 
-            # Install dependencies (if pyproject.toml changed)
-            echo ">>> Installing dependencies..."
-            bench setup requirements --dev
 
             # Run migrations
             echo ">>> Running migrations..."
             bench --site all migrate
-
-            # Build assets
-            echo ">>> Building assets..."
-            bench build --app dressup
 
             # Clear cache
             echo ">>> Clearing cache..."
