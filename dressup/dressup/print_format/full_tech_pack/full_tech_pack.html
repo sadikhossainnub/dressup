@@ -9,8 +9,8 @@
 
 {% set sketch_doc = frappe.get_doc("Sketch Specification", doc.tech_pack_no) if doc.tech_pack_no else None %}
 <div style="text-align: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-bottom: 5px; margin-top: 10px;">
-    <div style="font-size: 16px; font-weight: bold; text-transform: uppercase;">TECH PACK</div>
-    <div style="font-size: 12px; margin-top: 4px;">REF: {{ doc.name }} | DATE: {{ frappe.utils.formatdate(doc.creation, "dd MMM yyyy") }}</div>
+    <div style="font-size: 16px; font-weight: bold; text-transform: uppercase; line-height: 1;">TECH PACK</div>
+    <div style="font-size: 12px; line-height: 1;">REF: {{ doc.name }} | DATE: {{ frappe.utils.formatdate(doc.creation, "dd MMM yyyy") }}</div>
 </div>
 
 <table style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; border: 1px solid #000;">
@@ -57,6 +57,36 @@
         </tr>
     </tbody>
 </table>
+
+<div style="margin-top: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; page-break-inside: avoid;">
+    <div style="display: inline-block; font-weight: bold; font-size: 11px; padding: 4px 8px; border: 1px solid #000; border-bottom: none; margin-bottom: -1px; position: relative; z-index: 10; background-color: #fff;">
+        PPS Gallery / পিপিএস গ্যালারি
+    </div>
+    <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+        <tr>
+            <td style="border: 1px solid #000; width: 50%; height: 250px; text-align: center; vertical-align: middle; padding: 5px;">
+                {% if doc.pps_front %}
+                    <div style="height: 220px; display: flex; align-items: center; justify-content: center;">
+                        <img src="{{ frappe.utils.get_url(doc.pps_front) }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                    </div>
+                    <div style="font-weight: bold; font-size: 10px; margin-top: 5px;">PPS FRONT VIEW</div>
+                {% else %}
+                    <div style="font-weight: bold; font-size: 10px;">PPS FRONT VIEW</div>
+                {% endif %}
+            </td>
+            <td style="border: 1px solid #000; width: 50%; height: 250px; text-align: center; vertical-align: middle; padding: 5px;">
+                {% if doc.pps_back %}
+                    <div style="height: 220px; display: flex; align-items: center; justify-content: center;">
+                        <img src="{{ frappe.utils.get_url(doc.pps_back) }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                    </div>
+                    <div style="font-weight: bold; font-size: 10px; margin-top: 5px;">PPS BACK VIEW</div>
+                {% else %}
+                    <div style="font-weight: bold; font-size: 10px;">PPS BACK VIEW</div>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</div>
 
 <table style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     <tbody>
@@ -614,42 +644,6 @@
         {% endif %}
     </tr>
 </table>
-
-{% if doc.pps_front or doc.pps_back %}
-<div
-    style="margin-top: 20px; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-    PPS Gallery / পিপিএস গ্যালারি</div>
-<table
-    style="width: 100%; border-collapse: separate; border-spacing: 12px 0; margin-left: -6px; table-layout: fixed; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-    <tr>
-        {% if doc.pps_front %}
-        <td
-            style="border: 1px solid #000; padding: 5px; background: #fff; text-align: center; vertical-align: top; height: 220px; width: 50%;">
-            <div style="height: 190px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                <img src="{{ frappe.utils.get_url(doc.pps_front) }}"
-                    style="width: 100%; height: 100%; object-fit: contain; background: #fdfdfd; display: block;">
-            </div>
-            <div
-                style="font-size: 9px; font-weight: bold; margin-top: 5px; background: #fff; color: #000; border: 1px solid #000; padding: 2px;">
-                FRONT VIEW</div>
-        </td>
-        {% endif %}
-
-        {% if doc.pps_back %}
-        <td
-            style="border: 1px solid #000; padding: 5px; background: #fff; text-align: center; vertical-align: top; height: 220px; width: 50%;">
-            <div style="height: 190px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                <img src="{{ frappe.utils.get_url(doc.pps_back) }}"
-                    style="width: 100%; height: 100%; object-fit: contain; background: #fdfdfd; display: block;">
-            </div>
-            <div
-                style="font-size: 9px; font-weight: bold; margin-top: 5px; background: #fff; color: #000; border: 1px solid #000; padding: 2px;">
-                BACK VIEW</div>
-        </td>
-        {% endif %}
-    </tr>
-</table>
-{% endif %}
 
 {% set qi_name = frappe.db.get_value("Quality Inspection", {"reference_type": "Pre Production Sample", "reference_name": doc.name, "docstatus": 1}, "name") %}
 {% if qi_name %}
