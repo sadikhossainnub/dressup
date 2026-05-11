@@ -204,6 +204,19 @@ frappe.ui.form.on("PPS Fabric Item", {
 					frappe.model.set_value(cdt, cdn, "stock_in_hand", r.message || 0);
 				}
 			});
+			// Fetch all item attributes
+			frappe.call({
+				method: "frappe.client.get",
+				args: { doctype: "Item", name: row.item_code, fields: ["attributes"] },
+				callback(r) {
+					if (r.message && r.message.attributes && r.message.attributes.length) {
+						let attrs = r.message.attributes.map(a => a.attribute + ": " + (a.attribute_value || ""));
+						frappe.model.set_value(cdt, cdn, "item_attributes", attrs.join(", "));
+					} else {
+						frappe.model.set_value(cdt, cdn, "item_attributes", "");
+					}
+				}
+			});
 		}
 	},
 	actual_quantity: function (frm, cdt, cdn) {
@@ -225,6 +238,19 @@ frappe.ui.form.on("PPS Trim Accessories Item", {
 					frappe.model.set_value(cdt, cdn, "stock_in_hand", r.message || 0);
 				}
 			});
+			// Fetch all item attributes
+			frappe.call({
+				method: "frappe.client.get",
+				args: { doctype: "Item", name: row.item_code, fields: ["attributes"] },
+				callback(r) {
+					if (r.message && r.message.attributes && r.message.attributes.length) {
+						let attrs = r.message.attributes.map(a => a.attribute + ": " + (a.attribute_value || ""));
+						frappe.model.set_value(cdt, cdn, "item_attributes", attrs.join(", "));
+					} else {
+						frappe.model.set_value(cdt, cdn, "item_attributes", "");
+					}
+				}
+			});
 		}
 	},
 	actual_quantity: function (frm, cdt, cdn) {
@@ -244,6 +270,19 @@ frappe.ui.form.on("Fabric Dupatta", {
 				args: { item_code: row.item_code },
 				callback(r) {
 					frappe.model.set_value(cdt, cdn, "stock_in_hand", r.message || 0);
+				}
+			});
+			// Fetch all item attributes
+			frappe.call({
+				method: "frappe.client.get",
+				args: { doctype: "Item", name: row.item_code, fields: ["attributes"] },
+				callback(r) {
+					if (r.message && r.message.attributes && r.message.attributes.length) {
+						let attrs = r.message.attributes.map(a => a.attribute + ": " + (a.attribute_value || ""));
+						frappe.model.set_value(cdt, cdn, "item_attributes", attrs.join(", "));
+					} else {
+						frappe.model.set_value(cdt, cdn, "item_attributes", "");
+					}
 				}
 			});
 		}

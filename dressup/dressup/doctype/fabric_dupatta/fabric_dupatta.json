@@ -10,6 +10,7 @@
   "item_name",
   "default_unit_of_measurement",
   "item_group",
+  "item_attributes",
   "stock_in_hand",
   "quantity",
   "actual_quantity",
@@ -53,6 +54,13 @@
    "in_list_view": 1,
    "label": "Stock in Hand",
    "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "item_attributes",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Item Attributes",
    "read_only": 1
   },
   {

@@ -493,6 +493,7 @@
             <tr style="background-color: #f2f2f2;">
                 <th style="padding: 5px; border: 1px solid #ccc;">Item Code</th>
                 <th style="padding: 5px; border: 1px solid #ccc;">Item Name</th>
+                <th style="padding: 5px; border: 1px solid #ccc;">Attributes</th>
                 <th style="padding: 5px; border: 1px solid #ccc; text-align: center;">UOM</th>
                 <th style="padding: 5px; border: 1px solid #ccc; text-align: right;">Est. Qty</th>
                 <th style="padding: 5px; border: 1px solid #ccc; text-align: right;">Actual Qty</th>
@@ -503,6 +504,7 @@
             <tr>
                 <td style="padding: 4px; border: 1px solid #ccc;">{{ item.item_code or '' }}</td>
                 <td style="padding: 4px; border: 1px solid #ccc;">{{ item.item_name or '' }}</td>
+                <td style="padding: 4px; border: 1px solid #ccc; font-size: 8px;">{{ item.item_attributes or '' }}</td>
                 <td style="padding: 4px; border: 1px solid #ccc; text-align: center;">{{
                     item.default_unit_of_measurement or '' }}</td>
                 <td style="padding: 4px; border: 1px solid #ccc; text-align: right;">{{ item.quantity or '0' }}</td>
@@ -524,6 +526,7 @@
             <tr style="background-color: #f2f2f2;">
                 <th style="padding: 5px; border: 1px solid #ccc;">Item Code</th>
                 <th style="padding: 5px; border: 1px solid #ccc;">Item Name</th>
+                <th style="padding: 5px; border: 1px solid #ccc;">Attributes</th>
                 <th style="padding: 5px; border: 1px solid #ccc; text-align: center;">UOM</th>
                 <th style="padding: 5px; border: 1px solid #ccc; text-align: right;">Est. Qty</th>
                 <th style="padding: 5px; border: 1px solid #ccc; text-align: right;">Actual Qty</th>
@@ -534,6 +537,7 @@
             <tr>
                 <td style="padding: 4px; border: 1px solid #ccc;">{{ item.item_code or '' }}</td>
                 <td style="padding: 4px; border: 1px solid #ccc;">{{ item.item_name or '' }}</td>
+                <td style="padding: 4px; border: 1px solid #ccc; font-size: 8px;">{{ item.item_attributes or '' }}</td>
                 <td style="padding: 4px; border: 1px solid #ccc; text-align: center;">{{
                     item.default_unit_of_measurement or '' }}</td>
                 <td style="padding: 4px; border: 1px solid #ccc; text-align: right;">{{ item.quantity or '0' }}</td>
@@ -545,6 +549,12 @@
     </table>
 </div>
 {% endif %}
+
+<div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; margin-top: 10px; padding: 5px; background-color: #f9f9f9; border: 1px solid #ccc; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    <div style="width: 33%; text-align: left;">TOTAL ITEMS: {{ (doc.fabrics|length if doc.fabrics else 0) + (doc.trim_accessories|length if doc.trim_accessories else 0) }}</div>
+    <div style="width: 33%; text-align: center;">FABRICS: {{ doc.fabrics|length if doc.fabrics else 0 }} ITEMS</div>
+    <div style="width: 33%; text-align: right;">TRIM & ACCESSORIES: {{ doc.trim_accessories|length if doc.trim_accessories else 0 }} ITEMS</div>
+</div>
 
 <div style="margin-top: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; page-break-inside: avoid;">
     {% set fabric_total = doc.fabrics | sum(attribute='amount') if doc.fabrics else 0 %}
