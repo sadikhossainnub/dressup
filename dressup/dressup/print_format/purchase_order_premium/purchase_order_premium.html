@@ -403,8 +403,9 @@
       <div class="po-number">{{ doc.name }}</div>
       <div class="po-date">Date: {{ frappe.format(doc.transaction_date, {"fieldtype":"Date"}) }}</div>
       <div style="margin-top:6px;">
-        <span class="po-status-badge status-{{ doc.status | lower | replace(' ','-') }}">
-          {{ doc.status }}
+        {% set display_status = doc.workflow_state or doc.status %}
+        <span class="po-status-badge status-{{ display_status | lower | replace(' ','-') }}">
+          {{ display_status }}
         </span>
       </div>
     </div>
