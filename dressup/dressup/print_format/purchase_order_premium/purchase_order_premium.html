@@ -295,18 +295,88 @@
     font-family: 'DM Mono', monospace;
   }
 
-  /* ── IN WORDS ── */
-  .amount-words {
-    background: transparent;
-    border-left: 3px solid #0f3460;
-    border-radius: 0 4px 4px 0;
-    padding: 7px 12px;
-    font-size: 8.5pt;
-    color: #0f3460;
+  /* ── SUMMARY BLOCK ── */
+  .summary-container {
+    display: flex;
+    border: 1px solid #d0d4e4;
+    border-radius: 8px;
     margin-bottom: 16px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .summary-left {
+    flex: 1;
+    padding: 14px 18px;
+    border-right: 1px solid #d0d4e4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+  }
+  .summary-right {
+    width: 280px;
+    padding: 12px 18px;
+    background: #f9f9fb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .summary-amount-words {
+    font-size: 9.5pt;
+    color: #1a1a2e;
+    line-height: 1.4;
+  }
+  .summary-amount-words strong {
+    font-weight: 700;
+    color: #000;
+  }
+  .summary-amount-words span {
+    color: #0f3460;
+    font-weight: 500;
+  }
+  .summary-payment-terms {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: #e94560;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .summary-payment-terms span {
+    color: #555;
+    text-transform: none;
+    font-weight: 400;
+    margin-left: 5px;
   }
 
-  .amount-words strong { font-weight: 600; }
+  .summary-totals-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .summary-totals-table tr td {
+    padding: 4px 0;
+    font-size: 9pt;
+    color: #555;
+  }
+  .summary-totals-table tr td:last-child {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    color: #1a1a2e;
+    font-weight: 500;
+  }
+  .summary-totals-table tr.total-divider td {
+    border-top: 1px solid #d0d4e4;
+    padding-top: 6px;
+    margin-top: 4px;
+  }
+  .summary-totals-table tr.grand-total td {
+    font-size: 12pt;
+    font-weight: 700;
+    color: #0f3460;
+    padding-top: 6px;
+  }
+  .summary-totals-table tr.grand-total td:last-child {
+    color: #e94560;
+  }
 
   /* ── FOOTER STRIP ── */
   .po-bottom-strip {
@@ -319,11 +389,17 @@
   }
 
   .po-bottom-strip .strip-note {
-    font-size: 7.5pt;
-    color: #666;
-    font-style: italic;
-    max-width: 75%;
-    line-height: 1.5;
+    font-size: 7pt;
+    color: #555;
+    max-width: 70%;
+    line-height: 1.4;
+  }
+
+  .po-bottom-strip .strip-approval {
+    font-size: 8.5pt;
+    font-weight: 500;
+    color: #1a1a2e;
+    text-align: right;
   }
 
   .po-bottom-strip .strip-page {
@@ -507,28 +583,32 @@
     </tbody>
   </table>
 
-  <!-- ── FOOTER: TERMS + TOTALS ── -->
-  <div class="po-footer-grid">
-    <div>
-      {% if doc.terms %}
-      <div class="po-terms">
-        <div class="terms-label">Terms &amp; Conditions</div>
-        <div class="terms-body">{{ doc.terms | striptags }}</div>
+  <!-- ── SUMMARY BLOCK ── -->
+  <div class="summary-container">
+    <div class="summary-left">
+      <div class="summary-amount-words">
+        <strong>Amount in Words:</strong>
+        <span>{{ doc.currency }} {{ doc.in_words or frappe.utils.money_in_words(doc.grand_total, doc.currency) }}</span>
+      </div>
+      {% if doc.payment_terms_template or doc.tc_name %}
+      <div class="summary-payment-terms">
+        PAYMENT TERMS : <span>{{ doc.payment_terms_template or doc.tc_name }}</span>
       </div>
       {% endif %}
     </div>
-
-    <div class="totals-block">
-      <table class="totals-table">
+    <div class="summary-right">
+      <table class="summary-totals-table">
         <tr>
           <td>Net Total</td>
           <td>{{ frappe.format(doc.net_total, {"fieldtype":"Currency", "currency": doc.currency}) }}</td>
         </tr>
         {% for tax in doc.taxes %}
+        {% if tax.tax_amount %}
         <tr>
           <td>{{ tax.description }}</td>
           <td>{{ frappe.format(tax.tax_amount, {"fieldtype":"Currency", "currency": doc.currency}) }}</td>
         </tr>
+        {% endif %}
         {% endfor %}
         {% if doc.discount_amount %}
         <tr>
@@ -536,7 +616,7 @@
           <td>- {{ frappe.format(doc.discount_amount, {"fieldtype":"Currency", "currency": doc.currency}) }}</td>
         </tr>
         {% endif %}
-        <tr class="grand-total">
+        <tr class="grand-total total-divider">
           <td>Grand Total</td>
           <td>{{ frappe.format(doc.grand_total, {"fieldtype":"Currency", "currency": doc.currency}) }}</td>
         </tr>
@@ -552,18 +632,22 @@
     </div>
   </div>
 
-  <!-- ── AMOUNT IN WORDS ── -->
-  <div class="amount-words">
-    <strong>Amount in Words:</strong>
-    {{ doc.in_words or frappe.utils.money_in_words(doc.grand_total, doc.currency) }}
+  <!-- ── BOTTOM STRIP ── -->
+  <div class="po-bottom-strip" style="align-items: flex-end; margin-top: 20px;">
+    <div class="strip-note">
+      <strong>Standard Purchase Terms:</strong><br>
+      All deliveries must match the descriptions and quantities stated above. Goods must meet the specified quality standards. Unauthorized over-shipments will be returned at the vendor's expense.<br>
+      Delivery must be made by the date specified; late shipments may be subject to penalty or cancellation.<br>
+      For full Terms and Conditions, please visit: <u>https://dressup.com.bd/vendors</u>
+    </div>
+    <div class="strip-approval">
+      Electronically approved via Dress Up ERP System.
+    </div>
   </div>
 
-  <!-- ── BOTTOM STRIP ── -->
-  <div class="po-bottom-strip">
-    <div class="strip-note">
-      &#9432; This is a system-generated Purchase Order. It is legally valid without a physical signature unless explicitly required by your organization's policy or applicable law.
-    </div>
-    <div class="strip-page">{{ doc.name }} &nbsp;|&nbsp; {{ doc.company }}</div>
+  <div style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 7.5pt; color: #aaa; font-family: 'DM Mono', monospace; border-top: 1px solid #eee; padding-top: 5px;">
+    <div>{{ doc.name }}</div>
+    <div>{{ doc.company }}</div>
   </div>
 
         </div>
