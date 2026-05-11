@@ -1,0 +1,10 @@
+{
+    "doctype": "Print Format",
+    "doc_type": "Purchase Order",
+    "module": "DressUp",
+    "name": "Purchase Order Premium",
+    "print_format_name": "Purchase Order Premium",
+    "standard": "Yes",
+    "print_format_type": "Jinja",
+    "raw_printing": 0
+}
