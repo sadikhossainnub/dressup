@@ -496,7 +496,7 @@
         <div>
           <div class="card-label" style="margin-bottom: 2px;">&#x1F69A; Deliver To</div>
           <div class="card-name" style="font-size: 9pt;">{{ doc.company }}</div>
-          {% set ship_addr_name = doc.shipping_address or (frappe.get_value("Warehouse", doc.set_warehouse, "address") if doc.set_warehouse else None) %}
+          {% set ship_addr_name = doc.shipping_address or (frappe.db.get_value("Warehouse", doc.set_warehouse, "address") if doc.set_warehouse else None) %}
           {% set ship_addr = frappe.get_doc("Address", ship_addr_name) if ship_addr_name else None %}
           {% if ship_addr %}
             <div class="card-detail" style="font-size: 8pt; line-height: 1.3;">
@@ -554,7 +554,7 @@
       {% for item in doc.items %}
       <tr>
         <td style="text-align:center; vertical-align:middle;">
-          {%- set item_image = item.image or frappe.get_value("Item", item.item_code, "image") %}
+          {%- set item_image = item.image or frappe.db.get_value("Item", item.item_code, "image") %}
           {% if item_image %}
             <div class="item-img-wrap">
               <img src="{{ item_image }}" alt="{{ item.item_name }}">
