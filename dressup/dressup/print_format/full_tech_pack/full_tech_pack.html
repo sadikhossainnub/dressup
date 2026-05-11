@@ -8,7 +8,7 @@
 <tbody><tr><td class="page-content">
 
 {% set sketch_doc = frappe.get_doc("Sketch Specification", doc.tech_pack_no) if doc.tech_pack_no else None %}
-<div style="text-align: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-bottom: 5px; margin-top: 10px;">
+<div style="text-align: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-bottom: 5px; margin-top: 2px;">
     <div style="font-size: 16px; font-weight: bold; text-transform: uppercase; line-height: 1;">TECH PACK</div>
     <div style="font-size: 12px; line-height: 1;">REF: {{ doc.name }} | DATE: {{ frappe.utils.formatdate(doc.creation, "dd MMM yyyy") }}</div>
 </div>
@@ -16,44 +16,44 @@
 <table style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; border: 1px solid #000;">
     <tbody>
         <tr>
-            <td style="padding: 8px 8px 3px 8px; width: 33%;">Status: {{ doc.status or doc.workflow_state or '' }}</td>
-            <td style="padding: 8px 8px 3px 8px; width: 33%;">Cut/ Fit Style: {{ doc.cut_fit_style or '' }}</td>
-            <td style="padding: 8px 8px 3px 8px; width: 34%;">Pattern Master: {{ doc.pattern_master_name or '' }}</td>
+            <td style="padding: 1px 8px 3px 8px; width: 33%;">Status: {{ doc.status or doc.workflow_state or '' }}</td>
+            <td style="padding: 1px 8px 3px 8px; width: 33%;">Cut/ Fit Style: {{ doc.cut_fit_style or '' }}</td>
+            <td style="padding: 1px 8px 3px 8px; width: 34%;">Pattern Master: {{ doc.pattern_master_name or '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 3px 8px;">Tech Pack No: {{ doc.tech_pack_no or '' }}</td>
-            <td style="padding: 3px 8px;">Collar/ Neck Style: {{ doc.collar_neck_style or '' }}</td>
-            <td style="padding: 3px 8px;">Sample Man: {{ doc.sample_man_name or '' }}</td>
+            <td style="padding: 1px 8px;">Tech Pack No: {{ doc.tech_pack_no or '' }}</td>
+            <td style="padding: 1px 8px;">Collar/ Neck Style: {{ doc.collar_neck_style or '' }}</td>
+            <td style="padding: 1px 8px;">Sample Man: {{ doc.sample_man_name or '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 3px 8px;">Item Name: {{ doc.item_name or '' }}</td>
-            <td style="padding: 3px 8px;">Side Cut: {{ doc.side_cut or '' }}</td>
-            <td style="padding: 3px 8px;">Handler: {{ doc.handler_name or doc.handler or '' }}</td>
+            <td style="padding: 1px 8px;">Item Name: {{ doc.item_name or '' }}</td>
+            <td style="padding: 1px 8px;">Side Cut: {{ doc.side_cut or '' }}</td>
+            <td style="padding: 1px 8px;">Handler: {{ doc.handler_name or doc.handler or '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 3px 8px;">Designer Name: {{ doc.designer_name or doc.owner or '' }}</td>
-            <td style="padding: 3px 8px;">Sleeve: {{ doc.sleeve or '' }}</td>
-            <td style="padding: 3px 8px;">Sketch Submission Date: {{ frappe.utils.formatdate(sketch_doc.submission_date) if sketch_doc and sketch_doc.submission_date else '' }}</td>
+            <td style="padding: 1px 8px;">Designer Name: {{ doc.designer_name or doc.owner or '' }}</td>
+            <td style="padding: 1px 8px;">Sleeve: {{ doc.sleeve or '' }}</td>
+            <td style="padding: 1px 8px;">Sketch Submission Date: {{ frappe.utils.formatdate(sketch_doc.submission_date) if sketch_doc and sketch_doc.submission_date else '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 3px 8px;">Style No: {{ doc.style_no or doc.naming_series or '' }}</td>
-            <td style="padding: 3px 8px;">Bottom Style: {{ doc.bottom_style or '' }}</td>
-            <td style="padding: 3px 8px;">Costing Submit Date: {{ frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if doc.cost_estimation else '' }}</td>
+            <td style="padding: 1px 8px;">Style No: {{ doc.style_no or doc.naming_series or '' }}</td>
+            <td style="padding: 1px 8px;">Bottom Style: {{ doc.bottom_style or '' }}</td>
+            <td style="padding: 1px 8px;">Costing Submit Date: {{ frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if doc.cost_estimation else '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 3px 8px;">Category: {{ doc.category or '' }}</td>
-            <td style="padding: 3px 8px;">Bottom Waist: {{ doc.bottom_waist or '' }}</td>
-            <td style="padding: 3px 8px;">PPS Submission Date: {{ frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</td>
+            <td style="padding: 1px 8px;">Category: {{ doc.category or '' }}</td>
+            <td style="padding: 1px 8px;">Bottom Waist: {{ doc.bottom_waist or '' }}</td>
+            <td style="padding: 1px 8px;">PPS Submission Date: {{ frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 3px 8px;">Season: {{ doc.session or doc.season or '' }}</td>
-            <td style="padding: 3px 8px;">Sketch Ref: {{ doc.sketch_ref or '' }}</td>
-            <td style="padding: 3px 8px;">Workstations: Cutting, Sewing, Screen Print, Block Print</td>
+            <td style="padding: 1px 8px;">Season: {{ doc.session or doc.season or '' }}</td>
+            <td style="padding: 1px 8px;">Sketch Ref: {{ doc.sketch_ref or '' }}</td>
+            <td style="padding: 1px 8px;">Workstations: Cutting, Sewing, Screen Print, Block Print</td>
         </tr>
         <tr>
-            <td style="padding: 3px 8px 8px 8px;">Sewing Finish: {{ doc.sewing_finish or '' }}</td>
-            <td style="padding: 3px 8px 8px 8px;">Costing Ref: {{ doc.costing_ref or '' }}</td>
-            <td style="padding: 3px 8px 8px 8px;"></td>
+            <td style="padding: 1px 8px 8px 8px;">Sewing Finish: {{ doc.sewing_finish or '' }}</td>
+            <td style="padding: 1px 8px 8px 8px;">Costing Ref: {{ doc.costing_ref or '' }}</td>
+            <td style="padding: 1px 8px 8px 8px;"></td>
         </tr>
     </tbody>
 </table>
@@ -87,6 +87,84 @@
         </tr>
     </table>
 </div>
+
+{% if doc.size_chart_in_inch %}
+{% set total_production_qty = doc.size_chart_in_inch | sum(attribute='production_qty') if doc.size_chart_in_inch else 0 %}
+<div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: flex-end; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-bottom: 5px;">
+    <div style="font-weight: bold; font-size: 11px; text-transform: uppercase;">
+        Actual Size Chart / সাইজ চার্ট
+    </div>
+    <div style="font-size: 11px; font-weight: bold;">
+        Total Production Qty: {{ total_production_qty }}
+    </div>
+</div>
+<table class="standard-table" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    <thead>
+        <tr>
+            <th style="width: 16%;">Size</th>
+            <th style="text-align: center;">Production Qty</th>
+            <th style="text-align: center;">Length</th>
+            <th style="text-align: center;">Bust</th>
+            <th style="text-align: center;">Waist</th>
+            <th style="text-align: center;">Btm Length</th>
+            <th style="text-align: center;">Btm Waist</th>
+            <th style="text-align: center;">Leg Open</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in doc.size_chart_in_inch %}
+        <tr>
+            <td style="font-weight: 700;">{{ row.size_chart_in_inch or '-' }}</td>
+            <td style="text-align: center;">{{ row.production_qty or '0' }}</td>
+            <td style="text-align: center;">{{ row.length or '-' }}</td>
+            <td style="text-align: center;">{{ row.bust or '-' }}</td>
+            <td style="text-align: center;">{{ row.waist or '-' }}</td>
+            <td style="text-align: center;">{{ row.bottom_length or '-' }}</td>
+            <td style="text-align: center;">{{ row.bottom_waist or '-' }}</td>
+            <td style="text-align: center;">{{ row.leg_opening or '-' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+<table
+    style="width: 100%; border-collapse: collapse; margin-top: 20px; table-layout: fixed; page-break-inside: avoid; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    <tr>
+        <td style="width: 50%; vertical-align: top; padding-right: 6px;">
+            <div
+                style="margin-top: 0; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase;">
+                Washing Guidelines</div>
+            <div style="border: 1.5px solid #000; padding: 8px; background: #fff; min-height: 40px;">
+                <div style="font-size: 10px; column-count: 2; column-gap: 10px;">
+                    {% if doc.wash_separately %}<div style="margin-bottom: 2px;">• Wash Separately</div>{% endif %}
+                    {% if doc.dry_clean_only %}<div style="margin-bottom: 2px;">• Dry Clean Only</div>{% endif %}
+                    {% if doc.wash_warm_iron_inside_out %}<div style="margin-bottom: 2px;">• Iron Inside Out</div>{%
+                    endif %}
+                    {% if doc.hand_wash_only %}<div style="margin-bottom: 2px;">• Hand Wash Only</div>{% endif %}
+                </div>
+                {% if doc.note_or_instructions %}
+                <div style="margin-top: 5px; border-top: 1px dotted #ccc; padding-top: 4px; font-size: 10px;">
+                    <strong>Note:</strong> {{ doc.note_or_instructions|safe }}
+                </div>
+                {% endif %}
+            </div>
+        </td>
+        {% if doc.pattern_master_note %}
+        <td style="width: 50%; vertical-align: top; padding-left: 6px;">
+            <div
+                style="margin-top: 0; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase;">
+                Pattern Master Notes / প্যাটার্ন মাস্টার নোট</div>
+            <div style="border: 1.5px solid #000; padding: 8px; font-size: 10px; min-height: 40px; background: #fff;">
+                {{ doc.pattern_master_note|safe }}
+            </div>
+        </td>
+        {% else %}
+        <td style="width: 50%; vertical-align: top; padding-left: 6px;">
+        </td>
+        {% endif %}
+    </tr>
+</table>
 
 <table style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     <tbody>
@@ -574,76 +652,6 @@
     {% endfor %}
 </table>
 {% endif %}
-
-{% if doc.size_chart_in_inch %}
-<div
-    style="margin-top: 20px; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-    Actual Size Chart / সাইজ চার্ট</div>
-<table class="standard-table" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-    <thead>
-        <tr>
-            <th style="width: 16%;">Size</th>
-            <th style="text-align: center;">Length</th>
-            <th style="text-align: center;">Bust</th>
-            <th style="text-align: center;">Waist</th>
-            <th style="text-align: center;">Btm Length</th>
-            <th style="text-align: center;">Btm Waist</th>
-            <th style="text-align: center;">Leg Open</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for row in doc.size_chart_in_inch %}
-        <tr>
-            <td style="font-weight: 700;">{{ row.size_chart_in_inch or '-' }}</td>
-            <td style="text-align: center;">{{ row.length or '-' }}</td>
-            <td style="text-align: center;">{{ row.bust or '-' }}</td>
-            <td style="text-align: center;">{{ row.waist or '-' }}</td>
-            <td style="text-align: center;">{{ row.bottom_length or '-' }}</td>
-            <td style="text-align: center;">{{ row.bottom_waist or '-' }}</td>
-            <td style="text-align: center;">{{ row.leg_opening or '-' }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
-
-<table
-    style="width: 100%; border-collapse: collapse; margin-top: 20px; table-layout: fixed; page-break-inside: avoid; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-    <tr>
-        <td style="width: 50%; vertical-align: top; padding-right: 6px;">
-            <div
-                style="margin-top: 0; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase;">
-                Washing Guidelines</div>
-            <div style="border: 1.5px solid #000; padding: 8px; background: #fff; min-height: 40px;">
-                <div style="font-size: 10px; column-count: 2; column-gap: 10px;">
-                    {% if doc.wash_separately %}<div style="margin-bottom: 2px;">• Wash Separately</div>{% endif %}
-                    {% if doc.dry_clean_only %}<div style="margin-bottom: 2px;">• Dry Clean Only</div>{% endif %}
-                    {% if doc.wash_warm_iron_inside_out %}<div style="margin-bottom: 2px;">• Iron Inside Out</div>{%
-                    endif %}
-                    {% if doc.hand_wash_only %}<div style="margin-bottom: 2px;">• Hand Wash Only</div>{% endif %}
-                </div>
-                {% if doc.note_or_instructions %}
-                <div style="margin-top: 5px; border-top: 1px dotted #ccc; padding-top: 4px; font-size: 10px;">
-                    <strong>Note:</strong> {{ doc.note_or_instructions|safe }}
-                </div>
-                {% endif %}
-            </div>
-        </td>
-        {% if doc.pattern_master_note %}
-        <td style="width: 50%; vertical-align: top; padding-left: 6px;">
-            <div
-                style="margin-top: 0; font-weight: bold; font-size: 11px; margin-bottom: 5px; text-transform: uppercase;">
-                Pattern Master Notes</div>
-            <div style="border: 1.5px solid #000; padding: 8px; font-size: 10px; min-height: 40px; background: #fff;">
-                {{ doc.pattern_master_note|safe }}
-            </div>
-        </td>
-        {% else %}
-        <td style="width: 50%; vertical-align: top; padding-left: 6px;">
-        </td>
-        {% endif %}
-    </tr>
-</table>
 
 {% set qi_name = frappe.db.get_value("Quality Inspection", {"reference_type": "Pre Production Sample", "reference_name": doc.name, "docstatus": 1}, "name") %}
 {% if qi_name %}
