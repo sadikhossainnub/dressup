@@ -16,44 +16,43 @@
 <table style="width: 100%; border-collapse: collapse; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; border: 1px solid #000;">
     <tbody>
         <tr>
-            <td style="padding: 1px 8px; width: 33%;">Status: {{ doc.status or doc.workflow_state or '' }}</td>
-            <td style="padding: 1px 8px; width: 33%;">Cut/ Fit Style: {{ doc.cut_fit_style or '' }}</td>
-            <td style="padding: 1px 8px; width: 34%;">Pattern Master: {{ doc.pattern_master_name or '' }}</td>
+            <td style="padding: 0px 8px; width: 33%; vertical-align: top;">Status: {{ doc.status or doc.workflow_state or '' }}</td>
+            <td style="padding: 0px 8px; width: 33%; vertical-align: top;">Cut/ Fit Style: {{ doc.cut_fit_style or '' }}</td>
+            <td style="padding: 0px 8px; width: 34%; vertical-align: top;">Pattern Master: {{ doc.pattern_master_name or '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 1px 8px;">Tech Pack No: {{ doc.tech_pack_no or '' }}</td>
-            <td style="padding: 1px 8px;">Collar/ Neck Style: {{ doc.collar_neck_style or '' }}</td>
-            <td style="padding: 1px 8px;">Sample Man: {{ doc.sample_man_name or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Tech Pack No: {{ doc.tech_pack_no or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Collar/ Neck Style: {{ doc.collar_neck_style or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Sample Man: {{ doc.sample_man_name or '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 1px 8px;">Item Name: {{ doc.item_name or '' }}</td>
-            <td style="padding: 1px 8px;">Side Cut: {{ doc.side_cut or '' }}</td>
-            <td style="padding: 1px 8px;">Handler: {{ doc.handler_name or doc.handler or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Item Name: {{ doc.item_name or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Side Cut: {{ doc.side_cut or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Handler: {{ doc.handler_name or doc.handler or '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 1px 8px;">Designer Name: {{ doc.designer_name or doc.owner or '' }}</td>
-            <td style="padding: 1px 8px;">Sleeve: {{ doc.sleeve or '' }}</td>
-            <td style="padding: 1px 8px;">Sketch Submission Date: {{ frappe.utils.formatdate(sketch_doc.submission_date) if sketch_doc and sketch_doc.submission_date else '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Designer Name: {{ doc.designer_name or doc.owner or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Sleeve: {{ doc.sleeve or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Sketch Submission Date: {{ frappe.utils.formatdate(sketch_doc.submission_date) if sketch_doc and sketch_doc.submission_date else '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 1px 8px;">Style No: {{ doc.style_no or doc.naming_series or '' }}</td>
-            <td style="padding: 1px 8px;">Bottom Style: {{ doc.bottom_style or '' }}</td>
-            <td style="padding: 1px 8px;">Costing Submit Date: {{ frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if doc.cost_estimation else '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Style No: {{ doc.style_no or doc.naming_series or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Bottom Style: {{ doc.bottom_style or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Costing Submit Date: {{ frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if doc.cost_estimation else '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 1px 8px;">Category: {{ doc.category or '' }}</td>
-            <td style="padding: 1px 8px;">Bottom Waist: {{ doc.bottom_waist or '' }}</td>
-            <td style="padding: 1px 8px;">PPS Submission Date: {{ frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Category: {{ doc.category or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Bottom Waist: {{ doc.bottom_waist or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">PPS Submission Date: {{ frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 1px 8px;">Season: {{ doc.session or doc.season or '' }}</td>
-            <td style="padding: 1px 8px;">Sketch Ref: {{ doc.sketch_ref or '' }}</td>
-            <td style="padding: 1px 8px;">Workstations: Cutting, Sewing, Screen Print, Block Print</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Season: {{ doc.session or doc.season or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Sketch Ref: {{ doc.sketch_ref or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;">Costing Ref: {{ doc.costing_ref or '' }}</td>
         </tr>
         <tr>
-            <td style="padding: 1px 8px;">Sewing Finish: {{ doc.sewing_finish or '' }}</td>
-            <td style="padding: 1px 8px;">Costing Ref: {{ doc.costing_ref or '' }}</td>
-            <td style="padding: 1px 8px;"></td>
+            <td style="padding: 0px 8px; vertical-align: top;">Sewing Finish: {{ doc.sewing_finish or '' }}</td>
+            <td style="padding: 0px 8px; vertical-align: top;" colspan="2">Workstations: Cutting, Sewing, Screen Print, Block Print</td>
         </tr>
     </tbody>
 </table>
