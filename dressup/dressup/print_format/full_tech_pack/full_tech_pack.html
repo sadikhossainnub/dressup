@@ -228,55 +228,8 @@
                         <img src="{{ frappe.utils.get_url(sketch_doc.additional_images[0].image) }}"
                             class="design-image" style="max-width: 100%; height: auto;">
                         {% else %}
-                        <div style="padding: 100px; color: #ccc; border: 1px dashed #ccc; text-align: center;">No Main
-                            Image Selected</div>
+                        <div style="padding: 100px; color: #ccc; border: 1px dashed #ccc; text-align: center;">No Main Image Selected</div>
                         {% endif %}
-                    </div>
-
-                    <!-- Finishing Charges -->
-                    <div style="margin-top: 15px;"></div>
-                    <div class="section-header"
-                        style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">
-                        Finishing Charges / ফিনিশিং খরচ</div>
-                    <div style="column-count: 1;">
-                        {% set f_defs = [
-                        ('wash_iron', 'Wash & Iron'),
-                        ('qc_packaging', 'QC & Packaging'),
-                        ('transportation', 'Transportation')
-                        ] %}
-                        {% for f, l in f_defs %}
-                        <div
-                            style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
-                            <span>{{ l }}</span>
-                            <span class="val">{{ doc.get(f) or '0' }}</span>
-                        </div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Tailoring Charges -->
-                    <div style="margin-top: 15px;"></div>
-                    <div class="section-header"
-                        style="page-break-after: avoid; font-size: 8.5pt; font-weight: bold; margin-bottom: 5px;">
-                        Tailoring Charges / সেলাই খরচ:</div>
-                    <div style="column-count: 1;">
-                        {% set t_defs = [
-                        ('cutting_f', 'Cutting Charge'),
-                        ('sewing_f', 'Sewing Charge'),
-                        ('machine_embroidery_f', 'Machine Embroidery'),
-                        ('hand_embroidery_f', 'Hand Embroidery'),
-                        ('hand_work_estimation', 'Hand Work'),
-                        ('karchupi_f', 'Karchupi'),
-                        ('screen_print_f', 'Screen Print'),
-                        ('block_print_f', 'Block Print'),
-                        ('tie_dye', 'Tie & Dye')
-                        ] %}
-                        {% for f, l in t_defs %}
-                        <div
-                            style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; page-break-inside: avoid; padding: 2px 0;">
-                            <span>{{ l }}</span>
-                            <span class="val">{{ doc.get(f) or '0' }}</span>
-                        </div>
-                        {% endfor %}
                     </div>
 
                 </div>
@@ -555,6 +508,53 @@
     <div style="width: 33%; text-align: center;">FABRICS: {{ doc.fabrics|length if doc.fabrics else 0 }} ITEMS</div>
     <div style="width: 33%; text-align: right;">TRIM & ACCESSORIES: {{ doc.trim_accessories|length if doc.trim_accessories else 0 }} ITEMS</div>
 </div>
+
+<div style="display: flex; gap: 20px; margin-top: 10px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; page-break-inside: avoid;">
+    <!-- Tailoring Charges Column -->
+    <div style="flex: 1;">
+        <div class="section-header" style="font-size: 8.5pt; font-weight: bold; margin-bottom: 5px; border-bottom: 1.5px solid #000; padding-bottom: 2px;">
+            Tailoring Charges / সেলাই খরচ</div>
+        <div style="column-count: 1;">
+            {% set t_defs = [
+                ('cutting_f', 'Cutting Charge'),
+                ('sewing_f', 'Sewing Charge'),
+                ('machine_embroidery_f', 'Machine Embroidery'),
+                ('hand_embroidery_f', 'Hand Embroidery'),
+                ('hand_work_estimation', 'Hand Work'),
+                ('karchupi_f', 'Karchupi'),
+                ('screen_print_f', 'Screen Print'),
+                ('block_print_f', 'Block Print'),
+                ('tie_dye', 'Tie & Dye')
+            ] %}
+            {% for f, l in t_defs %}
+            <div style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; padding: 2px 0;">
+                <span>{{ l }}</span>
+                <span class="val">{{ doc.get(f) or '0' }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Finishing Charges Column -->
+    <div style="flex: 1;">
+        <div class="section-header" style="font-size: 8.5pt; font-weight: bold; margin-bottom: 5px; border-bottom: 1.5px solid #000; padding-bottom: 2px;">
+            Finishing Charges / ফিনিশিং খরচ</div>
+        <div style="column-count: 1;">
+            {% set f_defs = [
+                ('wash_iron', 'Wash & Iron'),
+                ('qc_packaging', 'QC & Packaging'),
+                ('transportation', 'Transportation')
+            ] %}
+            {% for f, l in f_defs %}
+            <div style="display: flex; justify-content: space-between; border-bottom: 0.5px solid #ccc; font-size: 8px; padding: 2px 0;">
+                <span>{{ l }}</span>
+                <span class="val">{{ doc.get(f) or '0' }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
 
 <div style="margin-top: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; page-break-inside: avoid;">
     {% set fabric_total = doc.fabrics | sum(attribute='amount') if doc.fabrics else 0 %}
