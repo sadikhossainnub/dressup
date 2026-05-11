@@ -425,10 +425,13 @@
         <div class="card-name" style="font-size: 9pt;">{{ doc.supplier }}</div>
         {% set sup_addr = frappe.get_doc("Address", doc.supplier_address) if doc.supplier_address else None %}
         {% if sup_addr %}
-          <div class="card-detail" style="font-size: 8pt;">
+          <div class="card-detail" style="font-size: 8pt; line-height: 1.3;">
             {{ sup_addr.address_line1 }}{% if sup_addr.address_line2 %}, {{ sup_addr.address_line2 }}{% endif %}<br>
-            {{ sup_addr.city }}{% if sup_addr.state %}, {{ sup_addr.state }}{% endif %}
-            {% if sup_addr.pincode %} – {{ sup_addr.pincode }}{% endif %}
+            {{ sup_addr.city }}{% if sup_addr.state %}, {{ sup_addr.state }}{% endif %}{% if sup_addr.pincode %} – {{ sup_addr.pincode }}{% endif %}{% if sup_addr.phone %} | Tel: {{ sup_addr.phone }}{% endif %}
+          </div>
+        {% elif doc.address_display %}
+          <div class="card-detail" style="font-size: 8pt; line-height: 1.2;">
+            {{ doc.address_display.split('\n')[:2] | join('<br>') | safe }}
           </div>
         {% endif %}
       </div>
@@ -437,10 +440,13 @@
         <div class="card-name" style="font-size: 9pt;">{{ doc.company }}</div>
         {% set ship_addr = frappe.get_doc("Address", doc.shipping_address) if doc.shipping_address else None %}
         {% if ship_addr %}
-          <div class="card-detail" style="font-size: 8pt;">
+          <div class="card-detail" style="font-size: 8pt; line-height: 1.3;">
             {{ ship_addr.address_line1 }}{% if ship_addr.address_line2 %}, {{ ship_addr.address_line2 }}{% endif %}<br>
-            {{ ship_addr.city }}{% if ship_addr.state %}, {{ ship_addr.state }}{% endif %}
-            {% if ship_addr.pincode %} – {{ ship_addr.pincode }}{% endif %}
+            {{ ship_addr.city }}{% if ship_addr.state %}, {{ ship_addr.state }}{% endif %}{% if ship_addr.pincode %} – {{ ship_addr.pincode }}{% endif %}
+          </div>
+        {% elif doc.shipping_address_display %}
+           <div class="card-detail" style="font-size: 8pt; line-height: 1.2;">
+            {{ doc.shipping_address_display.split('\n')[:2] | join('<br>') | safe }}
           </div>
         {% else %}
           <div class="card-detail" style="font-size: 8pt;">{{ doc.set_warehouse }}</div>
