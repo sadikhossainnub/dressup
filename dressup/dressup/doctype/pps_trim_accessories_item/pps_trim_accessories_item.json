@@ -8,6 +8,7 @@
     "field_order": [
         "item_code",
         "item_name",
+        "description",
         "default_unit_of_measurement",
         "item_group",
         "item_attributes",
@@ -27,13 +28,18 @@
             "reqd": 1,
             "set_only_once": 1
         },
-        {
             "fetch_from": "item_code.item_name",
             "fieldname": "item_name",
             "fieldtype": "Data",
             "in_list_view": 1,
             "label": "Item Name",
             "set_only_once": 1
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Small Text",
+            "in_list_view": 1,
+            "label": "Description"
         },
         {
             "fetch_from": "item_code.stock_uom",

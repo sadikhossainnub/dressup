@@ -18,8 +18,7 @@
     "modified": "2026-05-13 05:38:52.812747",
     "modified_by": "Administrator",
     "module": "DressUp",
-    "name": "Full Tech Pack",
-    "print_format_name": "Full Tech Pack",
+    "name": "Tack Pack",
     "owner": "Administrator",
     "page_number": "Hide",
     "pdf_generator": "wkhtmltopdf",
@@ -29,5 +28,5 @@
     "print_format_type": "Jinja",
     "raw_printing": 0,
     "show_section_headings": 0,
-    "standard": "Yes"
+    "standard": "No"
 }

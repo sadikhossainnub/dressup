@@ -190,7 +190,11 @@ frappe.ui.form.on("Pre Production Sample", {
 				}
 			}
 		});
-	}
+	},
+
+	pattern_variation: function(frm) { calculate_suggested_selling_prices(frm); },
+	screen_print_machine_emb_65: function(frm) { calculate_suggested_selling_prices(frm); },
+	hand_embroidery_75: function(frm) { calculate_suggested_selling_prices(frm); },
 });
 
 frappe.ui.form.on("PPS Fabric Item", {
@@ -221,9 +225,14 @@ frappe.ui.form.on("PPS Fabric Item", {
 	},
 	actual_quantity: function (frm, cdt, cdn) {
 		calculate_child_amount(frm, cdt, cdn);
+		calculate_total_fabrics(frm);
 	},
 	rate: function (frm, cdt, cdn) {
 		calculate_child_amount(frm, cdt, cdn);
+		calculate_total_fabrics(frm);
+	},
+	fabrics_remove: function (frm) {
+		calculate_total_fabrics(frm);
 	}
 });
 
@@ -255,9 +264,14 @@ frappe.ui.form.on("PPS Trim Accessories Item", {
 	},
 	actual_quantity: function (frm, cdt, cdn) {
 		calculate_child_amount(frm, cdt, cdn);
+		calculate_total_trim_accessories(frm);
 	},
 	rate: function (frm, cdt, cdn) {
 		calculate_child_amount(frm, cdt, cdn);
+		calculate_total_trim_accessories(frm);
+	},
+	trim_accessories_remove: function (frm) {
+		calculate_total_trim_accessories(frm);
 	}
 });
 
@@ -299,6 +313,64 @@ function calculate_child_amount(frm, cdt, cdn) {
 	let row = locals[cdt][cdn];
 	let amount = (flt(row.actual_quantity) || 0) * (flt(row.rate) || 0);
 	frappe.model.set_value(cdt, cdn, "amount", amount);
+}
+
+function calculate_total_fabrics(frm) {
+	let total = 0;
+	(frm.doc.fabrics || []).forEach(row => {
+		total += flt(row.amount) || 0;
+	});
+	frm.set_value("total_fabrics", total);
+	calculate_suggested_selling_prices(frm);
+}
+
+function calculate_total_trim_accessories(frm) {
+	let total = 0;
+	(frm.doc.trim_accessories || []).forEach(row => {
+		total += flt(row.amount) || 0;
+	});
+	frm.set_value("total_trim_accessories", total);
+	calculate_suggested_selling_prices(frm);
+}
+
+frappe.ui.form.on("Size Chart in Inch", {
+	production_qty: function (frm) {
+		calculate_total_production_qty(frm);
+	},
+	size_chart_in_inch_remove: function (frm) {
+		calculate_total_production_qty(frm);
+	}
+});
+
+function calculate_total_production_qty(frm) {
+	let total = 0;
+	(frm.doc.size_chart_in_inch || []).forEach(row => {
+		total += cint(row.production_qty) || 0;
+	});
+	frm.set_value("total_production_qty", total);
+}
+
+function calculate_suggested_selling_prices(frm) {
+	let total_cost = flt(frm.doc.total_fabrics) + flt(frm.doc.total_trim_accessories) + 
+					 flt(frm.doc.total_tailoring) + flt(frm.doc.total_finishing);
+	
+	if (flt(frm.doc.screen_print_machine_emb_65)) {
+		frm.set_value("screen_print_machine_emb_only", total_cost * (1 + flt(frm.doc.screen_print_machine_emb_65) / 100));
+	} else {
+		frm.set_value("screen_print_machine_emb_only", 0);
+	}
+
+	if (flt(frm.doc.pattern_variation)) {
+		frm.set_value("for_pattern_variation_only", total_cost * (1 + flt(frm.doc.pattern_variation) / 100));
+	} else {
+		frm.set_value("for_pattern_variation_only", 0);
+	}
+
+	if (flt(frm.doc.hand_embroidery_75)) {
+		frm.set_value("hand_embroidery_only", total_cost * (1 + flt(frm.doc.hand_embroidery_75) / 100));
+	} else {
+		frm.set_value("hand_embroidery_only", 0);
+	}
 }
 
 function create_bom(frm, bom_type) {

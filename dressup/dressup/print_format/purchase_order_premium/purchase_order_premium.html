@@ -1,657 +1,392 @@
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap');
 
-  @page { size: A4; margin: 0.7in; }
+  @page { size: A4; margin: 0.3in; }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body, .print-format {
     font-family: 'DM Sans', sans-serif;
-    font-size: 10pt;
+    font-size: 9.5pt;
     color: #1a1a2e;
     background: #fff;
-    line-height: 1.5;
+    line-height: 1.3;
   }
 
   .po-wrapper {
     width: 100%;
     max-width: 210mm;
     margin: 0 auto;
-    padding: 2mm 14mm 10mm;
+    padding: 2mm 10mm 5mm;
     background: #fff;
   }
 
-  /* ── HEADER ── */
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.5px solid #000;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+  .header-logo img {
+    height: 42px;
+  }
+  .header-address {
+    text-align: right;
+    font-size: 7.5pt;
+    line-height: 1.2;
+    color: #000;
+  }
+
   .po-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding-bottom: 4px;
+    padding-bottom: 6px;
     border-bottom: 2px solid #0f3460;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
-  .po-company-block .company-name {
-    font-size: 15pt;
+  .address-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 65%;
+  }
+
+  .card-label {
+    font-size: 7.5pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #e94560;
+    margin-bottom: 1px;
+  }
+
+  .card-name {
+    font-size: 9.5pt;
     font-weight: 600;
     color: #0f3460;
-    letter-spacing: -0.3px;
   }
 
-  .po-company-block .company-meta {
-    font-size: 8pt;
-    color: #555;
-    margin-top: 3px;
-    line-height: 1.6;
+  .card-detail {
+    font-size: 8.5pt;
+    color: #444;
+    line-height: 1.2;
   }
 
   .po-title-block {
     text-align: right;
   }
 
-  .po-title-block .po-label {
-    font-size: 18pt;
+  .po-label {
+    font-size: 17pt;
     font-weight: 600;
     color: #e94560;
-    letter-spacing: -0.5px;
     line-height: 1;
   }
 
-  .po-title-block .po-number {
+  .po-number {
     font-family: 'DM Mono', monospace;
     font-size: 9pt;
     color: #0f3460;
-    margin-top: 4px;
-  }
-
-  .po-title-block .po-date {
-    font-size: 8pt;
-    color: #777;
-    margin-top: 2px;
-  }
-
-  /* ── INFO BAND ── */
-  .po-info-band {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .info-card {
-    background: transparent;
-    border: 1px solid #d0d4e4;
-    border-radius: 6px;
-    padding: 10px 12px;
-  }
-
-  .info-card .card-label {
-    font-size: 7.5pt;
+    margin-top: 3px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #e94560;
-    margin-bottom: 5px;
   }
 
-  .info-card .card-name {
-    font-size: 10pt;
-    font-weight: 600;
-    color: #0f3460;
-  }
-
-  .info-card .card-detail {
+  .po-date {
     font-size: 8.5pt;
-    color: #555;
-    margin-top: 2px;
-    line-height: 1.6;
+    color: #666;
   }
 
-  /* ── META ROW ── */
-  .po-meta-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 16px;
-    padding: 8px 12px;
-    background: transparent;
-    border: 1px solid #d0d4e4;
-    border-radius: 6px;
-  }
-
-  .meta-item { text-align: center; }
-
-  .meta-item .meta-label {
-    font-size: 7pt;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: #e94560;
-    margin-bottom: 2px;
-  }
-
-  .meta-item .meta-value {
+  .delivery-date-highlight {
+    margin-top: 6px;
     font-size: 9pt;
-    font-weight: 500;
-    color: #0f3460;
+    color: #e94560;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
-  /* ── ITEMS TABLE ── */
   .items-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
   .items-table thead tr {
-    background: transparent;
+    background: #f8f9fa;
     border-bottom: 2px solid #0f3460;
   }
 
   .items-table thead th {
-    padding: 7px 9px;
+    padding: 6px 8px;
     font-size: 8pt;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
     color: #0f3460;
     text-align: left;
-    border: none;
   }
 
-  .items-table thead th:nth-child(n+4) { text-align: right; }
+  .items-table thead th:nth-child(n+3) { text-align: right; }
 
   .items-table tbody tr {
     border-bottom: 1px solid #eef0f7;
   }
 
-  .items-table tbody tr:nth-child(even) {
-    background: transparent;
-  }
-
   .items-table tbody td {
-    padding: 7px 9px;
+    padding: 8px 8px;
     font-size: 9pt;
     color: #2a2a3e;
     vertical-align: top;
   }
 
-  .items-table tbody td:nth-child(n+4) { text-align: right; }
+  .items-table tbody td:nth-child(n+3) { text-align: right; }
 
   .item-img-wrap {
-    width: 100px;
-    height: 100px;
-    border-radius: 4px;
+    width: 70px;
+    height: 70px;
     border: 1px solid #d0d4e4;
-    overflow: hidden;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    overflow: hidden;
   }
 
   .item-img-wrap img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
 
-  .item-img-placeholder {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24pt;
-    color: #ccc;
-  }
-
-  .item-code {
-    font-family: 'DM Mono', monospace;
-    font-size: 7.5pt;
-    color: #888;
-    display: block;
-  }
-
-  .item-name {
-    font-weight: 500;
-    color: #0f3460;
-  }
-
-  .item-desc {
-    font-size: 7.5pt;
-    color: #777;
-    margin-top: 1px;
-  }
-
-  /* ── TOTALS ── */
-  .po-footer-grid {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 16px;
-    margin-bottom: 16px;
-    align-items: start;
-  }
-
-  .po-terms {
-    background: transparent;
-    border: 1px solid #d0d4e4;
-    border-radius: 6px;
-    padding: 10px 12px;
-  }
-
-  .po-terms .terms-label {
-    font-size: 7.5pt;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #e94560;
-    margin-bottom: 5px;
-  }
-
-  .po-terms .terms-body {
-    font-size: 8.5pt;
-    color: #555;
-    line-height: 1.6;
-  }
-
-  .totals-block {
-    min-width: 200px;
-  }
-
-  .totals-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .totals-table tr td {
-    padding: 4px 0;
-    font-size: 9pt;
-    color: #555;
-  }
-
-  .totals-table tr td:last-child {
-    text-align: right;
-    font-family: 'DM Mono', monospace;
-    color: #2a2a3e;
-  }
-
-  .totals-table .total-divider td {
-    border-top: 1px solid #dde0ec;
-    padding-top: 6px;
-  }
-
-  .totals-table .grand-total td {
-    font-size: 11pt;
-    font-weight: 600;
-    color: #0f3460;
-    border-top: 2px solid #0f3460;
-    padding-top: 6px;
-  }
-
-  .totals-table .grand-total td:last-child {
-    color: #e94560;
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* ── SUMMARY BLOCK ── */
   .summary-container {
     display: flex;
     border: 1px solid #d0d4e4;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    overflow: hidden;
-    background: #fff;
+    border-radius: 6px;
+    margin-bottom: 12px;
   }
   .summary-left {
     flex: 1;
-    padding: 14px 18px;
+    padding: 10px 15px;
     border-right: 1px solid #d0d4e4;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 12px;
+    gap: 8px;
   }
   .summary-right {
-    width: 280px;
-    padding: 12px 18px;
-    background: #f9f9fb;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 220px;
+    padding: 10px 15px;
+    background: #fcfcfd;
   }
-  .summary-amount-words {
-    font-size: 9.5pt;
-    color: #1a1a2e;
-    line-height: 1.4;
-  }
-  .summary-amount-words strong {
-    font-weight: 700;
-    color: #000;
-  }
-  .summary-amount-words span {
-    color: #0f3460;
-    font-weight: 500;
-  }
-  .summary-payment-terms {
-    font-size: 8.5pt;
-    font-weight: 600;
-    color: #e94560;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .summary-payment-terms span {
-    color: #555;
-    text-transform: none;
-    font-weight: 400;
-    margin-left: 5px;
-  }
-
   .summary-totals-table {
     width: 100%;
     border-collapse: collapse;
   }
-  .summary-totals-table tr td {
-    padding: 4px 0;
+  .summary-totals-table td {
+    padding: 2px 0;
     font-size: 9pt;
-    color: #555;
   }
-  .summary-totals-table tr td:last-child {
+  .summary-totals-table td:last-child {
     text-align: right;
     font-family: 'DM Mono', monospace;
-    color: #1a1a2e;
-    font-weight: 500;
   }
-  .summary-totals-table tr.total-divider td {
-    border-top: 1px solid #d0d4e4;
-    padding-top: 6px;
-    margin-top: 4px;
-  }
-  .summary-totals-table tr.grand-total td {
-    font-size: 12pt;
-    font-weight: 700;
-    color: #0f3460;
-    padding-top: 6px;
-  }
-  .summary-totals-table tr.grand-total td:last-child {
+  .grand-total td {
+    font-weight: 700 !important;
     color: #e94560;
+    border-top: 1px solid #d0d4e4;
+    padding-top: 5px;
   }
 
-  /* ── FOOTER STRIP ── */
   .po-bottom-strip {
-    margin-top: 14px;
-    border-top: 1px solid #e0e4ef;
+    margin-top: 10px;
+    border-top: 1px solid #eee;
     padding-top: 8px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
   }
-
-  .po-bottom-strip .strip-note {
-    font-size: 7pt;
-    color: #555;
-    max-width: 70%;
-    line-height: 1.4;
+  .strip-note {
+    font-size: 6pt;
+    color: #333;
+    max-width: 75%;
+    line-height: 1.3;
   }
-
-  .po-bottom-strip .strip-approval {
-    font-size: 8.5pt;
-    font-weight: 500;
-    color: #1a1a2e;
+  .strip-approval {
+    font-size: 5.5pt;
     text-align: right;
+    color: #1a1a2e;
+    white-space: nowrap;
   }
-
-  .po-bottom-strip .strip-page {
-    font-size: 7.5pt;
-    color: #aaa;
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* ── STATUS BADGE ── */
-  .po-status-badge {
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 4px;
-    font-size: 8.5pt;
-    font-weight: 700;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    border: 1px solid transparent;
-  }
-
-  .status-draft      { background: #fef3c7; color: #92400e; border-color: #f59e0b; }
-  .status-ordered    { background: #dbeafe; color: #1e40af; border-color: #3b82f6; }
-  .status-received   { background: #d1fae5; color: #065f46; border-color: #10b981; }
-  .status-billed     { background: #ede9fe; color: #5b21b6; border-color: #8b5cf6; }
-  .status-closed     { background: #f3f4f6; color: #374151; border-color: #9ca3af; }
-  .status-cancelled  { background: #fee2e2; color: #991b1b; border-color: #ef4444; }
-  .status-approved   { background: #dcfce7; color: #166534; border-color: #22c55e; }
-  .status-pending    { background: #fff7ed; color: #9a3412; border-color: #f97316; }
-  .status-rejected   { background: #fef2f2; color: #991b1b; border-color: #dc2626; }
 
   @media print {
-    body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-    .po-wrapper { width: 100%; max-width: none; padding: 0; }
+    body { -webkit-print-color-adjust: exact; }
   }
-
-  /* Repeating header/footer on every printed page */
-  .page-wrapper {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  .page-wrapper > thead { display: table-header-group; }
-  .page-wrapper > tfoot { display: table-footer-group; }
-  .page-wrapper > tbody { display: table-row-group; }
-  .page-header-space, .page-footer-space {
-    padding: 0;
-    border: none;
-  }
-  .page-header, .page-footer {
-    width: 100%;
-  }
-  .page-content {
-    padding: 0;
-    border: none;
-    vertical-align: top;
-  }
+  
+  .page-wrapper { width: 100%; border-collapse: collapse; }
 </style>
 
 {%- set company_doc = frappe.get_doc("Company", doc.company) %}
-{%- set lh = frappe.get_doc("Letter Head", doc.letter_head) if (doc.letter_head and not no_letter_head) else None %}
 
 <table class="page-wrapper">
-<thead><tr><td class="page-header-space">
-    <div class="page-header">{{ letter_head }}</div>
-</td></tr></thead>
-<tfoot><tr><td class="page-footer-space">
-    <div class="page-footer">{{ footer }}</div>
-</td></tr></tfoot>
-<tbody><tr><td class="page-content">
-        <div class="po-wrapper">
-
-  <!-- ── HEADER ── -->
-  <div class="po-header">
-    <!-- ── LOGO & INFO ── -->
-    <div style="width: 65%;">
-      {% if company_doc.company_logo %}
-        <img src="{{ frappe.utils.get_url(company_doc.company_logo) }}" style="height:48px; margin-bottom:4px; display:block;" alt="logo">
-      {% endif %}
-      <div style="display: flex; flex-direction: column; gap: 4px;">
-        <div>
-          <div class="card-label" style="margin-bottom: 2px;">&#x1F4E6; Supplier</div>
-          <div class="card-name" style="font-size: 9pt;">{{ doc.supplier }}</div>
-          {% set sup_addr = frappe.get_doc("Address", doc.supplier_address) if doc.supplier_address else None %}
-          {% if sup_addr %}
-            <div class="card-detail" style="font-size: 8pt; line-height: 1.3;">
-              {{ sup_addr.address_line1 }}{% if sup_addr.address_line2 %}, {{ sup_addr.address_line2 }}{% endif %}<br>
-              {{ sup_addr.city }}{% if sup_addr.state %}, {{ sup_addr.state }}{% endif %}{% if sup_addr.pincode %} – {{ sup_addr.pincode }}{% endif %}{% if sup_addr.phone %} | Tel: {{ sup_addr.phone }}{% endif %}{% if sup_addr.mobile_no %} | Mob: {{ sup_addr.mobile_no }}{% endif %}
-            </div>
-          {% elif doc.address_display %}
-            <div class="card-detail" style="font-size: 8pt; line-height: 1.2;">
-              {{ doc.address_display.replace('\n', '<br>') | safe }}
-            </div>
-          {% endif %}
+  <thead>
+    <tr>
+      <td>
+        <div class="header-section">
+          <div class="header-logo">
+            <img src="{{ frappe.utils.get_url() }}/files/Capture.PNG" alt="DressUp">
+          </div>
+          <div class="header-address">
+            House # 5, Road # 6<br>
+            Kollyanpur, Dhaka<br>
+            +8809678247247<br>
+            support@dressup.com.bd<br>
+            www.dressup.com.bd
+          </div>
         </div>
-        <div>
-          <div class="card-label" style="margin-bottom: 2px;">&#x1F69A; Deliver To</div>
-          <div class="card-name" style="font-size: 9pt;">{{ doc.company }}</div>
-          {% set ship_addr_name = doc.shipping_address %}
-          {% set ship_addr = frappe.get_doc("Address", ship_addr_name) if ship_addr_name else None %}
-          {% if ship_addr %}
-            <div class="card-detail" style="font-size: 8pt; line-height: 1.3;">
-              {{ ship_addr.address_line1 }}{% if ship_addr.address_line2 %}, {{ ship_addr.address_line2 }}{% endif %}<br>
-              {{ ship_addr.city }}{% if ship_addr.state %}, {{ ship_addr.state }}{% endif %}{% if ship_addr.pincode %} – {{ ship_addr.pincode }}{% endif %}
-              {% set display_phone = ship_addr.phone or ship_addr.mobile_no or company_doc.phone_no %}
-              {% if display_phone %} | Tel: {{ display_phone }}{% endif %}
+      </td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td class="page-content">
+        <div class="po-wrapper">
+          <div class="po-header">
+            <div class="address-stack">
+              <!-- Supplier -->
+              <div>
+                <div class="card-label">📦 Supplier</div>
+                <div class="card-name">{{ doc.supplier }}</div>
+                <div class="card-detail">
+                  {% set sup_addr = frappe.get_doc("Address", doc.supplier_address) if doc.supplier_address else None %}
+                  {% if sup_addr %}
+                    {{ sup_addr.address_line1 }}{% if sup_addr.address_line2 %}, {{ sup_addr.address_line2 }}{% endif %}<br>
+                    {{ sup_addr.city }}{% if sup_addr.state %}, {{ sup_addr.state }}{% endif %}
+                    {% set sup_phone = sup_addr.phone or sup_addr.mobile_no %}
+                    {% if sup_phone %} | Mob: {{ sup_phone }}{% endif %}
+                  {% else %}
+                    {{ doc.address_display.replace('\n', ', ') | safe if doc.address_display else '' }}
+                  {% endif %}
+                </div>
+              </div>
+              <!-- Deliver To -->
+              <div>
+                <div class="card-label">🚚 Deliver To</div>
+                <div class="card-name">{{ doc.company }}</div>
+                <div class="card-detail">
+                  {% set ship_addr = frappe.get_doc("Address", doc.shipping_address) if doc.shipping_address else None %}
+                  {% if ship_addr %}
+                    {{ ship_addr.address_line1 }}, {{ ship_addr.city }}
+                    {% if company_doc.phone_no %} | Tel: {{ company_doc.phone_no }}{% endif %}
+                  {% else %}
+                    {{ doc.shipping_address_display.split('\n')[0] if doc.shipping_address_display else doc.set_warehouse }}
+                  {% endif %}
+                </div>
+              </div>
             </div>
-          {% elif doc.shipping_address_display %}
-            <div class="card-detail" style="font-size: 8pt; line-height: 1.2;">
-              {{ doc.shipping_address_display.replace('\n', '<br>') | safe }}
-              {% if company_doc.phone_no and 'Tel:' not in doc.shipping_address_display %}
-                <br>Tel: {{ company_doc.phone_no }}
+
+            <div class="po-title-block">
+              <div class="po-label">Purchase Order</div>
+              <div class="po-number">{{ doc.name }}</div>
+              <div class="po-date">Date: {{ frappe.format(doc.transaction_date, "Date") }}</div>
+              
+              {% if doc.schedule_date %}
+                <div class="delivery-date-highlight">
+                  Exp. Delivery: {{ frappe.format(doc.schedule_date, "Date") }}
+                </div>
               {% endif %}
             </div>
-          {% else %}
-            <div class="card-detail" style="font-size: 8pt;">
-              {{ doc.set_warehouse }}
-              {% if company_doc.phone_no %}<br>Tel: {{ company_doc.phone_no }}{% endif %}
+          </div>
+
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th style="width:85px;">Image</th>
+                <th>Item Details</th>
+                <th style="width:65px;">Qty</th>
+                <th style="width:85px;">Rate</th>
+                <th style="width:115px;">Amount (BDT)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in doc.items %}
+              <tr>
+                <td style="text-align:center;">
+                  {%- set item_image = item.image or frappe.db.get_value("Item", item.item_code, "image") %}
+                  <div class="item-img-wrap">
+                    {% if item_image %}<img src="{{ item_image }}">{% else %}<span style="color:#ccc; font-size:20pt;">□</span>{% endif %}
+                  </div>
+                </td>
+                <td>
+                  <span style="font-family:'DM Mono', monospace; font-size:7.5pt; color:#888;">{{ item.item_code }}</span><br>
+                  <span style="font-weight:600; color:#0f3460;">{{ item.item_name }}</span>
+                  {% if item.description %}<div style="font-size:8pt; color:#666; margin-top:2px;">{{ item.description | striptags | truncate(100) }}</div>{% endif %}
+                </td>
+                <td>{{ item.qty | round(2) }}<br><small>{{ item.uom }}</small></td>
+                <td>{{ frappe.format(item.rate, "Currency", doc.currency) }}</td>
+                <td style="font-weight:600;">{{ frappe.format(item.amount, "Currency", doc.currency) }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <div class="summary-container">
+            <div class="summary-left">
+              <div style="font-size:8.5pt;">
+                <strong>Amount in Words:</strong> {{ doc.in_words or frappe.utils.money_in_words(doc.grand_total, doc.currency) }}
+              </div>
+              
+              {% if doc.payment_terms_template or doc.payment_terms %}
+              <div style="font-size:8.5pt; border-top: 1px dashed #eee; padding-top: 5px;">
+                <strong>Payment Terms:</strong> {{ doc.payment_terms_template or doc.payment_terms }}
+              </div>
+              {% endif %}
             </div>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-    <div class="po-title-block">
-      <div class="po-label">Purchase Order</div>
-      <div class="po-number">{{ doc.name }}</div>
-      <div class="po-date">Date: {{ frappe.format(doc.transaction_date, {"fieldtype":"Date"}) }}</div>
-      <div style="margin-top:6px;">
-        {% set display_status = doc.workflow_state or doc.status %}
-        <span class="po-status-badge status-{{ display_status | lower | replace(' ','-') }}">
-          {{ display_status }}
-        </span>
-      </div>
-      {% if doc.schedule_date %}
-        <div style="margin-top: 8px; font-size: 8.5pt; color: #e94560; font-weight: 600;">
-          Expected Delivery: {{ frappe.format(doc.schedule_date, {"fieldtype":"Date"}) }}
-        </div>
-      {% endif %}
-    </div>
-  </div>
-
-  <!-- ── ITEMS TABLE ── -->
-  <table class="items-table">
-    <thead>
-      <tr>
-        <th style="width:110px;">Image</th>
-        <th>Item Details</th>
-        <th style="width:60px;">Qty</th>
-        <th style="width:75px;">Rate ({{ doc.currency }})</th>
-        <th style="width:80px;">Amount ({{ doc.currency }})</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in doc.items %}
-      <tr>
-        <td style="text-align:center; vertical-align:middle;">
-          {%- set item_image = item.image or frappe.db.get_value("Item", item.item_code, "image") %}
-          {% if item_image %}
-            <div class="item-img-wrap">
-              <img src="{{ item_image }}" alt="{{ item.item_name }}">
+            <div class="summary-right">
+              <table class="summary-totals-table">
+                <tr>
+                  <td>Net Total</td>
+                  <td>{{ frappe.format(doc.net_total, "Currency", doc.currency) }}</td>
+                </tr>
+                {% for tax in doc.taxes if tax.tax_amount %}
+                <tr>
+                  <td style="font-size:8pt;">{{ tax.description | truncate(25) }}</td>
+                  <td>{{ frappe.format(tax.tax_amount, "Currency", doc.currency) }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="grand-total">
+                  <td>Grand Total</td>
+                  <td>{{ frappe.format(doc.grand_total, "Currency", doc.currency) }}</td>
+                </tr>
+              </table>
             </div>
-          {% else %}
-            <div class="item-img-wrap">
-              <div class="item-img-placeholder">&#9633;</div>
+          </div>
+
+          <div class="po-bottom-strip">
+            <div class="strip-note">
+              Standard Purchase Terms:<br>
+              All deliveries must match the descriptions and quantities stated above. Goods must meet the specified quality standards. Unauthorized over-shipments will be returned at the vendor's expense.<br>
+              Delivery must be made by the date specified; late shipments may be subject to penalty or cancellation.<br>
+              For full Terms and Conditions, please visit: https://dressup.com.bd/vendors
             </div>
-          {% endif %}
-        </td>
-        <td>
-          <span class="item-code">{{ item.item_code }}</span>
-          <span class="item-name">{{ item.item_name }}</span>
-          {% if item.description and item.description != item.item_name %}
-            <div class="item-desc">{{ item.description | striptags | truncate(200) }}</div>
-          {% endif %}
-          {% if item.manufacturer_part_no %}
-            <div class="item-desc">Part#: {{ item.manufacturer_part_no }}</div>
-          {% endif %}
-        </td>
-        <td>{{ item.qty | round(2) }} {{ item.uom }}</td>
-        <td>{{ frappe.format(item.rate, {"fieldtype":"Currency", "currency": doc.currency}) }}</td>
-        <td style="font-weight:500;">{{ frappe.format(item.amount, {"fieldtype":"Currency", "currency": doc.currency}) }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <!-- ── SUMMARY BLOCK ── -->
-  <div class="summary-container">
-    <div class="summary-left">
-      <div class="summary-amount-words">
-        <strong>Amount in Words:</strong>
-        <span>{{ doc.currency }} {{ doc.in_words or frappe.utils.money_in_words(doc.grand_total, doc.currency) }}</span>
-      </div>
-      {% if doc.payment_terms_template or doc.tc_name %}
-      <div class="summary-payment-terms">
-        PAYMENT TERMS : <span>{{ doc.payment_terms_template or doc.tc_name }}</span>
-      </div>
-      {% endif %}
-    </div>
-    <div class="summary-right">
-      <table class="summary-totals-table">
-        <tr>
-          <td>Net Total</td>
-          <td>{{ frappe.format(doc.net_total, {"fieldtype":"Currency", "currency": doc.currency}) }}</td>
-        </tr>
-        {% for tax in doc.taxes %}
-        {% if tax.tax_amount %}
-        <tr>
-          <td>{{ tax.description }}</td>
-          <td>{{ frappe.format(tax.tax_amount, {"fieldtype":"Currency", "currency": doc.currency}) }}</td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-        {% if doc.discount_amount %}
-        <tr>
-          <td>Discount</td>
-          <td>- {{ frappe.format(doc.discount_amount, {"fieldtype":"Currency", "currency": doc.currency}) }}</td>
-        </tr>
-        {% endif %}
-        <tr class="grand-total total-divider">
-          <td>Grand Total</td>
-          <td>{{ frappe.format(doc.grand_total, {"fieldtype":"Currency", "currency": doc.currency}) }}</td>
-        </tr>
-        {% if doc.currency != "BDT" and doc.conversion_rate != 1 %}
-        <tr>
-          <td style="font-size:8pt; color:#888; padding-top:4px;">In BDT (Rate: {{ doc.conversion_rate | round(4) }})</td>
-          <td style="font-size:8pt; color:#888; padding-top:4px;">
-            ৳ {{ frappe.format(doc.grand_total * doc.conversion_rate, {"fieldtype":"Currency"}) }}
-          </td>
-        </tr>
-        {% endif %}
-      </table>
-    </div>
-  </div>
-
-  <!-- ── BOTTOM STRIP ── -->
-  <div class="po-bottom-strip" style="align-items: flex-end; margin-top: 20px;">
-    <div class="strip-note">
-      <strong>Standard Purchase Terms:</strong><br>
-      All deliveries must match the descriptions and quantities stated above. Goods must meet the specified quality standards. Unauthorized over-shipments will be returned at the vendor's expense.<br>
-      Delivery must be made by the date specified; late shipments may be subject to penalty or cancellation.<br>
-      For full Terms and Conditions, please visit: <u>https://dressup.com.bd/vendors</u>
-    </div>
-    <div class="strip-approval">
-      Electronically approved via Dress Up ERP System.
-    </div>
-  </div>
-
-  <div style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 7.5pt; color: #aaa; font-family: 'DM Mono', monospace; border-top: 1px solid #eee; padding-top: 5px;">
-    <div>{{ doc.name }}</div>
-    <div>{{ doc.company }}</div>
-  </div>
-
+            <div class="strip-approval">
+              Electronically approved via Dress Up ERP System.
+            </div>
+          </div>
         </div>
       </td>
     </tr>
   </tbody>
+
+  <tfoot>
+    <tr>
+      <td>
+        <div style="width: 100%; display: flex; height: 12px; margin-top: 10px;">
+          <div style="width: 38%; background-color: #222; margin-right: 2px;"></div>
+          <div style="width: 62%; background-color: #d32f2f;"></div>
+        </div>
+      </td>
+    </tr>
+  </tfoot>
 </table>

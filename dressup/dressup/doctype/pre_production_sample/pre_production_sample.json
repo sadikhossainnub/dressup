@@ -8,45 +8,57 @@
  "field_order": [
   "naming_series",
   "tech_pack_no",
+  "item_code",
+  "item_name",
   "category",
+  "designer",
+  "designer_name",
+  "column_break_1",
+  "start_time_date",
+  "finish_time_date",
+  "sewing_finish",
+  "received_date",
+  "session",
+  "style_no",
+  "section_break_wlzy",
   "cut_fit_style",
   "collar_neck_style",
   "side_cut",
+  "column_break_dazz",
   "bottom_waist",
   "bottom_style",
   "sleeve",
+  "workers_section",
+  "pattern_master",
+  "sample_man",
+  "handler",
+  "column_break_dumz",
+  "pattern_master_name",
+  "sample_man_name",
+  "handler_name",
+  "warehouse_section",
   "source_warehouse",
-  "received_date",
-  "item_code",
-  "item_name",
+  "section_break_wwpt",
   "cost_estimation",
-  "designer",
-  "designer_name",
-  "style_no",
+  "column_break_qkdg",
   "sample_bom",
   "production_bom",
+  "column_break_wfwd",
   "work_order",
-  "column_break_1",
-  "pattern_master",
-  "pattern_master_name",
-  "start_time_date",
-  "sample_man",
-  "sample_man_name",
-  "handler",
-  "handler_name",
-  "finish_time_date",
-  "session",
-  "sewing_finish",
   "item_details",
+  "column_break_impe",
+  "for",
   "value_addition",
   "color",
   "length",
   "lining",
   "column_break_taqt",
+  "for1",
   "bottom_value_addition",
   "bottom_color",
   "bottom_length",
   "column_break_xlqq",
+  "for2",
   "dupatta_value_addition",
   "dupatta_color",
   "dupatta_fabric",
@@ -669,7 +681,7 @@
   {
    "fieldname": "item_details",
    "fieldtype": "Section Break",
-   "label": "Item Details"
+   "label": "Item Value Addition and Component Details"
   },
   {
    "fieldname": "value_addition",
@@ -707,13 +719,13 @@
   {
    "fieldname": "bottom_value_addition",
    "fieldtype": "Table MultiSelect",
-   "label": "Bottom Value Addition",
+   "label": "Value Addition",
    "options": "Value Addition Selection"
   },
   {
    "fieldname": "bottom_color",
    "fieldtype": "Color",
-   "label": "Bottom Color"
+   "label": "Color"
   },
   {
    "fetch_from": "tech_pack_no.bottom_style",
@@ -725,7 +737,7 @@
   {
    "fieldname": "bottom_length",
    "fieldtype": "Link",
-   "label": "Bottom Length",
+   "label": "Length",
    "options": "Bottom Length"
   },
   {
@@ -742,24 +754,84 @@
   {
    "fieldname": "dupatta_fabric",
    "fieldtype": "Data",
-   "label": "Dupatta Fabric"
+   "label": "Fabric"
   },
   {
    "fieldname": "dupatta_color",
    "fieldtype": "Color",
-   "label": "Dupatta Color"
+   "label": "Color"
   },
   {
    "fieldname": "dupatta_value_addition",
    "fieldtype": "Table MultiSelect",
-   "label": "Dupatta Value Addition",
+   "label": "Value Addition",
    "options": "Value Addition Selection"
+  },
+  {
+   "fieldname": "warehouse_section",
+   "fieldtype": "Section Break",
+   "label": "Warehouse"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_wwpt",
+   "fieldtype": "Section Break",
+   "label": "Production"
+  },
+  {
+   "fieldname": "column_break_qkdg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_wfwd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_wlzy",
+   "fieldtype": "Section Break",
+   "label": "Style"
+  },
+  {
+   "fieldname": "column_break_dazz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "workers_section",
+   "fieldtype": "Section Break",
+   "label": "Workers"
+  },
+  {
+   "fieldname": "column_break_dumz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_impe",
+   "fieldtype": "Column Break",
+   "options": "\nTop\nBottom\nDupatta\nKoti\nInner\nShrug\nScarf"
+  },
+  {
+   "fieldname": "for",
+   "fieldtype": "Link",
+   "label": "For",
+   "options": "For"
+  },
+  {
+   "fieldname": "for1",
+   "fieldtype": "Link",
+   "label": "For",
+   "options": "For"
+  },
+  {
+   "fieldname": "for2",
+   "fieldtype": "Link",
+   "label": "For",
+   "options": "For"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-10 15:14:51.022063",
+ "modified": "2026-05-13 16:10:26.120427",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Pre Production Sample",

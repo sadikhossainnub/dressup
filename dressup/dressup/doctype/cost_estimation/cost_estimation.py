@@ -265,7 +265,14 @@ def make_pre_production_sample(source_name, target_doc=None):
 					"screen_print_f": "screen_print_f",
 					"block_print_f": "block_print_f",
 					"tie_dye": "tie_dye",
-					"total_tailoring": "total_tailoring"
+					"total_tailoring": "total_tailoring",
+					# Margin & Suggested Selling Price
+					"pattern_variation": "pattern_variation",
+					"screen_print_machine_emb_65": "screen_print_machine_emb_65",
+					"hand_embroidery_75": "hand_embroidery_75",
+					"for_pattern_variation_only": "for_pattern_variation_only",
+					"screen_print_machine_emb_only": "screen_print_machine_emb_only",
+					"hand_embroidery_only": "hand_embroidery_only"
 				},
 				"field_no_map": ["naming_series"],
 				"validation": {"docstatus": ["=", 1]}

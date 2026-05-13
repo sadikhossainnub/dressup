@@ -32,7 +32,56 @@ class PreProductionSample(Document):
 		"""Auto-populate fields from Tech Pack"""
 		if self.tech_pack_no:
 			self.fetch_tech_pack_data()
+		self.calculate_total_fabrics()
+		self.calculate_total_trim_accessories()
+		self.calculate_total_production_qty()
+		self.calculate_suggested_selling_prices()
+
+	def calculate_total_fabrics(self):
+		"""Calculate total amount of all fabrics"""
+		from frappe.utils import flt
+		self.total_fabrics = sum(flt(row.amount) for row in (self.fabrics or []))
+
+	def calculate_total_trim_accessories(self):
+		"""Calculate total amount of all trim & accessories"""
+		from frappe.utils import flt
+		self.total_trim_accessories = sum(flt(row.amount) for row in (self.trim_accessories or []))
+
+	def calculate_total_production_qty(self):
+		"""Calculate total production qty from size chart"""
+		from frappe.utils import cint
+		self.total_production_qty = sum(cint(row.production_qty) for row in (self.size_chart_in_inch or []))
 	
+
+	def calculate_suggested_selling_prices(self):
+		"""Calculate suggested selling prices based on different margin scenarios"""
+		from frappe.utils import flt
+		# Total cost = Fabrics + Trim Accessories + Tailoring + Finishing
+		total_cost = (
+			flt(self.total_fabrics) +
+			flt(self.total_trim_accessories) +
+			flt(self.total_tailoring) +
+			flt(self.total_finishing)
+		)
+		
+		# Screen Print/Machine Embroidery markup calculation
+		if flt(self.screen_print_machine_emb_65):
+			self.screen_print_machine_emb_only = total_cost * (1 + flt(self.screen_print_machine_emb_65) / 100)
+		else:
+			self.screen_print_machine_emb_only = 0
+		
+		# Pattern Variation markup calculation
+		if flt(self.pattern_variation):
+			self.for_pattern_variation_only = total_cost * (1 + flt(self.pattern_variation) / 100)
+		else:
+			self.for_pattern_variation_only = 0
+			
+		# Hand Embroidery markup calculation
+		if flt(self.hand_embroidery_75):
+			self.hand_embroidery_only = total_cost * (1 + flt(self.hand_embroidery_75) / 100)
+		else:
+			self.hand_embroidery_only = 0
+
 	def fetch_tech_pack_data(self):
 		"""Fetch data from Sketch Specification"""
 		if not self.tech_pack_no:
