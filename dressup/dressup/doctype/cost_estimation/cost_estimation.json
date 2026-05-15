@@ -63,6 +63,8 @@
   "wash_iron",
   "column_break_miob",
   "qc_packaging",
+  "column_break_urwy",
+  "fusingandpasting",
   "column_break_uglg",
   "transportation",
   "column_break_svkd",
@@ -527,12 +529,21 @@
   {
    "fieldname": "section_break_stcm",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_urwy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fusingandpasting",
+   "fieldtype": "Data",
+   "label": "Fusing & Pasting"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-10 15:12:06.634625",
+ "modified": "2026-05-14 18:23:51.592170",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Cost Estimation",

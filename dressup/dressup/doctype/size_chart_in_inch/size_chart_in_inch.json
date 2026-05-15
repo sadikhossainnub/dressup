@@ -8,6 +8,7 @@
  "field_order": [
   "size_chart_in_inch",
   "production_qty",
+  "color",
   "length",
   "bust",
   "column_break_jxaf",
@@ -72,6 +73,13 @@
    "fieldtype": "Int",
    "in_list_view": 1,
    "label": "Production Qty"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Color",
+   "options": "Color"
   },
   {
    "fieldname": "others",

@@ -182,6 +182,10 @@
   "wb_to_pocket_opening",
   "beltloop_width",
   "pocket_depth",
+  "dupatta_section",
+  "dlength",
+  "dwidth",
+  "dupatta_note",
   "note_section",
   "text_editor_noaa",
   "amended_from"
@@ -451,7 +455,7 @@
    "collapsible": 1,
    "fieldname": "inner_koti_measurements_section",
    "fieldtype": "Section Break",
-   "label": "Inner/Koti Measurements"
+   "label": "Koti/Shrug Measurements"
   },
   {
    "fieldname": "inner_column_break_eghr",
@@ -1110,13 +1114,34 @@
    "fieldtype": "Select",
    "label": "Sleeve",
    "options": "\nBalloon Sleeve\nBatwing Sleeve\nBell Sleeve\nBishop Sleeve\nButterfly Sleeve\nButtoned Cuff Sleeve\nCap Sleeve\nCape Sleeve\nChuridar Sleeve\nCold Shoulder Sleeve\nCuff Sleeve\nCut-Out Sleeve\nDolman Sleeve\nDouble-Layer Sleeve\nElbow-Length Sleeve\nExtended Shoulder Sleeve\nFlared Sleeve\nFrench Cuff Sleeve\nFull Sleeve\nJuliet Sleeve\nKaftan Sleeve\nKimono Sleeve\nKoti Sleeve\nLace Sleeve\nLantern Sleeve\nLeg-of-Mutton Sleeve\nLong Sleeve\nOff-Shoulder Sleeve\nOne-Shoulder Sleeve\nOpen Sleeve\nPoet Sleeve\nPuff Sleeve\nRuffle Sleeve\nSet-in Sleeve\nSheer Sleeve\nShort Sleeve\nShrug Style Sleeve\nSlashed Sleeve\nSleeveless\nSlim Fit Sleeve\nSlit Sleeve\nSplit Sleeve\nTailored Sleeve\nThree-Quarter Sleeve\nTie-Up Sleeve\nTiered Sleeve\nTrumpet Sleeve\nUmbrella Sleeve\nOther"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "dupatta_section",
+   "fieldtype": "Section Break",
+   "label": "Dupatta"
+  },
+  {
+   "fieldname": "dlength",
+   "fieldtype": "Data",
+   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Length)"
+  },
+  {
+   "fieldname": "dwidth",
+   "fieldtype": "Data",
+   "label": "\u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Width)"
+  },
+  {
+   "fieldname": "dupatta_note",
+   "fieldtype": "Small Text",
+   "label": "Dupatta Note"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-10 15:06:11.180471",
+ "modified": "2026-05-14 17:50:02.613298",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification",

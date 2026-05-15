@@ -1,12 +1,14 @@
 {
+ "app": "dressup",
  "charts": [],
- "content": "[{\"id\":\"B3ZBbzHt_T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">DressUP</span>\",\"col\":12}},{\"id\":\"JJ30H5rrBP\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Monthly Sketch Specification Sample\",\"col\":3}},{\"id\":\"7DJI0Um_DM\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Daily Sketch Specification Sample\",\"col\":3}},{\"id\":\"tIu1Lf9TMw\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Cost Estimation\",\"col\":3}},{\"id\":\"C_uw6unwHL\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Pre Production Sample\",\"col\":3}},{\"id\":\"ZNAzlGtEQx\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"f8Jgy5jrhe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Tech Pack Summary\",\"col\":3}},{\"id\":\"YNbj-9anrh\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"mQ2qmjwU8-\",\"type\":\"card\",\"data\":{\"card_name\":\"Designer\",\"col\":4}},{\"id\":\"Umhpm7x7gs\",\"type\":\"card\",\"data\":{\"card_name\":\"Barcode\",\"col\":4}},{\"id\":\"bcHS3cxJlT\",\"type\":\"card\",\"data\":{\"card_name\":\"Customer Membership\",\"col\":4}}]",
+ "content": "[{\"id\":\"B3ZBbzHt_T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">DressUP</span>\",\"col\":12}},{\"id\":\"i6V1hfnctR\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"DSS\",\"col\":3}},{\"id\":\"TDfToylKAJ\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"MSS\",\"col\":3}},{\"id\":\"YdWkORoBHr\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"MCE\",\"col\":3}},{\"id\":\"GXWgIxDcfu\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"PPS On this Month\",\"col\":3}},{\"id\":\"YNbj-9anrh\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"mQ2qmjwU8-\",\"type\":\"card\",\"data\":{\"card_name\":\"Designer\",\"col\":4}}]",
  "creation": "2025-11-05 17:24:33.874729",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 0,
+ "icon": "assign",
  "idx": 0,
  "indicator_color": "green",
  "is_hidden": 0,
@@ -16,7 +18,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Designer",
-   "link_count": 4,
+   "link_count": 0,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -50,83 +52,50 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Barcode",
-   "link_count": 3,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Barcode Label Print",
-   "link_count": 0,
-   "link_to": "Barcode Label Print",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Barcode Label Template",
-   "link_count": 0,
-   "link_to": "Barcode Label Template",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Item Search",
-   "link_count": 0,
-   "link_to": "item-search",
-   "link_type": "Page",
-   "onboard": 0,
-   "type": "Link"
   }
  ],
- "modified": "2026-02-10 13:07:36.237428",
+ "modified": "2026-05-14 17:04:52.576505",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "DressUP",
  "number_cards": [
   {
-   "label": "Monthly Sketch Specification Sample",
-   "number_card_name": "Monthly Sketch Specification Sample"
+   "label": "PPS On this Month",
+   "number_card_name": "Pre Production Sample Monthly"
   },
   {
-   "label": "Cost Estimation",
-   "number_card_name": "Cost Estimation"
-  },
-  {
-   "label": "Daily Sketch Specification Sample",
+   "label": "DSS",
    "number_card_name": "Daily Sketch Specification Sample"
   },
   {
-   "label": "Pre Production Sample",
-   "number_card_name": "Pre Production Sample Monthly"
+   "label": "MSS",
+   "number_card_name": "Monthly Sketch Specification Sample"
+  },
+  {
+   "label": "MCE",
+   "number_card_name": "Cost Estimation"
   }
  ],
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
- "roles": [],
- "sequence_id": 2.0,
- "shortcuts": [
+ "roles": [
   {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Tech Pack Summary",
-   "link_to": "tech-pack-summary",
-   "type": "Page"
+   "role": "Administrator"
+  },
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Fashion Designer"
+  },
+  {
+   "role": "Fashion Designer Manager"
   }
  ],
- "title": "DressUP"
+ "sequence_id": 2.0,
+ "shortcuts": [],
+ "title": "DressUP",
+ "type": "Workspace"
 }

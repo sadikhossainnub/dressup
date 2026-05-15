@@ -16,6 +16,7 @@
   "column_break_1",
   "start_time_date",
   "finish_time_date",
+  "eta",
   "sewing_finish",
   "received_date",
   "session",
@@ -96,9 +97,24 @@
   "transportation",
   "column_break_svkd",
   "total_finishing",
+  "margin_section",
+  "pattern_variation",
+  "column_break_lnyo",
+  "screen_print_machine_emb_65",
+  "column_break_dvhv",
+  "hand_embroidery_75",
+  "suggested_selling_price_section",
+  "column_break_tjnu",
+  "for_pattern_variation_only",
+  "column_break_gpdc",
+  "screen_print_machine_emb_only",
+  "column_break_xivu",
+  "hand_embroidery_only",
   "production_section",
   "fabrics",
+  "total_fabrics",
   "trim_accessories",
+  "total_trim_accessories",
   "size_chart_section",
   "size_chart_in_inch",
   "size_note_section",
@@ -183,8 +199,12 @@
    "depends_on": "eval:doc.docstatus==1",
    "fieldname": "finish_time_date",
    "fieldtype": "Datetime",
-   "label": "Finish Time & Date:",
-   "read_only": 1
+   "label": "Finish Time & Date:"
+  },
+  {
+   "fieldname": "eta",
+   "fieldtype": "Date",
+   "label": "ETA"
   },
   {
    "fieldname": "workstation_section",
@@ -826,6 +846,84 @@
    "fieldtype": "Link",
    "label": "For",
    "options": "For"
+  },
+  {
+   "fieldname": "total_fabrics",
+   "fieldtype": "Currency",
+   "label": "Total Fabrics",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_trim_accessories",
+   "fieldtype": "Currency",
+   "label": "Total Trim Accessories",
+   "read_only": 1
+  },
+  {
+   "fieldname": "margin_section",
+   "fieldtype": "Section Break",
+   "label": "Margin"
+  },
+  {
+   "fieldname": "pattern_variation",
+   "fieldtype": "Percent",
+   "label": "Pattern Variation"
+  },
+  {
+   "fieldname": "column_break_lnyo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "screen_print_machine_emb_65",
+   "fieldtype": "Data",
+   "label": "Screen Print/ Machine Emb"
+  },
+  {
+   "fieldname": "column_break_dvhv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hand_embroidery_75",
+   "fieldtype": "Data",
+   "label": "Hand Embroidery"
+  },
+  {
+   "fieldname": "suggested_selling_price_section",
+   "fieldtype": "Section Break",
+   "label": "Suggested Selling Price",
+   "read_only": 1
+  },
+  {
+   "fieldname": "for_pattern_variation_only",
+   "fieldtype": "Currency",
+   "label": "For Pattern Variation Only",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_gpdc",
+   "fieldtype": "Column Break",
+   "read_only": 1
+  },
+  {
+   "fieldname": "screen_print_machine_emb_only",
+   "fieldtype": "Currency",
+   "label": "Screen Print/ Machine Emb only",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_xivu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hand_embroidery_only",
+   "fieldtype": "Currency",
+   "label": "Hand Embroidery Only",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tjnu",
+   "fieldtype": "Column Break",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,

@@ -77,34 +77,35 @@
                         {% else %}
                             background-color: #f8f9fa; color: #000; border-color: #000;
                         {% endif %}
-                    ">{{ status_val }}</span>
+                    "><strong>{{ status_val }}</strong></span>
                 </div>
-                <div style="margin-bottom: 2px;">Tech Pack No: {{ doc.tech_pack_no or '' }}</div>
-                <div style="margin-bottom: 2px;">Item Name: {{ doc.item_name or '' }}</div>
-                <div style="margin-bottom: 2px;">Designer Name: {{ doc.designer_name or doc.owner or '' }}</div>
-                <div style="margin-bottom: 2px;">Style No: {{ doc.style_no or doc.naming_series or '' }}</div>
-                <div style="margin-bottom: 2px;">Category: {{ doc.category or '' }}</div>
-                <div style="margin-bottom: 2px;">Season: {{ doc.session or doc.season or '' }}</div>
-                <div style="margin-bottom: 2px;">Sewing Finish: {{ doc.sewing_finish or '' }}</div>
+                <div style="margin-bottom: 2px;">Tech Pack No: <strong>{{ doc.tech_pack_no or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Item Name: <strong>{{ doc.item_name or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Designer Name: <strong>{{ doc.designer_name or doc.owner or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Style No: <strong>{{ doc.style_no or doc.naming_series or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Category: <strong>{{ doc.category or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Season: <strong>{{ doc.session or doc.season or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Sewing Finish: <strong>{{ doc.sewing_finish or '' }}</strong></div>
             </td>
             <td style="padding: 5px; width: 33%; vertical-align: top;">
-                <div style="margin-bottom: 2px;">Cut/ Fit Style: {{ doc.cut_fit_style or '' }}</div>
-                <div style="margin-bottom: 2px;">Collar/ Neck Style: {{ doc.collar_neck_style or '' }}</div>
-                <div style="margin-bottom: 2px;">Side Cut: {{ doc.side_cut or '' }}</div>
-                <div style="margin-bottom: 2px;">Sleeve: {{ doc.sleeve or '' }}</div>
-                <div style="margin-bottom: 2px;">Bottom Style: {{ doc.bottom_style or '' }}</div>
-                <div style="margin-bottom: 2px;">Bottom Waist: {{ doc.bottom_waist or '' }}</div>
-                <div style="margin-bottom: 2px;">Sketch Ref: {{ doc.tech_pack_no or '' }}</div>
+                <div style="margin-bottom: 2px;">Cut/ Fit Style: <strong>{{ doc.cut_fit_style or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Collar/ Neck Style: <strong>{{ doc.collar_neck_style or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Side Cut: <strong>{{ doc.side_cut or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Sleeve: <strong>{{ doc.sleeve or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Bottom Style: <strong>{{ doc.bottom_style or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Bottom Waist: <strong>{{ doc.bottom_waist or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Sketch Ref: <strong>{{ doc.tech_pack_no or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">ETA: <strong>{{ doc.eta or '' }}</strong></div>
             </td>
             <td style="padding: 5px; width: 34%; vertical-align: top;">
-                <div style="margin-bottom: 2px;">Pattern Master: {{ doc.pattern_master_name or '' }}</div>
-                <div style="margin-bottom: 2px;">Sample Man: {{ doc.sample_man_name or '' }}</div>
-                <div style="margin-bottom: 2px;">Handler: {{ doc.handler_name or doc.handler or '' }}</div>
-                <div style="margin-bottom: 2px;">Sketch Submission Date: {{ frappe.utils.formatdate(sketch_doc.submission_date) if sketch_doc and sketch_doc.submission_date else '' }}</div>
-                <div style="margin-bottom: 2px;">Costing Submit Date: {{ frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if doc.cost_estimation else '' }}</div>
-                <div style="margin-bottom: 2px;">PPS Submission Date: {{ frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</div>
-                <div style="margin-bottom: 2px;">Costing Ref: {{ doc.cost_estimation or '' }}</div>
-                <div style="margin-bottom: 2px;">Workstations: Cutting, Sewing, Screen Print, Block Print</div>
+                <div style="margin-bottom: 2px;">Pattern Master: <strong>{{ doc.pattern_master_name or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Sample Man: <strong>{{ doc.sample_man_name or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Handler: <strong>{{ doc.handler_name or doc.handler or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Sketch Submission Date: <strong>{{ frappe.utils.formatdate(sketch_doc.submission_date) if sketch_doc and sketch_doc.submission_date else '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Costing Submit Date: <strong>{{ frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if doc.cost_estimation else '' }}</strong></div>
+                <div style="margin-bottom: 2px;">PPS Submission Date: <strong>{{ frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Costing Ref: <strong>{{ doc.cost_estimation or '' }}</strong></div>
+                <div style="margin-bottom: 2px;">Workstations: <strong>Cutting, Sewing, Screen Print, Block Print</strong></div>
             </td>
         </tr>
     </tbody>
@@ -152,6 +153,7 @@
         <tr>
             <th style="width: 16%;">Size</th>
             <th style="text-align: center;">Production Qty</th>
+            <th style="text-align: center;">Color</th>
             <th style="text-align: center;">Length</th>
             <th style="text-align: center;">Bust</th>
             <th style="text-align: center;">Waist</th>
@@ -167,6 +169,7 @@
         <tr>
             <td style="font-weight: 700;">{{ row.size_chart_in_inch or '-' }}</td>
             <td style="text-align: center;">{{ row.production_qty or '0' }}</td>
+            <td style="text-align: center;">{{ row.color or '-' }}</td>
             <td style="text-align: center;">{{ row.length or '-' }}</td>
             <td style="text-align: center;">{{ row.bust or '-' }}</td>
             <td style="text-align: center;">{{ row.waist or '-' }}</td>
@@ -208,51 +211,63 @@
     <tr>
         <!-- Top Details -->
         <td style="width: 32%; border: 1.5px solid #000; padding: 8px; vertical-align: top;">
-            <div style="font-weight: bold; text-transform: uppercase; border-bottom: 1.5px solid #000; margin-bottom: 6px; font-size: 11px; color: #000;">Top Details</div>
+            {% if doc.for %}
+            <div style="font-weight: bold; text-transform: uppercase; border-bottom: 1.5px solid #000; margin-bottom: 6px; font-size: 11px; color: #000;">For: {{ doc.for }}</div>
             <div style="font-size: 10px; line-height: 1.5;">
+                {% if doc.value_addition %}
                 <div style="margin-bottom: 4px; padding-bottom: 3px;">
                     <span style="font-weight: bold;">Value Addition:</span>
-                    {% for row in doc.value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{% else %}-{% endfor %}
+                    {% for row in doc.value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{% endfor %}
                 </div>
+                {% endif %}
                 <div style="border-top: 1px dotted #ccc; padding-top: 3px;">
-                    <div><span style="font-weight: bold;">Color:</span> {{ doc.color or '-' }}</div>
-                    <div><span style="font-weight: bold;">Length:</span> {{ doc.length or '-' }}</div>
-                    <div><span style="font-weight: bold;">Sleeve:</span> {{ doc.sleeve or '-' }}</div>
-                    <div><span style="font-weight: bold;">Lining:</span> {{ doc.lining or '-' }}</div>
+                    {% if doc.color %}<div><span style="font-weight: bold;">Color:</span> {{ doc.color }}</div>{% endif %}
+                    {% if doc.length %}<div><span style="font-weight: bold;">Length:</span> {{ doc.length }}</div>{% endif %}
+                    {% if doc.sleeve %}<div><span style="font-weight: bold;">Sleeve:</span> {{ doc.sleeve }}</div>{% endif %}
+                    {% if doc.lining %}<div><span style="font-weight: bold;">Lining:</span> {{ doc.lining }}</div>{% endif %}
                 </div>
             </div>
+            {% endif %}
         </td>
         <td style="width: 2%; border: none;"></td>
         <!-- Bottom Details -->
         <td style="width: 32%; border: 1.5px solid #000; padding: 8px; vertical-align: top;">
-            <div style="font-weight: bold; text-transform: uppercase; border-bottom: 1.5px solid #000; margin-bottom: 6px; font-size: 11px; color: #000;">Bottom Details</div>
+            {% if doc.for1 %}
+            <div style="font-weight: bold; text-transform: uppercase; border-bottom: 1.5px solid #000; margin-bottom: 6px; font-size: 11px; color: #000;">For: {{ doc.for1 }}</div>
             <div style="font-size: 10px; line-height: 1.5;">
+                {% if doc.bottom_value_addition %}
                 <div style="margin-bottom: 4px; padding-bottom: 3px;">
                     <span style="font-weight: bold;">Bottom Value Addition:</span>
-                    {% for row in doc.bottom_value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{% else %}-{% endfor %}
+                    {% for row in doc.bottom_value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{% endfor %}
                 </div>
+                {% endif %}
                 <div style="border-top: 1px dotted #ccc; padding-top: 3px;">
-                    <div><span style="font-weight: bold;">Bottom Color:</span> {{ doc.bottom_color or '-' }}</div>
-                    <div><span style="font-weight: bold;">Bottom Style:</span> {{ doc.bottom_style or '-' }}</div>
-                    <div><span style="font-weight: bold;">Bottom Length:</span> {{ doc.bottom_length or '-' }}</div>
-                    <div><span style="font-weight: bold;">Bottom Waist:</span> {{ doc.bottom_waist or '-' }}</div>
+                    {% if doc.bottom_color %}<div><span style="font-weight: bold;">Bottom Color:</span> {{ doc.bottom_color }}</div>{% endif %}
+                    {% if doc.bottom_style %}<div><span style="font-weight: bold;">Bottom Style:</span> {{ doc.bottom_style }}</div>{% endif %}
+                    {% if doc.bottom_length %}<div><span style="font-weight: bold;">Bottom Length:</span> {{ doc.bottom_length }}</div>{% endif %}
+                    {% if doc.bottom_waist %}<div><span style="font-weight: bold;">Bottom Waist:</span> {{ doc.bottom_waist }}</div>{% endif %}
                 </div>
             </div>
+            {% endif %}
         </td>
         <td style="width: 2%; border: none;"></td>
         <!-- Dupatta Details -->
         <td style="width: 32%; border: 1.5px solid #000; padding: 8px; vertical-align: top;">
-            <div style="font-weight: bold; text-transform: uppercase; border-bottom: 1.5px solid #000; margin-bottom: 6px; font-size: 11px; color: #000;">Dupatta Details</div>
+            {% if doc.for2 %}
+            <div style="font-weight: bold; text-transform: uppercase; border-bottom: 1.5px solid #000; margin-bottom: 6px; font-size: 11px; color: #000;">For: {{ doc.for2 }}</div>
             <div style="font-size: 10px; line-height: 1.5;">
+                {% if doc.dupatta_value_addition %}
                 <div style="margin-bottom: 4px; padding-bottom: 3px;">
                     <span style="font-weight: bold;">Dupatta Value Addition:</span>
-                    {% for row in doc.dupatta_value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{% else %}-{% endfor %}
+                    {% for row in doc.dupatta_value_addition %}{{ row.value_addition }}{% if not loop.last %}, {% endif %}{% endfor %}
                 </div>
+                {% endif %}
                 <div style="border-top: 1px dotted #ccc; padding-top: 3px;">
-                    <div><span style="font-weight: bold;">Dupatta Color:</span> {{ doc.dupatta_color or '-' }}</div>
-                    <div><span style="font-weight: bold;">Dupatta Fabric:</span> {{ doc.dupatta_fabric or '-' }}</div>
+                    {% if doc.dupatta_color %}<div><span style="font-weight: bold;">Dupatta Color:</span> {{ doc.dupatta_color }}</div>{% endif %}
+                    {% if doc.dupatta_fabric %}<div><span style="font-weight: bold;">Dupatta Fabric:</span> {{ doc.dupatta_fabric }}</div>{% endif %}
                 </div>
             </div>
+            {% endif %}
         </td>
     </tr>
 </table>
@@ -261,8 +276,8 @@
 <div style="page-break-after: always;"></div>
 
 {% if doc.note_or_instructions %}
-<div style="margin-top: 5px; font-size: 10px; font-family: 'HindSiliguri', 'Helvetica Neue', Helvetica, Arial, sans-serif; page-break-inside: avoid;">
-    <strong>Note:</strong> {{ doc.note_or_instructions|safe }}
+<div style="margin-top: 5px; font-size: 10px; font-family: 'HindSiliguri', 'Helvetica Neue', Helvetica, Arial, sans-serif; page-break-inside: avoid; color: #d32f2f !important;">
+    <strong>Note:</strong> {{ doc.note_or_instructions|striptags }}
 </div>
 {% endif %}
 

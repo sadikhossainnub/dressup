@@ -1,0 +1,61 @@
+{
+ "app": "dressup",
+ "creation": "2026-05-14 17:37:16.185756",
+ "docstatus": 0,
+ "doctype": "Workspace Sidebar",
+ "header_icon": "home",
+ "idx": 0,
+ "items": [
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "home",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Home",
+   "link_to": "DressUP",
+   "link_type": "Workspace",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Sketch Specification",
+   "link_to": "Sketch Specification",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Cost Estimation",
+   "link_to": "Cost Estimation",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Pre Production Sample",
+   "link_to": "Pre Production Sample",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-05-14 17:37:16.185756",
+ "modified_by": "Administrator",
+ "name": "Dressup",
+ "owner": "Administrator",
+ "standard": 1,
+ "title": "Dressup"
+}

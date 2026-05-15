@@ -1,0 +1,40 @@
+{
+ "app": "dressup",
+ "creation": "2026-04-24 15:11:13.311856",
+ "docstatus": 0,
+ "doctype": "Workspace Sidebar",
+ "header_icon": "barcode",
+ "idx": 0,
+ "items": [
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "barcode",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Barcode Label Print",
+   "link_to": "Barcode Label Print",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "barrel",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Barcode Label Template",
+   "link_to": "Barcode Label Template",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-05-14 16:40:25.224330",
+ "modified_by": "Administrator",
+ "name": "Bar-code Label",
+ "owner": "Administrator",
+ "standard": 1,
+ "title": "Bar-code Label"
+}

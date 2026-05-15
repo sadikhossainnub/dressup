@@ -1,0 +1,22 @@
+{
+ "app": "dressup",
+ "bg_color": "blue",
+ "creation": "2026-04-25 17:48:15.713417",
+ "docstatus": 0,
+ "doctype": "Desktop Icon",
+ "hidden": 0,
+ "icon": "assign",
+ "icon_type": "Link",
+ "idx": 0,
+ "label": "DressUP",
+ "link_to": "Dressup",
+ "link_type": "Workspace Sidebar",
+ "modified": "2026-05-14 17:38:13.739583",
+ "modified_by": "Administrator",
+ "name": "DressUP",
+ "owner": "Administrator",
+ "restrict_removal": 0,
+ "roles": [],
+ "sidebar": "Dressup",
+ "standard": 1
+}

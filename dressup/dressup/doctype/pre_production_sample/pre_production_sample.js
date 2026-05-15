@@ -195,7 +195,34 @@ frappe.ui.form.on("Pre Production Sample", {
 	pattern_variation: function(frm) { calculate_suggested_selling_prices(frm); },
 	screen_print_machine_emb_65: function(frm) { calculate_suggested_selling_prices(frm); },
 	hand_embroidery_75: function(frm) { calculate_suggested_selling_prices(frm); },
+	cutting_f: function(frm) { frm.trigger("calculate_total_tailoring"); },
+	sewing_f: function(frm) { frm.trigger("calculate_total_tailoring"); },
+	hand_work_estimation: function(frm) { frm.trigger("calculate_total_tailoring"); },
+	machine_embroidery_f: function(frm) { frm.trigger("calculate_total_tailoring"); },
+	hand_embroidery_f: function(frm) { frm.trigger("calculate_total_tailoring"); },
+	karchupi_f: function(frm) { frm.trigger("calculate_total_tailoring"); },
+	screen_print_f: function(frm) { frm.trigger("calculate_total_tailoring"); },
+	block_print_f: function(frm) { frm.trigger("calculate_total_tailoring"); },
+	tie_dye: function(frm) { frm.trigger("calculate_total_tailoring"); },
+	wash_iron: function(frm) { frm.trigger("calculate_total_finishing"); },
+	qc_packaging: function(frm) { frm.trigger("calculate_total_finishing"); },
+	transportation: function(frm) { frm.trigger("calculate_total_finishing"); },
+
+	calculate_total_tailoring: function(frm) {
+		let total = flt(frm.doc.cutting_f) + flt(frm.doc.sewing_f) + flt(frm.doc.hand_work_estimation) +
+					flt(frm.doc.machine_embroidery_f) + flt(frm.doc.hand_embroidery_f) + flt(frm.doc.karchupi_f) +
+					flt(frm.doc.screen_print_f) + flt(frm.doc.block_print_f) + flt(frm.doc.tie_dye);
+		frm.set_value("total_tailoring", total);
+		calculate_suggested_selling_prices(frm);
+	},
+
+	calculate_total_finishing: function(frm) {
+		let total = flt(frm.doc.wash_iron) + flt(frm.doc.qc_packaging) + flt(frm.doc.transportation);
+		frm.set_value("total_finishing", total);
+		calculate_suggested_selling_prices(frm);
+	},
 });
+
 
 frappe.ui.form.on("PPS Fabric Item", {
 	item_code: function(frm, cdt, cdn) {
@@ -219,6 +246,19 @@ frappe.ui.form.on("PPS Fabric Item", {
 					} else {
 						frappe.model.set_value(cdt, cdn, "item_attributes", "");
 					}
+				}
+			});
+			frappe.db.get_value("Item Price", { item_code: row.item_code, buying: 1 }, "price_list_rate", (r) => {
+				if (r && r.price_list_rate) {
+					frappe.model.set_value(cdt, cdn, "rate", r.price_list_rate);
+				} else {
+					frappe.db.get_value("Item", row.item_code, ["last_purchase_rate", "valuation_rate", "standard_rate"], (res) => {
+						let final_rate = 0;
+						if (res) {
+							final_rate = res.last_purchase_rate || res.valuation_rate || res.standard_rate || 0;
+						}
+						frappe.model.set_value(cdt, cdn, "rate", final_rate);
+					});
 				}
 			});
 		}
@@ -260,6 +300,19 @@ frappe.ui.form.on("PPS Trim Accessories Item", {
 					}
 				}
 			});
+			frappe.db.get_value("Item Price", { item_code: row.item_code, buying: 1 }, "price_list_rate", (r) => {
+				if (r && r.price_list_rate) {
+					frappe.model.set_value(cdt, cdn, "rate", r.price_list_rate);
+				} else {
+					frappe.db.get_value("Item", row.item_code, ["last_purchase_rate", "valuation_rate", "standard_rate"], (res) => {
+						let final_rate = 0;
+						if (res) {
+							final_rate = res.last_purchase_rate || res.valuation_rate || res.standard_rate || 0;
+						}
+						frappe.model.set_value(cdt, cdn, "rate", final_rate);
+					});
+				}
+			});
 		}
 	},
 	actual_quantity: function (frm, cdt, cdn) {
@@ -297,6 +350,19 @@ frappe.ui.form.on("Fabric Dupatta", {
 					} else {
 						frappe.model.set_value(cdt, cdn, "item_attributes", "");
 					}
+				}
+			});
+			frappe.db.get_value("Item Price", { item_code: row.item_code, buying: 1 }, "price_list_rate", (r) => {
+				if (r && r.price_list_rate) {
+					frappe.model.set_value(cdt, cdn, "rate", r.price_list_rate);
+				} else {
+					frappe.db.get_value("Item", row.item_code, ["last_purchase_rate", "valuation_rate", "standard_rate"], (res) => {
+						let final_rate = 0;
+						if (res) {
+							final_rate = res.last_purchase_rate || res.valuation_rate || res.standard_rate || 0;
+						}
+						frappe.model.set_value(cdt, cdn, "rate", final_rate);
+					});
 				}
 			});
 		}

@@ -28,6 +28,7 @@
             "reqd": 1,
             "set_only_once": 1
         },
+        {
             "fetch_from": "item_code.item_name",
             "fieldname": "item_name",
             "fieldtype": "Data",
