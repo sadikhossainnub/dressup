@@ -58,11 +58,13 @@
   "bottom_value_addition",
   "bottom_color",
   "bottom_length",
+  "lining1",
   "column_break_xlqq",
   "for2",
   "dupatta_value_addition",
   "dupatta_color",
   "dupatta_fabric",
+  "lining2",
   "workstation_section",
   "cutting",
   "fusing_bundling",
@@ -93,6 +95,8 @@
   "wash_iron",
   "column_break_miob",
   "qc_packaging",
+  "column_break_urwy",
+  "fusingandpasting",
   "column_break_uglg",
   "transportation",
   "column_break_svkd",
@@ -117,6 +121,7 @@
   "total_trim_accessories",
   "size_chart_section",
   "size_chart_in_inch",
+  "total_production_qty",
   "size_note_section",
   "small_text_zmnf",
   "pattern_master_note_section",
@@ -426,7 +431,8 @@
   {
    "fieldname": "pattern_master_note",
    "fieldtype": "Text Editor",
-   "label": "Pattern Master Note:"
+   "label": "Pattern Master Note:",
+   "reqd": 1
   },
   {
    "fieldname": "other_tests_section",
@@ -463,6 +469,12 @@
    "reqd": 1
   },
   {
+   "fieldname": "total_production_qty",
+   "fieldtype": "Int",
+   "label": "Total Production Qty",
+   "read_only": 1
+  },
+  {
    "fieldname": "tech_pack_no",
    "fieldtype": "Link",
    "label": "Tech Pack No",
@@ -470,6 +482,7 @@
    "reqd": 1
   },
   {
+   "fetch_from": "item_code.item_group",
    "fieldname": "category",
    "fieldtype": "Data",
    "label": "Category"
@@ -723,8 +736,8 @@
   },
   {
    "fieldname": "length",
-   "fieldtype": "Data",
-   "label": "Length"
+   "fieldtype": "Small Text",
+   "label": "Details"
   },
   {
    "fieldname": "lining",
@@ -756,8 +769,8 @@
   },
   {
    "fieldname": "bottom_length",
-   "fieldtype": "Link",
-   "label": "Length",
+   "fieldtype": "Small Text",
+   "label": "Details",
    "options": "Bottom Length"
   },
   {
@@ -773,8 +786,8 @@
   },
   {
    "fieldname": "dupatta_fabric",
-   "fieldtype": "Data",
-   "label": "Fabric"
+   "fieldtype": "Small Text",
+   "label": "Details"
   },
   {
    "fieldname": "dupatta_color",
@@ -924,12 +937,34 @@
    "fieldname": "column_break_tjnu",
    "fieldtype": "Column Break",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_urwy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fusingandpasting",
+   "fieldtype": "Currency",
+   "label": "Fusing & Pasting",
+   "read_only": 1
+  },
+  {
+   "fieldname": "lining1",
+   "fieldtype": "Select",
+   "label": "Lining",
+   "options": "\nYes\nNo"
+  },
+  {
+   "fieldname": "lining2",
+   "fieldtype": "Select",
+   "label": "Lining",
+   "options": "\nYes\nNo"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-13 16:10:26.120427",
+ "modified": "2026-05-17 18:38:24.400508",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Pre Production Sample",

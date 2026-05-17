@@ -14,6 +14,7 @@
   "amount",
   "column_break_yhjp",
   "item_group",
+  "item_attributes",
   "uom",
   "stock_in_hand",
   "reserved_qty"
@@ -56,6 +57,13 @@
    "fieldname": "item_group",
    "fieldtype": "Data",
    "label": "Item Group"
+  },
+  {
+   "fieldname": "item_attributes",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Item Attributes",
+   "read_only": 1
   },
   {
    "fetch_from": "item_code.stock_uom",

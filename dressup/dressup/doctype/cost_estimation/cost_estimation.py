@@ -53,7 +53,8 @@ class CostEstimation(Document):
 		total = (
 			flt(self.wash_iron) +
 			flt(self.qc_packaging) +
-			flt(self.transportation)
+			flt(self.transportation) +
+			flt(self.fusingandpasting)
 		)
 		self.total_finishing = total
 	
@@ -168,7 +169,7 @@ class CostEstimation(Document):
 		
 	def create_reservation_entry(self, item_code, warehouse, qty, row):
 		"""Helper to create a single Stock Reservation Entry"""
-		from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import get_available_qty_to_reserve
+		from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import get_available_qty_to_reserve  # type: ignore
 		
 		available_qty = get_available_qty_to_reserve(item_code, warehouse)
 
@@ -239,6 +240,7 @@ def make_pre_production_sample(source_name, target_doc=None):
 					"side_cut": "side_cut",
 					"session": "session",
 					"sewing_finish": "sewing_finish",
+					"source_warehouse": "source_warehouse",
 					# Workstation Charges
 					"cutting": "cutting",
 					"fusing_bundling": "fusing_bundling",
@@ -254,6 +256,7 @@ def make_pre_production_sample(source_name, target_doc=None):
 					"wash_iron": "wash_iron",
 					"qc_packaging": "qc_packaging",
 					"transportation": "transportation",
+					"fusingandpasting": "fusingandpasting",
 					"total_finishing": "total_finishing",
 					# Workstation Charges Estimation
 					"cutting_f": "cutting_f",

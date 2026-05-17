@@ -17,6 +17,7 @@
   "session",
   "reserve_stock",
   "stock_reservation_status",
+  "source_warehouse",
   "column_break_1",
   "date",
   "category",
@@ -427,6 +428,12 @@
    "read_only": 1
   },
   {
+   "fieldname": "source_warehouse",
+   "fieldtype": "Link",
+   "label": "Source Warehouse",
+   "options": "Warehouse"
+  },
+  {
    "fieldname": "workstation_section",
    "fieldtype": "Section Break",
    "label": "Workstation "
@@ -536,7 +543,7 @@
   },
   {
    "fieldname": "fusingandpasting",
-   "fieldtype": "Data",
+   "fieldtype": "Currency",
    "label": "Fusing & Pasting"
   }
  ],

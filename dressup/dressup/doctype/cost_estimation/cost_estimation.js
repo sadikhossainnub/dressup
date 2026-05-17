@@ -22,6 +22,19 @@ frappe.ui.form.on("Cost Estimation Accessory", {
 					frappe.model.set_value(cdt, cdn, "stock_in_hand", total_qty);
 				}
 			});
+			// Fetch all item attributes
+			frappe.call({
+				method: "frappe.client.get",
+				args: { doctype: "Item", name: row.itemcode, fields: ["attributes"] },
+				callback(r) {
+					if (r.message && r.message.attributes && r.message.attributes.length) {
+						let attrs = r.message.attributes.map(a => a.attribute + ": " + (a.attribute_value || ""));
+						frappe.model.set_value(cdt, cdn, "item_attributes", attrs.join(", "));
+					} else {
+						frappe.model.set_value(cdt, cdn, "item_attributes", "");
+					}
+				}
+			});
 			frappe.db.get_value("Item Price", { item_code: row.itemcode, buying: 1 }, "price_list_rate", (r) => {
 				if (r && r.price_list_rate) {
 					frappe.model.set_value(cdt, cdn, "rate", r.price_list_rate);
@@ -73,6 +86,19 @@ frappe.ui.form.on("Cost Estimation Material", {
 						});
 					}
 					frappe.model.set_value(cdt, cdn, "stock_in_hand", total_qty);
+				}
+			});
+			// Fetch all item attributes
+			frappe.call({
+				method: "frappe.client.get",
+				args: { doctype: "Item", name: row.item_code, fields: ["attributes"] },
+				callback(r) {
+					if (r.message && r.message.attributes && r.message.attributes.length) {
+						let attrs = r.message.attributes.map(a => a.attribute + ": " + (a.attribute_value || ""));
+						frappe.model.set_value(cdt, cdn, "item_attributes", attrs.join(", "));
+					} else {
+						frappe.model.set_value(cdt, cdn, "item_attributes", "");
+					}
 				}
 			});
 			frappe.db.get_value("Item Price", { item_code: row.item_code, buying: 1 }, "price_list_rate", (r) => {
@@ -236,14 +262,29 @@ frappe.ui.form.on("Cost Estimation", {
 	wash_iron(frm) { frm.trigger("calculate_total_finishing"); },
 	qc_packaging(frm) { frm.trigger("calculate_total_finishing"); },
 	transportation(frm) { frm.trigger("calculate_total_finishing"); },
+	fusingandpasting(frm) { frm.trigger("calculate_total_finishing"); },
 	calculate_total_finishing(frm) {
-		let total = flt(frm.doc.wash_iron) + flt(frm.doc.qc_packaging) + flt(frm.doc.transportation);
+		let total = flt(frm.doc.wash_iron) + flt(frm.doc.qc_packaging) + flt(frm.doc.transportation) + flt(frm.doc.fusingandpasting);
 		frm.set_value("total_finishing", total);
 		calculate_suggested_selling_prices(frm);
 	},
 	pattern_variation: function(frm) { calculate_suggested_selling_prices(frm); },
 	screen_print_machine_emb_65: function(frm) { calculate_suggested_selling_prices(frm); },
 	hand_embroidery_75: function(frm) { calculate_suggested_selling_prices(frm); },
+	source_warehouse: function(frm) {
+		if (frm.doc.source_warehouse) {
+			if (frm.doc.materials) {
+				frm.doc.materials.forEach(row => {
+					frappe.model.set_value(row.doctype, row.name, "warehouse", frm.doc.source_warehouse);
+				});
+			}
+			if (frm.doc.accessories) {
+				frm.doc.accessories.forEach(row => {
+					frappe.model.set_value(row.doctype, row.name, "warehouse", frm.doc.source_warehouse);
+				});
+			}
+		}
+	},
 });
 
 function calculate_suggested_selling_prices(frm) {

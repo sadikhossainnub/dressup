@@ -12,7 +12,8 @@
   "rate",
   "amount",
   "stock_in_hand",
-  "reserved_qty"
+  "reserved_qty",
+  "item_attributes"
  ],
  "fields": [
   {
@@ -67,6 +68,13 @@
    "fieldname": "reserved_qty",
    "fieldtype": "Float",
    "label": "Reserved Qty",
+   "read_only": 1
+  },
+  {
+   "fieldname": "item_attributes",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Item Attributes",
    "read_only": 1
   }
  ],

@@ -1,0 +1,446 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap');
+
+  @page {
+    size: A4;
+    margin: 0.3in;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body,
+  .print-format {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9.5pt;
+    color: #1a1a2e;
+    background: #fff;
+    line-height: 1.3;
+  }
+
+  .po-wrapper {
+    width: 100%;
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 2mm 10mm 5mm;
+    background: #fff;
+  }
+
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.5px solid #000;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+
+  .header-logo img {
+    height: 42px;
+  }
+
+  .header-address {
+    text-align: right;
+    font-size: 7.5pt;
+    line-height: 1.2;
+    color: #000;
+  }
+
+  .po-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #0f3460;
+    margin-bottom: 10px;
+  }
+
+  .address-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 65%;
+  }
+
+  .card-label {
+    font-size: 7.5pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #e94560;
+    margin-bottom: 1px;
+  }
+
+  .card-name {
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: #0f3460;
+  }
+
+  .card-detail {
+    font-size: 8.5pt;
+    color: #444;
+    line-height: 1.2;
+  }
+
+  .po-title-block {
+    text-align: right;
+  }
+
+  .po-label {
+    font-size: 17pt;
+    font-weight: 600;
+    color: #e94560;
+    line-height: 1;
+  }
+
+  .po-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 9pt;
+    color: #0f3460;
+    margin-top: 3px;
+    font-weight: 600;
+  }
+
+  .po-date {
+    font-size: 8.5pt;
+    color: #666;
+  }
+
+  .po-ref {
+    font-size: 8pt;
+    color: #0f3460;
+    margin-top: 4px;
+  }
+
+  .items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+  }
+
+  .items-table thead tr {
+    background: #f8f9fa;
+    border-bottom: 2px solid #0f3460;
+  }
+
+  .items-table thead th {
+    padding: 6px 8px;
+    font-size: 8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #0f3460;
+    text-align: left;
+  }
+
+  .items-table thead th:nth-child(n+3) {
+    text-align: right;
+  }
+
+  .items-table tbody tr {
+    border-bottom: 1px solid #eef0f7;
+  }
+
+  .items-table tbody td {
+    padding: 8px 8px;
+    font-size: 9pt;
+    color: #2a2a3e;
+    vertical-align: top;
+  }
+
+  .items-table tbody td:nth-child(n+3) {
+    text-align: right;
+  }
+
+  .item-img-wrap {
+    width: 70px;
+    height: 70px;
+    border: 1px solid #d0d4e4;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .item-img-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .summary-container {
+    display: flex;
+    border: 1px solid #d0d4e4;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+
+  .summary-left {
+    flex: 1;
+    padding: 10px 15px;
+    border-right: 1px solid #d0d4e4;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .summary-right {
+    width: 220px;
+    padding: 10px 15px;
+    background: #fcfcfd;
+  }
+
+  .summary-totals-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .summary-totals-table td {
+    padding: 2px 0;
+    font-size: 9pt;
+  }
+
+  .summary-totals-table td:last-child {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .grand-total td {
+    font-weight: 700 !important;
+    color: #e94560;
+    border-top: 1px solid #d0d4e4;
+    padding-top: 5px;
+  }
+
+  .po-bottom-strip {
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .strip-note {
+    font-size: 6pt;
+    color: #333;
+    max-width: 75%;
+    line-height: 1.3;
+  }
+
+  .strip-approval {
+    font-size: 5.5pt;
+    text-align: right;
+    color: #1a1a2e;
+    white-space: nowrap;
+  }
+
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+    }
+  }
+
+  .page-wrapper {
+    width: 100%;
+    border-collapse: collapse;
+  }
+</style>
+
+{%- set company_doc = frappe.get_doc("Company", doc.company) %}
+
+<table class="page-wrapper">
+  <thead>
+    <tr>
+      <td>
+        <div class="header-section">
+          <div class="header-logo">
+            <img src="{{ frappe.utils.get_url() }}/files/Capture.PNG" alt="DressUp">
+          </div>
+          <div class="header-address">
+            House # 5, Road # 6<br>
+            Kollyanpur, Dhaka<br>
+            +8809678247247<br>
+            support@dressup.com.bd<br>
+            www.dressup.com.bd
+          </div>
+        </div>
+      </td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td class="page-content">
+        <div class="po-wrapper">
+          <div class="po-header">
+            <div class="address-stack">
+              <!-- Supplier -->
+              <div>
+                <div class="card-label">📦 Supplier</div>
+                <div class="card-name">{{ doc.supplier }}</div>
+                <div class="card-detail">
+                  {% set sup_addr = frappe.get_doc("Address", doc.supplier_address) if doc.supplier_address else None %}
+                  {% if sup_addr %}
+                  {{ sup_addr.address_line1 }}{% if sup_addr.address_line2 %}, {{ sup_addr.address_line2 }}{% endif
+                  %}<br>
+                  {{ sup_addr.city }}{% if sup_addr.state %}, {{ sup_addr.state }}{% endif %}
+                  {% set sup_phone = sup_addr.phone or sup_addr.mobile_no %}
+                  {% if sup_phone %} | Mob: {{ sup_phone }}{% endif %}
+                  {% else %}
+                  {{ doc.address_display.replace('\n', ', ') | safe if doc.address_display else '' }}
+                  {% endif %}
+                </div>
+              </div>
+              <!-- Deliver To -->
+              <div>
+                <div class="card-label">🚚 Delivered To</div>
+                <div class="card-name">{{ doc.set_warehouse }}</div>
+                <div class="card-detail">
+                  {% set ship_addr = frappe.get_doc("Address", doc.shipping_address) if doc.shipping_address else None
+                  %}
+                  {% if ship_addr %}
+                  {{ ship_addr.address_line1 }}, {{ ship_addr.city }}
+                  {% if company_doc.phone_no %} | Tel: {{ company_doc.phone_no }}{% endif %}
+                  {% else %}
+                  {{ doc.shipping_address_display.split('\n')[0] if doc.shipping_address_display else doc.company }}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="po-title-block">
+              <div class="po-label" style="color: #2e7d32;">Purchase Receipt</div>
+              <div class="po-number">{{ doc.name }}</div>
+              <div class="po-date">Date: {{ frappe.format(doc.posting_date, "Date") }}</div>
+              {% if doc.posting_time %}
+              <div class="po-date">Time: {{ doc.posting_time }}</div>
+              {% endif %}
+
+              {%- set linked_po = doc.items[0].purchase_order if doc.items and doc.items[0].purchase_order else None %}
+              {% if linked_po %}
+              <div class="po-ref">
+                <strong>PO Ref:</strong> {{ linked_po }}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th style="width:85px;">Image</th>
+                <th>Item Details</th>
+                <th style="width:55px;">Qty</th>
+                <th style="width:70px;">Accepted</th>
+                <th style="width:65px;">Rejected</th>
+                <th style="width:85px;">Rate</th>
+                <th style="width:105px;">Amount (BDT)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in doc.items %}
+              <tr>
+                <td style="text-align:center;">
+                  {%- set item_image = item.image or frappe.db.get_value("Item", item.item_code, "image") %}
+                  <div class="item-img-wrap">
+                    {% if item_image %}<img src="{{ item_image }}">{% else %}<span
+                      style="color:#ccc; font-size:20pt;">□</span>{% endif %}
+                  </div>
+                </td>
+                <td>
+                  <span style="font-family:'DM Mono', monospace; font-size:7.5pt; color:#888;">{{ item.item_code
+                    }}</span><br>
+                  <span style="font-weight:600; color:#0f3460;">{{ item.item_name }}</span>
+                  {% if item.description %}<div style="font-size:8pt; color:#666; margin-top:2px;">{{ item.description |
+                    striptags | truncate(100) }}</div>{% endif %}
+                  {% if item.purchase_order %}<div style="font-size:7pt; color:#999; margin-top:2px;">PO: {{
+                    item.purchase_order }}</div>{% endif %}
+                </td>
+                <td>{{ item.qty | round(2) }}<br><small>{{ item.uom }}</small></td>
+                <td>{{ (item.accepted_qty or 0) | round(2) }}</td>
+                <td>{{ (item.rejected_qty or 0) | round(2) }}</td>
+                <td>{{ frappe.format(item.rate, "Currency", doc.currency) }}</td>
+                <td style="font-weight:600;">{{ frappe.format(item.amount, "Currency", doc.currency) }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <div class="summary-container">
+            <div class="summary-left">
+              <div style="font-size:8.5pt;">
+                <strong>Amount in Words:</strong> {{ doc.in_words or frappe.utils.money_in_words(doc.grand_total,
+                doc.currency) }}
+              </div>
+
+              {% if doc.payment_terms_template or doc.payment_terms %}
+              <div style="font-size:8.5pt; border-top: 1px dashed #eee; padding-top: 5px;">
+                <strong>Payment Terms:</strong> {{ doc.payment_terms_template or doc.payment_terms }}
+              </div>
+              {% endif %}
+
+              {% if doc.lr_no %}
+              <div style="font-size:8.5pt; border-top: 1px dashed #eee; padding-top: 5px;">
+                <strong>Vehicle / LR No:</strong> {{ doc.lr_no }}
+                {% if doc.lr_date %} | <strong>Date:</strong> {{ frappe.format(doc.lr_date, "Date") }}{% endif %}
+              </div>
+              {% endif %}
+
+              {% if doc.transporter_name %}
+              <div style="font-size:8.5pt; border-top: 1px dashed #eee; padding-top: 5px;">
+                <strong>Transporter:</strong> {{ doc.transporter_name }}
+              </div>
+              {% endif %}
+            </div>
+            <div class="summary-right">
+              <table class="summary-totals-table">
+                <tr>
+                  <td>Net Total</td>
+                  <td>{{ frappe.format(doc.net_total, "Currency", doc.currency) }}</td>
+                </tr>
+                {% for tax in doc.taxes if tax.tax_amount %}
+                <tr>
+                  <td style="font-size:8pt;">{{ tax.description | truncate(25) }}</td>
+                  <td>{{ frappe.format(tax.tax_amount, "Currency", doc.currency) }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="grand-total">
+                  <td>Grand Total</td>
+                  <td>{{ frappe.format(doc.grand_total, "Currency", doc.currency) }}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="po-bottom-strip">
+            <div class="strip-note">
+              Standard Receipt Terms:<br>
+              All received goods have been inspected against the Purchase Order specifications. Quantities and quality
+              have been verified at the time of receipt.<br>
+              Any discrepancies or damages must be reported within 24 hours of receipt.<br>
+              For full Terms and Conditions, please visit: https://dressup.com.bd/vendors
+            </div>
+            <div class="strip-approval">
+              Electronically approved via Dress Up ERP System.
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+
+  <tfoot>
+    <tr>
+      <td>
+        <div style="width: 100%; display: flex; height: 12px; margin-top: 10px;">
+          <div style="width: 38%; background-color: #222; margin-right: 2px;"></div>
+          <div style="width: 62%; background-color: #d32f2f;"></div>
+        </div>
+      </td>
+    </tr>
+  </tfoot>
+</table>

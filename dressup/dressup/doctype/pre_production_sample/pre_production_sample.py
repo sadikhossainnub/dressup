@@ -34,6 +34,8 @@ class PreProductionSample(Document):
 			self.fetch_tech_pack_data()
 		self.calculate_total_fabrics()
 		self.calculate_total_trim_accessories()
+		self.calculate_total_tailoring()
+		self.calculate_total_finishing()
 		self.calculate_total_production_qty()
 		self.calculate_suggested_selling_prices()
 
@@ -51,6 +53,31 @@ class PreProductionSample(Document):
 		"""Calculate total production qty from size chart"""
 		from frappe.utils import cint
 		self.total_production_qty = sum(cint(row.production_qty) for row in (self.size_chart_in_inch or []))
+
+	def calculate_total_tailoring(self):
+		"""Calculate total tailoring/workstation charges"""
+		from frappe.utils import flt
+		self.total_tailoring = (
+			flt(self.cutting_f) +
+			flt(self.sewing_f) +
+			flt(self.machine_embroidery_f) +
+			flt(self.hand_embroidery_f) +
+			flt(self.hand_work_estimation) +
+			flt(self.karchupi_f) +
+			flt(self.screen_print_f) +
+			flt(self.block_print_f) +
+			flt(self.tie_dye)
+		)
+
+	def calculate_total_finishing(self):
+		"""Calculate total finishing costs"""
+		from frappe.utils import flt
+		self.total_finishing = (
+			flt(self.wash_iron) +
+			flt(self.qc_packaging) +
+			flt(self.transportation) +
+			flt(self.fusingandpasting)
+		)
 	
 
 	def calculate_suggested_selling_prices(self):

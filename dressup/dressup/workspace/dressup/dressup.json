@@ -1,7 +1,7 @@
 {
  "app": "dressup",
  "charts": [],
- "content": "[{\"id\":\"B3ZBbzHt_T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">DressUP</span>\",\"col\":12}},{\"id\":\"i6V1hfnctR\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"DSS\",\"col\":3}},{\"id\":\"TDfToylKAJ\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"MSS\",\"col\":3}},{\"id\":\"YdWkORoBHr\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"MCE\",\"col\":3}},{\"id\":\"GXWgIxDcfu\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"PPS On this Month\",\"col\":3}},{\"id\":\"YNbj-9anrh\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"mQ2qmjwU8-\",\"type\":\"card\",\"data\":{\"card_name\":\"Designer\",\"col\":4}}]",
+ "content": "[{\"id\":\"B3ZBbzHt_T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">DressUP</span>\",\"col\":12}},{\"id\":\"i6V1hfnctR\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"DSS\",\"col\":3}},{\"id\":\"TDfToylKAJ\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"MSS\",\"col\":3}},{\"id\":\"YdWkORoBHr\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"MCE\",\"col\":3}},{\"id\":\"GXWgIxDcfu\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"PPS On this Month\",\"col\":3}},{\"id\":\"YNbj-9anrh\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"-RztbWC_iQ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Search Items\",\"col\":3}},{\"id\":\"2mrCnZrRrf\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"mQ2qmjwU8-\",\"type\":\"card\",\"data\":{\"card_name\":\"Designer\",\"col\":4}}]",
  "creation": "2025-11-05 17:24:33.874729",
  "custom_blocks": [],
  "docstatus": 0,
@@ -54,7 +54,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-05-14 17:04:52.576505",
+ "modified": "2026-05-18 02:50:44.686668",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "DressUP",
@@ -95,7 +95,15 @@
   }
  ],
  "sequence_id": 2.0,
- "shortcuts": [],
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Search Items",
+   "link_to": "item-search",
+   "type": "Page"
+  }
+ ],
  "title": "DressUP",
  "type": "Workspace"
 }
