@@ -21,6 +21,24 @@ frappe.ui.form.on('Sketch Specification', {
 					}
 				}
 			});
+
+			frappe.call({
+				method: 'frappe.client.get_count',
+				args: {
+					doctype: 'Measurement Chart',
+					filters: { style_no: frm.doc.design_no }
+				},
+				callback: function (r) {
+					if (!r.message || r.message === 0) {
+						frm.add_custom_button(__('Measurement Chart'), function () {
+							frappe.model.open_mapped_doc({
+								method: 'dressup.dressup.doctype.sketch_specification.sketch_specification.make_measurement_chart',
+								frm: frm
+							});
+						}, __('Create'));
+					}
+				}
+			});
 		}
 
 		if (!frm.is_new() && frm.doc.docstatus === 0) {

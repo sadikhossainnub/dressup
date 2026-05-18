@@ -17,6 +17,7 @@
   "start_time_date",
   "finish_time_date",
   "eta",
+  "sample_size",
   "sewing_finish",
   "received_date",
   "session",
@@ -210,6 +211,12 @@
    "fieldname": "eta",
    "fieldtype": "Date",
    "label": "ETA"
+  },
+  {
+   "fieldname": "sample_size",
+   "fieldtype": "Select",
+   "label": "Sample Size",
+   "options": "\nXS\nS\nM\nL\nXL\nXXL\n3XL\nFree Size"
   },
   {
    "fieldname": "workstation_section",

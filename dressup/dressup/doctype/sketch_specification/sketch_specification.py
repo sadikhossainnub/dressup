@@ -152,3 +152,25 @@ def trigger_request_for_approval(docname):
 	notification.send(doc)
 	return True
 
+@frappe.whitelist()
+def make_measurement_chart(source_name, target_doc=None):
+	from frappe.model.mapper import get_mapped_doc  # type: ignore
+
+	measurement_chart = get_mapped_doc(
+		"Sketch Specification",
+		source_name,
+		{
+			"Sketch Specification": {
+				"doctype": "Measurement Chart",
+				"field_map": {
+					"design_no": "style_no",
+					"item_name": "style_description",
+					"designer": "designer",
+					"category": "category"
+				},
+				"validation": {"docstatus": ["=", 1]}
+			}
+		},
+		target_doc
+	)
+	return measurement_chart

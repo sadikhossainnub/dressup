@@ -1,0 +1,142 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-18 18:24:38.388126",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "code",
+  "point_of_measures",
+  "s_b_i",
+  "s_a_i",
+  "m_b_i",
+  "m_a_i",
+  "l_b_i",
+  "l_a_i",
+  "xl_b_i",
+  "xl_a_i",
+  "xxl_b_i",
+  "xxl_a_i",
+  "3xl_b_i",
+  "3xl_a_i",
+  "4xl_b_i",
+  "4xl_a_i"
+ ],
+ "fields": [
+  {
+   "columns": 1,
+   "fieldname": "code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Code"
+  },
+  {
+   "columns": 2,
+   "fieldname": "point_of_measures",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Point of Measures",
+   "reqd": 1
+  },
+  {
+   "fieldname": "s_b_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "S B/I"
+  },
+  {
+   "fieldname": "s_a_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "S A/I"
+  },
+  {
+   "fieldname": "m_b_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "M B/I"
+  },
+  {
+   "fieldname": "m_a_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "M A/I"
+  },
+  {
+   "fieldname": "l_b_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "L B/I"
+  },
+  {
+   "fieldname": "l_a_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "L A/I"
+  },
+  {
+   "fieldname": "xl_b_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "XL B/I"
+  },
+  {
+   "fieldname": "xl_a_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "XL A/I"
+  },
+  {
+   "fieldname": "xxl_b_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "XXL B/I"
+  },
+  {
+   "fieldname": "xxl_a_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "XXL A/I"
+  },
+  {
+   "fieldname": "3xl_b_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "3XL B/I"
+  },
+  {
+   "fieldname": "3xl_a_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "3XL A/I"
+  },
+  {
+   "fieldname": "4xl_b_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "4XL B/I"
+  },
+  {
+   "fieldname": "4xl_a_i",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "4XL A/I"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-05-18 18:24:38.388126",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Measurement Chart Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

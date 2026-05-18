@@ -1,0 +1,129 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-18 18:24:39.456126",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "brand",
+  "style_no",
+  "category_lead",
+  "season",
+  "cb_1",
+  "style_description",
+  "designer",
+  "category",
+  "cb_2",
+  "no_of_colorways",
+  "sourcing_lead",
+  "collection",
+  "cb_3",
+  "sample_size",
+  "concern_merchan",
+  "sb_1",
+  "measurement_chart_items"
+ ],
+ "fields": [
+  {
+   "fieldname": "brand",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Brand"
+  },
+  {
+   "fieldname": "style_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Style No",
+   "reqd": 1
+  },
+  {
+   "fieldname": "category_lead",
+   "fieldtype": "Data",
+   "label": "Category Lead"
+  },
+  {
+   "fieldname": "season",
+   "fieldtype": "Data",
+   "label": "Season"
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "style_description",
+   "fieldtype": "Data",
+   "label": "Style Description"
+  },
+  {
+   "fieldname": "designer",
+   "fieldtype": "Data",
+   "label": "Designer"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Data",
+   "label": "Category"
+  },
+  {
+   "fieldname": "cb_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "no_of_colorways",
+   "fieldtype": "Data",
+   "label": "No. of Colorways"
+  },
+  {
+   "fieldname": "sourcing_lead",
+   "fieldtype": "Data",
+   "label": "Sourcing Lead"
+  },
+  {
+   "fieldname": "collection",
+   "fieldtype": "Data",
+   "label": "Collection"
+  },
+  {
+   "fieldname": "cb_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sample_size",
+   "fieldtype": "Data",
+   "label": "Sample Size"
+  },
+  {
+   "fieldname": "concern_merchan",
+   "fieldtype": "Data",
+   "label": "Concern Merchan"
+  },
+  {
+   "fieldname": "sb_1",
+   "fieldtype": "Section Break",
+   "label": "Measurement Chart"
+  },
+  {
+   "fieldname": "measurement_chart_items",
+   "fieldtype": "Table",
+   "label": "Measurement Chart Items",
+   "options": "Measurement Chart Item"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-18 18:24:39.456126",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Measurement Chart",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
