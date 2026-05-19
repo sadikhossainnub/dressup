@@ -13,7 +13,7 @@ CUSTOM_FIELDS = {
 			"insert_after": "loyalty_program",
 			"default": "0",
 			"read_only": 1,
-			"description": "Auto set when customer spends ৳10,000 in any 1 month",
+			"description": "Auto set when customer meets the monthly spending threshold set in Loyalty Program",
 			"module": "DressUp",
 		},
 		{
@@ -45,6 +45,15 @@ CUSTOM_FIELDS = {
 	],
 	"Loyalty Program": [
 		{
+			"fieldname": "eligibility_threshold",
+			"label": "Eligibility Threshold",
+			"fieldtype": "Currency",
+			"insert_after": "auto_opt_in",
+			"default": "0",
+			"description": "মাসে কত টাকা খরচ করলে customer auto-enroll হবে। 0 মানে কোনো threshold নেই।",
+			"module": "DressUp",
+		},
+		{
 			"fieldname": "enable_notifications",
 			"label": "Enable SMS Notifications",
 			"fieldtype": "Check",
@@ -52,7 +61,18 @@ CUSTOM_FIELDS = {
 			"default": "1",
 			"description": "Send SMS to customers on enrollment, tier upgrade, downgrade, and inactivity warning.",
 			"module": "DressUp",
-		}
+		},
+	],
+	"Loyalty Program Collection": [
+		{
+			"fieldname": "max_spent",
+			"label": "Maximum Total Spent",
+			"fieldtype": "Currency",
+			"insert_after": "min_spent",
+			"default": "0",
+			"description": "এই tier-এর maximum amount। 0 মানে unlimited (highest tier)।",
+			"module": "DressUp",
+		},
 	]
 }
 

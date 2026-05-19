@@ -2,9 +2,16 @@
 
 import frappe
 
+from dressup.dressup.loyalty import get_loyalty_program, get_lowest_tier
 
-def send_enrollment_notification(customer_name):
+
+def send_enrollment_notification(customer_name, loyalty_program=None):
 	"""Customer নতুন enroll হলে।"""
+	if not loyalty_program:
+		loyalty_program = get_loyalty_program()
+
+	lowest_tier = get_lowest_tier(loyalty_program) or "Basic"
+
 	customer = frappe.db.get_value(
 		"Customer",
 		customer_name,
@@ -13,7 +20,7 @@ def send_enrollment_notification(customer_name):
 	)
 	message = (
 		f"অভিনন্দন {customer.customer_name}! "
-		f"আপনি Dress Up Loyalty Program-এ Bronze tier-এ যোগ দিয়েছেন। "
+		f"আপনি {loyalty_program}-এ {lowest_tier} tier-এ যোগ দিয়েছেন। "
 		f"এখন থেকে প্রতিটি কেনাকাটায় পয়েন্ট অর্জন করুন।"
 	)
 	_send_sms(customer.mobile_no, message)
@@ -79,9 +86,13 @@ def _send_sms(mobile_no, message):
 		return
 		
 	# Check if notifications are enabled
-	is_enabled = frappe.db.get_value("Loyalty Program", "Dress Up Loyalty Program", "enable_notifications")
-	if not is_enabled:
-		return
+	loyalty_program = get_loyalty_program()
+	if loyalty_program:
+		is_enabled = frappe.db.get_value(
+			"Loyalty Program", loyalty_program, "enable_notifications"
+		)
+		if not is_enabled:
+			return
 
 	try:
 		from frappe.core.doctype.sms_settings.sms_settings import send_sms

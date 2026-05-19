@@ -598,15 +598,19 @@
                 {% if loyalty_program %}
                     {% set lp_entries = frappe.get_all("Loyalty Point Entry",
                         filters={"customer": doc.customer, "docstatus": 1},
-                        fields=["sum(loyalty_points) as total_earned"],
-                        group_by="customer") %}
-                    {% set total_earned = lp_entries[0].total_earned if lp_entries else 0 %}
-
-                    {% set redeemed_entries = frappe.get_all("Loyalty Point Entry",
-                        filters={"customer": doc.customer, "docstatus": 1, "loyalty_points": ["<", 0]},
-                        fields=["sum(loyalty_points) as total_redeemed"],
-                        group_by="customer") %}
-                    {% set total_redeemed = (redeemed_entries[0].total_redeemed if redeemed_entries else 0) | abs %}
+                        fields=["loyalty_points"]) %}
+                    
+                    {% set pt = namespace(earned=0, redeemed=0) %}
+                    {% for entry in lp_entries %}
+                        {% if entry.loyalty_points > 0 %}
+                            {% set pt.earned = pt.earned + entry.loyalty_points %}
+                        {% else %}
+                            {% set pt.redeemed = pt.redeemed + (entry.loyalty_points | abs) %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% set total_earned = pt.earned %}
+                    {% set total_redeemed = pt.redeemed %}
 
                     {% set current_points = frappe.db.get_value("Customer", doc.customer, "loyalty_points") or 0 %}
 

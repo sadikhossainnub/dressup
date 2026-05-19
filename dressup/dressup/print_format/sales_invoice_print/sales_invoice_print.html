@@ -1,337 +1,199 @@
+{% set doc = doc %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <style>
-        :root {
-            --primary: #0f172a;
-            --accent: #2563eb;
-            --text-main: #1e293b;
-            --text-light: #64748b;
-            --border-color: #e2e8f0;
-            --bg-muted: #f8fafc;
-        }
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
 
-        @media print {
-            @page {
-                size: A4 portrait;
-                margin: 7mm;
-            }
-            body {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .no-print { display: none; }
-        }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #fff; color: #1a1a1a; }
 
-        body { 
-            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif; 
-            color: var(--text-main); 
-            line-height: 1.2; 
-            margin: 0; 
-            padding: 0;
-            background-color: #fff;
-            font-size: 8.5pt;
-        }
+  .inv-wrap { max-width: 780px; margin: 0 auto; border: 1px solid #ddd; }
 
-        .print-format-container {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
+  /* ── HEADER ── */
+  .header-section { display: block; width: 100%; clear: both; border-bottom: 0.5px solid #000; overflow: hidden; font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #000; }
+  .header-logo { float: left; width: 40%; }
+  .header-logo img { height: 40px; }
+  .header-address { float: right; width: 60%; text-align: right; font-size: 7pt; line-height: 1.1; }
 
-        .header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-start;
-            border-bottom: 2pt solid var(--primary); 
-            padding-bottom: 8px; 
-            margin-bottom: 12px; 
-        }
+  /* ── META ── */
+  .inv-meta { display: table; width: 100%; border-bottom: 1px solid #e5e5e5; }
+  .inv-meta-cell { display: table-cell; width: 50%; padding: 12px 28px; vertical-align: top; }
+  .inv-meta-cell:first-child { border-right: 1px solid #e5e5e5; }
+  .inv-meta-cell:last-child { text-align: right; }
+  .inv-meta-label { font-size: 9.5px; font-weight: 600; letter-spacing: 0.08em; color: #534AB7; text-transform: uppercase; margin-bottom: 3px; }
+  .inv-meta-val { font-size: 13px; font-weight: 600; }
+  .inv-meta-sub { font-size: 11px; color: #666; }
 
-        .brand-logo { 
-            font-size: 20px; 
-            font-weight: 900; 
-            color: var(--primary); 
-            text-transform: uppercase;
-            line-height: 1;
-        }
-        
-        .company-address {
-            font-size: 8pt;
-            margin-top: 4px;
-            color: var(--text-light);
-            max-width: 350px;
-            line-height: 1.2;
-        }
+  /* ── TABLE ── */
+  .inv-table-wrap { padding: 0; }
+  .inv-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .inv-table thead tr { background: #EEEDFE; }
+  .inv-table thead th { padding: 8px 10px 8px 28px; font-weight: 600; font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: #3C3489; text-align: left; }
+  .inv-table thead th:nth-child(3),
+  .inv-table thead th:nth-child(4),
+  .inv-table thead th:nth-child(5) { text-align: right; padding-right: 28px; }
+  .inv-table tbody tr { border-bottom: 1px solid #f0f0f0; }
+  .inv-table tbody tr:last-child { border-bottom: none; }
+  .inv-table tbody td { padding: 9px 10px 9px 28px; color: #1a1a1a; vertical-align: top; }
+  .inv-table tbody td:nth-child(3),
+  .inv-table tbody td:nth-child(4),
+  .inv-table tbody td:nth-child(5) { text-align: right; padding-right: 28px; }
+  .inv-sl { color: #999; font-size: 11px; }
+  .inv-item-code { font-size: 10px; color: #888; font-family: monospace; }
+  .inv-item-name { font-weight: 500; font-size: 13px; }
 
-        .doc-type { text-align: right; }
-        .doc-type h1 { 
-            margin: 0; 
-            font-size: 20px; 
-            font-weight: 800;
-            text-transform: uppercase; 
-            letter-spacing: 0.5px;
-            line-height: 1;
-        }
-        .doc-id { 
-            color: var(--accent); 
-            font-weight: 700; 
-            font-size: 10pt;
-            margin-top: 2px;
-        }
-        
-        .stamp { 
-            border: 1.5pt solid #10b981; 
-            color: #10b981; 
-            padding: 2px 8px; 
-            text-transform: uppercase; 
-            font-weight: 800; 
-            font-size: 9pt;
-            border-radius: 4px; 
-            display: inline-block; 
-            margin-top: 5px;
-            transform: rotate(-5deg); 
-        }
+  /* ── BOTTOM SPLIT ── */
+  .inv-bottom { display: table; width: 100%; border-top: 1px solid #e5e5e5; }
+  .inv-bottom-left { display: table-cell; width: 48%; padding: 16px 28px; border-right: 1px solid #e5e5e5; vertical-align: top; }
+  .inv-bottom-right { display: table-cell; width: 52%; padding: 16px 28px; vertical-align: top; }
 
-        .info-grid { 
-            display: grid; 
-            grid-template-columns: 1.2fr 0.8fr; 
-            gap: 20px; 
-            margin-bottom: 15px; 
-        }
+  .inv-loyalty-title { font-size: 9.5px; font-weight: 600; letter-spacing: 0.08em; color: #534AB7; text-transform: uppercase; margin-bottom: 8px; }
+  .inv-loyalty-row { display: flex; justify-content: space-between; font-size: 11.5px; padding: 2px 0; color: #444; }
+  .inv-loyalty-row.bold { font-weight: 600; color: #3C3489; }
 
-        .section-title { 
-            font-size: 7.5pt; 
-            text-transform: uppercase; 
-            font-weight: 800; 
-            color: var(--text-light); 
-            margin-bottom: 4px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 2px;
-        }
+  .inv-total-row { display: flex; justify-content: space-between; font-size: 12.5px; padding: 3px 0; }
+  .inv-total-row .lbl { color: #666; }
+  .inv-total-net { display: flex; justify-content: space-between; align-items: center; background: #3C3489; border-radius: 6px; padding: 10px 14px; margin: 10px 0 6px; }
+  .inv-total-net .lbl { color: #AFA9EC; font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .inv-total-net .val { color: #fff; font-size: 20px; font-weight: 700; }
+  .inv-paid-row { display: flex; justify-content: space-between; font-size: 12px; padding: 2px 0; }
+  .inv-change { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600; color: #D85A30; padding: 2px 0; }
 
-        .meta-table { width: 100%; border-collapse: collapse; }
-        .meta-table td { padding: 2px 0; }
-        .meta-label { color: var(--text-light); font-weight: 600; }
-
-        .items-table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin: 10px 0; 
-        }
-        .items-table th { 
-            background: var(--bg-muted); 
-            text-align: left; 
-            padding: 6px 8px; 
-            font-size: 8pt; 
-            text-transform: uppercase; 
-            border-top: 1pt solid var(--primary);
-            border-bottom: 1pt solid var(--primary);
-            font-weight: 800;
-        }
-        .items-table td { 
-            padding: 5px 8px; 
-            border-bottom: 1px solid var(--border-color); 
-            vertical-align: top;
-        }
-
-        .summary-wrapper { 
-            display: flex; 
-            justify-content: flex-end; 
-            margin-top: 10px;
-        }
-        .summary-table { 
-            width: 240px; 
-            border-collapse: collapse; 
-        }
-        .summary-table td { 
-            padding: 4px 8px; 
-        }
-        .summary-label { font-weight: 600; color: var(--text-light); }
-        
-        .total-row { 
-            background: var(--primary); 
-            color: white; 
-            font-weight: 800; 
-            font-size: 10pt;
-        }
-
-        .footer { 
-            margin-top: 25px; 
-            display: flex; 
-            justify-content: space-between; 
-            font-size: 8pt; 
-        }
-        
-        .notes-section { max-width: 65%; }
-        
-        .signature-box { 
-            text-align: center; 
-            border-top: 1pt solid var(--primary); 
-            padding-top: 4px; 
-            width: 140px; 
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 7.5pt;
-        }
-
-        .bottom-bar {
-            text-align: center;
-            font-size: 7pt;
-            color: var(--text-light);
-            margin-top: 30px;
-            border-top: 1px dashed var(--border-color);
-            padding-top: 8px;
-        }
-    </style>
+  /* ── FOOTER ── */
+  .inv-footer { background: #EEEDFE; padding: 14px 28px; border-top: 1px solid #ddd; }
+  .inv-footer p { font-size: 10px; color: #534AB7; line-height: 1.6; margin-bottom: 4px; }
+  .inv-eco { background: #fff; border-left: 3px solid #534AB7; padding: 6px 12px; margin-top: 8px; font-size: 10px; color: #534AB7; border-radius: 0 3px 3px 0; }
+  .inv-footer-contact { display: flex; gap: 24px; justify-content: center; margin-top: 10px; font-size: 10px; color: #7F77DD; }
+  .inv-powered { text-align: center; margin-top: 6px; font-size: 10px; color: #7F77DD; }
+</style>
 </head>
 <body>
-    <div class="print-format-container">
-        <div class="header">
-            <div>
-                <div class="brand-logo">{{ doc.company }}</div>
-                <div class="company-address">{{ doc.company_address_display or '' }}</div>
-            </div>
-            <div class="doc-type">
-                <h1>Tax Invoice</h1>
-                <div class="doc-id">{{ doc.name }}</div>
-                {% if doc.status == "Paid" %}
-                    <div class="stamp">PAID / পরিশোধিত</div>
-                {% elif doc.status == "Overdue" %}
-                    <div class="stamp" style="border-color: var(--danger); color: var(--danger);">OVERDUE</div>
-                {% endif %}
-            </div>
-        </div>
+<div class="inv-wrap">
 
-        <div class="info-grid">
-            <div>
-                <div class="section-title">Customer Details / গ্রাহকের তথ্য</div>
-                <div style="padding-left: 2px;">
-                    <strong style="font-size: 10pt;">{{ doc.customer_name }}</strong><br>
-                    <div style="color: var(--text-main); line-height: 1.3;">
-                        {{ doc.address_display or '' }}
-                    </div>
-                    {% if doc.contact_display %}
-                        <div style="font-size: 8pt; margin-top: 3px; color: var(--text-light);">
-                            {{ doc.contact_display }}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            <div>
-                <div class="section-title">Invoice Details / ইনভয়েস বিবরণ</div>
-                <table class="meta-table">
-                    <tr>
-                        <td class="meta-label">Date / তারিখ</td>
-                        <td style="text-align:right"><strong>{{ doc.get_formatted("posting_date") }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td class="meta-label">Due Date / শেষ তারিখ</td>
-                        <td style="text-align:right">{{ doc.get_formatted("due_date") }}</td>
-                    </tr>
-                    {% if doc.po_no %}
-                    <tr>
-                        <td class="meta-label">PO Ref / পিও রেফারেন্স</td>
-                        <td style="text-align:right">{{ doc.po_no }}</td>
-                    </tr>
-                    {% endif %}
-                    {% if doc.project %}
-                    <tr>
-                        <td class="meta-label">Project / প্রকল্প</td>
-                        <td style="text-align:right">{{ doc.project }}</td>
-                    </tr>
-                    {% endif %}
-                </table>
-            </div>
-        </div>
-
-        <table class="items-table">
-            <thead>
-                <tr>
-                    <th style="width: 45%;">Item Description / পণ্যের বিবরণ</th>
-                    <th style="text-align:center; width: 15%;">Qty / পঃ</th>
-                    <th style="text-align:right; width: 20%;">Rate / দর</th>
-                    <th style="text-align:right; width: 20%;">Amount / মোট</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in doc.items %}
-                <tr>
-                    <td>
-                        <div style="font-weight: 700;">{{ item.item_name }}</div>
-                        {% if item.description and item.description != item.item_name %}
-                            <div style="font-size: 7.5pt; color: var(--text-light); line-height: 1.1; margin-top: 2px;">
-                                {{ item.description }}
-                            </div>
-                        {% endif %}
-                    </td>
-                    <td style="text-align:center">{{ item.qty }} <small>{{ item.uom }}</small></td>
-                    <td style="text-align:right">{{ doc.get_formatted("rate", item) }}</td>
-                    <td style="text-align:right; font-weight: 600;">{{ doc.get_formatted("amount", item) }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <div class="summary-wrapper">
-            <table class="summary-table">
-                <tr>
-                    <td class="summary-label">Subtotal / উপকুল</td>
-                    <td style="text-align:right">{{ doc.get_formatted("total") }}</td>
-                </tr>
-                {% if doc.discount_amount %}
-                <tr>
-                    <td class="summary-label">Discount / ডিসকাউন্ট</td>
-                    <td style="text-align:right">-{{ doc.get_formatted("discount_amount") }}</td>
-                </tr>
-                {% endif %}
-                {% for tax in doc.taxes %}
-                    {% if tax.tax_amount %}
-                    <tr>
-                        <td class="summary-label">{{ tax.description or tax.account_head }}</td>
-                        <td style="text-align:right">{{ doc.get_formatted("tax_amount", tax) }}</td>
-                    </tr>
-                    {% endif %}
-                {% endfor %}
-                <tr class="total-row">
-                    <td>GRAND TOTAL / সর্বমোট</td>
-                    <td style="text-align:right">{{ doc.get_formatted("grand_total") }}</td>
-                </tr>
-                {% if doc.total_advance %}
-                <tr>
-                    <td class="summary-label">Paid / পেইড</td>
-                    <td style="text-align:right">{{ doc.get_formatted("total_advance") }}</td>
-                </tr>
-                <tr>
-                    <td class="summary-label"><strong>Balance Due / বকেয়া</strong></td>
-                    <td style="text-align:right"><strong>{{ doc.get_formatted("outstanding_amount") }}</strong></td>
-                </tr>
-                {% endif %}
-            </table>
-        </div>
-
-        <div style="margin-top: 5px; font-size: 8pt;">
-            <strong>Amount in words:</strong> <em>{{ doc.in_words }}</em>
-        </div>
-
-        <div class="footer">
-            <div class="notes-section">
-                <div class="section-title">Terms & Notes / শর্তাবলী</div>
-                <div style="line-height: 1.3; white-space: pre-line;">{{ doc.terms or 'Thank you for your business / আমাদের সাথে ব্যবসা করার জন্য আপনাকে ধন্যবাদ।' }}</div>
-            </div>
-            <div style="display: flex; align-items: flex-end;">
-                <div class="signature-box">
-                    Authorized Signatory
-                </div>
-            </div>
-        </div>
-
-        <div class="bottom-bar">
-            This is a computer-generated invoice and does not require a physical signature.
-            <br>
-            <strong>{{ doc.company }}</strong> &copy; {{ frappe.utils.now_datetime().year }}
-        </div>
+  <!-- HEADER -->
+  <div class="header-section">
+    <div class="header-logo">
+      <img src="{{ frappe.utils.get_url() }}/files/Capture.PNG" alt="DressUp">
     </div>
+    <div class="header-address">
+      House # 5, Road # 6<br>
+      Kollyanpur, Dhaka<br>
+      +8809678247247<br>
+      support@dressup.com.bd<br>
+      dressupbangladesh <i class="fa fa-facebook-square"></i><br>
+      www.dressup.com.bd
+    </div>
+  </div>
+
+  <!-- META -->
+  <div class="inv-meta">
+    <div class="inv-meta-cell">
+      <div class="inv-meta-label">Customer Information</div>
+      <div class="inv-meta-val">{{ doc.customer_name }}</div>
+      <div class="inv-meta-sub">{{ doc.customer or '' }}</div>
+    </div>
+    <div class="inv-meta-cell">
+      <div class="inv-meta-label">Transaction Details</div>
+      <div class="inv-meta-val">Receipt: {{ doc.name }}</div>
+      <div class="inv-meta-sub">
+        Date: {{ doc.posting_date }}
+        {% if doc.posting_time %} · {{ doc.posting_time }}{% endif %}
+        {% if doc.cashier %} · {{ doc.cashier }}{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ITEMS TABLE -->
+  <div class="inv-table-wrap">
+    <table class="inv-table">
+      <thead>
+        <tr>
+          <th style="width:36px;">SL</th>
+          <th>Item Description</th>
+          <th style="width:80px;">Price</th>
+          <th style="width:50px;">Qty</th>
+          <th style="width:90px;">Total (BDT)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in doc.items %}
+        <tr>
+          <td class="inv-sl">{{ loop.index|string.zfill(2) }}</td>
+          <td>
+            <div class="inv-item-code">{{ item.item_code }}</div>
+            <div class="inv-item-name">{{ item.item_name }}</div>
+            {% if item.description and item.description != item.item_name %}
+            <div style="font-size:10px;color:#888;">{{ item.description }}</div>
+            {% endif %}
+          </td>
+          <td>{{ "{:,.2f}".format(item.rate) }}</td>
+          <td>{{ "{:,.2f}".format(item.qty) }}</td>
+          <td>{{ "{:,.2f}".format(item.amount) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BOTTOM: LOYALTY + TOTALS -->
+  <div class="inv-bottom">
+    <div class="inv-bottom-left">
+      <div class="inv-loyalty-title">Loyalty &amp; Rewards</div>
+      <div class="inv-loyalty-row"><span>Current Invoice Earn Point:</span><span style="color:#534AB7;font-weight:600;">{{ doc.get('loyalty_points') or '—' }}</span></div>
+      <div class="inv-loyalty-row"><span>Total Accumulated Point:</span><span>{{ doc.get('loyalty_point_accumulated') or '—' }}</span></div>
+      <div class="inv-loyalty-row"><span>Total Redeemed Point:</span><span>{{ doc.get('loyalty_points_redeemed') or '—' }}</span></div>
+      <div class="inv-loyalty-row bold"><span>Current Balance Point:</span><span>{{ doc.get('loyalty_point_balance') or '—' }}</span></div>
+    </div>
+    <div class="inv-bottom-right">
+      <div class="inv-total-row">
+        <span class="lbl">Sub Total:</span>
+        <span>{{ "{:,.2f}".format(doc.total) }}</span>
+      </div>
+      <div class="inv-total-row">
+        <span class="lbl">(-) Discount:</span>
+        <span>{{ "{:,.2f}".format(doc.discount_amount or 0) }}</span>
+      </div>
+      <div class="inv-total-row">
+        <span class="lbl">(+) Add VAT:</span>
+        <span>{{ "{:,.2f}".format(doc.total_taxes_and_charges or 0) }}</span>
+      </div>
+      <div class="inv-total-net">
+        <span class="lbl">Net Payable</span>
+        <span class="val">{{ "{:,.2f}".format(doc.grand_total) }}</span>
+      </div>
+      {% for payment in doc.payments %}
+      <div class="inv-paid-row">
+        <span style="color:#666;">Paid ({{ payment.mode_of_payment }}):</span>
+        <span style="font-weight:500;">{{ "{:,.2f}".format(payment.amount) }}</span>
+      </div>
+      {% endfor %}
+      {% if doc.change_amount and doc.change_amount > 0 %}
+      <div class="inv-change">
+        <span>Change:</span>
+        <span>{{ "{:,.2f}".format(doc.change_amount) }}</span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- FOOTER (fixed at bottom) -->
+  <div style="position: fixed; bottom: 0; left: 0; width: 100%;">
+    <div style="padding: 8px 28px; font-size: 8pt; color: #444; line-height: 1.5; font-family: 'DM Sans', sans-serif;">
+      <p style="margin-bottom: 4px;"><strong>Policies &amp; Terms:</strong> 30-day exchange subject to Aarong policy (once only). Silver jewellery exchangeable at 90% value within 7 days. Non-returnable: innerwear, food, stationery, nose pins, pearl jewellery. No cash refunds; credit notes provided.</p>
+      <p style="margin: 0;"><strong>Eco Bonus:</strong> Bring your own bag and get <strong>Tk 15 cashback</strong> on invoices over Tk 100 (excl. VAT/Dairy).<br>
+      <strong>VAT Info:</strong> 5% Gold/Silver, 10% Wearables, 7.5% Others. No VAT on Plants, Clay, Books, and Jute.</p>
+    </div>
+    <div style="width: 100%; display: flex; height: 15px;">
+      <!-- Left Black Section -->
+      <div style="width: 38%; background-color: #222; margin-right: 2px;"></div>
+      <!-- Right Red Section -->
+      <div style="width: 62%; background-color: #d32f2f;"></div>
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
+

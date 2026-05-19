@@ -3,8 +3,8 @@
 import frappe
 from frappe.utils import today, date_diff
 
-LOYALTY_PROGRAM = "Dress Up Loyalty Program"
-TIER_ORDER = ["Bronze", "Silver", "Gold"]
+from dressup.dressup.loyalty import get_loyalty_program, get_tier_order
+
 INACTIVITY_DAYS = 90  # downgrade threshold
 WARNING_DAYS = 60  # warning threshold
 
@@ -27,13 +27,18 @@ def run_daily_loyalty_checks():
 	Daily scheduler job।
 	সব enrolled customer-এর inactivity check করে।
 	60 দিন → warning SMS
-	90 দিন → downgrade 1 tier (minimum Bronze)
+	90 দিন → downgrade 1 tier (minimum lowest tier)
 	"""
+	loyalty_program = get_loyalty_program()
+
+	if not loyalty_program:
+		return
+
 	enrolled_customers = frappe.get_all(
 		"Customer",
 		filters={
 			"loyalty_eligible": 1,
-			"loyalty_program": LOYALTY_PROGRAM,
+			"loyalty_program": loyalty_program,
 		},
 		fields=[
 			"name",
@@ -61,23 +66,29 @@ def run_daily_loyalty_checks():
 
 		# 90-day downgrade
 		if days_inactive >= INACTIVITY_DAYS:
-			_downgrade_tier(c.name, c.loyalty_program_tier)
+			_downgrade_tier(c.name, c.loyalty_program_tier, loyalty_program)
 
 
-def _downgrade_tier(customer_name, current_tier):
+def _downgrade_tier(customer_name, current_tier, loyalty_program):
 	"""
-	1 tier নামাবে, minimum Bronze।
+	1 tier নামাবে, minimum lowest tier।
 
 	Note: পরবর্তী purchase-এ ERPNext cumulative tier recalculate করবে
 	এবং earned tier restore হবে। Downgrade শুধু inactive period-এ effective।
 	"""
-	if not current_tier or current_tier == "Bronze":
+	tier_order = get_tier_order(loyalty_program)
+
+	if not tier_order or not current_tier:
+		return
+
+	# Already lowest tier → skip
+	if current_tier == tier_order[0]:
 		return
 
 	current_index = (
-		TIER_ORDER.index(current_tier) if current_tier in TIER_ORDER else 0
+		tier_order.index(current_tier) if current_tier in tier_order else 0
 	)
-	new_tier = TIER_ORDER[max(current_index - 1, 0)]
+	new_tier = tier_order[max(current_index - 1, 0)]
 
 	frappe.db.set_value(
 		"Customer",

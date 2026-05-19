@@ -3,8 +3,7 @@
 import frappe
 from frappe.utils import getdate, today, get_first_day, get_last_day
 
-LOYALTY_PROGRAM = "Dress Up Loyalty Program"
-ELIGIBILITY_THRESHOLD = 10000  # ৳10,000
+from dressup.dressup.loyalty import get_loyalty_program, get_eligibility_threshold
 
 
 def check_eligibility_on_invoice(invoice_doc):
@@ -19,6 +18,17 @@ def check_eligibility_on_invoice(invoice_doc):
 	if customer.get("loyalty_eligible"):
 		return
 
+	loyalty_program = get_loyalty_program()
+	if not loyalty_program:
+		return
+
+	threshold = get_eligibility_threshold(loyalty_program)
+
+	# Threshold 0 মানে no gate → সাথে সাথে enroll
+	if not threshold:
+		_enroll_customer(customer, loyalty_program)
+		return
+
 	# Current month total spend calculate
 	month_start = get_first_day(getdate(today()))
 	month_end = get_last_day(getdate(today()))
@@ -30,21 +40,31 @@ def check_eligibility_on_invoice(invoice_doc):
 		WHERE customer = %s
 		  AND docstatus = 1
 		  AND posting_date BETWEEN %s AND %s
-	""",
+		""",
 		(invoice_doc.customer, month_start, month_end),
 	)[0][0]
 
-	if monthly_total >= ELIGIBILITY_THRESHOLD:
-		_enroll_customer(customer)
+	if monthly_total >= threshold:
+		_enroll_customer(customer, loyalty_program)
 
 
-def _enroll_customer(customer):
+def _enroll_customer(customer, loyalty_program=None):
 	"""Customer-কে loyalty program-এ enroll করে।"""
+	if not loyalty_program:
+		loyalty_program = get_loyalty_program()
+
+	if not loyalty_program:
+		frappe.logger().warning(
+			"[Loyalty] No Loyalty Program found in the system. "
+			"Please create a Loyalty Program first."
+		)
+		return
+
 	frappe.db.set_value(
 		"Customer",
 		customer.name,
 		{
-			"loyalty_program": LOYALTY_PROGRAM,
+			"loyalty_program": loyalty_program,
 			"loyalty_eligible": 1,
 			"loyalty_enrolled_date": today(),
 			"last_purchase_date": today(),
@@ -55,10 +75,10 @@ def _enroll_customer(customer):
 	# Notification পাঠাও
 	from dressup.dressup.loyalty.notifications import send_enrollment_notification
 
-	send_enrollment_notification(customer.name)
+	send_enrollment_notification(customer.name, loyalty_program)
 
 	frappe.logger().info(
-		f"[Loyalty] Customer {customer.name} enrolled in {LOYALTY_PROGRAM}"
+		f"[Loyalty] Customer {customer.name} enrolled in {loyalty_program}"
 	)
 
 
@@ -68,6 +88,16 @@ def run_monthly_eligibility_check():
 	পুরো customer list scan করে যারা eligible কিন্তু
 	এখনো enroll হয়নি তাদের check করে।
 	"""
+	loyalty_program = get_loyalty_program()
+	if not loyalty_program:
+		return
+
+	threshold = get_eligibility_threshold(loyalty_program)
+
+	# No threshold → কোনো monthly check দরকার নেই
+	if not threshold:
+		return
+
 	not_enrolled = frappe.get_all(
 		"Customer",
 		filters={"loyalty_eligible": 0},
@@ -89,10 +119,10 @@ def run_monthly_eligibility_check():
 			WHERE customer = %s
 			  AND docstatus = 1
 			  AND posting_date BETWEEN %s AND %s
-		""",
+			""",
 			(c.name, prev_month_start, prev_month_end),
 		)[0][0]
 
-		if monthly_total >= ELIGIBILITY_THRESHOLD:
+		if monthly_total >= threshold:
 			customer = frappe.get_doc("Customer", c.name)
-			_enroll_customer(customer)
+			_enroll_customer(customer, loyalty_program)
