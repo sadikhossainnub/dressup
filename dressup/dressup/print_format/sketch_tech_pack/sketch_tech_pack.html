@@ -1,411 +1,309 @@
-<table class="page-wrapper">
-<thead><tr><td class="page-header-space">
-    <div class="page-header">
 <style>
-    @font-face { font-family: 'HindSiliguri'; src: url('/files/HindSiliguri-Regular.ttf') format('truetype'); font-weight: normal; }
-    @font-face { font-family: 'HindSiliguri'; src: url('/files/HindSiliguri-Bold.ttf') format('truetype'); font-weight: bold; }
-    @media print { @page { size: A4 portrait; margin: 8mm; } }
+    @media print { @page { size: A4 landscape; margin: 6mm; } }
     * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    body, table, td, th, div, span { font-family: 'HindSiliguri', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    body, table, td, th, div, span { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
     .page-wrapper { width: 100%; border-collapse: collapse; }
-    .page-header-space { height: 55px; }
-    .page-footer-space { height: 25px; }
+    .page-header-space { height: 78px; }
+    .page-footer-space { height: 26px; }
     .page-header { position: fixed; top: 0; width: 100%; }
     .page-footer { position: fixed; bottom: 0; width: 100%; }
-    .tp-header { display: block; width: 100%; border-bottom: 0.5px solid #000; overflow: hidden; }
-    .tp-header .logo { float: left; width: 40%; }
-    .tp-header .logo img { height: 40px; }
-    .tp-header .addr { float: right; width: 60%; text-align: right; font-size: 7pt; line-height: 1.1; }
-    .tp-title { text-align: center; margin: 4px 0 2px; }
-    .tp-title h2 { font-size: 14px; font-weight: bold; text-transform: uppercase; margin: 0; line-height: 1; }
-    .tp-title .ref { font-size: 10px; line-height: 1; }
-    .info-grid { width: 100%; border-collapse: collapse; font-size: 9px; border: 1px solid #000; }
-    .info-grid td { padding: 3px 5px; vertical-align: top; }
-    .info-grid .lbl { font-weight: normal; color: #333; }
-    .info-grid .val { font-weight: bold; }
-    .img-box { border: 1px solid #000; text-align: center; vertical-align: middle; padding: 5px; height: 280px; }
-    .img-box img { max-width: 100%; max-height: 260px; }
-    .img-box .cap { font-weight: bold; font-size: 9px; margin-top: 3px; }
-    .meas-table { width: 100%; border-collapse: collapse; }
-    .meas-table td { font-size: 8px; padding: 2px; border-bottom: 0.5px solid #ccc; }
-    .meas-table .mv { text-align: right; white-space: nowrap; }
-    .section-title { font-size: 9pt; font-weight: bold; margin: 8px 0 4px; text-transform: uppercase; border-bottom: 1.5px solid #000; padding-bottom: 2px; }
-    .ws-badge { display: inline-block; padding: 2px 8px; margin: 2px; font-size: 8px; border: 1px solid #000; border-radius: 3px; font-weight: bold; }
-    .color-swatch { display: inline-block; width: 30px; height: 20px; border: 1px solid #000; vertical-align: middle; margin-right: 5px; border-radius: 2px; }
-    .status-pill { font-weight: bold; padding: 2px 8px; border: 1px solid #000; border-radius: 3px; display: inline-block; font-size: 8px; }
-    .note-box { border: 1px solid #000; padding: 6px; margin-top: 8px; font-size: 9px; background: #fffde7; }
+
+    /* Info Grid */
+    .info-grid { width: 100%; border-collapse: collapse; font-size: 8px; }
+    .info-grid td { padding: 1.5px 5px; border: 0.5px solid #555; vertical-align: middle; line-height: 1.3; }
+    .info-grid .lbl { font-weight: normal; color: #222; width: 80px; }
+    .info-grid .val { font-weight: normal; color: #000; }
+    .info-grid .logo-cell { border: 0.5px solid #555; text-align: center; vertical-align: middle; padding: 3px; width: 110px; }
+    .info-grid .logo-cell img { height: 45px; }
+
+    /* Section Title Bar */
+    .stb { font-size: 8.5px; font-weight: bold; text-transform: uppercase; padding: 2px 5px;
+           border: 0.5px solid #555; border-top: none; background: #fff; }
+
+    /* Image Boxes */
+    .img-box { border: 0.5px solid #aaa; text-align: center; vertical-align: top; padding: 4px; }
+    .img-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .img-cap { font-weight: bold; font-size: 8px; margin-bottom: 2px; }
+
+    /* Colorway Panel */
+    .cw-panel { border: 0.5px solid #aaa; padding: 6px; text-align: center; vertical-align: top; }
+    .cw-title { font-size: 9px; font-weight: bold; margin-bottom: 6px; }
+    .cw-swatch { width: 85%; height: 110px; margin: 4px auto; border: 1px solid #333; }
+    .cw-code { font-size: 8.5px; margin-top: 10px; }
+
+    /* Print Color Panel */
+    .pc-box { margin-bottom: 10px; overflow: hidden; border: 0.5px solid #aaa; padding: 5px; }
+    .pc-swatch { width: 55px; height: 45px; border: 1px solid #333; float: left; margin-right: 6px; }
+    .pc-name { font-size: 8px; font-weight: bold; line-height: 1.3; }
+
+    /* Artwork subtitle */
+    .art-sub { color: #d32f2f; font-size: 9.5px; font-weight: bold; text-align: center; line-height: 1.5; margin: 5px 0; }
+
+    /* Remarks */
+    .rem-box { border: 0.5px solid #aaa; padding: 3px 6px; font-size: 8px; margin-top: 2px; min-height: 22px; }
+
+    /* Measurement Table */
+    .mc-tbl { width: 100%; border-collapse: collapse; font-size: 7.5px; margin-top: 3px; }
+    .mc-tbl th, .mc-tbl td { border: 0.5px solid #333; padding: 3px 4px; text-align: center; vertical-align: middle; }
+    .mc-tbl th { font-weight: bold; background: #f8f8f8; }
+    .mc-tbl td:nth-child(2) { text-align: left; }
+
+    /* Footer */
+    .ft-bar { width: 100%; border-collapse: collapse; font-size: 7.5px; }
+    .ft-bar td { padding: 3px 8px; border: 0.5px solid #999; background: #f5f5f5; }
+    .ft-conf { text-align: center; }
+    .ft-pg { text-align: center; width: 55px; }
 </style>
-<div class="tp-header">
-    <div class="logo"><img src="{{ frappe.utils.get_url() }}/files/Capture.PNG" alt="DressUp"></div>
-    <div class="addr">House # 5, Road # 6<br>Kollyanpur, Dhaka<br>+8809678247247<br>support@dressup.com.bd<br>www.dressup.com.bd</div>
-</div>
-    </div>
-</td></tr></thead>
-<tfoot><tr><td class="page-footer-space">
-    <div class="page-footer">
-<table style="width:100%;border-collapse:collapse;height:12px;margin-top:5px;">
-    <tr>
-        <td style="width:38%;background-color:#222;height:12px;padding:0;border:none;"></td>
-        <td style="width:2%;padding:0;border:none;"></td>
-        <td style="width:60%;background-color:#d32f2f;height:12px;padding:0;border:none;"></td>
-    </tr>
-</table>
-    </div>
-</td></tr></tfoot>
-<tbody><tr><td class="page-content">
 
-<!-- TITLE -->
-<div class="tp-title">
-    <h2>SKETCH SPECIFICATION / DESIGN PACKAGE</h2>
-    <div class="ref">REF: {{ doc.name }} | DATE: {{ frappe.utils.formatdate(doc.creation, "dd MMM yyyy") }}</div>
-</div>
+{%- set has_comp = doc.additional_images and doc.additional_images|length >= 3 -%}
+{%- set art_imgs = [] -%}
+{%- if doc.additional_images and doc.additional_images|length > 3 -%}
+    {%- for ai in doc.additional_images[3:] -%}
+        {%- set _ = art_imgs.append(ai) -%}
+    {%- endfor -%}
+{%- endif -%}
+{%- set mc_list = frappe.get_all("Measurement Chart", filters={"style_no": doc.design_no}, limit=1) -%}
+{%- set mc_doc = frappe.get_doc("Measurement Chart", mc_list[0].name) if mc_list else None -%}
+{%- set color_pairs = [
+    ('color', 'data_xmgl'), ('color_2', 'data_ryzm'), ('color_3', 'data_muzc'),
+    ('color_4', 'data_lfwb'), ('color_5', 'data_hnjh'), ('color_6', 'data_zsdd'),
+    ('color_7', 'data_uxrz'), ('color_8', 'data_mnat'), ('color_9', 'data_wptw'),
+    ('color_10', 'data_znsh')
+] -%}
 
-<!-- INFO GRID -->
-{% set status_val = doc.workflow_state or doc.status or 'Draft' %}
+<table class="page-wrapper">
+<!-- ═══════════ REPEATING HEADER ═══════════ -->
+<thead><tr><td class="page-header-space">
+<div class="page-header">
 <table class="info-grid">
-    <tr>
-        <td style="width:33%;">
-            <div><span class="lbl">Status:</span>
-                <span class="status-pill" style="
-                    {% if status_val in ['Submitted','Approved'] %}background:#dcfce7;color:#166534;border-color:#166534;
-                    {% elif status_val in ['Cancelled','Rejected'] %}background:#fee2e2;color:#991b1b;border-color:#991b1b;
-                    {% else %}background:#fef9c3;color:#854d0e;border-color:#854d0e;{% endif %}
-                ">{{ status_val }}</span>
-            </div>
-            <div><span class="lbl">Tech Pack No:</span> <span class="val">{{ doc.name }}</span></div>
-            <div><span class="lbl">Item Name:</span> <span class="val">{{ doc.item_name or '' }}</span></div>
-            <div><span class="lbl">Designer:</span> <span class="val">{{ doc.designer_name or '' }}</span></div>
-            <div><span class="lbl">Style No:</span> <span class="val">{{ doc.design_no or '' }}</span></div>
-        </td>
-        <td style="width:33%;">
-            <div><span class="lbl">Category:</span> <span class="val">{{ doc.category or '' }}</span></div>
-            <div><span class="lbl">Season:</span> <span class="val">{{ doc.session or '' }}</span></div>
-            <div><span class="lbl">Sewing Finish:</span> <span class="val">{{ doc.sewing_finish or '' }}</span></div>
-            <div><span class="lbl">Cut/Fit:</span> <span class="val">{{ doc.cut_fit_style or '' }}</span></div>
-            <div><span class="lbl">Collar/Neck:</span> <span class="val">{{ doc.collar_neck_style or '' }}</span></div>
-        </td>
-        <td style="width:34%;">
-            <div><span class="lbl">Sleeve:</span> <span class="val">{{ doc.sleeve or '' }}</span></div>
-            <div><span class="lbl">Side Cut:</span> <span class="val">{{ doc.side_cut or '' }}</span></div>
-            <div><span class="lbl">Bottom Waist:</span> <span class="val">{{ doc.bottom_waist or '' }}</span></div>
-            <div><span class="lbl">Bottom Style:</span> <span class="val">{{ doc.bottom_style or '' }}</span></div>
-            <div><span class="lbl">Start Date:</span> <span class="val">{{ frappe.utils.formatdate(doc.start_date) if doc.start_date else '' }}</span></div>
-        </td>
-    </tr>
+<tr>
+    <td class="lbl">Brand</td><td class="val">DressUp</td>
+    <td class="lbl">Style No</td><td class="val">{{ doc.design_no or '' }}</td>
+    <td class="lbl">Category Lead</td><td class="val"></td>
+    <td class="logo-cell" rowspan="4"><img src="{{ frappe.utils.get_url() }}/files/Capture.PNG" alt="DressUp"></td>
+</tr>
+<tr>
+    <td class="lbl">Season</td><td class="val">{{ doc.session or '' }}</td>
+    <td class="lbl">Style Description</td><td class="val">{{ doc.item_name or '' }}</td>
+    <td class="lbl">Designer</td><td class="val">{{ doc.designer_name or '' }}</td>
+</tr>
+<tr>
+    <td class="lbl">Category</td><td class="val">{{ doc.category or '' }}</td>
+    <td class="lbl">No. of Colorways</td><td class="val">{{ doc.color_units or '' }}</td>
+    <td class="lbl">Sourcing Lead</td><td class="val"></td>
+</tr>
+<tr>
+    <td class="lbl">Collection</td><td class="val">{{ doc.sewing_finish or '' }}</td>
+    <td class="lbl">Sample Size</td><td class="val"></td>
+    <td class="lbl">Concern Merchan</td><td class="val"></td>
+</tr>
 </table>
-
-<!-- DESIGN IMAGES -->
-<table style="width:100%;border-collapse:collapse;table-layout:fixed;margin-top:3px;">
-    <tr>
-        <td class="img-box" style="width:50%;">
-            {% if doc.image %}
-                <img src="{{ frappe.utils.get_url(doc.image) }}">
-                <div class="cap">MAIN DESIGN VIEW</div>
-            {% else %}
-                <div style="padding:80px 0;color:#ccc;">MAIN DESIGN VIEW</div>
-            {% endif %}
-        </td>
-        <td class="img-box" style="width:50%;">
-            {% if doc.additional_images and doc.additional_images|length > 0 and doc.additional_images[0].image %}
-                <img src="{{ frappe.utils.get_url(doc.additional_images[0].image) }}">
-                <div class="cap">{{ doc.additional_images[0].description or 'ADDITIONAL VIEW' }}</div>
-            {% else %}
-                <div style="padding:80px 0;color:#ccc;">ADDITIONAL VIEW</div>
-            {% endif %}
-        </td>
-    </tr>
-</table>
-
-<!-- ADDITIONAL IMAGES ROW (if more than 1 additional) -->
-{% if doc.additional_images and doc.additional_images|length > 1 %}
-<table style="width:100%;border-collapse:collapse;table-layout:fixed;margin-top:2px;">
-    <tr>
-        {% for img in doc.additional_images[1:4] %}
-        <td class="img-box" style="height:180px;">
-            {% if img.image %}
-                <img src="{{ frappe.utils.get_url(img.image) }}" style="max-height:160px;">
-                <div class="cap">{{ img.description or 'VIEW ' ~ (loop.index + 1) }}</div>
-            {% endif %}
-        </td>
-        {% endfor %}
-        {% for _ in range(3 - (doc.additional_images[1:4]|length)) %}
-        <td class="img-box" style="height:180px;"></td>
-        {% endfor %}
-    </tr>
-</table>
-{% endif %}
-
-<!-- WORKSTATIONS -->
-{% set ws_list = [] %}
-{% if doc.cutting %}{% set _ = ws_list.append('Cutting') %}{% endif %}
-{% if doc.fb %}{% set _ = ws_list.append('Fusing & Bundling') %}{% endif %}
-{% if doc.sewing %}{% set _ = ws_list.append('Sewing') %}{% endif %}
-{% if doc.sp %}{% set _ = ws_list.append('Screen Print') %}{% endif %}
-{% if doc.me %}{% set _ = ws_list.append('Machine Embroidery') %}{% endif %}
-{% if doc.hand_embroidery %}{% set _ = ws_list.append('Hand Embroidery') %}{% endif %}
-{% if doc.hand_work %}{% set _ = ws_list.append('Hand Work') %}{% endif %}
-{% if doc.bp %}{% set _ = ws_list.append('Block Print') %}{% endif %}
-{% if doc.td %}{% set _ = ws_list.append('Tie & Dye') %}{% endif %}
-{% if doc.karchupi %}{% set _ = ws_list.append('Karchupi') %}{% endif %}
-
-{% if ws_list %}
-<div style="margin-top:6px;font-size:9px;">
-    <strong>Workstations:</strong>
-    {% for ws in ws_list %}<span class="ws-badge">{{ ws }}</span>{% endfor %}
 </div>
-{% endif %}
+</td></tr></thead>
 
-<!-- COLORWAYS -->
-{% if doc.color_units and doc.color_units|int > 0 %}
-<div style="margin-top:6px;">
-    <div class="section-title">Colorways ({{ doc.color_units }} Units)</div>
-    <table style="width:100%;border-collapse:collapse;font-size:9px;">
-    {% set color_fields = [
-        ('color', 'data_xmgl'), ('color_2', 'data_ryzm'), ('color_3', 'data_muzc'),
-        ('color_4', 'data_lfwb'), ('color_5', 'data_hnjh'), ('color_6', 'data_zsdd'),
-        ('color_7', 'data_uxrz'), ('color_8', 'data_mnat'), ('color_9', 'data_wptw'),
-        ('color_10', 'data_znsh')
-    ] %}
-    {% for cf, df in color_fields[:doc.color_units|int] %}
-        {% if doc.get(cf) %}
-        <tr>
-            <td style="padding:3px;width:50px;border-bottom:0.5px solid #eee;">
-                <span class="color-swatch" style="background-color:{{ doc.get(cf) }};"></span>
-            </td>
-            <td style="padding:3px;border-bottom:0.5px solid #eee;font-weight:bold;">{{ doc.get(cf) }}</td>
-            <td style="padding:3px;border-bottom:0.5px solid #eee;">{{ doc.get(df) or '' }}</td>
-        </tr>
+<!-- ═══════════ REPEATING FOOTER ═══════════ -->
+<tfoot><tr><td class="page-footer-space">
+<div class="page-footer">
+<table class="ft-bar">
+<tr>
+    <td class="ft-conf">Important: Confidential information belongs exclusively to DressUp</td>
+    <td class="ft-pg">Page</td>
+</tr>
+</table>
+</div>
+</td></tr></tfoot>
+
+<!-- ═══════════ PAGE CONTENT ═══════════ -->
+<tbody><tr><td>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║       PAGE 1: DESIGN PACKAGE        ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<div class="stb">DESIGN PACKAGE</div>
+<table style="width:100%;border-collapse:collapse;table-layout:fixed;margin-top:1px;">
+<tr>
+    <td class="img-box" style="width:39%;height:460px;">
+        <div class="img-cap">Front Sketch</div>
+        {% if doc.image %}
+        <img src="{{ frappe.utils.get_url(doc.image) }}">
+        {% else %}
+        <div style="padding:150px 0;color:#ccc;font-size:11px;">FRONT SKETCH</div>
         {% endif %}
-    {% endfor %}
-    </table>
-    {% if doc.color_description %}
-    <div style="font-size:8px;margin-top:3px;color:#555;">{{ doc.color_description }}</div>
-    {% endif %}
-</div>
+    </td>
+    <td style="width:1%;border:none;"></td>
+    <td class="img-box" style="width:39%;height:460px;">
+        <div class="img-cap">Back Sketch</div>
+        {% if doc.additional_images and doc.additional_images|length > 0 and doc.additional_images[0].image %}
+        <img src="{{ frappe.utils.get_url(doc.additional_images[0].image) }}">
+        {% else %}
+        <div style="padding:150px 0;color:#ccc;font-size:11px;">BACK SKETCH</div>
+        {% endif %}
+    </td>
+    <td style="width:1%;border:none;"></td>
+    <td class="cw-panel" style="width:20%;">
+        <div class="cw-title">Colorway-1</div>
+        <div class="cw-swatch" style="background-color:{{ doc.color or '#f0f0f0' }};"></div>
+        <div class="cw-code">
+            {% if doc.data_xmgl %}
+            <strong>Fabric Code :</strong><br>{{ doc.data_xmgl }}
+            {% endif %}
+        </div>
+    </td>
+</tr>
+</table>
+<div class="rem-box"><strong>Remarks:</strong> {{ doc.text_editor_noaa or '' }}</div>
+
+{% if has_comp or art_imgs or mc_doc %}
+<div style="page-break-after:always;"></div>
 {% endif %}
 
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║  PAGE 2: COMPONENT DETAILS (2 img)  ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+{% if has_comp %}
+<div class="stb">COMPONENT DETAILS</div>
+<table style="width:100%;border-collapse:collapse;table-layout:fixed;margin-top:1px;">
+<tr>
+    <td class="img-box" style="width:49.5%;height:500px;">
+        {% if doc.additional_images[1].image %}
+        <img src="{{ frappe.utils.get_url(doc.additional_images[1].image) }}">
+        {% endif %}
+    </td>
+    <td style="width:1%;border:none;"></td>
+    <td class="img-box" style="width:49.5%;height:500px;">
+        {% if doc.additional_images[2].image %}
+        <img src="{{ frappe.utils.get_url(doc.additional_images[2].image) }}">
+        {% endif %}
+    </td>
+</tr>
+</table>
 <div style="page-break-after:always;"></div>
 
-<!-- PAGE 2: MEASUREMENTS + SKETCH IMAGE -->
-<div class="tp-title" style="margin-top:5px;">
-    <h2>MEASUREMENTS / মেজারমেন্ট</h2>
-    <div class="ref">{{ doc.name }} — {{ doc.item_name or '' }}</div>
-</div>
-
-<table style="width:100%;border-collapse:collapse;margin-top:5px;">
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║  PAGE 3: COMPONENT DETAILS (3 img)  ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<div class="stb">COMPONENT DETAILS</div>
+<table style="width:100%;border-collapse:collapse;table-layout:fixed;margin-top:1px;">
 <tr>
-<!-- LEFT: Measurements -->
-<td style="width:42%;vertical-align:top;padding-right:10px;border:none;">
-
-{% set measurement_items = [] %}
-{% set m_defs = [
-    ('full_length', 'দৈর্ঘ্য (HPS → CF হেম)'),
-    ('cf_length', 'CB দৈর্ঘ্য (HPS → CB হেম)'),
-    ('cb_length', 'বক্ষ (Chest)'),
-    ('waist_circumstance', 'কোমর (Waist)'),
-    ('bust', 'উচ্চ হিপ (High Hip)'),
-    ('upper_hip', 'নিম্ন হিপ (Low Hip)'),
-    ('lower_hip', 'হেম সুইপ (Hem Sweep)'),
-    ('front_neck_depth', 'সামনের গলার ড্রপ (Front Neck Drop)'),
-    ('back_neck_depth', 'পিছনের গলার ড্রপ (Back Neck Drop)'),
-    ('shoulder_tip_to_side_waist', 'গলার প্রস্থ (Neck Width)'),
-    ('front_neck_depth_s', 'কলারের প্রস্থ (Collar Width)'),
-    ('back_neck_depth_s', 'কলারের উচ্চতা (Collar Height)'),
-    ('collar_width_height', 'কাঁধ → কাঁধ (Shoulder to Shoulder)'),
-    ('button_placket_length', 'কাঁধের ঢাল (Shoulder Drop)'),
-    ('button_placket_width', 'আর্মহোল গভীরতা (Armhole Depth)'),
-    ('hem', 'বাটন প্ল্যাকেট দৈর্ঘ্য'),
-    ('shoulder_drop', 'বাটন প্ল্যাকেট প্রস্থ'),
-    ('shoulder', 'স্লিভ দৈর্ঘ্য (Sleeve Length)'),
-    ('armhole', 'বাইসেপ (Bicep)'),
-    ('full_length_arm', 'এলবো (Elbow)'),
-    ('armhole_arm', 'কাফ ওপেনিং (Cuff Opening)'),
-    ('biceps', 'বাইসেপ (×2)'),
-    ('elbow', 'পকেট দৈর্ঘ্য (Pocket Length)'),
-    ('cuff_length', 'পকেট ওপেনিং (Pocket Opening)'),
-    ('cuff_width', 'পকেট অবস্থান (Pocket Position)'),
-    ('cuff_opening', 'আউটসিম (Outseam)'),
-    ('pocket_length', 'ইনসিম (Inseam)'),
-    ('pocket_width', 'পকেট প্রস্থ (Pocket Width)'),
-    ('pocket_opening', 'ব্যাক রাইজ (Back Rise)'),
-    ('pocket_placket', 'কাফ দৈর্ঘ্য (Cuff Length)'),
-    ('shoulder_tip_to_pocket_starting', 'কোমর (Relaxed ×2)')
-] %}
-{% for f, l in m_defs %}
-    {% if doc.get(f) %}{% set _ = measurement_items.append((l, doc.get(f))) %}{% endif %}
-{% endfor %}
-
-{% if measurement_items %}
-<div class="section-title">Body Measurements</div>
-<table class="meas-table">
-    {% for label, val in measurement_items %}
-    <tr><td>{{ label }}</td><td class="mv">{{ val }}</td></tr>
-    {% endfor %}
-</table>
-{% endif %}
-
-<!-- Inner/Koti -->
-{% set inner_items = [] %}
-{% set ik_defs = [
-    ('ik_full_length', 'দৈর্ঘ্য (HPS → CF হেম)'),
-    ('ik_cf_length', 'CB দৈর্ঘ্য (HPS → CB হেম)'),
-    ('ik_cb_length', 'বক্ষ (Chest)'),
-    ('ik_waist_circumstance', 'কোমর (Waist)'),
-    ('ik_bust', 'উচ্চ হিপ (High Hip)'),
-    ('ik_upper_hip', 'নিম্ন হিপ (Low Hip)'),
-    ('ik_lower_hip', 'হেম সুইপ (Hem Sweep)'),
-    ('ik_front_neck_depth', 'সামনের গলার ড্রপ'),
-    ('ik_back_neck_depth', 'পিছনের গলার ড্রপ'),
-    ('ik_shoulder_tip_to_side_waist', 'গলার প্রস্থ'),
-    ('ik_front_neck_depth_s', 'কলার প্রস্থ'),
-    ('ik_back_neck_depth_s', 'কলার উচ্চতা'),
-    ('ik_collar_width_height', 'কাঁধ → কাঁধ'),
-    ('ik_button_placket_length', 'কাঁধের ঢাল'),
-    ('ik_button_placket_width', 'আর্মহোল গভীরতা'),
-    ('ik_hem', 'বাটন প্ল্যাকেট দৈর্ঘ্য'),
-    ('ik_shoulder_drop', 'বাটন প্ল্যাকেট প্রস্থ'),
-    ('ik_shoulder', 'স্লিভ দৈর্ঘ্য'),
-    ('ik_armhole', 'বাইসেপ'),
-    ('ik_full_length_arm', 'এলবো'),
-    ('ik_armhole_arm', 'কাফ ওপেনিং'),
-    ('ik_biceps', 'বাইসেপ (×2)'),
-    ('ik_elbow', 'পকেট দৈর্ঘ্য'),
-    ('ik_cuff_length', 'পকেট ওপেনিং'),
-    ('ik_cuff_width', 'পকেট অবস্থান'),
-    ('ik_cuff_opening', 'আউটসিম'),
-    ('ik_pocket_length', 'ইনসিম'),
-    ('ik_pocket_width', 'পকেট প্রস্থ'),
-    ('ik_pocket_opening', 'ব্যাক রাইজ'),
-    ('ik_pocket_placket', 'কাফ দৈর্ঘ্য'),
-    ('ik_shoulder_tip_to_pocket_starting', 'কোমর (Relaxed ×2)')
-] %}
-{% for f, l in ik_defs %}
-    {% if doc.get(f) %}{% set _ = inner_items.append((l, doc.get(f))) %}{% endif %}
-{% endfor %}
-
-{% if inner_items %}
-<div class="section-title" style="margin-top:12px;">Koti/Shrug Measurements</div>
-<table class="meas-table">
-    {% for label, val in inner_items %}
-    <tr><td>{{ label }}</td><td class="mv">{{ val }}</td></tr>
-    {% endfor %}
-</table>
-{% endif %}
-
-<!-- Bottom -->
-{% set bottom_items = [] %}
-{% set b_defs = [
-    ('length_bottom', 'দৈর্ঘ্য (Length)'),
-    ('pocket_wid', 'ফ্রন্ট রাইজ (Front Rise)'),
-    ('komor', 'কোমর (Stretched ×2)'),
-    ('high_hip', 'উচ্চ হিপ (×2)'),
-    ('low_hip', 'নিম্ন হিপ (×2)'),
-    ('thigh_uru', 'উরু (Thigh ×2)'),
-    ('knee_x2', 'হাঁটু (Knee ×2)'),
-    ('leg_opening_x2', 'লেগ ওপেনিং (×2)'),
-    ('elasticrubber_width', 'ইলাস্টিক/রাবার প্রস্থ'),
-    ('beltloop_width', 'বেল্ট/লুপ প্রস্থ'),
-    ('wb_to_pocket_opening', 'WB → পকেট ওপেনিং দূরত্ব'),
-    ('pocket_depth', 'পকেটের গভীরতা')
-] %}
-{% for f, l in b_defs %}
-    {% if doc.get(f) %}{% set _ = bottom_items.append((l, doc.get(f))) %}{% endif %}
-{% endfor %}
-
-{% if bottom_items %}
-<div class="section-title" style="margin-top:12px;">Bottom Specifications</div>
-<table class="meas-table">
-    {% for label, val in bottom_items %}
-    <tr><td>{{ label }}</td><td class="mv">{{ val }}</td></tr>
-    {% endfor %}
-</table>
-{% endif %}
-
-<!-- Dupatta -->
-{% if doc.dlength or doc.dwidth %}
-<div class="section-title" style="margin-top:12px;">Dupatta</div>
-<table class="meas-table">
-    {% if doc.dlength %}<tr><td>দৈর্ঘ্য (Length)</td><td class="mv">{{ doc.dlength }}</td></tr>{% endif %}
-    {% if doc.dwidth %}<tr><td>প্রস্থ (Width)</td><td class="mv">{{ doc.dwidth }}</td></tr>{% endif %}
-</table>
-{% if doc.dupatta_note %}<div style="font-size:8px;margin-top:3px;color:#555;">{{ doc.dupatta_note }}</div>{% endif %}
-{% endif %}
-
-</td>
-
-<!-- RIGHT: Sketch Image -->
-<td style="width:58%;vertical-align:top;border:none;padding:0;">
-    {% if doc.print_main_image and doc.image %}
-    <img src="{{ frappe.utils.get_url(doc.image) }}" style="max-width:100%;height:auto;">
-    {% elif doc.additional_images and doc.additional_images|length > 0 and doc.additional_images[0].image %}
-    <img src="{{ frappe.utils.get_url(doc.additional_images[0].image) }}" style="max-width:100%;height:auto;">
-    {% else %}
-    <div style="padding:100px;color:#ccc;border:1px dashed #ccc;text-align:center;">No Image</div>
-    {% endif %}
-</td>
+    <td class="img-box" style="width:33%;height:490px;">
+        <div class="img-cap">Front Sketch</div>
+        {% if doc.image %}
+        <img src="{{ frappe.utils.get_url(doc.image) }}">
+        {% endif %}
+    </td>
+    <td style="width:0.5%;border:none;"></td>
+    <td class="img-box" style="width:33%;height:490px;">
+        {% if doc.additional_images[1].image %}
+        <img src="{{ frappe.utils.get_url(doc.additional_images[1].image) }}">
+        {% endif %}
+    </td>
+    <td style="width:0.5%;border:none;"></td>
+    <td class="img-box" style="width:33%;height:490px;">
+        {% if doc.additional_images[2].image %}
+        <img src="{{ frappe.utils.get_url(doc.additional_images[2].image) }}">
+        {% endif %}
+    </td>
 </tr>
 </table>
+{% if art_imgs or mc_doc %}
+<div style="page-break-after:always;"></div>
+{% endif %}
+{% endif %}
 
-<!-- SCREEN PRINT DETAILS -->
-{% if doc.sp %}
-<div style="margin-top:10px;">
-<table style="width:100%;border-collapse:collapse;font-size:9px;">
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║    PAGE 4+: ARTWORK DETAILS         ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+{% for art_img in art_imgs %}
+<table style="width:100%;border-collapse:collapse;border:0.5px solid #555;">
 <tr>
-<td style="width:50%;vertical-align:top;border:1px solid #000;padding:6px;">
-    <div class="section-title" style="margin-top:0;">Screen Print Details</div>
-    <div>Old Frame/SKU: <strong>{{ doc.old_frame__sku or '-' }}</strong></div>
-    <div>New Frame/SKU: <strong>{{ doc.new_frame__sku or '-' }}</strong></div>
-    <div>Color Units: <strong>{{ doc.color_units or '0' }}</strong></div>
-    {% if doc.pigments_dye %}
-    <div>Pigments: <strong>{% for p in doc.pigments_dye %}{{ p.pigment_dye }}{% if not loop.last %}, {% endif %}{% endfor %}</strong></div>
-    {% endif %}
-</td>
-<td style="width:50%;vertical-align:top;border:1px solid #000;padding:6px;">
-    <div class="section-title" style="margin-top:0;">Screen Print Costs</div>
-    <table class="meas-table">
-        {% if doc.frame_cost %}<tr><td>Frame Cost</td><td class="mv">{{ doc.frame_cost }}</td></tr>{% endif %}
-        {% if doc.process_cost %}<tr><td>Process Cost</td><td class="mv">{{ doc.process_cost }}</td></tr>{% endif %}
-        {% if doc.chemical_cost %}<tr><td>Chemical Cost</td><td class="mv">{{ doc.chemical_cost }}</td></tr>{% endif %}
-        {% if doc.print_cost %}<tr><td>Print Cost</td><td class="mv">{{ doc.print_cost }}</td></tr>{% endif %}
-        {% if doc.cost_for_30_unit %}<tr><td>Cost/30 Unit</td><td class="mv">{{ doc.cost_for_30_unit }}</td></tr>{% endif %}
-        {% if doc.cost_for_50_unit %}<tr><td>Cost/50 Unit</td><td class="mv">{{ doc.cost_for_50_unit }}</td></tr>{% endif %}
-        {% if doc.cost_for_70_unit %}<tr><td>Cost/70 Unit</td><td class="mv">{{ doc.cost_for_70_unit }}</td></tr>{% endif %}
-        {% if doc.cost_for_100_unit %}<tr><td>Cost/100 Unit</td><td class="mv">{{ doc.cost_for_100_unit }}</td></tr>{% endif %}
-    </table>
-</td>
+    <td class="stb" style="border-top:0.5px solid #555;">ARTWORK DETAILS</td>
+    <td class="stb" style="text-align:right;border-top:0.5px solid #555;width:25%;">Print Color</td>
 </tr>
 </table>
-</div>
+<table style="width:100%;border-collapse:collapse;table-layout:fixed;margin-top:0;">
+<tr>
+    <!-- Artwork Image (left ~73%) -->
+    <td style="width:73%;vertical-align:top;padding:0;border:none;">
+        <div class="art-sub">
+            PRINT ARTWORK<br>PLACEMENT PRINT<br>{{ art_img.description or 'ARTWORK' }}
+        </div>
+        <div class="img-box" style="height:430px;margin:0 5px;">
+            {% if art_img.image %}
+            <img src="{{ frappe.utils.get_url(art_img.image) }}">
+            {% endif %}
+        </div>
+    </td>
+    <!-- Print Colors (right ~27%) -->
+    <td style="width:27%;vertical-align:top;padding:0 0 0 5px;border:none;">
+        <div style="margin-top:5px;">
+        {% for cf, df in color_pairs %}
+            {% if doc.get(cf) %}
+            <div class="pc-box">
+                <div class="pc-swatch" style="background-color:{{ doc.get(cf) }};"></div>
+                <div class="pc-name">{{ doc.get(df) or doc.get(cf) }}</div>
+            </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </td>
+</tr>
+</table>
+{% if not loop.last or mc_doc %}
+<div style="page-break-after:always;"></div>
 {% endif %}
+{% endfor %}
 
-<!-- HAND EMBROIDERY DETAILS -->
-{% if doc.hand_embroidery %}
-<div style="margin-top:8px;border:1px solid #000;padding:6px;font-size:9px;">
-    <div class="section-title" style="margin-top:0;">Hand Embroidery Details</div>
-    <table style="width:100%;border-collapse:collapse;">
-    <tr>
-        <td style="border:none;padding:2px;"><span class="lbl">Embroider:</span> <strong>{{ doc.hand_embroider or '-' }}</strong></td>
-        <td style="border:none;padding:2px;"><span class="lbl">Sample:</span> <strong>{{ doc.sample or '-' }}</strong></td>
-        <td style="border:none;padding:2px;">
-            <span class="lbl">Type:</span>
-            {% set types = [] %}
-            {% if doc.quarter %}{% set _ = types.append('Quarter') %}{% endif %}
-            {% if doc.half %}{% set _ = types.append('Half') %}{% endif %}
-            {% if doc.full %}{% set _ = types.append('Full') %}{% endif %}
-            <strong>{{ types|join(', ') or '-' }}</strong>
-        </td>
-        <td style="border:none;padding:2px;"><span class="lbl">Time:</span> <strong>{{ doc.time or '-' }}</strong></td>
-        <td style="border:none;padding:2px;"><span class="lbl">Rate:</span> <strong>{{ doc.rate or '-' }}</strong></td>
-    </tr>
-    </table>
-</div>
-{% endif %}
-
-<!-- NOTES -->
-{% if doc.text_editor_noaa %}
-<div class="note-box">
-    <strong>Note:</strong> {{ doc.text_editor_noaa }}
-</div>
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║    LAST PAGE: MEASUREMENT CHART     ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+{% if mc_doc and mc_doc.measurement_chart_items %}
+<div class="stb">MEASUREMENT CHART</div>
+<table class="mc-tbl">
+<thead>
+<tr>
+    <th rowspan="2" style="width:35px;">Code</th>
+    <th rowspan="2" style="width:150px;">Point of Measures</th>
+    <th colspan="2">S</th>
+    <th colspan="2">M</th>
+    <th colspan="2">L</th>
+    <th colspan="2">XL</th>
+    <th colspan="2">XXL</th>
+    <th colspan="2">3XL</th>
+    <th colspan="2">4XL</th>
+</tr>
+<tr>
+    <th>B/I</th><th>A/I</th>
+    <th>B/I</th><th>A/I</th>
+    <th>B/I</th><th>A/I</th>
+    <th>B/I</th><th>A/I</th>
+    <th>B/I</th><th>A/I</th>
+    <th>B/I</th><th>A/I</th>
+    <th>B/I</th><th>A/I</th>
+</tr>
+</thead>
+<tbody>
+{% for item in mc_doc.measurement_chart_items %}
+<tr>
+    <td>{{ item.code or loop.index }}</td>
+    <td>{{ item.point_of_measures or '' }}</td>
+    <td>{{ item.s_b_i or '' }}</td>
+    <td>{{ item.s_a_i or '' }}</td>
+    <td>{{ item.m_b_i or '' }}</td>
+    <td>{{ item.m_a_i or '' }}</td>
+    <td>{{ item.l_b_i or '' }}</td>
+    <td>{{ item.l_a_i or '' }}</td>
+    <td>{{ item.xl_b_i or '' }}</td>
+    <td>{{ item.xl_a_i or '' }}</td>
+    <td>{{ item.xxl_b_i or '' }}</td>
+    <td>{{ item.xxl_a_i or '' }}</td>
+    <td>{{ item.get('3xl_b_i') or '' }}</td>
+    <td>{{ item.get('3xl_a_i') or '' }}</td>
+    <td>{{ item.get('4xl_b_i') or '' }}</td>
+    <td>{{ item.get('4xl_a_i') or '' }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
 {% endif %}
 
 </td></tr></tbody>
