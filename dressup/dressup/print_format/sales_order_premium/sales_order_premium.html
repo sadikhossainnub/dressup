@@ -1,0 +1,731 @@
+{% set company_doc = frappe.get_doc("Company", doc.company) %}
+{% set letter_head = frappe.get_doc("Letter Head", doc.letter_head) if doc.letter_head else None %}
+{% set company_address = frappe.get_doc("Address", doc.company_address) if doc.company_address else None %}
+
+{%- macro format_number(value) -%}
+{{ "{:,.2f}".format(value or 0) }}
+{%- endmacro -%}
+
+<style>
+    /* ── CSS Variables ── */
+    :root {
+        --purple: #5B2D8E;
+        --purple-light: #7B4FAF;
+        --purple-dark: #3D1A5E;
+        --gold: #C4A35A;
+        --text-dark: #1a1a1a;
+        --text-medium: #444444;
+        --text-light: #777777;
+        --border-color: #e0e0e0;
+        --bg-light: #f9f9f9;
+        --red: #C0392B;
+        --green: #27AE60;
+    }
+
+    @media print {
+        @page {
+            size: A4 portrait;
+            margin: 8mm 10mm;
+        }
+        body {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        .no-print { display: none !important; }
+    }
+
+    body {
+        font-family: 'Segoe UI', 'Inter', Roboto, Arial, sans-serif;
+        color: var(--text-dark);
+        line-height: 1.35;
+        margin: 0;
+        padding: 0;
+        background: #fff;
+        font-size: 9pt;
+    }
+
+    .sop-container {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    /* ── Header Section ── */
+    .sop-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 12px;
+        border-bottom: 3px solid var(--purple);
+        margin-bottom: 0;
+    }
+
+    .sop-header-left {
+        flex: 1;
+    }
+
+    .sop-company-name {
+        font-size: 28pt;
+        font-weight: 900;
+        color: var(--purple-dark);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        line-height: 1;
+        margin-bottom: 6px;
+        font-style: italic;
+    }
+
+    .sop-nbr-line {
+        font-size: 8pt;
+        font-weight: 700;
+        color: var(--purple);
+        font-style: italic;
+        margin-bottom: 2px;
+    }
+
+    .sop-company-details {
+        font-size: 7.5pt;
+        color: var(--text-medium);
+        line-height: 1.4;
+    }
+
+    .sop-header-right {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 5px;
+    }
+
+    .sop-qr-placeholder {
+        width: 70px;
+        height: 70px;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fafafa;
+        border-radius: 4px;
+    }
+
+    .sop-qr-placeholder img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .sop-barcode-text {
+        font-size: 7pt;
+        color: var(--text-light);
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+    }
+
+    /* ── Customer + Transaction Info ── */
+    .sop-info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 8px;
+    }
+
+    .sop-info-left {
+        flex: 1;
+    }
+
+    .sop-info-right {
+        text-align: right;
+        flex: 1;
+    }
+
+    .sop-section-label {
+        font-size: 7.5pt;
+        font-weight: 800;
+        color: var(--purple);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 3px;
+    }
+
+    .sop-customer-name {
+        font-size: 11pt;
+        font-weight: 800;
+        color: var(--text-dark);
+        text-transform: uppercase;
+    }
+
+    .sop-customer-id {
+        font-size: 8pt;
+        color: var(--text-light);
+    }
+
+    .sop-transaction-label {
+        font-size: 7.5pt;
+        font-weight: 800;
+        color: var(--purple);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 3px;
+    }
+
+    .sop-receipt-line {
+        font-size: 8.5pt;
+        color: var(--text-dark);
+        line-height: 1.5;
+    }
+
+    .sop-receipt-line strong {
+        font-weight: 800;
+    }
+
+    /* ── Items Table ── */
+    .sop-items-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 8px 0 10px 0;
+    }
+
+    .sop-items-table thead tr {
+        border-top: 2px solid var(--purple);
+        border-bottom: 2px solid var(--purple);
+    }
+
+    .sop-items-table th {
+        background: #fff;
+        padding: 7px 10px;
+        font-size: 8pt;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--text-dark);
+        letter-spacing: 0.3px;
+    }
+
+    .sop-items-table th:first-child {
+        text-align: center;
+        width: 35px;
+    }
+
+    .sop-items-table th:nth-child(2) {
+        text-align: left;
+    }
+
+    .sop-items-table th:nth-child(3) {
+        text-align: right;
+        width: 80px;
+    }
+
+    .sop-items-table th:nth-child(4) {
+        text-align: center;
+        width: 50px;
+    }
+
+    .sop-items-table th:last-child {
+        text-align: right;
+        width: 100px;
+    }
+
+    .sop-items-table tbody tr {
+        border-bottom: 1px solid #eee;
+    }
+
+    .sop-items-table tbody tr:last-child {
+        border-bottom: 2px solid var(--purple);
+    }
+
+    .sop-items-table td {
+        padding: 8px 10px;
+        vertical-align: middle;
+        font-size: 8.5pt;
+    }
+
+    .sop-items-table td:first-child {
+        text-align: center;
+        color: var(--text-medium);
+        font-weight: 600;
+    }
+
+    .sop-item-desc {
+        font-weight: 700;
+        color: var(--purple-dark);
+    }
+
+    .sop-item-sub {
+        font-size: 7pt;
+        color: var(--text-light);
+        margin-top: 1px;
+    }
+
+    .sop-items-table td:nth-child(3) {
+        text-align: right;
+        font-weight: 500;
+    }
+
+    .sop-items-table td:nth-child(4) {
+        text-align: center;
+    }
+
+    .sop-items-table td:last-child {
+        text-align: right;
+        font-weight: 700;
+    }
+
+    /* ── Bottom Section: Loyalty + Summary ── */
+    .sop-bottom-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        margin-top: 5px;
+    }
+
+    /* Loyalty Card */
+    .sop-loyalty-card {
+        border: 1.5px solid var(--purple);
+        border-radius: 6px;
+        padding: 10px 14px;
+        min-width: 260px;
+        max-width: 300px;
+    }
+
+    .sop-loyalty-title {
+        font-size: 8pt;
+        font-weight: 800;
+        color: var(--purple);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 4px;
+    }
+
+    .sop-loyalty-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .sop-loyalty-table td {
+        padding: 3px 0;
+        font-size: 8.5pt;
+    }
+
+    .sop-loyalty-table td:first-child {
+        color: var(--text-medium);
+        font-weight: 500;
+    }
+
+    .sop-loyalty-table td:last-child {
+        text-align: right;
+        font-weight: 700;
+        color: var(--text-dark);
+    }
+
+    .sop-loyalty-balance-label {
+        color: var(--red) !important;
+        font-weight: 800 !important;
+    }
+
+    .sop-loyalty-balance-value {
+        color: var(--red) !important;
+        font-weight: 800 !important;
+        font-size: 9.5pt !important;
+    }
+
+    /* Summary Table */
+    .sop-summary-block {
+        min-width: 260px;
+    }
+
+    .sop-summary-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .sop-summary-table td {
+        padding: 4px 8px;
+        font-size: 8.5pt;
+    }
+
+    .sop-summary-label {
+        text-align: right;
+        font-weight: 600;
+        color: var(--text-medium);
+        padding-right: 15px !important;
+    }
+
+    .sop-summary-value {
+        text-align: right;
+        font-weight: 600;
+        min-width: 90px;
+    }
+
+    .sop-net-payable-row td {
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+        border-top: 2px solid var(--purple);
+    }
+
+    .sop-net-payable-label {
+        font-weight: 800 !important;
+        color: var(--text-dark) !important;
+        font-size: 10pt !important;
+    }
+
+    .sop-net-payable-value {
+        font-weight: 900 !important;
+        color: var(--text-dark) !important;
+        font-size: 12pt !important;
+    }
+
+    .sop-paid-label {
+        font-weight: 600;
+        color: var(--text-medium);
+    }
+
+    .sop-change-label {
+        color: var(--red) !important;
+        font-weight: 800 !important;
+    }
+
+    .sop-change-value {
+        color: var(--red) !important;
+        font-weight: 800 !important;
+    }
+
+    /* ── Footer ── */
+    .sop-footer {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 7.5pt;
+        color: var(--text-light);
+        border-top: 1px dashed var(--border-color);
+        padding-top: 8px;
+    }
+
+    .sop-footer strong {
+        color: var(--text-medium);
+    }
+
+    /* ── Terms Section ── */
+    .sop-terms {
+        margin-top: 15px;
+        padding-top: 8px;
+    }
+
+    .sop-terms-title {
+        font-size: 7.5pt;
+        font-weight: 800;
+        color: var(--purple);
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 2px;
+    }
+
+    .sop-terms-content {
+        font-size: 7.5pt;
+        color: var(--text-light);
+        line-height: 1.4;
+        white-space: pre-line;
+    }
+
+    /* ── Signature ── */
+    .sop-signature-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding-top: 0;
+    }
+
+    .sop-signature-box {
+        text-align: center;
+        width: 160px;
+    }
+
+    .sop-signature-line {
+        border-top: 1.5px solid var(--purple-dark);
+        padding-top: 4px;
+        font-size: 7.5pt;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--text-medium);
+    }
+
+    /* Amount in words */
+    .sop-words {
+        margin-top: 8px;
+        font-size: 8pt;
+        color: var(--text-medium);
+    }
+
+    .sop-words strong {
+        color: var(--text-dark);
+    }
+</style>
+
+<div class="sop-container">
+    <!-- ═══════════ HEADER ═══════════ -->
+    <div class="sop-header">
+        <div class="sop-header-left">
+            {% if letter_head and letter_head.image %}
+                <div style="margin-bottom: 6px;">
+                    <img src="{{ letter_head.image }}" style="max-height: 50px; max-width: 200px;" alt="{{ doc.company }}">
+                </div>
+            {% else %}
+                <div class="sop-company-name">{{ doc.company }}</div>
+            {% endif %}
+
+            {% if company_doc.tax_id %}
+                <div class="sop-nbr-line">
+                    National Board of Revenue | Govt. of the People's Republic of Bangladesh
+                </div>
+                <div class="sop-company-details">
+                    Tax Invoice (MUSAK-6.3) | BIN: {{ company_doc.tax_id }}
+                </div>
+            {% endif %}
+
+            {% if company_address %}
+                <div class="sop-company-details">
+                    {{ company_address.address_line1 or '' }}{% if company_address.address_line2 %}, {{ company_address.address_line2 }}{% endif %}
+                    {% if company_address.city %} | {{ company_address.city }}{% endif %}
+                    {% if company_doc.phone_no %} | Tel: {{ company_doc.phone_no }}{% endif %}
+                </div>
+            {% elif doc.company_address_display %}
+                <div class="sop-company-details">{{ doc.company_address_display }}</div>
+            {% endif %}
+        </div>
+
+        <div class="sop-header-right">
+            <!-- QR Code / Company Logo fallback -->
+            <div class="sop-qr-placeholder">
+                {% if letter_head and letter_head.image %}
+                    <img src="{{ letter_head.image }}" alt="Logo">
+                {% else %}
+                    <span style="font-size: 7pt; color: var(--text-light);">QR</span>
+                {% endif %}
+            </div>
+            <div class="sop-barcode-text">{{ doc.name }}</div>
+        </div>
+    </div>
+
+    <!-- ═══════════ CUSTOMER + TRANSACTION INFO ═══════════ -->
+    <div class="sop-info-row">
+        <div class="sop-info-left">
+            <div class="sop-section-label">Customer Information</div>
+            <div class="sop-customer-name">{{ doc.customer_name }}</div>
+            {% if doc.customer %}
+                <div class="sop-customer-id">({{ doc.customer }})</div>
+            {% endif %}
+            {% if doc.contact_display %}
+                <div style="font-size: 8pt; color: var(--text-light); margin-top: 2px;">
+                    {{ doc.contact_display }}
+                </div>
+            {% endif %}
+            {% if doc.address_display %}
+                <div style="font-size: 7.5pt; color: var(--text-light); margin-top: 2px; max-width: 300px;">
+                    {{ doc.address_display }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="sop-info-right">
+            <div class="sop-transaction-label">Transaction Details</div>
+            <div class="sop-receipt-line">
+                Receipt: <strong>{{ doc.name }}</strong>
+            </div>
+            <div class="sop-receipt-line">
+                Date: {{ doc.get_formatted("transaction_date") }}
+                {% if doc.delivery_date %}
+                    | Delivery: {{ doc.get_formatted("delivery_date") }}
+                {% endif %}
+            </div>
+            {% if doc.po_no %}
+            <div class="sop-receipt-line">
+                PO Ref: {{ doc.po_no }}
+            </div>
+            {% endif %}
+            {% if doc.set_warehouse %}
+            <div class="sop-receipt-line">
+                Warehouse: {{ doc.set_warehouse }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ═══════════ ITEMS TABLE ═══════════ -->
+    <table class="sop-items-table">
+        <thead>
+            <tr>
+                <th>SL</th>
+                <th>Item Description</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total ({{ doc.currency or "BDT" }})</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in doc.items %}
+            <tr>
+                <td>{{ "%02d" | format(loop.index) }}</td>
+                <td>
+                    <div class="sop-item-desc">
+                        {% if item.item_code %}
+                            {{ item.item_code }} - {{ item.item_name }}
+                        {% else %}
+                            {{ item.item_name }}
+                        {% endif %}
+                    </div>
+                    {% if item.description and item.description != item.item_name and item.description != item.item_code %}
+                        <div class="sop-item-sub">{{ item.description }}</div>
+                    {% endif %}
+                </td>
+                <td style="text-align: right;">{{ format_number(item.rate) }}</td>
+                <td style="text-align: center;">{{ "%.2f" | format(item.qty) }}</td>
+                <td style="text-align: right;">{{ format_number(item.amount) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- ═══════════ BOTTOM SECTION: LOYALTY + SUMMARY ═══════════ -->
+    <div class="sop-bottom-row">
+        <!-- Left: Loyalty & Rewards Card -->
+        <div class="sop-loyalty-card">
+            <div class="sop-loyalty-title">Loyalty & Rewards</div>
+            <table class="sop-loyalty-table">
+                {% set customer_doc = frappe.get_doc("Customer", doc.customer) if doc.customer else None %}
+                {% set loyalty_program = customer_doc.loyalty_program if customer_doc else None %}
+
+                {% if loyalty_program %}
+                    {% set lp_entries = frappe.get_all("Loyalty Point Entry",
+                        filters={"customer": doc.customer, "docstatus": 1},
+                        fields=["sum(loyalty_points) as total_earned"],
+                        group_by="customer") %}
+                    {% set total_earned = lp_entries[0].total_earned if lp_entries else 0 %}
+
+                    {% set redeemed_entries = frappe.get_all("Loyalty Point Entry",
+                        filters={"customer": doc.customer, "docstatus": 1, "loyalty_points": ["<", 0]},
+                        fields=["sum(loyalty_points) as total_redeemed"],
+                        group_by="customer") %}
+                    {% set total_redeemed = (redeemed_entries[0].total_redeemed if redeemed_entries else 0) | abs %}
+
+                    {% set current_points = frappe.db.get_value("Customer", doc.customer, "loyalty_points") or 0 %}
+
+                    <tr>
+                        <td>Loyalty Program:</td>
+                        <td>{{ loyalty_program }}</td>
+                    </tr>
+                    {% if customer_doc.loyalty_program_tier %}
+                    <tr>
+                        <td>Current Tier:</td>
+                        <td>{{ customer_doc.loyalty_program_tier }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td>Total Accumulated Points:</td>
+                        <td>{{ "%.2f" | format(total_earned or 0) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Redeemed Points:</td>
+                        <td>{{ "%.2f" | format(total_redeemed or 0) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="sop-loyalty-balance-label">Current Balance Points:</td>
+                        <td class="sop-loyalty-balance-value">{{ "%.2f" | format(current_points or 0) }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2" style="color: var(--text-light); font-style: italic; text-align: center; padding: 8px 0;">
+                            No loyalty program enrolled
+                        </td>
+                    </tr>
+                {% endif %}
+            </table>
+        </div>
+
+        <!-- Right: Summary -->
+        <div class="sop-summary-block">
+            <table class="sop-summary-table">
+                <tr>
+                    <td class="sop-summary-label">Sub Total:</td>
+                    <td class="sop-summary-value">{{ format_number(doc.total) }}</td>
+                </tr>
+
+                {% if doc.discount_amount %}
+                <tr>
+                    <td class="sop-summary-label">(-) Discount:</td>
+                    <td class="sop-summary-value">{{ format_number(doc.discount_amount) }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td class="sop-summary-label">(-) Discount:</td>
+                    <td class="sop-summary-value">0.00</td>
+                </tr>
+                {% endif %}
+
+                {% for tax in doc.taxes %}
+                    {% if tax.tax_amount %}
+                    <tr>
+                        <td class="sop-summary-label">(+) {{ tax.description or 'VAT' }}:</td>
+                        <td class="sop-summary-value">{{ format_number(tax.tax_amount) }}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+
+                {% if not doc.taxes %}
+                <tr>
+                    <td class="sop-summary-label">(+) Add VAT:</td>
+                    <td class="sop-summary-value">0.00</td>
+                </tr>
+                {% endif %}
+
+                <tr class="sop-net-payable-row">
+                    <td class="sop-summary-label sop-net-payable-label">Net Payable:</td>
+                    <td class="sop-summary-value sop-net-payable-value">{{ format_number(doc.grand_total) }}</td>
+                </tr>
+
+                {% if doc.advance_paid %}
+                <tr>
+                    <td class="sop-summary-label sop-paid-label">Paid (Advance):</td>
+                    <td class="sop-summary-value">{{ format_number(doc.advance_paid) }}</td>
+                </tr>
+                <tr>
+                    <td class="sop-summary-label sop-change-label">Balance:</td>
+                    <td class="sop-summary-value sop-change-value">{{ format_number(doc.grand_total - doc.advance_paid) }}</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+
+    <!-- ═══════════ AMOUNT IN WORDS ═══════════ -->
+    {% if doc.in_words %}
+    <div class="sop-words">
+        <strong>Amount in words:</strong> <em>{{ doc.in_words }}</em>
+    </div>
+    {% endif %}
+
+    <!-- ═══════════ TERMS & NOTES ═══════════ -->
+    {% if doc.terms %}
+    <div class="sop-terms">
+        <div class="sop-terms-title">Terms & Conditions</div>
+        <div class="sop-terms-content">{{ doc.terms }}</div>
+    </div>
+    {% endif %}
+
+    <!-- ═══════════ SIGNATURE ═══════════ -->
+    <div class="sop-signature-row">
+        <div class="sop-signature-box">
+            <div class="sop-signature-line">Customer Signature</div>
+        </div>
+        <div class="sop-signature-box">
+            <div class="sop-signature-line">Authorized Signatory</div>
+        </div>
+    </div>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <div class="sop-footer">
+        This is a computer-generated document and does not require a physical signature.
+        <br>
+        <strong>{{ doc.company }}</strong> &copy; {{ frappe.utils.now_datetime().year }}
+    </div>
+</div>
