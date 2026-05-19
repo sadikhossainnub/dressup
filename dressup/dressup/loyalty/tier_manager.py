@@ -15,7 +15,7 @@ def update_last_purchase(invoice_doc):
 		"Customer",
 		invoice_doc.customer,
 		{
-			"last_purchase_date": today(),
+			"last_purchase_date": invoice_doc.posting_date or today(),
 			"inactivity_warned": 0,
 		},
 	)
