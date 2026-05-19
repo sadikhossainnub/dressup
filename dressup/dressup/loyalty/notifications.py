@@ -73,9 +73,16 @@ def _send_sms(mobile_no, message):
 	"""
 	Frappe SMS gateway ব্যবহার করে SMS পাঠাবে।
 	SMS Settings-এ gateway configure করা থাকলে কাজ করবে।
+	Loyalty Program-এ 'enable_notifications' অন থাকতে হবে।
 	"""
 	if not mobile_no:
 		return
+		
+	# Check if notifications are enabled
+	is_enabled = frappe.db.get_value("Loyalty Program", "Dress Up Loyalty Program", "enable_notifications")
+	if not is_enabled:
+		return
+
 	try:
 		from frappe.core.doctype.sms_settings.sms_settings import send_sms
 

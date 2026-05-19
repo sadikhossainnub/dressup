@@ -42,6 +42,17 @@ CUSTOM_FIELDS = {
 			"description": "60-day inactivity warning sent হয়েছে কিনা",
 			"module": "DressUp",
 		},
+	],
+	"Loyalty Program": [
+		{
+			"fieldname": "enable_notifications",
+			"label": "Enable SMS Notifications",
+			"fieldtype": "Check",
+			"insert_after": "expiry_duration",
+			"default": "1",
+			"description": "Send SMS to customers on enrollment, tier upgrade, downgrade, and inactivity warning.",
+			"module": "DressUp",
+		}
 	]
 }
 
