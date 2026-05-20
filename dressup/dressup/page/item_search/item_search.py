@@ -65,7 +65,7 @@ def get_item_details(barcode):
     stock_details = frappe.get_all(
         "Bin",
         filters={"item_code": item_code, "actual_qty": [">", 0]},
-        fields=["warehouse", "actual_qty as qty", "reserved_qty"],
+        fields=["warehouse", "actual_qty as qty", "reserved_qty", "valuation_rate"],
     )
 
     # Reserved qty from live reservations (pending qty), grouped by warehouse.
@@ -97,6 +97,7 @@ def get_item_details(barcode):
         "uom": item.stock_uom,
         "brand": item.brand,
         "item_group": item.item_group,
+        "valuation_rate": item.get("valuation_rate") or 0,
         "reservations": reservations,
         "prices": prices
     }

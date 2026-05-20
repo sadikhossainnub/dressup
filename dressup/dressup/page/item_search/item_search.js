@@ -214,6 +214,10 @@ class ItemSearch {
 										<strong>${data.brand}</strong>
 									</div>
 								` : ''}
+								<div class="col-6 col-sm-4">
+									<small class="text-muted d-block">Standard Rate</small>
+									<strong>${format_number(data.valuation_rate || 0)}</strong>
+								</div>
 							</div>
 
 							<div class="description-section">
@@ -270,6 +274,10 @@ class ItemSearch {
 						<small class="text-muted">Unreserved Qty</small>
 						<strong>${s.unreserved_qty || 0} ${data.uom}</strong>
 					</div>
+					<div class="stock-card-detail">
+						<small class="text-muted">Valuation Rate</small>
+						<strong>${format_number(s.valuation_rate || 0)}</strong>
+					</div>
 				</div>
 			</div>
 		`).join('');
@@ -286,6 +294,7 @@ class ItemSearch {
 								<th class="text-right">Available Qty</th>
 								<th class="text-right">Reserved</th>
 								<th class="text-right">Unreserved Qty</th>
+								<th class="text-right">Valuation Rate</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -295,6 +304,7 @@ class ItemSearch {
 									<td class="text-right font-weight-bold">${s.qty} ${data.uom}</td>
 									<td class="text-right">${s.reserved_qty || 0} ${data.uom}</td>
 									<td class="text-right">${s.unreserved_qty || 0} ${data.uom}</td>
+									<td class="text-right">${format_number(s.valuation_rate || 0)}</td>
 								</tr>
 							`).join('')}
 						</tbody>

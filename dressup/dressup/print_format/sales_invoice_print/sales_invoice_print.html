@@ -1,199 +1,447 @@
 {% set doc = doc %}
+{% set rand_inv_no = range(10000000, 99999999) | random %}
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+  <meta charset="utf-8">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'DM Sans', sans-serif; background: #fff; color: #1a1a1a; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  .inv-wrap { max-width: 780px; margin: 0 auto; border: 1px solid #ddd; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #fff;
+      color: #1a1a1a;
+    }
 
-  /* ── HEADER ── */
-  .header-section { display: block; width: 100%; clear: both; border-bottom: 0.5px solid #000; overflow: hidden; font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #000; }
-  .header-logo { float: left; width: 40%; }
-  .header-logo img { height: 40px; }
-  .header-address { float: right; width: 60%; text-align: right; font-size: 7pt; line-height: 1.1; }
+    .inv-wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      border: 1px solid #ddd;
+    }
 
-  /* ── META ── */
-  .inv-meta { display: table; width: 100%; border-bottom: 1px solid #e5e5e5; }
-  .inv-meta-cell { display: table-cell; width: 50%; padding: 12px 28px; vertical-align: top; }
-  .inv-meta-cell:first-child { border-right: 1px solid #e5e5e5; }
-  .inv-meta-cell:last-child { text-align: right; }
-  .inv-meta-label { font-size: 9.5px; font-weight: 600; letter-spacing: 0.08em; color: #534AB7; text-transform: uppercase; margin-bottom: 3px; }
-  .inv-meta-val { font-size: 13px; font-weight: 600; }
-  .inv-meta-sub { font-size: 11px; color: #666; }
+    /* ── HEADER ── */
+    .header-section {
+      display: block;
+      width: 100%;
+      clear: both;
+      border-bottom: 0.5px solid #000;
+      padding-bottom: 12px;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #000;
+      text-align: center;
+    }
 
-  /* ── TABLE ── */
-  .inv-table-wrap { padding: 0; }
-  .inv-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-  .inv-table thead tr { background: #EEEDFE; }
-  .inv-table thead th { padding: 8px 10px 8px 28px; font-weight: 600; font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: #3C3489; text-align: left; }
-  .inv-table thead th:nth-child(3),
-  .inv-table thead th:nth-child(4),
-  .inv-table thead th:nth-child(5) { text-align: right; padding-right: 28px; }
-  .inv-table tbody tr { border-bottom: 1px solid #f0f0f0; }
-  .inv-table tbody tr:last-child { border-bottom: none; }
-  .inv-table tbody td { padding: 9px 10px 9px 28px; color: #1a1a1a; vertical-align: top; }
-  .inv-table tbody td:nth-child(3),
-  .inv-table tbody td:nth-child(4),
-  .inv-table tbody td:nth-child(5) { text-align: right; padding-right: 28px; }
-  .inv-sl { color: #999; font-size: 11px; }
-  .inv-item-code { font-size: 10px; color: #888; font-family: monospace; }
-  .inv-item-name { font-weight: 500; font-size: 13px; }
+    .header-logo {
+      margin-bottom: 8px;
+    }
 
-  /* ── BOTTOM SPLIT ── */
-  .inv-bottom { display: table; width: 100%; border-top: 1px solid #e5e5e5; }
-  .inv-bottom-left { display: table-cell; width: 48%; padding: 16px 28px; border-right: 1px solid #e5e5e5; vertical-align: top; }
-  .inv-bottom-right { display: table-cell; width: 52%; padding: 16px 28px; vertical-align: top; }
+    .header-logo img {
+      height: 45px;
+    }
 
-  .inv-loyalty-title { font-size: 9.5px; font-weight: 600; letter-spacing: 0.08em; color: #534AB7; text-transform: uppercase; margin-bottom: 8px; }
-  .inv-loyalty-row { display: flex; justify-content: space-between; font-size: 11.5px; padding: 2px 0; color: #444; }
-  .inv-loyalty-row.bold { font-weight: 600; color: #3C3489; }
+    .header-address {
+      font-size: 8pt;
+      line-height: 1.5;
+    }
 
-  .inv-total-row { display: flex; justify-content: space-between; font-size: 12.5px; padding: 3px 0; }
-  .inv-total-row .lbl { color: #666; }
-  .inv-total-net { display: flex; justify-content: space-between; align-items: center; background: #3C3489; border-radius: 6px; padding: 10px 14px; margin: 10px 0 6px; }
-  .inv-total-net .lbl { color: #AFA9EC; font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
-  .inv-total-net .val { color: #fff; font-size: 20px; font-weight: 700; }
-  .inv-paid-row { display: flex; justify-content: space-between; font-size: 12px; padding: 2px 0; }
-  .inv-change { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600; color: #D85A30; padding: 2px 0; }
+    /* ── META ── */
+    .inv-meta {
+      display: table;
+      width: 100%;
+      border-bottom: 1px solid #e5e5e5;
+    }
 
-  /* ── FOOTER ── */
-  .inv-footer { background: #EEEDFE; padding: 14px 28px; border-top: 1px solid #ddd; }
-  .inv-footer p { font-size: 10px; color: #534AB7; line-height: 1.6; margin-bottom: 4px; }
-  .inv-eco { background: #fff; border-left: 3px solid #534AB7; padding: 6px 12px; margin-top: 8px; font-size: 10px; color: #534AB7; border-radius: 0 3px 3px 0; }
-  .inv-footer-contact { display: flex; gap: 24px; justify-content: center; margin-top: 10px; font-size: 10px; color: #7F77DD; }
-  .inv-powered { text-align: center; margin-top: 6px; font-size: 10px; color: #7F77DD; }
-</style>
+    .inv-meta-cell {
+      display: table-cell;
+      width: 50%;
+      padding: 12px 28px;
+      vertical-align: top;
+    }
+
+    .inv-meta-cell:first-child {
+      border-right: 1px solid #e5e5e5;
+    }
+
+    .inv-meta-cell:last-child {
+      text-align: right;
+    }
+
+    .inv-meta-label {
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #534AB7;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .inv-meta-val {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .inv-meta-sub {
+      font-size: 11px;
+      color: #666;
+    }
+
+    /* ── TABLE ── */
+    .inv-table-wrap {
+      padding: 0;
+    }
+
+    .inv-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+
+    .inv-table thead tr {
+      background: #EEEDFE;
+    }
+
+    .inv-table thead th {
+      padding: 8px 10px 8px 28px;
+      font-weight: 600;
+      font-size: 10px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #3C3489;
+      text-align: left;
+    }
+
+    .inv-table thead th:nth-child(3),
+    .inv-table thead th:nth-child(4),
+    .inv-table thead th:nth-child(5),
+    .inv-table thead th:nth-child(6) {
+      text-align: right;
+      padding-right: 28px;
+    }
+
+    .inv-table tbody tr {
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .inv-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .inv-table tbody td {
+      padding: 9px 10px 9px 28px;
+      color: #1a1a1a;
+      vertical-align: top;
+    }
+
+    .inv-table tbody td:nth-child(3),
+    .inv-table tbody td:nth-child(4),
+    .inv-table tbody td:nth-child(5),
+    .inv-table tbody td:nth-child(6) {
+      text-align: right;
+      padding-right: 28px;
+    }
+
+    .inv-sl {
+      color: #999;
+      font-size: 11px;
+    }
+
+    .inv-item-code {
+      font-size: 10px;
+      color: #888;
+      font-family: monospace;
+    }
+
+    .inv-item-name {
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    /* ── BOTTOM SPLIT ── */
+    .inv-bottom {
+      display: table;
+      width: 100%;
+      border-top: 1px solid #e5e5e5;
+    }
+
+    .inv-bottom-left {
+      display: table-cell;
+      width: 48%;
+      padding: 16px 28px;
+      border-right: 1px solid #e5e5e5;
+      vertical-align: top;
+    }
+
+    .inv-bottom-right {
+      display: table-cell;
+      width: 52%;
+      padding: 16px 28px;
+      vertical-align: top;
+    }
+
+    .inv-loyalty-title {
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #534AB7;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .inv-loyalty-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      padding: 2px 0;
+      color: #444;
+    }
+
+    .inv-loyalty-row.bold {
+      font-weight: 600;
+      color: #3C3489;
+    }
+
+    .inv-total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      padding: 3px 0;
+    }
+
+    .inv-total-row .lbl {
+      color: #666;
+    }
+
+    .inv-total-net {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #3C3489;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin: 10px 0 6px;
+    }
+
+    .inv-total-net .lbl {
+      color: #AFA9EC;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .inv-total-net .val {
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .inv-paid-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 2px 0;
+    }
+
+    .inv-change {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #D85A30;
+      padding: 2px 0;
+    }
+
+    /* ── FOOTER ── */
+    .inv-footer {
+      background: #EEEDFE;
+      padding: 14px 28px;
+      border-top: 1px solid #ddd;
+    }
+
+    .inv-footer p {
+      font-size: 10px;
+      color: #534AB7;
+      line-height: 1.6;
+      margin-bottom: 4px;
+    }
+
+    .inv-eco {
+      background: #fff;
+      border-left: 3px solid #534AB7;
+      padding: 6px 12px;
+      margin-top: 8px;
+      font-size: 10px;
+      color: #534AB7;
+      border-radius: 0 3px 3px 0;
+    }
+
+    .inv-footer-contact {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-top: 10px;
+      font-size: 10px;
+      color: #7F77DD;
+    }
+
+    .inv-powered {
+      text-align: center;
+      margin-top: 6px;
+      font-size: 10px;
+      color: #7F77DD;
+    }
+  </style>
 </head>
+
 <body>
-<div class="inv-wrap">
+  <div class="inv-wrap">
 
-  <!-- HEADER -->
-  <div class="header-section">
-    <div class="header-logo">
-      <img src="{{ frappe.utils.get_url() }}/files/Capture.PNG" alt="DressUp">
-    </div>
-    <div class="header-address">
-      House # 5, Road # 6<br>
-      Kollyanpur, Dhaka<br>
-      +8809678247247<br>
-      support@dressup.com.bd<br>
-      dressupbangladesh <i class="fa fa-facebook-square"></i><br>
-      www.dressup.com.bd
-    </div>
-  </div>
-
-  <!-- META -->
-  <div class="inv-meta">
-    <div class="inv-meta-cell">
-      <div class="inv-meta-label">Customer Information</div>
-      <div class="inv-meta-val">{{ doc.customer_name }}</div>
-      <div class="inv-meta-sub">{{ doc.customer or '' }}</div>
-    </div>
-    <div class="inv-meta-cell">
-      <div class="inv-meta-label">Transaction Details</div>
-      <div class="inv-meta-val">Receipt: {{ doc.name }}</div>
-      <div class="inv-meta-sub">
-        Date: {{ doc.posting_date }}
-        {% if doc.posting_time %} · {{ doc.posting_time }}{% endif %}
-        {% if doc.cashier %} · {{ doc.cashier }}{% endif %}
+    <!-- HEADER -->
+    <div class="header-section">
+      <div class="header-left">
+        <div class="header-logo">
+          <img src="{{ frappe.utils.get_url() }}/files/Capture.PNG" alt="DressUp">
+        </div>
+        <div class="header-address">
+          House # 5, Road # 6, Kollyanpur, Dhaka &nbsp;|&nbsp; +8809678247247<br>
+          support@dressup.com.bd &nbsp;|&nbsp; dressupbangladesh <i class="fa fa-facebook-square"></i> &nbsp;|&nbsp; www.dressup.com.bd
+        </div>
+      </div>
+      <div class="header-right">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ doc.name }}" class="header-qr" alt="QR Code">
       </div>
     </div>
-  </div>
 
-  <!-- ITEMS TABLE -->
-  <div class="inv-table-wrap">
-    <table class="inv-table">
-      <thead>
-        <tr>
-          <th style="width:36px;">SL</th>
-          <th>Item Description</th>
-          <th style="width:80px;">Price</th>
-          <th style="width:50px;">Qty</th>
-          <th style="width:90px;">Total (BDT)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in doc.items %}
-        <tr>
-          <td class="inv-sl">{{ loop.index|string.zfill(2) }}</td>
-          <td>
-            <div class="inv-item-code">{{ item.item_code }}</div>
-            <div class="inv-item-name">{{ item.item_name }}</div>
-            {% if item.description and item.description != item.item_name %}
-            <div style="font-size:10px;color:#888;">{{ item.description }}</div>
-            {% endif %}
-          </td>
-          <td>{{ "{:,.2f}".format(item.rate) }}</td>
-          <td>{{ "{:,.2f}".format(item.qty) }}</td>
-          <td>{{ "{:,.2f}".format(item.amount) }}</td>
-        </tr>
+    <!-- META -->
+    <div class="inv-meta">
+      <div class="inv-meta-cell">
+        <div class="inv-meta-label">Customer Information</div>
+        <div class="inv-meta-val">{{ doc.customer_name }}</div>
+        <div class="inv-meta-sub">
+          {% if doc.contact_display %}{{ doc.contact_display }}<br>{% endif %}
+          {{ doc.address_display or doc.customer or '' }}
+        </div>
+      </div>
+      <div class="inv-meta-cell">
+        <div class="inv-meta-label">Transaction Details</div>
+        <div class="inv-meta-val">Invoice No: {{ rand_inv_no }}</div>
+        <div class="inv-meta-sub">
+          Date: {{ doc.posting_date }}
+          {% if doc.posting_time %} · {{ doc.posting_time }}{% endif %}
+          {% if doc.cashier %} · {{ doc.cashier }}{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- ITEMS TABLE -->
+    <div class="inv-table-wrap">
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th style="width:36px;">SL</th>
+            <th>Item Description</th>
+            <th style="width:80px;">Price</th>
+            <th style="width:50px;">Qty</th>
+            <th style="width:70px;">Discount</th>
+            <th style="width:90px;">Total (BDT)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in doc.items %}
+          <tr>
+            <td class="inv-sl">{{ "%02d" % loop.index }}</td>
+            <td>
+              <div class="inv-item-name">
+                {% if item.serial_no %}{{ item.serial_no | replace('\n', ', ') }} - {% elif item.batch_no %}{{ item.batch_no }} - {% endif %}{{ item.item_code }}: {{ item.item_name }}
+              </div>
+              {% if item.description and item.description != item.item_name %}
+              <div style="font-size:10px;color:#888;">{{ item.description }}</div>
+              {% endif %}
+            </td>
+            <td>{{ "{:,.2f}".format(item.rate) }}</td>
+            <td>{{ "{:,.2f}".format(item.qty) }}</td>
+            <td>{{ "{:,.2f}".format(item.discount_amount or 0) }}</td>
+            <td>{{ "{:,.2f}".format(item.amount) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BOTTOM: LOYALTY + TOTALS -->
+    <div class="inv-bottom">
+      <div class="inv-bottom-left">
+        <div class="inv-loyalty-title">Loyalty &amp; Rewards</div>
+        <div class="inv-loyalty-row"><span>Current Invoice Earn Point:</span><span
+            style="color:#534AB7;font-weight:600;">{{ doc.get('loyalty_points') or '—' }}</span></div>
+        <div class="inv-loyalty-row"><span>Total Accumulated Point:</span><span>{{ doc.get('loyalty_point_accumulated')
+            or '—' }}</span></div>
+        <div class="inv-loyalty-row"><span>Total Redeemed Point:</span><span>{{ doc.get('loyalty_points_redeemed') or
+            '—' }}</span></div>
+        <div class="inv-loyalty-row bold"><span>Current Balance Point:</span><span>{{ doc.get('loyalty_point_balance')
+            or '—' }}</span></div>
+      </div>
+      <div class="inv-bottom-right">
+        <div class="inv-total-row">
+          <span class="lbl">Sub Total:</span>
+          <span>{{ "{:,.2f}".format(doc.total) }}</span>
+        </div>
+        <div class="inv-total-row">
+          <span class="lbl">(-) Discount:</span>
+          <span>{{ "{:,.2f}".format(doc.discount_amount or 0) }}</span>
+        </div>
+        <div class="inv-total-row">
+          <span class="lbl">(+) Add VAT:</span>
+          <span>{{ "{:,.2f}".format(doc.total_taxes_and_charges or 0) }}</span>
+        </div>
+        <div class="inv-total-net">
+          <span class="lbl">Net Payable</span>
+          <span class="val">{{ "{:,.2f}".format(doc.grand_total) }}</span>
+        </div>
+        {% for payment in doc.payments %}
+        <div class="inv-paid-row">
+          <span style="color:#666;">Paid ({{ payment.mode_of_payment }}):</span>
+          <span style="font-weight:500;">{{ "{:,.2f}".format(payment.amount) }}</span>
+        </div>
         {% endfor %}
-      </tbody>
-    </table>
-  </div>
+        {% if doc.change_amount and doc.change_amount > 0 %}
+        <div class="inv-change">
+          <span>Change:</span>
+          <span>{{ "{:,.2f}".format(doc.change_amount) }}</span>
+        </div>
+        {% endif %}
+      </div>
+    </div>
 
-  <!-- BOTTOM: LOYALTY + TOTALS -->
-  <div class="inv-bottom">
-    <div class="inv-bottom-left">
-      <div class="inv-loyalty-title">Loyalty &amp; Rewards</div>
-      <div class="inv-loyalty-row"><span>Current Invoice Earn Point:</span><span style="color:#534AB7;font-weight:600;">{{ doc.get('loyalty_points') or '—' }}</span></div>
-      <div class="inv-loyalty-row"><span>Total Accumulated Point:</span><span>{{ doc.get('loyalty_point_accumulated') or '—' }}</span></div>
-      <div class="inv-loyalty-row"><span>Total Redeemed Point:</span><span>{{ doc.get('loyalty_points_redeemed') or '—' }}</span></div>
-      <div class="inv-loyalty-row bold"><span>Current Balance Point:</span><span>{{ doc.get('loyalty_point_balance') or '—' }}</span></div>
+    <!-- FOOTER (fixed at bottom) -->
+    <div style="position: fixed; bottom: 0; left: 0; width: 100%;">
+      <div
+        style="padding: 8px 28px; font-size: 8pt; color: #444; line-height: 1.5; font-family: 'DM Sans', sans-serif;">
+        <p style="margin-bottom: 4px;"><strong>Policies &amp; Terms:</strong> 30-day exchange subject to Aarong policy
+          (once only). Silver jewellery exchangeable at 90% value within 7 days. Non-returnable: innerwear, food,
+          stationery, nose pins, pearl jewellery. No cash refunds; credit notes provided.</p>
+        <p style="margin: 0;"><strong>Eco Bonus:</strong> Bring your own bag and get <strong>Tk 15 cashback</strong> on
+          invoices over Tk 100 (excl. VAT/Dairy).<br>
+          <strong>VAT Info:</strong> 5% Gold/Silver, 10% Wearables, 7.5% Others. No VAT on Plants, Clay, Books, and
+          Jute.
+        </p>
+      </div>
+      <div style="width: 100%; display: flex; height: 15px;">
+        <!-- Left Black Section -->
+        <div style="width: 38%; background-color: #222; margin-right: 2px;"></div>
+        <!-- Right Red Section -->
+        <div style="width: 62%; background-color: #d32f2f;"></div>
+      </div>
     </div>
-    <div class="inv-bottom-right">
-      <div class="inv-total-row">
-        <span class="lbl">Sub Total:</span>
-        <span>{{ "{:,.2f}".format(doc.total) }}</span>
-      </div>
-      <div class="inv-total-row">
-        <span class="lbl">(-) Discount:</span>
-        <span>{{ "{:,.2f}".format(doc.discount_amount or 0) }}</span>
-      </div>
-      <div class="inv-total-row">
-        <span class="lbl">(+) Add VAT:</span>
-        <span>{{ "{:,.2f}".format(doc.total_taxes_and_charges or 0) }}</span>
-      </div>
-      <div class="inv-total-net">
-        <span class="lbl">Net Payable</span>
-        <span class="val">{{ "{:,.2f}".format(doc.grand_total) }}</span>
-      </div>
-      {% for payment in doc.payments %}
-      <div class="inv-paid-row">
-        <span style="color:#666;">Paid ({{ payment.mode_of_payment }}):</span>
-        <span style="font-weight:500;">{{ "{:,.2f}".format(payment.amount) }}</span>
-      </div>
-      {% endfor %}
-      {% if doc.change_amount and doc.change_amount > 0 %}
-      <div class="inv-change">
-        <span>Change:</span>
-        <span>{{ "{:,.2f}".format(doc.change_amount) }}</span>
-      </div>
-      {% endif %}
-    </div>
-  </div>
 
-  <!-- FOOTER (fixed at bottom) -->
-  <div style="position: fixed; bottom: 0; left: 0; width: 100%;">
-    <div style="padding: 8px 28px; font-size: 8pt; color: #444; line-height: 1.5; font-family: 'DM Sans', sans-serif;">
-      <p style="margin-bottom: 4px;"><strong>Policies &amp; Terms:</strong> 30-day exchange subject to Aarong policy (once only). Silver jewellery exchangeable at 90% value within 7 days. Non-returnable: innerwear, food, stationery, nose pins, pearl jewellery. No cash refunds; credit notes provided.</p>
-      <p style="margin: 0;"><strong>Eco Bonus:</strong> Bring your own bag and get <strong>Tk 15 cashback</strong> on invoices over Tk 100 (excl. VAT/Dairy).<br>
-      <strong>VAT Info:</strong> 5% Gold/Silver, 10% Wearables, 7.5% Others. No VAT on Plants, Clay, Books, and Jute.</p>
-    </div>
-    <div style="width: 100%; display: flex; height: 15px;">
-      <!-- Left Black Section -->
-      <div style="width: 38%; background-color: #222; margin-right: 2px;"></div>
-      <!-- Right Red Section -->
-      <div style="width: 62%; background-color: #d32f2f;"></div>
-    </div>
   </div>
-
-</div>
 </body>
-</html>
 
+</html>
