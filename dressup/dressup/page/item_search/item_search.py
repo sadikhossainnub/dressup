@@ -58,6 +58,9 @@ def get_item_details(barcode):
 
     item = frappe.get_doc("Item", item_code)
     
+    # Check permissions
+    has_cost = has_cost_access()
+    
     # Get reservation details
     reservations = get_reservation_details(item_code)
 
@@ -84,9 +87,11 @@ def get_item_details(barcode):
         effective_reserved = live_reserved if live_reserved > 0 else bin_reserved
         stock["reserved_qty"] = effective_reserved
         stock["unreserved_qty"] = (stock.get("qty") or 0) - effective_reserved
+        if not has_cost:
+            stock.pop("valuation_rate", None)
 
     # Get item prices
-    prices = get_item_prices(item_code)
+    prices = get_item_prices(item_code, has_cost)
 
     return {
         "item_code": item.item_code,
@@ -97,13 +102,20 @@ def get_item_details(barcode):
         "uom": item.stock_uom,
         "brand": item.brand,
         "item_group": item.item_group,
-        "valuation_rate": item.get("valuation_rate") or 0,
+        "valuation_rate": item.get("valuation_rate") if has_cost else None,
+        "has_cost_access": has_cost,
         "reservations": reservations,
         "prices": prices
     }
 
 
-def get_item_prices(item_code):
+def has_cost_access():
+    user_roles = [r.lower() for r in frappe.get_roles()]
+    allowed_roles = ["fashion designer", "fashion designer manager", "system manager"]
+    return any(role in user_roles for role in allowed_roles)
+
+
+def get_item_prices(item_code, has_cost):
     """Get all active prices for an item from Item Price doctype."""
     today = frappe.utils.today()
 
@@ -141,6 +153,10 @@ def get_item_prices(item_code):
     prices = []
     for p in price_list:
         price_type = "Selling" if p.selling else ("Buying" if p.buying else "N/A")
+        
+        if price_type == "Buying" and not has_cost:
+            continue
+            
         prices.append({
             "price_list": p.price_list or "",
             "rate": p.price_list_rate or 0,
