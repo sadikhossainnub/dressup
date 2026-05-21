@@ -41,23 +41,6 @@ frappe.ui.form.on('Sketch Specification', {
 			});
 		}
 
-		if (!frm.is_new() && frm.doc.docstatus === 0) {
-			frm.add_custom_button(__('Request for Approval'), function() {
-				frappe.call({
-					method: 'dressup.dressup.doctype.sketch_specification.sketch_specification.trigger_request_for_approval',
-					args: {
-						docname: frm.doc.name
-					},
-					freeze: true,
-					freeze_message: __('Sending Request...'),
-					callback: function(r) {
-						if (!r.exc) {
-							frappe.msgprint(__('Request for Approval sent successfully.'));
-						}
-					}
-				});
-			});
-		}
 		toggle_color_fields(frm);
 		render_image_previews(frm);
 	},

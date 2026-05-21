@@ -28,14 +28,25 @@
 
     /* ── HEADER ── */
     .header-section {
-      display: block;
+      display: table;
       width: 100%;
-      clear: both;
       border-bottom: 0.5px solid #000;
       padding-bottom: 12px;
       font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #000;
-      text-align: center;
+    }
+
+    .header-left {
+      display: table-cell;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .header-right {
+      display: table-cell;
+      text-align: right;
+      vertical-align: middle;
+      width: 100px;
     }
 
     .header-logo {
