@@ -25,6 +25,20 @@
   "bottom_style",
   "sleeve",
   "submission_date",
+  "images_section",
+  "body_front",
+  "body_back",
+  "body_artwork",
+  "column_break_koti",
+  "koti",
+  "koti_artwork",
+  "column_break_bottom",
+  "bottom_front",
+  "bottom_back",
+  "bottom_artwork",
+  "column_break_dupatta",
+  "dupatta",
+  "dupatta_artwork",
   "design_section",
   "column_break_vrud",
   "image",
@@ -1135,6 +1149,73 @@
    "fieldname": "dupatta_note",
    "fieldtype": "Small Text",
    "label": "Dupatta Note"
+  },
+  {
+   "fieldname": "images_section",
+   "fieldtype": "Section Break",
+   "label": "Images"
+  },
+  {
+   "fieldname": "body_front",
+   "fieldtype": "Attach Image",
+   "label": "Body Front"
+  },
+  {
+   "fieldname": "body_back",
+   "fieldtype": "Attach Image",
+   "label": "Body Back"
+  },
+  {
+   "fieldname": "body_artwork",
+   "fieldtype": "Attach Image",
+   "label": "Artwork"
+  },
+  {
+   "fieldname": "column_break_koti",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "koti",
+   "fieldtype": "Attach Image",
+   "label": "Koti"
+  },
+  {
+   "fieldname": "koti_artwork",
+   "fieldtype": "Attach Image",
+   "label": "Artwork"
+  },
+  {
+   "fieldname": "column_break_bottom",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bottom_front",
+   "fieldtype": "Attach Image",
+   "label": "Bottom Front"
+  },
+  {
+   "fieldname": "bottom_back",
+   "fieldtype": "Attach Image",
+   "label": "Bottom Back"
+  },
+  {
+   "fieldname": "bottom_artwork",
+   "fieldtype": "Attach Image",
+   "label": "Artwork"
+  },
+  {
+   "fieldname": "column_break_dupatta",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "dupatta",
+   "fieldtype": "Attach Image",
+   "label": "Dupatta"
+  },
+  {
+   "fieldname": "dupatta_artwork",
+   "fieldtype": "Attach Image",
+   "label": "Artwork"
   }
  ],
  "image_field": "image",
