@@ -138,6 +138,19 @@ class PreProductionSample(Document):
 		"""Validation before submission"""
 		if not self.fabrics and not self.trim_accessories and not self.fabric_dupatta:
 			frappe.throw("Please add at least one fabric, trim/accessory, or dupatta item")
+
+		# Validate actual_quantity in all material tables
+		from frappe.utils import flt
+		for table_field, label in [
+			("fabrics", "Fabrics"),
+			("trim_accessories", "Trim & Accessories"),
+			("fabric_dupatta", "Fabric Dupatta")
+		]:
+			for row in (self.get(table_field) or []):
+				if row.item_code and not flt(row.actual_quantity):
+					frappe.throw(
+						f"Row #{row.idx} in {label}: Actual Quantity is required for item <b>{row.item_code}</b> before submission"
+					)
 		
 		if not self.size_chart_in_inch:
 			frappe.throw("Size chart is required")

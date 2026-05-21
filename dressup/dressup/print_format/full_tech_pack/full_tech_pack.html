@@ -2,6 +2,8 @@
 <thead><tr><td class="page-header-space">
     <div class="page-header">
 <style>
+    @page { margin-bottom: 35px; }
+    .page-num::after { content: counter(page) " of " counter(pages); }
     .header-section {
         display: block;
         width: 100%;
@@ -43,7 +45,8 @@
 </td></tr></thead>
 <tfoot><tr><td class="page-footer-space">
     <div class="page-footer">
-<table style="width: 100%; border-collapse: collapse; height: 15px; margin-top: 10px;">
+<div style="text-align: center; font-size: 7.5px; color: #555; margin-bottom: 3px;">Page <span class="page-num"></span></div>
+<table style="width: 100%; border-collapse: collapse; height: 15px;">
     <tr>
         <td style="width: 38%; background-color: #222; height: 15px; padding: 0; border: none;"></td>
         <td style="width: 2%; padding: 0; border: none;"></td>
@@ -105,7 +108,22 @@
                 <div style="margin-bottom: 2px;">Costing Submit Date: <strong>{{ frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if doc.cost_estimation else '' }}</strong></div>
                 <div style="margin-bottom: 2px;">PPS Submission Date: <strong>{{ frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</strong></div>
                 <div style="margin-bottom: 2px;">Costing Ref: <strong>{{ doc.cost_estimation or '' }}</strong></div>
-                <div style="margin-bottom: 2px;">Workstations: <strong>Cutting, Sewing, Screen Print, Block Print</strong></div>
+                <div style="margin-bottom: 2px;">Workstations: <strong>
+                    {%- if sketch_doc -%}
+                        {%- set workstations = [] -%}
+                        {%- set _ = workstations.append("Cutting") if sketch_doc.cutting else None -%}
+                        {%- set _ = workstations.append("Sewing") if sketch_doc.sewing else None -%}
+                        {%- set _ = workstations.append("Screen Print") if sketch_doc.sp else None -%}
+                        {%- set _ = workstations.append("Block Print") if sketch_doc.bp else None -%}
+                        {%- set _ = workstations.append("Machine Embroidery") if sketch_doc.me else None -%}
+                        {%- set _ = workstations.append("Hand Embroidery") if sketch_doc.hand_embroidery else None -%}
+                        {%- set _ = workstations.append("Hand Work") if sketch_doc.hand_work else None -%}
+                        {%- set _ = workstations.append("Fusing & Bundling") if sketch_doc.fb else None -%}
+                        {%- set _ = workstations.append("Tie & Dye") if sketch_doc.td else None -%}
+                        {%- set _ = workstations.append("Karchupi") if sketch_doc.karchupi else None -%}
+                        {{ workstations | join(", ") }}
+                    {%- endif -%}
+                </strong></div>
             </td>
         </tr>
     </tbody>
