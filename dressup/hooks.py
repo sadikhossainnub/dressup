@@ -99,7 +99,7 @@ jinja = {
 # ------------
 
 # before_install = "dressup.install.before_install"
-after_install = "dressup.setup_custom_fields.execute"
+# after_install = "dressup.install.after_install"
 
 # Uninstallation
 # ------------
@@ -146,8 +146,7 @@ after_install = "dressup.setup_custom_fields.execute"
 # Override standard doctype classes
 
 override_doctype_class = {
-	"Quality Inspection": "dressup.dressup.custom_quality_inspection.CustomQualityInspection",
-	"Sales Invoice": "dressup.dressup.overrides.sales_invoice.CustomSalesInvoice"
+	"Quality Inspection": "dressup.dressup.custom_quality_inspection.CustomQualityInspection"
 }
 
 # Document Events
@@ -167,10 +166,6 @@ doc_events = {
 	},
 	"Pre Production Sample": {
 		"before_cancel": "dressup.utils.linked_cancel.cancel_linked_documents"
-	},
-	"Sales Invoice": {
-		"on_submit": "dressup.dressup.overrides.sales_invoice.on_submit",
-		"on_cancel": "dressup.dressup.overrides.sales_invoice.on_cancel",
 	}
 }
 
@@ -178,12 +173,6 @@ doc_events = {
 # ---------------
 
 scheduler_events = {
-	"daily": [
-		"dressup.dressup.loyalty.tier_manager.run_daily_loyalty_checks"
-	],
-	"monthly": [
-		"dressup.dressup.loyalty.eligibility.run_monthly_eligibility_check"
-	],
 }
 
 # Testing

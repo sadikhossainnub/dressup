@@ -311,11 +311,13 @@
         </div>
         <div class="header-address">
           House # 5, Road # 6, Kollyanpur, Dhaka &nbsp;|&nbsp; +8809678247247<br>
-          support@dressup.com.bd &nbsp;|&nbsp; dressupbangladesh <i class="fa fa-facebook-square"></i> &nbsp;|&nbsp; www.dressup.com.bd
+          support@dressup.com.bd &nbsp;|&nbsp; dressupbangladesh <i class="fa fa-facebook-square"></i> &nbsp;|&nbsp;
+          www.dressup.com.bd
         </div>
       </div>
       <div class="header-right">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ doc.name }}" class="header-qr" alt="QR Code">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ doc.name }}" class="header-qr"
+          alt="QR Code">
       </div>
     </div>
 
@@ -359,7 +361,8 @@
             <td class="inv-sl">{{ "%02d" % loop.index }}</td>
             <td>
               <div class="inv-item-name">
-                {% if item.serial_no %}{{ item.serial_no | replace('\n', ', ') }} - {% elif item.batch_no %}{{ item.batch_no }} - {% endif %}{{ item.item_code }}: {{ item.item_name }}
+                {% if item.serial_no %}{{ item.serial_no | replace('\n', ', ') }} - {% elif item.batch_no %}{{
+                item.batch_no }} - {% endif %}{{ item.item_code }}: {{ item.item_name }}
               </div>
               {% if item.description and item.description != item.item_name %}
               <div style="font-size:10px;color:#888;">{{ item.description }}</div>
