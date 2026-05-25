@@ -15,6 +15,7 @@
   "design_no",
   "session",
   "sewing_finish",
+  "sample_size",
   "column_break_nxfb",
   "start_date",
   "category",
@@ -29,16 +30,20 @@
   "body_front",
   "body_back",
   "body_artwork",
+  "remarks_top",
   "column_break_koti",
   "koti",
   "koti_artwork",
+  "remarks_koti",
   "column_break_bottom",
   "bottom_front",
   "bottom_back",
   "bottom_artwork",
+  "remarks_bottom",
   "column_break_dupatta",
   "dupatta",
   "dupatta_artwork",
+  "remarks_dupatta",
   "design_section",
   "column_break_vrud",
   "image",
@@ -1216,13 +1221,39 @@
    "fieldname": "dupatta_artwork",
    "fieldtype": "Attach Image",
    "label": "Artwork"
+  },
+  {
+   "fieldname": "remarks_top",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "remarks_koti",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "remarks_bottom",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "remarks_dupatta",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "sample_size",
+   "fieldtype": "Select",
+   "label": "Sample Size",
+   "options": "\nXS\nS\nM\nL\nXL\nXXL\n3XL\nFree Size"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-14 17:50:02.613298",
+ "modified": "2026-05-25 16:07:30.074236",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification",

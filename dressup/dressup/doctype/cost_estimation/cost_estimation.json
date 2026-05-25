@@ -68,6 +68,8 @@
   "fusingandpasting",
   "column_break_uglg",
   "transportation",
+  "column_break_others",
+  "others",
   "column_break_svkd",
   "total_finishing",
   "margin_section",
@@ -545,6 +547,15 @@
    "fieldname": "fusingandpasting",
    "fieldtype": "Currency",
    "label": "Fusing & Pasting"
+  },
+  {
+   "fieldname": "others",
+   "fieldtype": "Currency",
+   "label": "Others"
+  },
+  {
+   "fieldname": "column_break_others",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,

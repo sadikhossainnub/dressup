@@ -54,7 +54,8 @@ class CostEstimation(Document):
 			flt(self.wash_iron) +
 			flt(self.qc_packaging) +
 			flt(self.transportation) +
-			flt(self.fusingandpasting)
+			flt(self.fusingandpasting) +
+			flt(self.others)
 		)
 		self.total_finishing = total
 	
@@ -257,6 +258,7 @@ def make_pre_production_sample(source_name, target_doc=None):
 					"qc_packaging": "qc_packaging",
 					"transportation": "transportation",
 					"fusingandpasting": "fusingandpasting",
+					"others": "others",
 					"total_finishing": "total_finishing",
 					# Workstation Charges Estimation
 					"cutting_f": "cutting_f",

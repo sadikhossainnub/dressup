@@ -76,7 +76,8 @@ class PreProductionSample(Document):
 			flt(self.wash_iron) +
 			flt(self.qc_packaging) +
 			flt(self.transportation) +
-			flt(self.fusingandpasting)
+			flt(self.fusingandpasting) +
+			flt(self.others)
 		)
 	
 

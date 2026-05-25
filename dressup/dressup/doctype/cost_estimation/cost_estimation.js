@@ -208,6 +208,24 @@ frappe.ui.form.on("Cost Estimation", {
 				});
 			}, __('Create'));
 		}
+
+		if (!frm.is_new() && frm.doc.docstatus === 0) {
+			frm.add_custom_button(__('Request for Approval'), function () {
+				frappe.call({
+					method: 'dressup.dressup.doctype.cost_estimation.cost_estimation.trigger_request_for_approval',
+					args: {
+						docname: frm.doc.name
+					},
+					freeze: true,
+					freeze_message: __('Sending Request...'),
+					callback: function (r) {
+						if (!r.exc) {
+							frappe.msgprint(__('Request for Approval sent successfully.'));
+						}
+					}
+				});
+			});
+		}
 	},
 	calculate_total_fabric(frm) {
 		let total = 0;
@@ -245,8 +263,9 @@ frappe.ui.form.on("Cost Estimation", {
 	qc_packaging(frm) { frm.trigger("calculate_total_finishing"); },
 	transportation(frm) { frm.trigger("calculate_total_finishing"); },
 	fusingandpasting(frm) { frm.trigger("calculate_total_finishing"); },
+	others(frm) { frm.trigger("calculate_total_finishing"); },
 	calculate_total_finishing(frm) {
-		let total = flt(frm.doc.wash_iron) + flt(frm.doc.qc_packaging) + flt(frm.doc.transportation) + flt(frm.doc.fusingandpasting);
+		let total = flt(frm.doc.wash_iron) + flt(frm.doc.qc_packaging) + flt(frm.doc.transportation) + flt(frm.doc.fusingandpasting) + flt(frm.doc.others);
 		frm.set_value("total_finishing", total);
 		calculate_suggested_selling_prices(frm);
 	},

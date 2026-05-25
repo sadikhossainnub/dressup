@@ -41,9 +41,7 @@
 
   .po-header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding-bottom: 6px;
+    align-items: stretch;
     border-bottom: 2px solid #0f3460;
     margin-bottom: 10px;
   }
@@ -52,7 +50,9 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    width: 65%;
+    width: 60%;
+    padding-right: 15px;
+    padding-bottom: 6px;
   }
 
   .card-label {
@@ -76,7 +76,13 @@
   }
 
   .po-title-block {
+    width: 40%;
     text-align: right;
+    padding-left: 15px;
+    padding-bottom: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .po-label {
@@ -219,6 +225,31 @@
     white-space: nowrap;
   }
 
+  .workflow-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 12px;
+    font-size: 8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 3px;
+    background: #fff3e0;
+    color: #e65100;
+  }
+  .workflow-badge.approved {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  .workflow-badge.rejected {
+    background: #ffebee;
+    color: #c62828;
+  }
+  .workflow-badge.cancelled {
+    background: #f5f5f5;
+    color: #616161;
+  }
+
   @media print {
     body { -webkit-print-color-adjust: exact; }
   }
@@ -277,10 +308,22 @@
                 <div class="card-detail">
                   {% set ship_addr = frappe.get_doc("Address", doc.shipping_address) if doc.shipping_address else None %}
                   {% if ship_addr %}
-                    {{ ship_addr.address_line1 }}, {{ ship_addr.city }}
+                    {{ ship_addr.address_line1 }}{% if ship_addr.address_line2 %}, {{ ship_addr.address_line2 }}{% endif %}<br>
+                    {{ ship_addr.city }}{% if ship_addr.state %}, {{ ship_addr.state }}{% endif %}
                     {% if company_doc.phone_no %} | Tel: {{ company_doc.phone_no }}{% endif %}
-                  {% else %}
-                    {{ doc.shipping_address_display.split('\n')[0] if doc.shipping_address_display else doc.set_warehouse }}
+                  {% elif doc.shipping_address_display %}
+                    {{ doc.shipping_address_display.replace('\n', ', ') | safe }}
+                  {% elif doc.set_warehouse %}
+                    {%- set wh_address_name = frappe.db.get_value("Dynamic Link", {"link_doctype": "Warehouse", "link_name": doc.set_warehouse, "parenttype": "Address"}, "parent") %}
+                    {% if wh_address_name %}
+                      {%- set wh_addr = frappe.get_doc("Address", wh_address_name) %}
+                      <strong>{{ doc.set_warehouse }}</strong><br>
+                      {{ wh_addr.address_line1 }}{% if wh_addr.address_line2 %}, {{ wh_addr.address_line2 }}{% endif %}<br>
+                      {{ wh_addr.city }}{% if wh_addr.state %}, {{ wh_addr.state }}{% endif %}
+                      {% if wh_addr.phone or wh_addr.mobile_no %} | Tel: {{ wh_addr.phone or wh_addr.mobile_no }}{% endif %}
+                    {% else %}
+                      {{ doc.set_warehouse }}
+                    {% endif %}
                   {% endif %}
                 </div>
               </div>
@@ -294,6 +337,13 @@
               {% if doc.schedule_date %}
                 <div class="delivery-date-highlight">
                   Exp. Delivery: {{ frappe.format(doc.schedule_date, "Date") }}
+                </div>
+              {% endif %}
+
+              {% if doc.workflow_state %}
+                {%- set ws_lower = doc.workflow_state | lower %}
+                <div class="workflow-badge{% if 'approved' in ws_lower or 'ordered' in ws_lower %} approved{% elif 'reject' in ws_lower %} rejected{% elif 'cancel' in ws_lower %} cancelled{% endif %}">
+                  {{ doc.workflow_state }}
                 </div>
               {% endif %}
             </div>

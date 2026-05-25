@@ -416,7 +416,7 @@
 
         {% if doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or
         doc.hand_work_estimation or doc.karchupi_f or doc.screen_print_f or doc.block_print_f or doc.tie_dye or
-        doc.wash_iron or doc.qc_packaging or doc.transportation %}
+        doc.wash_iron or doc.qc_packaging or doc.transportation or doc.others %}
         <table
             style="width: 100%; border-collapse: collapse; margin-bottom: 6px; table-layout: fixed; page-break-inside: avoid;">
             <tr>
@@ -513,7 +513,7 @@
                 </td>
                 {% endif %}
 
-                {% if doc.wash_iron or doc.qc_packaging or doc.transportation %}
+                {% if doc.wash_iron or doc.qc_packaging or doc.transportation or doc.others %}
                 <td
                     style="width: {{ '45%' if (doc.cutting_f or doc.sewing_f or doc.machine_embroidery_f or doc.hand_embroidery_f or doc.hand_work_estimation or doc.karchupi_f or doc.screen_print_f or doc.block_print_f or doc.tie_dye) else '100%' }}; vertical-align: top; padding-left: 15px; border: none;">
                     <div class="section">
@@ -544,6 +544,15 @@
                                 <td
                                     style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
                                     {{ frappe.utils.fmt_money(doc.transportation, currency=doc.currency) }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if doc.others %}
+                            <tr>
+                                <td style="padding: 0px 0; border-bottom: 1px solid #eee; line-height: 0.6;">Others
+                                    / অন্যান্য</td>
+                                <td
+                                    style="padding: 0px 0; border-bottom: 1px solid #eee; text-align: right; line-height: 0.6;">
+                                    {{ frappe.utils.fmt_money(doc.others, currency=doc.currency) }}</td>
                             </tr>
                             {% endif %}
                         </table>

@@ -208,6 +208,7 @@ frappe.ui.form.on("Pre Production Sample", {
 	qc_packaging: function(frm) { frm.trigger("calculate_total_finishing"); },
 	transportation: function(frm) { frm.trigger("calculate_total_finishing"); },
 	fusingandpasting: function(frm) { frm.trigger("calculate_total_finishing"); },
+	others: function(frm) { frm.trigger("calculate_total_finishing"); },
 
 	calculate_total_tailoring: function(frm) {
 		let total = flt(frm.doc.cutting_f) + flt(frm.doc.sewing_f) + flt(frm.doc.hand_work_estimation) +
@@ -218,7 +219,7 @@ frappe.ui.form.on("Pre Production Sample", {
 	},
 
 	calculate_total_finishing: function(frm) {
-		let total = flt(frm.doc.wash_iron) + flt(frm.doc.qc_packaging) + flt(frm.doc.transportation) + flt(frm.doc.fusingandpasting);
+		let total = flt(frm.doc.wash_iron) + flt(frm.doc.qc_packaging) + flt(frm.doc.transportation) + flt(frm.doc.fusingandpasting) + flt(frm.doc.others);
 		frm.set_value("total_finishing", total);
 		calculate_suggested_selling_prices(frm);
 	},

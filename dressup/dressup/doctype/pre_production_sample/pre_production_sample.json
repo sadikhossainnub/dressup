@@ -100,6 +100,8 @@
   "fusingandpasting",
   "column_break_uglg",
   "transportation",
+  "column_break_others",
+  "others",
   "column_break_svkd",
   "total_finishing",
   "margin_section",
@@ -966,6 +968,16 @@
    "fieldtype": "Select",
    "label": "Lining",
    "options": "\nYes\nNo"
+  },
+  {
+   "fieldname": "others",
+   "fieldtype": "Currency",
+   "label": "Others",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_others",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,

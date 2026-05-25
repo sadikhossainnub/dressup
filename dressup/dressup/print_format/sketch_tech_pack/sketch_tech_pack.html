@@ -2,9 +2,12 @@
     @media print { @page { size: A4 landscape; margin: 6mm; } }
     * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     body, table, td, th, div, span { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
-    .page-wrapper { width: 100%; border-collapse: collapse; }
-    .page-header-space { height: 78px; }
-    .page-footer-space { height: 26px; }
+    .page-wrapper { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .page-wrapper > thead { display: table-header-group; }
+    .page-wrapper > tfoot { display: table-footer-group; }
+    .page-wrapper > tbody { display: table-row-group; }
+    .page-header-space { height: 125px; padding: 0; border: none; }
+    .page-footer-space { height: 26px; padding: 0; border: none; }
     .page-header { position: fixed; top: 0; width: 100%; }
     .page-footer { position: fixed; bottom: 0; width: 100%; }
 
@@ -14,7 +17,7 @@
     .info-grid .lbl { font-weight: normal; color: #222; width: 80px; }
     .info-grid .val { font-weight: normal; color: #000; }
     .info-grid .logo-cell { border: 0.5px solid #555; text-align: center; vertical-align: middle; padding: 3px; width: 110px; }
-    .info-grid .logo-cell img { height: 45px; }
+    .info-grid .logo-cell img { max-width: 100%; max-height: 45px; object-fit: contain; display: block; margin: 0 auto; }
 
     /* Section Title Bar */
     .stb { font-size: 8.5px; font-weight: bold; text-transform: uppercase; padding: 2px 5px;
@@ -55,12 +58,13 @@
     .ft-pg { text-align: center; width: 55px; }
 </style>
 
-{%- set has_comp = doc.additional_images and doc.additional_images|length >= 3 -%}
+{%- set has_bottom_sketches = doc.bottom_front or doc.bottom_back -%}
 {%- set art_imgs = [] -%}
-{%- if doc.additional_images and doc.additional_images|length > 3 -%}
-    {%- for ai in doc.additional_images[3:] -%}
-        {%- set _ = art_imgs.append(ai) -%}
-    {%- endfor -%}
+{%- if doc.body_artwork -%}
+    {%- set _ = art_imgs.append({'image': doc.body_artwork, 'description': 'BODY ARTWORK'}) -%}
+{%- endif -%}
+{%- if doc.bottom_artwork -%}
+    {%- set _ = art_imgs.append({'image': doc.bottom_artwork, 'description': 'BOTTOM ARTWORK'}) -%}
 {%- endif -%}
 {%- set mc_list = frappe.get_all("Measurement Chart", filters={"style_no": doc.design_no}, limit=1) -%}
 {%- set mc_doc = frappe.get_doc("Measurement Chart", mc_list[0].name) if mc_list else None -%}
@@ -74,6 +78,7 @@
 <table class="page-wrapper">
 <!-- ═══════════ REPEATING HEADER ═══════════ -->
 <thead><tr><td class="page-header-space">
+<div style="height: 125px;"></div>
 <div class="page-header">
 <table class="info-grid">
 <tr>
@@ -103,6 +108,7 @@
 
 <!-- ═══════════ REPEATING FOOTER ═══════════ -->
 <tfoot><tr><td class="page-footer-space">
+<div style="height: 26px;"></div>
 <div class="page-footer">
 <table class="ft-bar">
 <tr>
@@ -124,8 +130,8 @@
 <tr>
     <td class="img-box" style="width:39%;height:460px;">
         <div class="img-cap">Front Sketch</div>
-        {% if doc.image %}
-        <img src="{{ frappe.utils.get_url(doc.image) }}">
+        {% if doc.body_front %}
+        <img src="{{ frappe.utils.get_url(doc.body_front) }}">
         {% else %}
         <div style="padding:150px 0;color:#ccc;font-size:11px;">FRONT SKETCH</div>
         {% endif %}
@@ -133,8 +139,8 @@
     <td style="width:1%;border:none;"></td>
     <td class="img-box" style="width:39%;height:460px;">
         <div class="img-cap">Back Sketch</div>
-        {% if doc.additional_images and doc.additional_images|length > 0 and doc.additional_images[0].image %}
-        <img src="{{ frappe.utils.get_url(doc.additional_images[0].image) }}">
+        {% if doc.body_back %}
+        <img src="{{ frappe.utils.get_url(doc.body_back) }}">
         {% else %}
         <div style="padding:150px 0;color:#ccc;font-size:11px;">BACK SKETCH</div>
         {% endif %}
@@ -153,26 +159,32 @@
 </table>
 <div class="rem-box"><strong>Remarks:</strong> {{ doc.text_editor_noaa or '' }}</div>
 
-{% if has_comp or art_imgs or mc_doc %}
+{% if has_bottom_sketches or art_imgs or mc_doc %}
 <div style="page-break-after:always;"></div>
 {% endif %}
 
 <!-- ╔══════════════════════════════════════╗ -->
 <!-- ║  PAGE 2: COMPONENT DETAILS (2 img)  ║ -->
 <!-- ╚══════════════════════════════════════╝ -->
-{% if has_comp %}
+{% if has_bottom_sketches %}
 <div class="stb">COMPONENT DETAILS</div>
 <table style="width:100%;border-collapse:collapse;table-layout:fixed;margin-top:1px;">
 <tr>
     <td class="img-box" style="width:49.5%;height:500px;">
-        {% if doc.additional_images[1].image %}
-        <img src="{{ frappe.utils.get_url(doc.additional_images[1].image) }}">
+        <div class="img-cap">Bottom Front</div>
+        {% if doc.bottom_front %}
+        <img src="{{ frappe.utils.get_url(doc.bottom_front) }}">
+        {% else %}
+        <div style="padding:150px 0;color:#ccc;font-size:11px;">BOTTOM FRONT</div>
         {% endif %}
     </td>
     <td style="width:1%;border:none;"></td>
     <td class="img-box" style="width:49.5%;height:500px;">
-        {% if doc.additional_images[2].image %}
-        <img src="{{ frappe.utils.get_url(doc.additional_images[2].image) }}">
+        <div class="img-cap">Bottom Back</div>
+        {% if doc.bottom_back %}
+        <img src="{{ frappe.utils.get_url(doc.bottom_back) }}">
+        {% else %}
+        <div style="padding:150px 0;color:#ccc;font-size:11px;">BOTTOM BACK</div>
         {% endif %}
     </td>
 </tr>
@@ -187,20 +199,26 @@
 <tr>
     <td class="img-box" style="width:33%;height:490px;">
         <div class="img-cap">Front Sketch</div>
-        {% if doc.image %}
-        <img src="{{ frappe.utils.get_url(doc.image) }}">
+        {% if doc.body_front %}
+        <img src="{{ frappe.utils.get_url(doc.body_front) }}">
         {% endif %}
     </td>
     <td style="width:0.5%;border:none;"></td>
     <td class="img-box" style="width:33%;height:490px;">
-        {% if doc.additional_images[1].image %}
-        <img src="{{ frappe.utils.get_url(doc.additional_images[1].image) }}">
+        <div class="img-cap">Bottom Front</div>
+        {% if doc.bottom_front %}
+        <img src="{{ frappe.utils.get_url(doc.bottom_front) }}">
+        {% else %}
+        <div style="padding:150px 0;color:#ccc;font-size:11px;">BOTTOM FRONT</div>
         {% endif %}
     </td>
     <td style="width:0.5%;border:none;"></td>
     <td class="img-box" style="width:33%;height:490px;">
-        {% if doc.additional_images[2].image %}
-        <img src="{{ frappe.utils.get_url(doc.additional_images[2].image) }}">
+        <div class="img-cap">Bottom Back</div>
+        {% if doc.bottom_back %}
+        <img src="{{ frappe.utils.get_url(doc.bottom_back) }}">
+        {% else %}
+        <div style="padding:150px 0;color:#ccc;font-size:11px;">BOTTOM BACK</div>
         {% endif %}
     </td>
 </tr>
