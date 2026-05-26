@@ -27,23 +27,7 @@
   "sleeve",
   "submission_date",
   "images_section",
-  "body_front",
-  "body_back",
-  "body_artwork",
-  "remarks_top",
-  "column_break_koti",
-  "koti",
-  "koti_artwork",
-  "remarks_koti",
-  "column_break_bottom",
-  "bottom_front",
-  "bottom_back",
-  "bottom_artwork",
-  "remarks_bottom",
-  "column_break_dupatta",
-  "dupatta",
-  "dupatta_artwork",
-  "remarks_dupatta",
+  "table_jtfk",
   "design_section",
   "column_break_vrud",
   "image",
@@ -1161,99 +1145,22 @@
    "label": "Images"
   },
   {
-   "fieldname": "body_front",
-   "fieldtype": "Attach Image",
-   "label": "Body Front"
-  },
-  {
-   "fieldname": "body_back",
-   "fieldtype": "Attach Image",
-   "label": "Body Back"
-  },
-  {
-   "fieldname": "body_artwork",
-   "fieldtype": "Attach Image",
-   "label": "Artwork"
-  },
-  {
-   "fieldname": "column_break_koti",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "koti",
-   "fieldtype": "Attach Image",
-   "label": "Koti"
-  },
-  {
-   "fieldname": "koti_artwork",
-   "fieldtype": "Attach Image",
-   "label": "Artwork"
-  },
-  {
-   "fieldname": "column_break_bottom",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "bottom_front",
-   "fieldtype": "Attach Image",
-   "label": "Bottom Front"
-  },
-  {
-   "fieldname": "bottom_back",
-   "fieldtype": "Attach Image",
-   "label": "Bottom Back"
-  },
-  {
-   "fieldname": "bottom_artwork",
-   "fieldtype": "Attach Image",
-   "label": "Artwork"
-  },
-  {
-   "fieldname": "column_break_dupatta",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "dupatta",
-   "fieldtype": "Attach Image",
-   "label": "Dupatta"
-  },
-  {
-   "fieldname": "dupatta_artwork",
-   "fieldtype": "Attach Image",
-   "label": "Artwork"
-  },
-  {
-   "fieldname": "remarks_top",
-   "fieldtype": "Small Text",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "remarks_koti",
-   "fieldtype": "Small Text",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "remarks_bottom",
-   "fieldtype": "Small Text",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "remarks_dupatta",
-   "fieldtype": "Small Text",
-   "label": "Remarks"
-  },
-  {
    "fieldname": "sample_size",
    "fieldtype": "Select",
    "label": "Sample Size",
    "options": "\nXS\nS\nM\nL\nXL\nXXL\n3XL\nFree Size"
+  },
+  {
+   "fieldname": "table_jtfk",
+   "fieldtype": "Table",
+   "options": "Sketch TP Image"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-25 16:07:30.074236",
+ "modified": "2026-05-26 08:20:52.694598",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification",
