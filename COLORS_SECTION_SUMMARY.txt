@@ -1,0 +1,141 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║              COLORS SECTION - FIELD SUMMARY                               ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+SECTION LOCATION
+═══════════════════════════════════════════════════════════════════════════
+📍 Position: Images Section এর নিচে
+📍 Section Name: colors_section
+📍 Section Label: Colors
+
+FIELDS IN COLORS SECTION (16 Total)
+═══════════════════════════════════════════════════════════════════════════
+
+1️⃣  COLOR UNITS (Colorways Count)
+    Field: color_units
+    Type: Select
+    Options: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    Purpose: কতটি রঙ ব্যবহার করবেন তা নির্বাচন করুন
+
+2️⃣  COLOR SELECTION (10 Colors)
+    ├─ color (Color 1)
+    ├─ color_2 (Color 2)
+    ├─ color_3 (Color 3)
+    ├─ color_4 (Color 4)
+    ├─ color_5 (Color 5)
+    ├─ color_6 (Color 6)
+    ├─ color_7 (Color 7)
+    ├─ color_8 (Color 8)
+    ├─ color_9 (Color 9)
+    └─ color_10 (Color 10)
+    
+    Type: Color (Hex Color Picker)
+    Purpose: প্রতিটি রঙ নির্বাচন করুন
+
+3️⃣  COLOR DESCRIPTION
+    Field: color_description
+    Type: Small Text
+    Purpose: রঙের নাম/বর্ণনা লিখুন (যেমন: Navy Blue, Maroon)
+
+4️⃣  ARTWORK COLOR SELECTION (By Garment Part)
+    ├─ body_artwork_color (Body Artwork Color)
+    ├─ koti_artwork_color (Koti Artwork Color)
+    ├─ bottom_artwork_color (Bottom Artwork Color)
+    └─ dupatta_artwork_color (Dupatta Artwork Color)
+    
+    Type: Select (1-10)
+    Purpose: প্রতিটি garment part এর জন্য কোন রঙে আর্টওয়ার্ক প্রিন্ট করবেন
+
+═══════════════════════════════════════════════════════════════════════════
+
+FIELD ORGANIZATION
+═══════════════════════════════════════════════════════════════════════════
+
+┌─ COLORS SECTION ─────────────────────────────────────────────────────┐
+│                                                                       │
+│  Color Units: [Select 1-10]                                          │
+│                                                                       │
+│  ┌─ Color Selection (2 Columns) ─────────────────────────────────┐  │
+│  │                                                               │  │
+│  │  Color 1: [Color Picker]    Color 6: [Color Picker]          │  │
+│  │  Color 2: [Color Picker]    Color 7: [Color Picker]          │  │
+│  │  Color 3: [Color Picker]    Color 8: [Color Picker]          │  │
+│  │  Color 4: [Color Picker]    Color 9: [Color Picker]          │  │
+│  │  Color 5: [Color Picker]    Color 10: [Color Picker]         │  │
+│  │                                                               │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                                                                       │
+│  Color Description: [Text Area]                                      │
+│                                                                       │
+│  ┌─ Artwork Color Selection (4 Columns) ──────────────────────────┐ │
+│  │                                                               │ │
+│  │  Body Artwork Color: [Select 1-10]                           │ │
+│  │  Koti Artwork Color: [Select 1-10]                           │ │
+│  │  Bottom Artwork Color: [Select 1-10]                         │ │
+│  │  Dupatta Artwork Color: [Select 1-10]                        │ │
+│  │                                                               │ │
+│  └───────────────────────────────────────────────────────────────┘ │
+│                                                                       │
+└───────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+
+FIELD TYPES BREAKDOWN
+═══════════════════════════════════════════════════════════════════════════
+
+Select Fields (5):
+  • color_units
+  • body_artwork_color
+  • koti_artwork_color
+  • bottom_artwork_color
+  • dupatta_artwork_color
+
+Color Fields (10):
+  • color, color_2, color_3, color_4, color_5
+  • color_6, color_7, color_8, color_9, color_10
+
+Text Fields (1):
+  • color_description (Small Text)
+
+═══════════════════════════════════════════════════════════════════════════
+
+IMPROVEMENTS MADE
+═══════════════════════════════════════════════════════════════════════════
+
+✅ Organized colors under dedicated "Colors" section
+✅ Moved from scattered fields to logical grouping
+✅ Added proper labels to all color fields
+✅ Added artwork color selection by garment part
+✅ Improved UI layout with column breaks
+✅ Better field organization (2-column layout for colors)
+✅ Clear separation between color selection and artwork color
+
+═══════════════════════════════════════════════════════════════════════════
+
+REMOVED FIELDS (Old Structure)
+═══════════════════════════════════════════════════════════════════════════
+
+❌ Removed cryptic field names:
+   • data_xmgl, data_ryzm, data_muzc, data_lfwb
+   • data_hnjh, data_zsdd, data_uxrz, data_mnat
+   • data_wptw, data_znsh
+
+❌ Removed old section breaks:
+   • section_break_fulh
+   • section_break_qgzt
+   • section_break_snwy
+   • column_break_oqxe
+   • column_break_kzbm
+
+═══════════════════════════════════════════════════════════════════════════
+
+NEXT STEPS
+═══════════════════════════════════════════════════════════════════════════
+
+1. Update JavaScript toggle_color_fields() function to work with new field names
+2. Update print format to use new color field names
+3. Test color visibility based on color_units selection
+4. Verify artwork color selection works correctly
+5. Update any reports/queries that reference old data_* fields
+
+═══════════════════════════════════════════════════════════════════════════

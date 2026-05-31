@@ -28,6 +28,22 @@
   "submission_date",
   "images_section",
   "table_jtfk",
+  "colors_section",
+  "body_artwork_color",
+  "body_artwork_color_1",
+  "body_artwork_color_2",
+  "body_artwork_color_3",
+  "body_artwork_color_4",
+  "body_artwork_color_5",
+  "body_artwork_color_6",
+  "body_artwork_color_7",
+  "body_artwork_color_8",
+  "body_artwork_color_9",
+  "body_artwork_color_10",
+  "column_break_pspl",
+  "koti_artwork_color",
+  "bottom_artwork_color",
+  "dupatta_artwork_color",
   "design_section",
   "column_break_vrud",
   "image",
@@ -75,8 +91,6 @@
   "data_wptw",
   "color_10",
   "data_znsh",
-  "section_break_snwy",
-  "color_description",
   "workstation_screen_print",
   "pigments_dye",
   "column_break_qhgw",
@@ -989,11 +1003,6 @@
    "label": "Color"
   },
   {
-   "fieldname": "color_description",
-   "fieldtype": "Small Text",
-   "label": "Color Description"
-  },
-  {
    "fieldname": "section_break_fulh",
    "fieldtype": "Section Break"
   },
@@ -1051,10 +1060,6 @@
    "fieldname": "color_10",
    "fieldtype": "Color",
    "label": "Color 10"
-  },
-  {
-   "fieldname": "section_break_snwy",
-   "fieldtype": "Section Break"
   },
   {
    "fieldname": "data_xmgl",
@@ -1154,13 +1159,162 @@
    "fieldname": "table_jtfk",
    "fieldtype": "Table",
    "options": "Sketch TP Image"
+  },
+  {
+   "fieldname": "colors_section",
+   "fieldtype": "Section Break",
+   "label": "Colors"
+  },
+  {
+   "fieldname": "color_units",
+   "fieldtype": "Select",
+   "label": "Color Units",
+   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Color",
+   "label": "Color"
+  },
+  {
+   "fieldname": "color_2",
+   "fieldtype": "Color",
+   "label": "Color 2"
+  },
+  {
+   "fieldname": "color_3",
+   "fieldtype": "Color",
+   "label": "Color 3"
+  },
+  {
+   "fieldname": "color_4",
+   "fieldtype": "Color",
+   "label": "Color 4"
+  },
+  {
+   "fieldname": "color_5",
+   "fieldtype": "Color",
+   "label": "Color 5"
+  },
+  {
+   "fieldname": "color_6",
+   "fieldtype": "Color",
+   "label": "Color 6"
+  },
+  {
+   "fieldname": "color_7",
+   "fieldtype": "Color",
+   "label": "Color 7"
+  },
+  {
+   "fieldname": "color_8",
+   "fieldtype": "Color",
+   "label": "Color 8"
+  },
+  {
+   "fieldname": "color_9",
+   "fieldtype": "Color",
+   "label": "Color 9"
+  },
+  {
+   "fieldname": "color_10",
+   "fieldtype": "Color",
+   "label": "Color 10"
+  },
+  {
+   "fieldname": "body_artwork_color",
+   "fieldtype": "Select",
+   "label": "Body Artwork Color",
+   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
+  },
+  {
+   "depends_on": "eval:doc.body_artwork_color >= 1",
+   "fieldname": "body_artwork_color_1",
+   "fieldtype": "Color",
+   "label": "Body Artwork Color 1"
+  },
+  {
+   "depends_on": "eval:doc.body_artwork_color >= 2",
+   "fieldname": "body_artwork_color_2",
+   "fieldtype": "Color",
+   "label": "Body Artwork Color 2"
+  },
+  {
+   "depends_on": "eval:doc.body_artwork_color >= 3",
+   "fieldname": "body_artwork_color_3",
+   "fieldtype": "Color",
+   "label": "Body Artwork Color 3"
+  },
+  {
+   "depends_on": "eval:doc.body_artwork_color >= 4",
+   "fieldname": "body_artwork_color_4",
+   "fieldtype": "Color",
+   "label": "Body Artwork Color 4"
+  },
+  {
+   "depends_on": "eval:doc.body_artwork_color >= 5",
+   "fieldname": "body_artwork_color_5",
+   "fieldtype": "Color",
+   "label": "Body Artwork Color 5"
+  },
+  {
+   "depends_on": "eval:doc.body_artwork_color >= 6",
+   "fieldname": "body_artwork_color_6",
+   "fieldtype": "Color",
+   "label": "Body Artwork Color 6"
+  },
+  {
+   "depends_on": "eval:doc.body_artwork_color >= 7",
+   "fieldname": "body_artwork_color_7",
+   "fieldtype": "Color",
+   "label": "Body Artwork Color 7"
+  },
+  {
+   "depends_on": "eval:doc.body_artwork_color >= 8",
+   "fieldname": "body_artwork_color_8",
+   "fieldtype": "Color",
+   "label": "Body Artwork Color 8"
+  },
+  {
+   "depends_on": "eval:doc.body_artwork_color >= 9",
+   "fieldname": "body_artwork_color_9",
+   "fieldtype": "Color",
+   "label": "Body Artwork Color 9"
+  },
+  {
+   "depends_on": "eval:doc.body_artwork_color >= 10",
+   "fieldname": "body_artwork_color_10",
+   "fieldtype": "Color",
+   "label": "Body Artwork Color 10"
+  },
+  {
+   "fieldname": "koti_artwork_color",
+   "fieldtype": "Select",
+   "label": "Koti Artwork Color",
+   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
+  },
+  {
+   "fieldname": "bottom_artwork_color",
+   "fieldtype": "Select",
+   "label": "Bottom Artwork Color",
+   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
+  },
+  {
+   "fieldname": "dupatta_artwork_color",
+   "fieldtype": "Select",
+   "label": "Dupatta Artwork Color",
+   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
+  },
+  {
+   "fieldname": "column_break_pspl",
+   "fieldtype": "Column Break"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-26 08:20:52.694598",
+ "modified": "2026-05-30 18:26:59.660404",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification",
