@@ -80,18 +80,35 @@
 {%- set art_imgs = [] -%}
 {%- for row in doc.table_jtfk -%}
     {%- if row.image and ('Artwork' in row.name1 or 'artwork' in row.name1.lower()) -%}
-        {%- set _ = art_imgs.append({'image': row.image, 'description': row.name1.upper(), 'remarks': row.remarks}) -%}
+        {%- if 'Top' in row.name1 or 'Body' in row.name1 -%}
+            {%- set art_type = 'body' -%}
+        {%- elif 'Koti' in row.name1 -%}
+            {%- set art_type = 'koti' -%}
+        {%- elif 'Bottom' in row.name1 -%}
+            {%- set art_type = 'bottom' -%}
+        {%- elif 'Dupatta' in row.name1 -%}
+            {%- set art_type = 'dupatta' -%}
+        {%- else -%}
+            {%- set art_type = 'body' -%}
+        {%- endif -%}
+        {%- set _ = art_imgs.append({'image': row.image, 'description': row.name1.upper(), 'remarks': row.remarks, 'art_type': art_type}) -%}
     {%- endif -%}
 {%- endfor -%}
 
 {%- set mc_list = frappe.get_all("Measurement Chart", filters={"style_no": doc.design_no}, limit=1) -%}
 {%- set mc_doc = frappe.get_doc("Measurement Chart", mc_list[0].name) if mc_list else None -%}
-{%- set color_pairs = [
-    ('color', 'data_xmgl'), ('color_2', 'data_ryzm'), ('color_3', 'data_muzc'),
-    ('color_4', 'data_lfwb'), ('color_5', 'data_hnjh'), ('color_6', 'data_zsdd'),
-    ('color_7', 'data_uxrz'), ('color_8', 'data_mnat'), ('color_9', 'data_wptw'),
-    ('color_10', 'data_znsh')
-] -%}
+
+{%- set body_color_fields = ['body_artwork_color_1','body_artwork_color_2','body_artwork_color_3','body_artwork_color_4','body_artwork_color_5','body_artwork_color_6','body_artwork_color_7','body_artwork_color_8','body_artwork_color_9','body_artwork_color_10'] -%}
+{%- set koti_color_fields = ['koti_artwork_color_1','koti_artwork_color_2','koti_artwork_color_3','koti_artwork_color_4','koti_artwork_color_5','koti_artwork_color_6','koti_artwork_color_7','koti_artwork_color_8','koti_artwork_color_9','koti_artwork_color_10'] -%}
+{%- set bottom_color_fields = ['bottom_artwork_color_1','bottom_artwork_color_2','bottom_artwork_color_3','bottom_artwork_color_4','bottom_artwork_color_5','bottom_artwork_color_6','bottom_artwork_color_7','bottom_artwork_color_8','bottom_artwork_color_9','bottom_artwork_color_10'] -%}
+{%- set dupatta_color_fields = ['dupatta_artwork_color_1','dupatta_artwork_color_2','dupatta_artwork_color_3','dupatta_artwork_color_4','dupatta_artwork_color_5','dupatta_artwork_color_6','dupatta_artwork_color_7','dupatta_artwork_color_8','dupatta_artwork_color_9','dupatta_artwork_color_10'] -%}
+
+{%- set artwork_colors = {
+    'body': body_color_fields,
+    'koti': koti_color_fields,
+    'bottom': bottom_color_fields,
+    'dupatta': dupatta_color_fields
+} -%}
 
 <table class="page-wrapper">
 <!-- ═══════════ REPEATING HEADER ═══════════ -->
@@ -364,11 +381,12 @@
     <!-- Print Colors (right ~27%) -->
     <td style="width:27%;vertical-align:top;padding:0 0 0 5px;border:none;">
         <div style="margin-top:5px;">
-        {% for cf, df in color_pairs %}
+        {%- set color_field_list = artwork_colors.get(art_img.art_type, body_color_fields) -%}
+        {% for cf in color_field_list %}
             {% if doc.get(cf) %}
             <div class="pc-box">
                 <div class="pc-swatch" style="background-color:{{ doc.get(cf) }};"></div>
-                <div class="pc-name">{{ doc.get(df) or doc.get(cf) }}</div>
+                <div class="pc-name">{{ doc.get(cf) }} <span style="font-size:7px;color:#666;">(Color {{ loop.index }})</span></div>
             </div>
             {% endif %}
         {% endfor %}

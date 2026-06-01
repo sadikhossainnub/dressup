@@ -42,8 +42,40 @@
   "body_artwork_color_10",
   "column_break_pspl",
   "koti_artwork_color",
+  "koti_artwork_color_1",
+  "koti_artwork_color_2",
+  "koti_artwork_color_3",
+  "koti_artwork_color_4",
+  "koti_artwork_color_5",
+  "koti_artwork_color_6",
+  "koti_artwork_color_7",
+  "koti_artwork_color_8",
+  "koti_artwork_color_9",
+  "koti_artwork_color_10",
+  "column_break_kurv",
   "bottom_artwork_color",
+  "bottom_artwork_color_1",
+  "bottom_artwork_color_2",
+  "bottom_artwork_color_3",
+  "bottom_artwork_color_4",
+  "bottom_artwork_color_5",
+  "bottom_artwork_color_6",
+  "bottom_artwork_color_7",
+  "bottom_artwork_color_8",
+  "bottom_artwork_color_9",
+  "bottom_artwork_color_10",
+  "column_break_igpx",
   "dupatta_artwork_color",
+  "dupatta_artwork_color_1",
+  "dupatta_artwork_color_2",
+  "dupatta_artwork_color_3",
+  "dupatta_artwork_color_4",
+  "dupatta_artwork_color_5",
+  "dupatta_artwork_color_6",
+  "dupatta_artwork_color_7",
+  "dupatta_artwork_color_8",
+  "dupatta_artwork_color_9",
+  "dupatta_artwork_color_10",
   "design_section",
   "column_break_vrud",
   "image",
@@ -1308,13 +1340,201 @@
   {
    "fieldname": "column_break_pspl",
    "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.koti_artwork_color >= 1",
+   "fieldname": "koti_artwork_color_1",
+   "fieldtype": "Color",
+   "label": "Koti Artwork Color 1"
+  },
+  {
+   "depends_on": "eval:doc.koti_artwork_color >= 2",
+   "fieldname": "koti_artwork_color_2",
+   "fieldtype": "Color",
+   "label": "Koti Artwork Color 2"
+  },
+  {
+   "depends_on": "eval:doc.koti_artwork_color >= 3",
+   "fieldname": "koti_artwork_color_3",
+   "fieldtype": "Color",
+   "label": "Koti Artwork Color 3"
+  },
+  {
+   "depends_on": "eval:doc.koti_artwork_color >= 4",
+   "fieldname": "koti_artwork_color_4",
+   "fieldtype": "Color",
+   "label": "Koti Artwork Color 4"
+  },
+  {
+   "depends_on": "eval:doc.koti_artwork_color >= 5",
+   "fieldname": "koti_artwork_color_5",
+   "fieldtype": "Color",
+   "label": "Koti Artwork Color 5"
+  },
+  {
+   "depends_on": "eval:doc.koti_artwork_color >= 6",
+   "fieldname": "koti_artwork_color_6",
+   "fieldtype": "Color",
+   "label": "Koti Artwork Color 6"
+  },
+  {
+   "depends_on": "eval:doc.koti_artwork_color >= 7",
+   "fieldname": "koti_artwork_color_7",
+   "fieldtype": "Color",
+   "label": "Koti Artwork Color 7"
+  },
+  {
+   "depends_on": "eval:doc.koti_artwork_color >= 8",
+   "fieldname": "koti_artwork_color_8",
+   "fieldtype": "Color",
+   "label": "Koti Artwork Color 8"
+  },
+  {
+   "depends_on": "eval:doc.koti_artwork_color >= 9",
+   "fieldname": "koti_artwork_color_9",
+   "fieldtype": "Color",
+   "label": "Koti Artwork Color 9"
+  },
+  {
+   "depends_on": "eval:doc.koti_artwork_color >= 10",
+   "fieldname": "koti_artwork_color_10",
+   "fieldtype": "Color",
+   "label": "Koti Artwork Color 10"
+  },
+  {
+   "fieldname": "column_break_kurv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.bottom_artwork_color >= 1",
+   "fieldname": "bottom_artwork_color_1",
+   "fieldtype": "Color",
+   "label": "Bottom Artwork Color 1"
+  },
+  {
+   "depends_on": "eval:doc.bottom_artwork_color >= 2",
+   "fieldname": "bottom_artwork_color_2",
+   "fieldtype": "Color",
+   "label": "Bottom Artwork Color 2"
+  },
+  {
+   "depends_on": "eval:doc.bottom_artwork_color >= 3",
+   "fieldname": "bottom_artwork_color_3",
+   "fieldtype": "Color",
+   "label": "Bottom Artwork Color 3"
+  },
+  {
+   "depends_on": "eval:doc.bottom_artwork_color >= 4",
+   "fieldname": "bottom_artwork_color_4",
+   "fieldtype": "Color",
+   "label": "Bottom Artwork Color 4"
+  },
+  {
+   "depends_on": "eval:doc.bottom_artwork_color >= 5",
+   "fieldname": "bottom_artwork_color_5",
+   "fieldtype": "Color",
+   "label": "Bottom Artwork Color 5"
+  },
+  {
+   "depends_on": "eval:doc.bottom_artwork_color >= 6",
+   "fieldname": "bottom_artwork_color_6",
+   "fieldtype": "Color",
+   "label": "Bottom Artwork Color 6"
+  },
+  {
+   "depends_on": "eval:doc.bottom_artwork_color >= 7",
+   "fieldname": "bottom_artwork_color_7",
+   "fieldtype": "Color",
+   "label": "Bottom Artwork Color 7"
+  },
+  {
+   "depends_on": "eval:doc.bottom_artwork_color >= 8",
+   "fieldname": "bottom_artwork_color_8",
+   "fieldtype": "Color",
+   "label": "Bottom Artwork Color 8"
+  },
+  {
+   "depends_on": "eval:doc.bottom_artwork_color >= 9",
+   "fieldname": "bottom_artwork_color_9",
+   "fieldtype": "Color",
+   "label": "Bottom Artwork Color 9"
+  },
+  {
+   "depends_on": "eval:doc.bottom_artwork_color >= 10",
+   "fieldname": "bottom_artwork_color_10",
+   "fieldtype": "Color",
+   "label": "Bottom Artwork Color 10"
+  },
+  {
+   "fieldname": "column_break_igpx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.dupatta_artwork_color >= 1",
+   "fieldname": "dupatta_artwork_color_1",
+   "fieldtype": "Color",
+   "label": "Dupatta Artwork Color 1"
+  },
+  {
+   "depends_on": "eval:doc.dupatta_artwork_color >= 2",
+   "fieldname": "dupatta_artwork_color_2",
+   "fieldtype": "Color",
+   "label": "Dupatta Artwork Color 2"
+  },
+  {
+   "depends_on": "eval:doc.dupatta_artwork_color >= 3",
+   "fieldname": "dupatta_artwork_color_3",
+   "fieldtype": "Color",
+   "label": "Dupatta Artwork Color 3"
+  },
+  {
+   "depends_on": "eval:doc.dupatta_artwork_color >= 4",
+   "fieldname": "dupatta_artwork_color_4",
+   "fieldtype": "Color",
+   "label": "Dupatta Artwork Color 4"
+  },
+  {
+   "depends_on": "eval:doc.dupatta_artwork_color >= 5",
+   "fieldname": "dupatta_artwork_color_5",
+   "fieldtype": "Color",
+   "label": "Dupatta Artwork Color 5"
+  },
+  {
+   "depends_on": "eval:doc.dupatta_artwork_color >= 6",
+   "fieldname": "dupatta_artwork_color_6",
+   "fieldtype": "Color",
+   "label": "Dupatta Artwork Color 6"
+  },
+  {
+   "depends_on": "eval:doc.dupatta_artwork_color >= 7",
+   "fieldname": "dupatta_artwork_color_7",
+   "fieldtype": "Color",
+   "label": "Dupatta Artwork Color 7"
+  },
+  {
+   "depends_on": "eval:doc.dupatta_artwork_color >= 8",
+   "fieldname": "dupatta_artwork_color_8",
+   "fieldtype": "Color",
+   "label": "Dupatta Artwork Color 8"
+  },
+  {
+   "depends_on": "eval:doc.dupatta_artwork_color >= 9",
+   "fieldname": "dupatta_artwork_color_9",
+   "fieldtype": "Color",
+   "label": "Dupatta Artwork Color 9"
+  },
+  {
+   "depends_on": "eval:doc.dupatta_artwork_color >= 10",
+   "fieldname": "dupatta_artwork_color_10",
+   "fieldtype": "Color",
+   "label": "Dupatta Artwork Color 10"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-30 18:26:59.660404",
+ "modified": "2026-06-01 08:08:26.507215",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification",
