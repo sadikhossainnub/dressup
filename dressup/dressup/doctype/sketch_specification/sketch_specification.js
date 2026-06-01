@@ -42,6 +42,7 @@ frappe.ui.form.on('Sketch Specification', {
 		}
 
 		toggle_color_fields(frm);
+		toggle_artwork_color_fields(frm);
 		render_image_previews(frm);
 	},
 	additional_images_add: function (frm) {
@@ -52,9 +53,22 @@ frappe.ui.form.on('Sketch Specification', {
 	},
 	onload: function (frm) {
 		toggle_color_fields(frm);
+		toggle_artwork_color_fields(frm);
 	},
 	color_units: function (frm) {
 		toggle_color_fields(frm);
+	},
+	body_artwork_color: function (frm) {
+		toggle_artwork_color_fields(frm);
+	},
+	koti_artwork_color: function (frm) {
+		toggle_artwork_color_fields(frm);
+	},
+	bottom_artwork_color: function (frm) {
+		toggle_artwork_color_fields(frm);
+	},
+	dupatta_artwork_color: function (frm) {
+		toggle_artwork_color_fields(frm);
 	},
 	designer: function (frm) {
 		if (frm.doc.designer) {
@@ -85,6 +99,18 @@ frappe.ui.form.on('Sketch Specification Image', {
 	},
 	description: function (frm, cdt, cdn) {
 		render_image_previews(frm);
+	}
+});
+
+frappe.ui.form.on('Sketch TP Image', {
+	name1: function (frm, cdt, cdn) {
+		toggle_artwork_color_fields(frm);
+	},
+	table_jtfk_add: function (frm, cdt, cdn) {
+		toggle_artwork_color_fields(frm);
+	},
+	table_jtfk_remove: function (frm, cdt, cdn) {
+		toggle_artwork_color_fields(frm);
 	}
 });
 
@@ -120,6 +146,39 @@ var toggle_color_fields = function (frm) {
 
 	frm.toggle_display('color_10', units >= 10);
 	frm.toggle_display('data_znsh', units >= 10);
+};
+
+var toggle_artwork_color_fields = function (frm) {
+	// Check which artwork types exist in the child table
+	let rows = frm.doc.table_jtfk || [];
+	let has_top_artwork = rows.some(r => r.name1 === 'Top Artwork');
+	let has_koti_artwork = rows.some(r => r.name1 === 'Koti Artwork');
+	let has_bottom_artwork = rows.some(r => r.name1 === 'Bottom Artwork');
+	let has_dupatta_artwork = rows.some(r => r.name1 === 'Dupatta Artwork');
+
+	// Body Artwork Color fields
+	frm.toggle_display('body_artwork_color', has_top_artwork);
+	for (let i = 1; i <= 10; i++) {
+		frm.toggle_display('body_artwork_color_' + i, has_top_artwork && parseInt(frm.doc.body_artwork_color) >= i);
+	}
+
+	// Koti Artwork Color fields
+	frm.toggle_display('koti_artwork_color', has_koti_artwork);
+	for (let i = 1; i <= 10; i++) {
+		frm.toggle_display('koti_artwork_color_' + i, has_koti_artwork && parseInt(frm.doc.koti_artwork_color) >= i);
+	}
+
+	// Bottom Artwork Color fields
+	frm.toggle_display('bottom_artwork_color', has_bottom_artwork);
+	for (let i = 1; i <= 10; i++) {
+		frm.toggle_display('bottom_artwork_color_' + i, has_bottom_artwork && parseInt(frm.doc.bottom_artwork_color) >= i);
+	}
+
+	// Dupatta Artwork Color fields
+	frm.toggle_display('dupatta_artwork_color', has_dupatta_artwork);
+	for (let i = 1; i <= 10; i++) {
+		frm.toggle_display('dupatta_artwork_color_' + i, has_dupatta_artwork && parseInt(frm.doc.dupatta_artwork_color) >= i);
+	}
 };
 
 var render_image_previews = function (frm) {
