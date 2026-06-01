@@ -348,157 +348,157 @@
    "fieldtype": "Float",
    "in_list_view": 1,
    "in_preview": 1,
-   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CF \u09b9\u09c7\u09ae)"
+   "label": "দৈর্ঘ্য (HPS → CF হেম)"
   },
   {
    "fieldname": "cf_length",
    "fieldtype": "Float",
-   "label": "CB \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CB \u09b9\u09c7\u09ae)"
+   "label": "CB দৈর্ঘ্য (HPS → CB হেম)"
   },
   {
    "fieldname": "cb_length",
    "fieldtype": "Float",
-   "label": "\u09ac\u0995\u09cd\u09b7 (Chest)"
+   "label": "বক্ষ (Chest)"
   },
   {
    "fieldname": "waist_circumstance",
    "fieldtype": "Float",
-   "label": "\u0995\u09cb\u09ae\u09b0 (Waist)"
+   "label": "কোমর (Waist)"
   },
   {
    "fieldname": "bust",
    "fieldtype": "Float",
-   "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (High Hip)"
+   "label": "উচ্চ হিপ (High Hip)"
   },
   {
    "fieldname": "upper_hip",
    "fieldtype": "Float",
-   "label": "\u09a8\u09bf\u09ae\u09cd\u09a8 \u09b9\u09bf\u09aa (Low Hip)"
+   "label": "নিম্ন হিপ (Low Hip)"
   },
   {
    "fieldname": "lower_hip",
    "fieldtype": "Float",
-   "label": "\u09b9\u09c7\u09ae \u09b8\u09c1\u0987\u09aa (Hem Sweep)"
+   "label": "হেম সুইপ (Hem Sweep)"
   },
   {
    "fieldname": "front_neck_depth",
    "fieldtype": "Float",
-   "label": "\u09b8\u09be\u09ae\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Front Neck Drop)"
+   "label": "সামনের গলার ড্রপ (Front Neck Drop)"
   },
   {
    "fieldname": "back_neck_depth",
    "fieldtype": "Float",
-   "label": "\u09aa\u09bf\u099b\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Back Neck Drop)"
+   "label": "পিছনের গলার ড্রপ (Back Neck Drop)"
   },
   {
    "fieldname": "shoulder_tip_to_side_waist",
    "fieldtype": "Float",
-   "label": "\u0997\u09b2\u09be\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Neck Width)"
+   "label": "গলার প্রস্থ (Neck Width)"
   },
   {
    "fieldname": "front_neck_depth_s",
    "fieldtype": "Float",
-   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Collar Width)"
+   "label": "কলারের প্রস্থ (Collar Width)"
   },
   {
    "fieldname": "back_neck_depth_s",
    "fieldtype": "Float",
-   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u0989\u099a\u09cd\u099a\u09a4\u09be (Collar Height)"
+   "label": "কলারের উচ্চতা (Collar Height)"
   },
   {
    "fieldname": "collar_width_height",
    "fieldtype": "Float",
-   "label": "\u0995\u09be\u0981\u09a7 \u09a5\u09c7\u0995\u09c7 \u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Shoulder to Shoulder)"
+   "label": "কাঁধ থেকে কাঁধের প্রস্থ (Shoulder to Shoulder)"
   },
   {
    "fieldname": "button_placket_length",
    "fieldtype": "Float",
-   "label": "\u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09a2\u09be\u09b2/\u09a1\u09cd\u09b0\u09aa (Shoulder Drop)"
+   "label": "কাঁধের ঢাল/ড্রপ (Shoulder Drop)"
   },
   {
    "fieldname": "button_placket_width",
    "fieldtype": "Float",
-   "label": "\u0986\u09b0\u09cd\u09ae\u09b9\u09cb\u09b2\u09c7\u09b0 \u0997\u09ad\u09c0\u09b0\u09a4\u09be (Armhole Depth)"
+   "label": "আর্মহোলের গভীরতা (Armhole Depth)"
   },
   {
    "fieldname": "hem",
    "fieldtype": "Float",
-   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Button Placket Length)"
+   "label": "বাটন প্ল্যাকেটের দৈর্ঘ্য (Button Placket Length)"
   },
   {
    "fieldname": "shoulder_drop",
    "fieldtype": "Float",
-   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Button Placket Width)"
+   "label": "বাটন প্ল্যাকেটের প্রস্থ (Button Placket Width)"
   },
   {
    "fieldname": "shoulder",
    "fieldtype": "Float",
-   "label": "\u09b8\u09cd\u09b2\u09bf\u09ad\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Sleeve Length)"
+   "label": "স্লিভের দৈর্ঘ্য (Sleeve Length)"
   },
   {
    "fieldname": "armhole",
    "fieldtype": "Float",
-   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (Bicep)"
+   "label": "বাইসেপ (Bicep)"
   },
   {
    "fieldname": "full_length_arm",
    "fieldtype": "Float",
-   "label": "\u098f\u09b2\u09ac\u09cb (Elbow)"
+   "label": "এলবো (Elbow)"
   },
   {
    "fieldname": "armhole_arm",
    "fieldtype": "Float",
-   "label": "\u0995\u09be\u09ab \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Cuff Opening)"
+   "label": "কাফ ওপেনিং (Cuff Opening)"
   },
   {
    "fieldname": "biceps",
    "fieldtype": "Float",
-   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (\u00d72)"
+   "label": "বাইসেপ (×2)"
   },
   {
    "fieldname": "elbow",
    "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Pocket Length)"
+   "label": "পকেটের দৈর্ঘ্য (Pocket Length)"
   },
   {
    "fieldname": "cuff_length",
    "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Pocket Opening)"
+   "label": "পকেট ওপেনিং (Pocket Opening)"
   },
   {
    "fieldname": "cuff_width",
    "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u0985\u09ab\u09b8\u09cd\u09a5\u09be\u09a8 (Pocket Position)"
+   "label": "পকেটের অফস্থান (Pocket Position)"
   },
   {
    "fieldname": "cuff_opening",
    "fieldtype": "Float",
-   "label": "\u0986\u0989\u099f\u09b8\u09bf\u09ae (Outseam)"
+   "label": "আউটসিম (Outseam)"
   },
   {
    "fieldname": "pocket_length",
    "fieldtype": "Float",
-   "label": "\u0987\u09a8\u09b8\u09bf\u09ae (Inseam)"
+   "label": "ইনসিম (Inseam)"
   },
   {
    "fieldname": "pocket_width",
    "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Pocket Width)"
+   "label": "পকেটের প্রস্থ (Pocket Width)"
   },
   {
    "fieldname": "pocket_opening",
    "fieldtype": "Float",
-   "label": "\u09ac\u09cd\u09af\u09be\u0995 \u09b0\u09be\u0987\u099c (Back Rise)"
+   "label": "ব্যাক রাইজ (Back Rise)"
   },
   {
    "fieldname": "pocket_placket",
    "fieldtype": "Float",
-   "label": "\u0995\u09be\u09ab\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Cuff Length)"
+   "label": "কাফের দৈর্ঘ্য (Cuff Length)"
   },
   {
    "fieldname": "shoulder_tip_to_pocket_starting",
    "fieldtype": "Float",
-   "label": "\u0995\u09cb\u09ae\u09b0 (Relaxed \u00d72)"
+   "label": "কোমর (Relaxed ×2)"
   },
   {
    "collapsible": 1,
@@ -513,77 +513,77 @@
   {
    "fieldname": "ik_full_length",
    "fieldtype": "Float",
-   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CF \u09b9\u09c7\u09ae)"
+   "label": "দৈর্ঘ্য (HPS → CF হেম)"
   },
   {
    "fieldname": "ik_cf_length",
    "fieldtype": "Float",
-   "label": "CB \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CB \u09b9\u09c7\u09ae)"
+   "label": "CB দৈর্ঘ্য (HPS → CB হেম)"
   },
   {
    "fieldname": "ik_cb_length",
    "fieldtype": "Float",
-   "label": "\u09ac\u0995\u09cd\u09b7 (Chest)"
+   "label": "বক্ষ (Chest)"
   },
   {
    "fieldname": "ik_waist_circumstance",
    "fieldtype": "Float",
-   "label": "\u0995\u09cb\u09ae\u09b0 (Waist)"
+   "label": "কোমর (Waist)"
   },
   {
    "fieldname": "ik_bust",
    "fieldtype": "Float",
-   "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (High Hip)"
+   "label": "উচ্চ হিপ (High Hip)"
   },
   {
    "fieldname": "ik_upper_hip",
    "fieldtype": "Float",
-   "label": "\u09a8\u09bf\u09ae\u09cd\u09a8 \u09b9\u09bf\u09aa (Low Hip)"
+   "label": "নিম্ন হিপ (Low Hip)"
   },
   {
    "fieldname": "ik_lower_hip",
    "fieldtype": "Float",
-   "label": "\u09b9\u09c7\u09ae \u09b8\u09c1\u0987\u09aa (Hem Sweep)"
+   "label": "হেম সুইপ (Hem Sweep)"
   },
   {
    "fieldname": "ik_front_neck_depth",
    "fieldtype": "Float",
-   "label": "\u09b8\u09be\u09ae\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Front Neck Drop)"
+   "label": "সামনের গলার ড্রপ (Front Neck Drop)"
   },
   {
    "fieldname": "ik_back_neck_depth",
    "fieldtype": "Float",
-   "label": "\u09aa\u09bf\u099b\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Back Neck Drop)"
+   "label": "পিছনের গলার ড্রপ (Back Neck Drop)"
   },
   {
    "fieldname": "ik_shoulder_tip_to_side_waist",
    "fieldtype": "Float",
-   "label": "\u0997\u09b2\u09be\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Neck Width)"
+   "label": "গলার প্রস্থ (Neck Width)"
   },
   {
    "fieldname": "ik_front_neck_depth_s",
    "fieldtype": "Float",
-   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Collar Width)"
+   "label": "কলারের প্রস্থ (Collar Width)"
   },
   {
    "fieldname": "ik_back_neck_depth_s",
    "fieldtype": "Float",
-   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u0989\u099a\u09cd\u099a\u09a4\u09be (Collar Height)"
+   "label": "কলারের উচ্চতা (Collar Height)"
   },
   {
    "fieldname": "ik_collar_width_height",
    "fieldtype": "Float",
-   "label": "\u0995\u09be\u0981\u09a7 \u09a5\u09c7\u0995\u09c7 \u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Shoulder to Shoulder)"
+   "label": "কাঁধ থেকে কাঁধের প্রস্থ (Shoulder to Shoulder)"
   },
   {
    "fieldname": "ik_button_placket_length",
    "fieldtype": "Float",
-   "label": "\u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09a2\u09be\u09b2/\u09a1\u09cd\u09b0\u09aa (Shoulder Drop)"
+   "label": "কাঁধের ঢাল/ড্রপ (Shoulder Drop)"
   },
   {
    "fieldname": "ik_button_placket_width",
    "fieldtype": "Float",
-   "label": "\u0986\u09b0\u09cd\u09ae\u09b9\u09cb\u09b2\u09c7\u09b0 \u0997\u09ad\u09c0\u09b0\u09a4\u09be (Armhole Depth)"
+   "label": "আর্মহোলের গভীরতা (Armhole Depth)"
   },
   {
    "fieldname": "inner_column_break_wtxg",
@@ -592,82 +592,82 @@
   {
    "fieldname": "ik_hem",
    "fieldtype": "Float",
-   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Button Placket Length)"
+   "label": "বাটন প্ল্যাকেটের দৈর্ঘ্য (Button Placket Length)"
   },
   {
    "fieldname": "ik_shoulder_drop",
    "fieldtype": "Float",
-   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Button Placket Width)"
+   "label": "বাটন প্ল্যাকেটের প্রস্থ (Button Placket Width)"
   },
   {
    "fieldname": "ik_shoulder",
    "fieldtype": "Float",
-   "label": "\u09b8\u09cd\u09b2\u09bf\u09ad\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Sleeve Length)"
+   "label": "স্লিভের দৈর্ঘ্য (Sleeve Length)"
   },
   {
    "fieldname": "ik_armhole",
    "fieldtype": "Float",
-   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (Bicep)"
+   "label": "বাইসেপ (Bicep)"
   },
   {
    "fieldname": "ik_full_length_arm",
    "fieldtype": "Float",
-   "label": "\u098f\u09b2\u09ac\u09cb (Elbow)"
+   "label": "এলবো (Elbow)"
   },
   {
    "fieldname": "ik_biceps",
    "fieldtype": "Float",
-   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (\u00d72)"
+   "label": "বাইসেপ (×2)"
   },
   {
    "fieldname": "ik_elbow",
    "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Pocket Length)"
+   "label": "পকেটের দৈর্ঘ্য (Pocket Length)"
   },
   {
    "fieldname": "ik_armhole_arm",
    "fieldtype": "Float",
-   "label": "\u0995\u09be\u09ab \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Cuff Opening)"
+   "label": "কাফ ওপেনিং (Cuff Opening)"
   },
   {
    "fieldname": "ik_cuff_length",
    "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Pocket Opening)"
+   "label": "পকেট ওপেনিং (Pocket Opening)"
   },
   {
    "fieldname": "ik_cuff_width",
    "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u0985\u09ab\u09b8\u09cd\u09a5\u09be\u09a8 (Pocket Position)"
+   "label": "পকেটের অফস্থান (Pocket Position)"
   },
   {
    "fieldname": "ik_cuff_opening",
    "fieldtype": "Float",
-   "label": "\u0986\u0989\u099f\u09b8\u09bf\u09ae (Outseam)"
+   "label": "আউটসিম (Outseam)"
   },
   {
    "fieldname": "ik_pocket_length",
    "fieldtype": "Float",
-   "label": "\u0987\u09a8\u09b8\u09bf\u09ae (Inseam)"
+   "label": "ইনসিম (Inseam)"
   },
   {
    "fieldname": "ik_pocket_width",
    "fieldtype": "Float",
-   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Pocket Width)"
+   "label": "পকেটের প্রস্থ (Pocket Width)"
   },
   {
    "fieldname": "ik_pocket_opening",
    "fieldtype": "Float",
-   "label": "\u09ac\u09cd\u09af\u09be\u0995 \u09b0\u09be\u0987\u099c (Back Rise)"
+   "label": "ব্যাক রাইজ (Back Rise)"
   },
   {
    "fieldname": "ik_pocket_placket",
    "fieldtype": "Float",
-   "label": "\u0995\u09be\u09ab\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Cuff Length)"
+   "label": "কাফের দৈর্ঘ্য (Cuff Length)"
   },
   {
    "fieldname": "ik_shoulder_tip_to_pocket_starting",
    "fieldtype": "Float",
-   "label": "\u0995\u09cb\u09ae\u09b0 (Relaxed \u00d72)"
+   "label": "কোমর (Relaxed ×2)"
   },
   {
    "collapsible": 1,
@@ -782,57 +782,57 @@
   {
    "fieldname": "pocket_wid",
    "fieldtype": "Float",
-   "label": "\u09ab\u09cd\u09b0\u09a8\u09cd\u099f \u09b0\u09be\u0987\u099c (Front Rise)"
+   "label": "ফ্রন্ট রাইজ (Front Rise)"
   },
   {
    "fieldname": "komor",
    "fieldtype": "Data",
-   "label": "\u0995\u09cb\u09ae\u09b0 (Stretched \u00d72)"
+   "label": "কোমর (Stretched ×2)"
   },
   {
    "fieldname": "high_hip",
    "fieldtype": "Data",
-   "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (\u00d72)"
+   "label": "উচ্চ হিপ (×2)"
   },
   {
    "fieldname": "low_hip",
    "fieldtype": "Data",
-   "label": "\u09a8\u09bf\u09ae\u09cd\u09a8 \u09b9\u09bf\u09aa (\u00d72)"
+   "label": "নিম্ন হিপ (×2)"
   },
   {
    "fieldname": "thigh_uru",
    "fieldtype": "Data",
-   "label": "\u0989\u09b0\u09c1 (Thigh \u00d72)"
+   "label": "উরু (Thigh ×2)"
   },
   {
    "fieldname": "knee_x2",
    "fieldtype": "Data",
-   "label": "\u09b9\u09be\u0981\u099f\u09c1 (Knee \u00d72)"
+   "label": "হাঁটু (Knee ×2)"
   },
   {
    "fieldname": "leg_opening_x2",
    "fieldtype": "Data",
-   "label": "\u09b2\u09c7\u0997 \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (\u00d72)"
+   "label": "লেগ ওপেনিং (×2)"
   },
   {
    "fieldname": "elasticrubber_width",
    "fieldtype": "Data",
-   "label": "\u0987\u09b2\u09be\u09b8\u09cd\u099f\u09bf\u0995/\u09b0\u09be\u09ac\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5"
+   "label": "ইলাস্টিক/রাবারের প্রস্থ"
   },
   {
    "fieldname": "beltloop_width",
    "fieldtype": "Data",
-   "label": "\u09ac\u09c7\u09b2\u09cd\u099f/\u09b2\u09c1\u09aa\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5"
+   "label": "বেল্ট/লুপের প্রস্থ"
   },
   {
    "fieldname": "wb_to_pocket_opening",
    "fieldtype": "Data",
-   "label": "\u0993\u09af\u09bc\u09c7\u09b8\u09cd\u099f\u09ac\u09cd\u09af\u09be\u09a8\u09cd\u09a1 \u09a5\u09c7\u0995\u09c7 \u09aa\u0995\u09c7\u099f \u0993\u09aa\u09c7\u09a8\u09bf\u0982 \u09aa\u09b0\u09cd\u09af\u09a8\u09cd\u09a4 \u09a6\u09c2\u09b0\u09a4\u09cd\u09ac"
+   "label": "ওয়েস্টব্যান্ড থেকে পকেট ওপেনিং পর্যন্ত দূরত্ব"
   },
   {
    "fieldname": "pocket_depth",
    "fieldtype": "Data",
-   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u0997\u09ad\u09c0\u09b0\u09a4\u09be"
+   "label": "পকেটের গভীরতা"
   },
   {
    "fieldname": "side_cut",
@@ -845,7 +845,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Collar/ Neck Style",
-   "options": "\nAsymmetric Neck\nBand Collar\nBardot Neck\nBindiya Neck\nBoat Neck / Bateau Neck\nButterfly Neck\nChikankari Neck\nCold Shoulder\nCollared Deep-V\nCorset Neck\nCowl Neck\nDeep V-Neck\nHalter Neck\nHenley Neck\nHigh Neck\nIllusion Neck (mesh/lace)\nKeyhole Kurti Neck\nKeyhole Neck\nKurti Round Neck\nKurti Sweetheart\nKurti V-Neck\nLace Appliqu\u00e9 Neck\nMandarin Collar\nMesh High-Neck\nMock Neck\nMughal Neck\nNotched Collar\nNotched V-Neck\nOff-Shoulder\nOff-Shoulder Ruffle Neck\nOne-Shoulder\nPeter Pan Collar\nPlunge Neck\nPointed Collar\nPotli Button Neck\nQueen Anne Neck\nRound Neck / Crew Neck\nScoop Neck\nShawl Collar\nShirt Collar\nSpread Collar\nSquare Neck\nStrapless / Tube Neck\nSurplice / Wrap Neck\nSweetheart Neck\nTurtle Neck\nU-Neck\nV-Neck\nZari/Zardozi Embellished Neck\nOther"
+   "options": "\nAsymmetric Neck\nBand Collar\nBardot Neck\nBindiya Neck\nBoat Neck / Bateau Neck\nButterfly Neck\nChikankari Neck\nCold Shoulder\nCollared Deep-V\nCorset Neck\nCowl Neck\nDeep V-Neck\nHalter Neck\nHenley Neck\nHigh Neck\nIllusion Neck (mesh/lace)\nKeyhole Kurti Neck\nKeyhole Neck\nKurti Round Neck\nKurti Sweetheart\nKurti V-Neck\nLace Appliqué Neck\nMandarin Collar\nMesh High-Neck\nMock Neck\nMughal Neck\nNotched Collar\nNotched V-Neck\nOff-Shoulder\nOff-Shoulder Ruffle Neck\nOne-Shoulder\nPeter Pan Collar\nPlunge Neck\nPointed Collar\nPotli Button Neck\nQueen Anne Neck\nRound Neck / Crew Neck\nScoop Neck\nShawl Collar\nShirt Collar\nSpread Collar\nSquare Neck\nStrapless / Tube Neck\nSurplice / Wrap Neck\nSweetheart Neck\nTurtle Neck\nU-Neck\nV-Neck\nZari/Zardozi Embellished Neck\nOther"
   },
   {
    "fieldname": "cut_fit_style",
@@ -861,7 +861,7 @@
   {
    "fieldname": "length_bottom",
    "fieldtype": "Float",
-   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Length)"
+   "label": "দৈর্ঘ্য (Length)"
   },
   {
    "fieldname": "column_break_bgdr",
@@ -1164,12 +1164,12 @@
   {
    "fieldname": "dlength",
    "fieldtype": "Data",
-   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Length)"
+   "label": "দৈর্ঘ্য (Length)"
   },
   {
    "fieldname": "dwidth",
    "fieldtype": "Data",
-   "label": "\u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Width)"
+   "label": "প্রস্থ (Width)"
   },
   {
    "fieldname": "dupatta_note",
@@ -1185,7 +1185,7 @@
    "fieldname": "sample_size",
    "fieldtype": "Select",
    "label": "Sample Size",
-   "options": "\nXS\nS\nM\nL\nXL\nXXL\n3XL\nFree Size"
+   "options": "\nXS\nS\nM\nL\nXL\nXXL\n3XL\nFree Size\n32\n34\n36\n38\n40\n42\n44\n46\n48\n50\n52"
   },
   {
    "fieldname": "table_jtfk",
