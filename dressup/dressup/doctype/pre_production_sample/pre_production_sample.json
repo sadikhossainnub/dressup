@@ -218,7 +218,7 @@
    "fieldname": "sample_size",
    "fieldtype": "Select",
    "label": "Sample Size",
-   "options": "\nXS\nS\nM\nL\nXL\nXXL\n3XL\nFree Size"
+   "options": "\nXS\nS\nM\nL\nXL\nXXL\n3XL\nFree Size\n32\n34\n36\n38\n40\n42\n44\n46\n48\n50\n52"
   },
   {
    "fieldname": "workstation_section",
