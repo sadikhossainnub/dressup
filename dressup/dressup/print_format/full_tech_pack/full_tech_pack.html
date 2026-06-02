@@ -41,17 +41,7 @@
 </div>
     </div>
 </td></tr></thead>
-<tfoot><tr><td class="page-footer-space">
-    <div class="page-footer">
-<table style="width: 100%; border-collapse: collapse; height: 15px; margin-top: 10px;">
-    <tr>
-        <td style="width: 38%; background-color: #222; height: 15px; padding: 0; border: none;"></td>
-        <td style="width: 2%; padding: 0; border: none;"></td>
-        <td style="width: 60%; background-color: #d32f2f; height: 15px; padding: 0; border: none;"></td>
-    </tr>
-</table>
-    </div>
-</td></tr></tfoot>
+<tfoot><tr><td class="page-footer-space"></td></tr></tfoot>
 <tbody><tr><td class="page-content">
 
 {% set sketch_doc = frappe.get_doc("Sketch Specification", doc.tech_pack_no) if doc.tech_pack_no else None %}
@@ -105,7 +95,25 @@
                 <div style="margin-bottom: 2px;">Costing Submit Date: <strong>{{ frappe.utils.formatdate(frappe.db.get_value("Cost Estimation", doc.cost_estimation, "date")) if doc.cost_estimation else '' }}</strong></div>
                 <div style="margin-bottom: 2px;">PPS Submission Date: <strong>{{ frappe.utils.formatdate(doc.finish_time_date) if doc.finish_time_date else '' }}</strong></div>
                 <div style="margin-bottom: 2px;">Costing Ref: <strong>{{ doc.cost_estimation or '' }}</strong></div>
-                <div style="margin-bottom: 2px;">Workstations: <strong>Cutting, Sewing, Screen Print, Block Print</strong></div>
+                {%- set workstation_checks = [
+                    (doc.cutting, "Cutting"),
+                    (doc.fusing_bundling, "Fusing & Bundling"),
+                    (doc.sewing, "Sewing"),
+                    (doc.machine_embroidery, "Machine Embroidery"),
+                    (doc.hand_embroidery, "Hand Embroidery"),
+                    (doc.hand_work, "Hand Work"),
+                    (doc.screen_print, "Screen Print"),
+                    (doc.block_print, "Block Print"),
+                    (doc.tiedye, "Tie & Dye"),
+                    (doc.karchupi, "Karchupi")
+                ] -%}
+                {%- set active_workstations = [] -%}
+                {%- for check, label in workstation_checks -%}
+                    {%- if check -%}
+                        {%- set _ = active_workstations.append(label) -%}
+                    {%- endif -%}
+                {%- endfor -%}
+                <div style="margin-bottom: 2px;">Workstations: <strong>{{ active_workstations | join(', ') or '-' }}</strong></div>
             </td>
         </tr>
     </tbody>
@@ -580,17 +588,16 @@
         <td style="width: 49%; vertical-align: top; border: none; padding-right: 10px;">
             <div style="font-size: 8.5pt; font-weight: bold; margin-bottom: 5px; border-bottom: 1.5px solid #000; padding-bottom: 2px;">
                 Tailoring Charges / সেলাই খরচ</div>
-            {% set t_defs = [
-                ('cutting_f', 'Cutting Charge'),
-                ('sewing_f', 'Sewing Charge'),
-                ('machine_embroidery_f', 'Machine Embroidery'),
-                ('hand_embroidery_f', 'Hand Embroidery'),
-                ('hand_work_estimation', 'Hand Work'),
-                ('karchupi_f', 'Karchupi'),
-                ('screen_print_f', 'Screen Print'),
-                ('block_print_f', 'Block Print'),
-                ('tie_dye', 'Tie & Dye')
-            ] %}
+            {% set t_defs = [] %}
+            {% if doc.cutting %}{% set _ = t_defs.append(('cutting_f', 'Cutting Charge')) %}{% endif %}
+            {% if doc.sewing %}{% set _ = t_defs.append(('sewing_f', 'Sewing Charge')) %}{% endif %}
+            {% if doc.machine_embroidery %}{% set _ = t_defs.append(('machine_embroidery_f', 'Machine Embroidery')) %}{% endif %}
+            {% if doc.hand_embroidery %}{% set _ = t_defs.append(('hand_embroidery_f', 'Hand Embroidery')) %}{% endif %}
+            {% if doc.hand_work %}{% set _ = t_defs.append(('hand_work_estimation', 'Hand Work')) %}{% endif %}
+            {% if doc.karchupi %}{% set _ = t_defs.append(('karchupi_f', 'Karchupi')) %}{% endif %}
+            {% if doc.screen_print %}{% set _ = t_defs.append(('screen_print_f', 'Screen Print')) %}{% endif %}
+            {% if doc.block_print %}{% set _ = t_defs.append(('block_print_f', 'Block Print')) %}{% endif %}
+            {% if doc.tiedye %}{% set _ = t_defs.append(('tie_dye', 'Tie & Dye')) %}{% endif %}
             <table style="width: 100%; border-collapse: collapse;">
                 {% for f, l in t_defs %}
                 <tr>
@@ -862,6 +869,9 @@
     }
     .page-header, .page-footer { width: 100%; }
     .page-content { padding: 0; border: none; vertical-align: top; }
+    .print-format {
+        margin-bottom: 12mm;
+    }
     @media print {
         body { -webkit-print-color-adjust: exact; color-adjust: exact; }
     }
@@ -869,3 +879,23 @@
 
 </td></tr></tbody>
 </table>
+
+<div id="footer-html" class="visible-pdf">
+    <table style="width: 100%; border-collapse: collapse; font-family: 'HindSiliguri', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 8px; color: #555; margin-bottom: 5px;">
+        <tr>
+            <td style="text-align: left; border: none; padding: 0; font-weight: bold; color: #222;">
+                DRESSUP MANUFACTURING | REF: {{ doc.name }}
+            </td>
+            <td style="text-align: right; border: none; padding: 0; font-weight: bold; color: #222;">
+                {{ frappe.utils.now_datetime().strftime("%d-%m-%Y") }} {{ doc.tech_pack_no or '' }}-<span class="page"></span>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%; border-collapse: collapse; height: 15px;">
+        <tr>
+            <td style="width: 38%; background-color: #222; height: 15px; padding: 0; border: none;"></td>
+            <td style="width: 2%; padding: 0; border: none;"></td>
+            <td style="width: 60%; background-color: #d32f2f; height: 15px; padding: 0; border: none;"></td>
+        </tr>
+    </table>
+</div>

@@ -36,13 +36,13 @@ frappe.ui.form.on("Cost Estimation Accessory", {
 				}
 			});
 			frappe.db.get_value("Item Price", { item_code: row.itemcode, buying: 1 }, "price_list_rate", (r) => {
-				if (r && r.price_list_rate) {
-					frappe.model.set_value(cdt, cdn, "rate", r.price_list_rate);
+				if (r && r.message && r.message.price_list_rate) {
+					frappe.model.set_value(cdt, cdn, "rate", r.message.price_list_rate);
 				} else {
 					frappe.db.get_value("Item", row.itemcode, ["last_purchase_rate", "valuation_rate", "standard_rate"], (res) => {
 						let final_rate = 0;
-						if (res) {
-							final_rate = res.last_purchase_rate || res.valuation_rate || res.standard_rate || 0;
+						if (res && res.message) {
+							final_rate = res.message.last_purchase_rate || res.message.valuation_rate || res.message.standard_rate || 0;
 						}
 						frappe.model.set_value(cdt, cdn, "rate", final_rate);
 					});
@@ -102,13 +102,13 @@ frappe.ui.form.on("Cost Estimation Material", {
 				}
 			});
 			frappe.db.get_value("Item Price", { item_code: row.item_code, buying: 1 }, "price_list_rate", (r) => {
-				if (r && r.price_list_rate) {
-					frappe.model.set_value(cdt, cdn, "rate", r.price_list_rate);
+				if (r && r.message && r.message.price_list_rate) {
+					frappe.model.set_value(cdt, cdn, "rate", r.message.price_list_rate);
 				} else {
 					frappe.db.get_value("Item", row.item_code, ["last_purchase_rate", "valuation_rate", "standard_rate"], (res) => {
 						let final_rate = 0;
-						if (res) {
-							final_rate = res.last_purchase_rate || res.valuation_rate || res.standard_rate || 0;
+						if (res && res.message) {
+							final_rate = res.message.last_purchase_rate || res.message.valuation_rate || res.message.standard_rate || 0;
 						}
 						frappe.model.set_value(cdt, cdn, "rate", final_rate);
 					});

@@ -26,6 +26,9 @@
   "bottom_style",
   "sleeve",
   "submission_date",
+  "category_lead",
+  "sourcing_lead",
+  "concern_merchant",
   "images_section",
   "table_jtfk",
   "colors_section",
@@ -295,6 +298,21 @@
    "fieldtype": "Datetime",
    "in_list_view": 1,
    "label": "Submission Date"
+  },
+  {
+   "fieldname": "category_lead",
+   "fieldtype": "Data",
+   "label": "Category Lead"
+  },
+  {
+   "fieldname": "sourcing_lead",
+   "fieldtype": "Data",
+   "label": "Sourcing Lead"
+  },
+  {
+   "fieldname": "concern_merchant",
+   "fieldtype": "Data",
+   "label": "Concern Merchant"
   },
   {
    "fieldname": "sewing_finish",
@@ -1534,7 +1552,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-01 08:08:26.507215",
+ "modified": "2026-06-02 21:01:23.000000",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification",

@@ -51,23 +51,8 @@ def cancel_linked_documents(doc, method=None):
 				qi_doc.cancel()
 
 	elif doc.doctype == "Work Order":
-		bom_name = doc.get("bom_no")
-		if bom_name:
-			bom = frappe.get_doc("BOM", bom_name)
-			if bom.docstatus == 1:
-				bom.flags.in_auto_cancel = True
-				bom.cancel()
-				
+		# User requested to NOT cancel BOM and Pre Production Sample when Work Order is cancelled.
+		# Simply clearing the link so standard Frappe validation does not block Work Order cancellation.
 		pps_name = doc.get("pre_production_sample")
 		if pps_name:
-			pps = frappe.get_doc("Pre Production Sample", pps_name)
-			if pps.docstatus == 1:
-				pps.flags.in_auto_cancel = True
-				pps.cancel()
-				
-			# Cancel QIs linked to this PPS
-			qis = frappe.get_all("Quality Inspection", filters={"reference_type": "Pre Production Sample", "reference_name": pps_name, "docstatus": 1}, pluck="name")
-			for qi in qis:
-				qi_doc = frappe.get_doc("Quality Inspection", qi)
-				qi_doc.flags.in_auto_cancel = True
-				qi_doc.cancel()
+			frappe.db.set_value("Pre Production Sample", pps_name, "work_order", None)
