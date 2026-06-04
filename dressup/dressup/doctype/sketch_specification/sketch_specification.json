@@ -16,6 +16,9 @@
   "session",
   "sewing_finish",
   "sample_size",
+  "category_lead",
+  "concern_merchant",
+  "sourcing_lead",
   "column_break_nxfb",
   "start_date",
   "category",
@@ -26,59 +29,13 @@
   "bottom_style",
   "sleeve",
   "submission_date",
-  "category_lead",
-  "sourcing_lead",
-  "concern_merchant",
   "images_section",
   "table_jtfk",
   "colors_section",
-  "body_artwork_color",
-  "body_artwork_color_1",
-  "body_artwork_color_2",
-  "body_artwork_color_3",
-  "body_artwork_color_4",
-  "body_artwork_color_5",
-  "body_artwork_color_6",
-  "body_artwork_color_7",
-  "body_artwork_color_8",
-  "body_artwork_color_9",
-  "body_artwork_color_10",
-  "column_break_pspl",
-  "koti_artwork_color",
-  "koti_artwork_color_1",
-  "koti_artwork_color_2",
-  "koti_artwork_color_3",
-  "koti_artwork_color_4",
-  "koti_artwork_color_5",
-  "koti_artwork_color_6",
-  "koti_artwork_color_7",
-  "koti_artwork_color_8",
-  "koti_artwork_color_9",
-  "koti_artwork_color_10",
-  "column_break_kurv",
-  "bottom_artwork_color",
-  "bottom_artwork_color_1",
-  "bottom_artwork_color_2",
-  "bottom_artwork_color_3",
-  "bottom_artwork_color_4",
-  "bottom_artwork_color_5",
-  "bottom_artwork_color_6",
-  "bottom_artwork_color_7",
-  "bottom_artwork_color_8",
-  "bottom_artwork_color_9",
-  "bottom_artwork_color_10",
-  "column_break_igpx",
-  "dupatta_artwork_color",
-  "dupatta_artwork_color_1",
-  "dupatta_artwork_color_2",
-  "dupatta_artwork_color_3",
-  "dupatta_artwork_color_4",
-  "dupatta_artwork_color_5",
-  "dupatta_artwork_color_6",
-  "dupatta_artwork_color_7",
-  "dupatta_artwork_color_8",
-  "dupatta_artwork_color_9",
-  "dupatta_artwork_color_10",
+  "body_artwork_colors",
+  "koti_artwork_colors",
+  "bottom_artwork_colors",
+  "dupatta_artwork_colors",
   "design_section",
   "column_break_vrud",
   "image",
@@ -103,29 +60,6 @@
   "karchupi",
   "section_break_fulh",
   "color_units",
-  "section_break_qgzt",
-  "color",
-  "data_xmgl",
-  "color_2",
-  "data_ryzm",
-  "color_3",
-  "data_muzc",
-  "color_4",
-  "data_lfwb",
-  "column_break_oqxe",
-  "color_5",
-  "data_hnjh",
-  "color_6",
-  "data_zsdd",
-  "color_7",
-  "data_uxrz",
-  "color_8",
-  "data_mnat",
-  "column_break_kzbm",
-  "color_9",
-  "data_wptw",
-  "color_10",
-  "data_znsh",
   "workstation_screen_print",
   "pigments_dye",
   "column_break_qhgw",
@@ -300,21 +234,6 @@
    "label": "Submission Date"
   },
   {
-   "fieldname": "category_lead",
-   "fieldtype": "Data",
-   "label": "Category Lead"
-  },
-  {
-   "fieldname": "sourcing_lead",
-   "fieldtype": "Data",
-   "label": "Sourcing Lead"
-  },
-  {
-   "fieldname": "concern_merchant",
-   "fieldtype": "Data",
-   "label": "Concern Merchant"
-  },
-  {
    "fieldname": "sewing_finish",
    "fieldtype": "Select",
    "label": "Sewing Finish",
@@ -366,157 +285,157 @@
    "fieldtype": "Float",
    "in_list_view": 1,
    "in_preview": 1,
-   "label": "দৈর্ঘ্য (HPS → CF হেম)"
+   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CF \u09b9\u09c7\u09ae)"
   },
   {
    "fieldname": "cf_length",
    "fieldtype": "Float",
-   "label": "CB দৈর্ঘ্য (HPS → CB হেম)"
+   "label": "CB \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CB \u09b9\u09c7\u09ae)"
   },
   {
    "fieldname": "cb_length",
    "fieldtype": "Float",
-   "label": "বক্ষ (Chest)"
+   "label": "\u09ac\u0995\u09cd\u09b7 (Chest)"
   },
   {
    "fieldname": "waist_circumstance",
    "fieldtype": "Float",
-   "label": "কোমর (Waist)"
+   "label": "\u0995\u09cb\u09ae\u09b0 (Waist)"
   },
   {
    "fieldname": "bust",
    "fieldtype": "Float",
-   "label": "উচ্চ হিপ (High Hip)"
+   "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (High Hip)"
   },
   {
    "fieldname": "upper_hip",
    "fieldtype": "Float",
-   "label": "নিম্ন হিপ (Low Hip)"
+   "label": "\u09a8\u09bf\u09ae\u09cd\u09a8 \u09b9\u09bf\u09aa (Low Hip)"
   },
   {
    "fieldname": "lower_hip",
    "fieldtype": "Float",
-   "label": "হেম সুইপ (Hem Sweep)"
+   "label": "\u09b9\u09c7\u09ae \u09b8\u09c1\u0987\u09aa (Hem Sweep)"
   },
   {
    "fieldname": "front_neck_depth",
    "fieldtype": "Float",
-   "label": "সামনের গলার ড্রপ (Front Neck Drop)"
+   "label": "\u09b8\u09be\u09ae\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Front Neck Drop)"
   },
   {
    "fieldname": "back_neck_depth",
    "fieldtype": "Float",
-   "label": "পিছনের গলার ড্রপ (Back Neck Drop)"
+   "label": "\u09aa\u09bf\u099b\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Back Neck Drop)"
   },
   {
    "fieldname": "shoulder_tip_to_side_waist",
    "fieldtype": "Float",
-   "label": "গলার প্রস্থ (Neck Width)"
+   "label": "\u0997\u09b2\u09be\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Neck Width)"
   },
   {
    "fieldname": "front_neck_depth_s",
    "fieldtype": "Float",
-   "label": "কলারের প্রস্থ (Collar Width)"
+   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Collar Width)"
   },
   {
    "fieldname": "back_neck_depth_s",
    "fieldtype": "Float",
-   "label": "কলারের উচ্চতা (Collar Height)"
+   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u0989\u099a\u09cd\u099a\u09a4\u09be (Collar Height)"
   },
   {
    "fieldname": "collar_width_height",
    "fieldtype": "Float",
-   "label": "কাঁধ থেকে কাঁধের প্রস্থ (Shoulder to Shoulder)"
+   "label": "\u0995\u09be\u0981\u09a7 \u09a5\u09c7\u0995\u09c7 \u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Shoulder to Shoulder)"
   },
   {
    "fieldname": "button_placket_length",
    "fieldtype": "Float",
-   "label": "কাঁধের ঢাল/ড্রপ (Shoulder Drop)"
+   "label": "\u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09a2\u09be\u09b2/\u09a1\u09cd\u09b0\u09aa (Shoulder Drop)"
   },
   {
    "fieldname": "button_placket_width",
    "fieldtype": "Float",
-   "label": "আর্মহোলের গভীরতা (Armhole Depth)"
+   "label": "\u0986\u09b0\u09cd\u09ae\u09b9\u09cb\u09b2\u09c7\u09b0 \u0997\u09ad\u09c0\u09b0\u09a4\u09be (Armhole Depth)"
   },
   {
    "fieldname": "hem",
    "fieldtype": "Float",
-   "label": "বাটন প্ল্যাকেটের দৈর্ঘ্য (Button Placket Length)"
+   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Button Placket Length)"
   },
   {
    "fieldname": "shoulder_drop",
    "fieldtype": "Float",
-   "label": "বাটন প্ল্যাকেটের প্রস্থ (Button Placket Width)"
+   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Button Placket Width)"
   },
   {
    "fieldname": "shoulder",
    "fieldtype": "Float",
-   "label": "স্লিভের দৈর্ঘ্য (Sleeve Length)"
+   "label": "\u09b8\u09cd\u09b2\u09bf\u09ad\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Sleeve Length)"
   },
   {
    "fieldname": "armhole",
    "fieldtype": "Float",
-   "label": "বাইসেপ (Bicep)"
+   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (Bicep)"
   },
   {
    "fieldname": "full_length_arm",
    "fieldtype": "Float",
-   "label": "এলবো (Elbow)"
+   "label": "\u098f\u09b2\u09ac\u09cb (Elbow)"
   },
   {
    "fieldname": "armhole_arm",
    "fieldtype": "Float",
-   "label": "কাফ ওপেনিং (Cuff Opening)"
+   "label": "\u0995\u09be\u09ab \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Cuff Opening)"
   },
   {
    "fieldname": "biceps",
    "fieldtype": "Float",
-   "label": "বাইসেপ (×2)"
+   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (\u00d72)"
   },
   {
    "fieldname": "elbow",
    "fieldtype": "Float",
-   "label": "পকেটের দৈর্ঘ্য (Pocket Length)"
+   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Pocket Length)"
   },
   {
    "fieldname": "cuff_length",
    "fieldtype": "Float",
-   "label": "পকেট ওপেনিং (Pocket Opening)"
+   "label": "\u09aa\u0995\u09c7\u099f \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Pocket Opening)"
   },
   {
    "fieldname": "cuff_width",
    "fieldtype": "Float",
-   "label": "পকেটের অফস্থান (Pocket Position)"
+   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u0985\u09ab\u09b8\u09cd\u09a5\u09be\u09a8 (Pocket Position)"
   },
   {
    "fieldname": "cuff_opening",
    "fieldtype": "Float",
-   "label": "আউটসিম (Outseam)"
+   "label": "\u0986\u0989\u099f\u09b8\u09bf\u09ae (Outseam)"
   },
   {
    "fieldname": "pocket_length",
    "fieldtype": "Float",
-   "label": "ইনসিম (Inseam)"
+   "label": "\u0987\u09a8\u09b8\u09bf\u09ae (Inseam)"
   },
   {
    "fieldname": "pocket_width",
    "fieldtype": "Float",
-   "label": "পকেটের প্রস্থ (Pocket Width)"
+   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Pocket Width)"
   },
   {
    "fieldname": "pocket_opening",
    "fieldtype": "Float",
-   "label": "ব্যাক রাইজ (Back Rise)"
+   "label": "\u09ac\u09cd\u09af\u09be\u0995 \u09b0\u09be\u0987\u099c (Back Rise)"
   },
   {
    "fieldname": "pocket_placket",
    "fieldtype": "Float",
-   "label": "কাফের দৈর্ঘ্য (Cuff Length)"
+   "label": "\u0995\u09be\u09ab\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Cuff Length)"
   },
   {
    "fieldname": "shoulder_tip_to_pocket_starting",
    "fieldtype": "Float",
-   "label": "কোমর (Relaxed ×2)"
+   "label": "\u0995\u09cb\u09ae\u09b0 (Relaxed \u00d72)"
   },
   {
    "collapsible": 1,
@@ -531,77 +450,77 @@
   {
    "fieldname": "ik_full_length",
    "fieldtype": "Float",
-   "label": "দৈর্ঘ্য (HPS → CF হেম)"
+   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CF \u09b9\u09c7\u09ae)"
   },
   {
    "fieldname": "ik_cf_length",
    "fieldtype": "Float",
-   "label": "CB দৈর্ঘ্য (HPS → CB হেম)"
+   "label": "CB \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (HPS \u2192 CB \u09b9\u09c7\u09ae)"
   },
   {
    "fieldname": "ik_cb_length",
    "fieldtype": "Float",
-   "label": "বক্ষ (Chest)"
+   "label": "\u09ac\u0995\u09cd\u09b7 (Chest)"
   },
   {
    "fieldname": "ik_waist_circumstance",
    "fieldtype": "Float",
-   "label": "কোমর (Waist)"
+   "label": "\u0995\u09cb\u09ae\u09b0 (Waist)"
   },
   {
    "fieldname": "ik_bust",
    "fieldtype": "Float",
-   "label": "উচ্চ হিপ (High Hip)"
+   "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (High Hip)"
   },
   {
    "fieldname": "ik_upper_hip",
    "fieldtype": "Float",
-   "label": "নিম্ন হিপ (Low Hip)"
+   "label": "\u09a8\u09bf\u09ae\u09cd\u09a8 \u09b9\u09bf\u09aa (Low Hip)"
   },
   {
    "fieldname": "ik_lower_hip",
    "fieldtype": "Float",
-   "label": "হেম সুইপ (Hem Sweep)"
+   "label": "\u09b9\u09c7\u09ae \u09b8\u09c1\u0987\u09aa (Hem Sweep)"
   },
   {
    "fieldname": "ik_front_neck_depth",
    "fieldtype": "Float",
-   "label": "সামনের গলার ড্রপ (Front Neck Drop)"
+   "label": "\u09b8\u09be\u09ae\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Front Neck Drop)"
   },
   {
    "fieldname": "ik_back_neck_depth",
    "fieldtype": "Float",
-   "label": "পিছনের গলার ড্রপ (Back Neck Drop)"
+   "label": "\u09aa\u09bf\u099b\u09a8\u09c7\u09b0 \u0997\u09b2\u09be\u09b0 \u09a1\u09cd\u09b0\u09aa (Back Neck Drop)"
   },
   {
    "fieldname": "ik_shoulder_tip_to_side_waist",
    "fieldtype": "Float",
-   "label": "গলার প্রস্থ (Neck Width)"
+   "label": "\u0997\u09b2\u09be\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Neck Width)"
   },
   {
    "fieldname": "ik_front_neck_depth_s",
    "fieldtype": "Float",
-   "label": "কলারের প্রস্থ (Collar Width)"
+   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Collar Width)"
   },
   {
    "fieldname": "ik_back_neck_depth_s",
    "fieldtype": "Float",
-   "label": "কলারের উচ্চতা (Collar Height)"
+   "label": "\u0995\u09b2\u09be\u09b0\u09c7\u09b0 \u0989\u099a\u09cd\u099a\u09a4\u09be (Collar Height)"
   },
   {
    "fieldname": "ik_collar_width_height",
    "fieldtype": "Float",
-   "label": "কাঁধ থেকে কাঁধের প্রস্থ (Shoulder to Shoulder)"
+   "label": "\u0995\u09be\u0981\u09a7 \u09a5\u09c7\u0995\u09c7 \u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Shoulder to Shoulder)"
   },
   {
    "fieldname": "ik_button_placket_length",
    "fieldtype": "Float",
-   "label": "কাঁধের ঢাল/ড্রপ (Shoulder Drop)"
+   "label": "\u0995\u09be\u0981\u09a7\u09c7\u09b0 \u09a2\u09be\u09b2/\u09a1\u09cd\u09b0\u09aa (Shoulder Drop)"
   },
   {
    "fieldname": "ik_button_placket_width",
    "fieldtype": "Float",
-   "label": "আর্মহোলের গভীরতা (Armhole Depth)"
+   "label": "\u0986\u09b0\u09cd\u09ae\u09b9\u09cb\u09b2\u09c7\u09b0 \u0997\u09ad\u09c0\u09b0\u09a4\u09be (Armhole Depth)"
   },
   {
    "fieldname": "inner_column_break_wtxg",
@@ -610,82 +529,82 @@
   {
    "fieldname": "ik_hem",
    "fieldtype": "Float",
-   "label": "বাটন প্ল্যাকেটের দৈর্ঘ্য (Button Placket Length)"
+   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Button Placket Length)"
   },
   {
    "fieldname": "ik_shoulder_drop",
    "fieldtype": "Float",
-   "label": "বাটন প্ল্যাকেটের প্রস্থ (Button Placket Width)"
+   "label": "\u09ac\u09be\u099f\u09a8 \u09aa\u09cd\u09b2\u09cd\u09af\u09be\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Button Placket Width)"
   },
   {
    "fieldname": "ik_shoulder",
    "fieldtype": "Float",
-   "label": "স্লিভের দৈর্ঘ্য (Sleeve Length)"
+   "label": "\u09b8\u09cd\u09b2\u09bf\u09ad\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Sleeve Length)"
   },
   {
    "fieldname": "ik_armhole",
    "fieldtype": "Float",
-   "label": "বাইসেপ (Bicep)"
+   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (Bicep)"
   },
   {
    "fieldname": "ik_full_length_arm",
    "fieldtype": "Float",
-   "label": "এলবো (Elbow)"
+   "label": "\u098f\u09b2\u09ac\u09cb (Elbow)"
   },
   {
    "fieldname": "ik_biceps",
    "fieldtype": "Float",
-   "label": "বাইসেপ (×2)"
+   "label": "\u09ac\u09be\u0987\u09b8\u09c7\u09aa (\u00d72)"
   },
   {
    "fieldname": "ik_elbow",
    "fieldtype": "Float",
-   "label": "পকেটের দৈর্ঘ্য (Pocket Length)"
+   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Pocket Length)"
   },
   {
    "fieldname": "ik_armhole_arm",
    "fieldtype": "Float",
-   "label": "কাফ ওপেনিং (Cuff Opening)"
+   "label": "\u0995\u09be\u09ab \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Cuff Opening)"
   },
   {
    "fieldname": "ik_cuff_length",
    "fieldtype": "Float",
-   "label": "পকেট ওপেনিং (Pocket Opening)"
+   "label": "\u09aa\u0995\u09c7\u099f \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (Pocket Opening)"
   },
   {
    "fieldname": "ik_cuff_width",
    "fieldtype": "Float",
-   "label": "পকেটের অফস্থান (Pocket Position)"
+   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u0985\u09ab\u09b8\u09cd\u09a5\u09be\u09a8 (Pocket Position)"
   },
   {
    "fieldname": "ik_cuff_opening",
    "fieldtype": "Float",
-   "label": "আউটসিম (Outseam)"
+   "label": "\u0986\u0989\u099f\u09b8\u09bf\u09ae (Outseam)"
   },
   {
    "fieldname": "ik_pocket_length",
    "fieldtype": "Float",
-   "label": "ইনসিম (Inseam)"
+   "label": "\u0987\u09a8\u09b8\u09bf\u09ae (Inseam)"
   },
   {
    "fieldname": "ik_pocket_width",
    "fieldtype": "Float",
-   "label": "পকেটের প্রস্থ (Pocket Width)"
+   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Pocket Width)"
   },
   {
    "fieldname": "ik_pocket_opening",
    "fieldtype": "Float",
-   "label": "ব্যাক রাইজ (Back Rise)"
+   "label": "\u09ac\u09cd\u09af\u09be\u0995 \u09b0\u09be\u0987\u099c (Back Rise)"
   },
   {
    "fieldname": "ik_pocket_placket",
    "fieldtype": "Float",
-   "label": "কাফের দৈর্ঘ্য (Cuff Length)"
+   "label": "\u0995\u09be\u09ab\u09c7\u09b0 \u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Cuff Length)"
   },
   {
    "fieldname": "ik_shoulder_tip_to_pocket_starting",
    "fieldtype": "Float",
-   "label": "কোমর (Relaxed ×2)"
+   "label": "\u0995\u09cb\u09ae\u09b0 (Relaxed \u00d72)"
   },
   {
    "collapsible": 1,
@@ -800,57 +719,57 @@
   {
    "fieldname": "pocket_wid",
    "fieldtype": "Float",
-   "label": "ফ্রন্ট রাইজ (Front Rise)"
+   "label": "\u09ab\u09cd\u09b0\u09a8\u09cd\u099f \u09b0\u09be\u0987\u099c (Front Rise)"
   },
   {
    "fieldname": "komor",
    "fieldtype": "Data",
-   "label": "কোমর (Stretched ×2)"
+   "label": "\u0995\u09cb\u09ae\u09b0 (Stretched \u00d72)"
   },
   {
    "fieldname": "high_hip",
    "fieldtype": "Data",
-   "label": "উচ্চ হিপ (×2)"
+   "label": "\u0989\u099a\u09cd\u099a \u09b9\u09bf\u09aa (\u00d72)"
   },
   {
    "fieldname": "low_hip",
    "fieldtype": "Data",
-   "label": "নিম্ন হিপ (×2)"
+   "label": "\u09a8\u09bf\u09ae\u09cd\u09a8 \u09b9\u09bf\u09aa (\u00d72)"
   },
   {
    "fieldname": "thigh_uru",
    "fieldtype": "Data",
-   "label": "উরু (Thigh ×2)"
+   "label": "\u0989\u09b0\u09c1 (Thigh \u00d72)"
   },
   {
    "fieldname": "knee_x2",
    "fieldtype": "Data",
-   "label": "হাঁটু (Knee ×2)"
+   "label": "\u09b9\u09be\u0981\u099f\u09c1 (Knee \u00d72)"
   },
   {
    "fieldname": "leg_opening_x2",
    "fieldtype": "Data",
-   "label": "লেগ ওপেনিং (×2)"
+   "label": "\u09b2\u09c7\u0997 \u0993\u09aa\u09c7\u09a8\u09bf\u0982 (\u00d72)"
   },
   {
    "fieldname": "elasticrubber_width",
    "fieldtype": "Data",
-   "label": "ইলাস্টিক/রাবারের প্রস্থ"
+   "label": "\u0987\u09b2\u09be\u09b8\u09cd\u099f\u09bf\u0995/\u09b0\u09be\u09ac\u09be\u09b0\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5"
   },
   {
    "fieldname": "beltloop_width",
    "fieldtype": "Data",
-   "label": "বেল্ট/লুপের প্রস্থ"
+   "label": "\u09ac\u09c7\u09b2\u09cd\u099f/\u09b2\u09c1\u09aa\u09c7\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a5"
   },
   {
    "fieldname": "wb_to_pocket_opening",
    "fieldtype": "Data",
-   "label": "ওয়েস্টব্যান্ড থেকে পকেট ওপেনিং পর্যন্ত দূরত্ব"
+   "label": "\u0993\u09af\u09bc\u09c7\u09b8\u09cd\u099f\u09ac\u09cd\u09af\u09be\u09a8\u09cd\u09a1 \u09a5\u09c7\u0995\u09c7 \u09aa\u0995\u09c7\u099f \u0993\u09aa\u09c7\u09a8\u09bf\u0982 \u09aa\u09b0\u09cd\u09af\u09a8\u09cd\u09a4 \u09a6\u09c2\u09b0\u09a4\u09cd\u09ac"
   },
   {
    "fieldname": "pocket_depth",
    "fieldtype": "Data",
-   "label": "পকেটের গভীরতা"
+   "label": "\u09aa\u0995\u09c7\u099f\u09c7\u09b0 \u0997\u09ad\u09c0\u09b0\u09a4\u09be"
   },
   {
    "fieldname": "side_cut",
@@ -863,7 +782,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Collar/ Neck Style",
-   "options": "\nAsymmetric Neck\nBand Collar\nBardot Neck\nBindiya Neck\nBoat Neck / Bateau Neck\nButterfly Neck\nChikankari Neck\nCold Shoulder\nCollared Deep-V\nCorset Neck\nCowl Neck\nDeep V-Neck\nHalter Neck\nHenley Neck\nHigh Neck\nIllusion Neck (mesh/lace)\nKeyhole Kurti Neck\nKeyhole Neck\nKurti Round Neck\nKurti Sweetheart\nKurti V-Neck\nLace Appliqué Neck\nMandarin Collar\nMesh High-Neck\nMock Neck\nMughal Neck\nNotched Collar\nNotched V-Neck\nOff-Shoulder\nOff-Shoulder Ruffle Neck\nOne-Shoulder\nPeter Pan Collar\nPlunge Neck\nPointed Collar\nPotli Button Neck\nQueen Anne Neck\nRound Neck / Crew Neck\nScoop Neck\nShawl Collar\nShirt Collar\nSpread Collar\nSquare Neck\nStrapless / Tube Neck\nSurplice / Wrap Neck\nSweetheart Neck\nTurtle Neck\nU-Neck\nV-Neck\nZari/Zardozi Embellished Neck\nOther"
+   "options": "\nAsymmetric Neck\nBand Collar\nBardot Neck\nBindiya Neck\nBoat Neck / Bateau Neck\nButterfly Neck\nBib Collar\nBow Collar\nChikankari Neck\nCold Shoulder\nCollared Deep-V\nCorset Neck\nCowl Neck\nDeep V-Neck\nHalter Neck\nHenley Neck\nHigh Neck\nIllusion Neck (mesh/lace)\nKeyhole Kurti Neck\nKeyhole Neck\nKurti Round Neck\nKurti Sweetheart\nKurti V-Neck\nKaftan Neck\nLace Appliqu\u00e9 Neck\nMandarin Collar\nMesh High-Neck\nMock Neck\nMughal Neck\nNotched Collar\nNotched V-Neck\nOpen-Kaftan neck\nOff-Shoulder\nOff-Shoulder Ruffle Neck\nOne-Shoulder\nOverlap 'V' Neck\nOverlap 'U' Neck\nPeter Pan Collar\nPlunge Neck\nPointed Collar\nPotli Button Neck\nQueen Anne Neck\nRound Neck / Crew Neck\nRuffle Collar\nScoop Neck\nShawl Collar\nShirt Collar\nSpread Collar\nSquare Neck\nStrapless / Tube Neck\nSurplice / Wrap Neck\nSweetheart Neck\nSailor Collar\nSlit Neck\nChelsea Collar\nTurtle Neck\nTie-Up Neck\nU-Neck\nV-Neck\nZari/Zardozi Embellished Neck\nSquire Neck\nSlit Neck\nWavy round Neck\nWavy 'V' Neck\nOverlap 'V' Neck\nOverlap 'U' Neck\nTie-Up Neck\nJacket Neck\nJhony Collar\nOther"
   },
   {
    "fieldname": "cut_fit_style",
@@ -879,7 +798,7 @@
   {
    "fieldname": "length_bottom",
    "fieldtype": "Float",
-   "label": "দৈর্ঘ্য (Length)"
+   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Length)"
   },
   {
    "fieldname": "column_break_bgdr",
@@ -1044,116 +963,15 @@
    "label": "Rate"
   },
   {
-   "fieldname": "section_break_qgzt",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "color",
-   "fieldtype": "Color",
-   "label": "Color"
-  },
-  {
    "fieldname": "section_break_fulh",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Color Units"
   },
   {
    "fieldname": "color_units",
-   "fieldtype": "Select",
+   "fieldtype": "Table",
    "label": "Color Units",
-   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
-  },
-  {
-   "fieldname": "color_2",
-   "fieldtype": "Color",
-   "label": "Color 2"
-  },
-  {
-   "fieldname": "color_3",
-   "fieldtype": "Color",
-   "label": "Color 3"
-  },
-  {
-   "fieldname": "color_4",
-   "fieldtype": "Color",
-   "label": "Color 4"
-  },
-  {
-   "fieldname": "column_break_kzbm",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "color_5",
-   "fieldtype": "Color",
-   "label": "Color 5"
-  },
-  {
-   "fieldname": "color_6",
-   "fieldtype": "Color",
-   "label": "Color 6"
-  },
-  {
-   "fieldname": "color_7",
-   "fieldtype": "Color",
-   "label": "Color 7"
-  },
-  {
-   "fieldname": "color_8",
-   "fieldtype": "Color",
-   "label": "Color 8"
-  },
-  {
-   "fieldname": "color_9",
-   "fieldtype": "Color",
-   "label": "Color 9"
-  },
-  {
-   "fieldname": "color_10",
-   "fieldtype": "Color",
-   "label": "Color 10"
-  },
-  {
-   "fieldname": "data_xmgl",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_ryzm",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_muzc",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_lfwb",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "column_break_oqxe",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "data_hnjh",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_zsdd",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_uxrz",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_mnat",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_wptw",
-   "fieldtype": "Data"
-  },
-  {
-   "fieldname": "data_znsh",
-   "fieldtype": "Data"
+   "options": "Sketch Specification Color Unit"
   },
   {
    "fieldname": "bottom_waist",
@@ -1182,12 +1000,12 @@
   {
    "fieldname": "dlength",
    "fieldtype": "Data",
-   "label": "দৈর্ঘ্য (Length)"
+   "label": "\u09a6\u09c8\u09b0\u09cd\u0998\u09cd\u09af (Length)"
   },
   {
    "fieldname": "dwidth",
    "fieldtype": "Data",
-   "label": "প্রস্থ (Width)"
+   "label": "\u09aa\u09cd\u09b0\u09b8\u09cd\u09a5 (Width)"
   },
   {
    "fieldname": "dupatta_note",
@@ -1206,6 +1024,21 @@
    "options": "\nXS\nS\nM\nL\nXL\nXXL\n3XL\nFree Size\n32\n34\n36\n38\n40\n42\n44\n46\n48\n50\n52"
   },
   {
+   "fieldname": "category_lead",
+   "fieldtype": "Data",
+   "label": "Category Lead"
+  },
+  {
+   "fieldname": "concern_merchant",
+   "fieldtype": "Data",
+   "label": "Concern Merchant"
+  },
+  {
+   "fieldname": "sourcing_lead",
+   "fieldtype": "Data",
+   "label": "Sourcing Lead"
+  },
+  {
    "fieldname": "table_jtfk",
    "fieldtype": "Table",
    "options": "Sketch TP Image"
@@ -1216,343 +1049,35 @@
    "label": "Colors"
   },
   {
-   "fieldname": "color_units",
-   "fieldtype": "Select",
-   "label": "Color Units",
-   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
+   "fieldname": "body_artwork_colors",
+   "fieldtype": "Table",
+   "label": "Body Artwork Colors",
+   "options": "Sketch Specification Color Unit"
   },
   {
-   "fieldname": "color",
-   "fieldtype": "Color",
-   "label": "Color"
+   "fieldname": "koti_artwork_colors",
+   "fieldtype": "Table",
+   "label": "Koti Artwork Colors",
+   "options": "Sketch Specification Color Unit"
   },
   {
-   "fieldname": "color_2",
-   "fieldtype": "Color",
-   "label": "Color 2"
+   "fieldname": "bottom_artwork_colors",
+   "fieldtype": "Table",
+   "label": "Bottom Artwork Colors",
+   "options": "Sketch Specification Color Unit"
   },
   {
-   "fieldname": "color_3",
-   "fieldtype": "Color",
-   "label": "Color 3"
-  },
-  {
-   "fieldname": "color_4",
-   "fieldtype": "Color",
-   "label": "Color 4"
-  },
-  {
-   "fieldname": "color_5",
-   "fieldtype": "Color",
-   "label": "Color 5"
-  },
-  {
-   "fieldname": "color_6",
-   "fieldtype": "Color",
-   "label": "Color 6"
-  },
-  {
-   "fieldname": "color_7",
-   "fieldtype": "Color",
-   "label": "Color 7"
-  },
-  {
-   "fieldname": "color_8",
-   "fieldtype": "Color",
-   "label": "Color 8"
-  },
-  {
-   "fieldname": "color_9",
-   "fieldtype": "Color",
-   "label": "Color 9"
-  },
-  {
-   "fieldname": "color_10",
-   "fieldtype": "Color",
-   "label": "Color 10"
-  },
-  {
-   "fieldname": "body_artwork_color",
-   "fieldtype": "Select",
-   "label": "Body Artwork Color",
-   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
-  },
-  {
-   "depends_on": "eval:doc.body_artwork_color >= 1",
-   "fieldname": "body_artwork_color_1",
-   "fieldtype": "Color",
-   "label": "Body Artwork Color 1"
-  },
-  {
-   "depends_on": "eval:doc.body_artwork_color >= 2",
-   "fieldname": "body_artwork_color_2",
-   "fieldtype": "Color",
-   "label": "Body Artwork Color 2"
-  },
-  {
-   "depends_on": "eval:doc.body_artwork_color >= 3",
-   "fieldname": "body_artwork_color_3",
-   "fieldtype": "Color",
-   "label": "Body Artwork Color 3"
-  },
-  {
-   "depends_on": "eval:doc.body_artwork_color >= 4",
-   "fieldname": "body_artwork_color_4",
-   "fieldtype": "Color",
-   "label": "Body Artwork Color 4"
-  },
-  {
-   "depends_on": "eval:doc.body_artwork_color >= 5",
-   "fieldname": "body_artwork_color_5",
-   "fieldtype": "Color",
-   "label": "Body Artwork Color 5"
-  },
-  {
-   "depends_on": "eval:doc.body_artwork_color >= 6",
-   "fieldname": "body_artwork_color_6",
-   "fieldtype": "Color",
-   "label": "Body Artwork Color 6"
-  },
-  {
-   "depends_on": "eval:doc.body_artwork_color >= 7",
-   "fieldname": "body_artwork_color_7",
-   "fieldtype": "Color",
-   "label": "Body Artwork Color 7"
-  },
-  {
-   "depends_on": "eval:doc.body_artwork_color >= 8",
-   "fieldname": "body_artwork_color_8",
-   "fieldtype": "Color",
-   "label": "Body Artwork Color 8"
-  },
-  {
-   "depends_on": "eval:doc.body_artwork_color >= 9",
-   "fieldname": "body_artwork_color_9",
-   "fieldtype": "Color",
-   "label": "Body Artwork Color 9"
-  },
-  {
-   "depends_on": "eval:doc.body_artwork_color >= 10",
-   "fieldname": "body_artwork_color_10",
-   "fieldtype": "Color",
-   "label": "Body Artwork Color 10"
-  },
-  {
-   "fieldname": "koti_artwork_color",
-   "fieldtype": "Select",
-   "label": "Koti Artwork Color",
-   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
-  },
-  {
-   "fieldname": "bottom_artwork_color",
-   "fieldtype": "Select",
-   "label": "Bottom Artwork Color",
-   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
-  },
-  {
-   "fieldname": "dupatta_artwork_color",
-   "fieldtype": "Select",
-   "label": "Dupatta Artwork Color",
-   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
-  },
-  {
-   "fieldname": "column_break_pspl",
-   "fieldtype": "Column Break"
-  },
-  {
-   "depends_on": "eval:doc.koti_artwork_color >= 1",
-   "fieldname": "koti_artwork_color_1",
-   "fieldtype": "Color",
-   "label": "Koti Artwork Color 1"
-  },
-  {
-   "depends_on": "eval:doc.koti_artwork_color >= 2",
-   "fieldname": "koti_artwork_color_2",
-   "fieldtype": "Color",
-   "label": "Koti Artwork Color 2"
-  },
-  {
-   "depends_on": "eval:doc.koti_artwork_color >= 3",
-   "fieldname": "koti_artwork_color_3",
-   "fieldtype": "Color",
-   "label": "Koti Artwork Color 3"
-  },
-  {
-   "depends_on": "eval:doc.koti_artwork_color >= 4",
-   "fieldname": "koti_artwork_color_4",
-   "fieldtype": "Color",
-   "label": "Koti Artwork Color 4"
-  },
-  {
-   "depends_on": "eval:doc.koti_artwork_color >= 5",
-   "fieldname": "koti_artwork_color_5",
-   "fieldtype": "Color",
-   "label": "Koti Artwork Color 5"
-  },
-  {
-   "depends_on": "eval:doc.koti_artwork_color >= 6",
-   "fieldname": "koti_artwork_color_6",
-   "fieldtype": "Color",
-   "label": "Koti Artwork Color 6"
-  },
-  {
-   "depends_on": "eval:doc.koti_artwork_color >= 7",
-   "fieldname": "koti_artwork_color_7",
-   "fieldtype": "Color",
-   "label": "Koti Artwork Color 7"
-  },
-  {
-   "depends_on": "eval:doc.koti_artwork_color >= 8",
-   "fieldname": "koti_artwork_color_8",
-   "fieldtype": "Color",
-   "label": "Koti Artwork Color 8"
-  },
-  {
-   "depends_on": "eval:doc.koti_artwork_color >= 9",
-   "fieldname": "koti_artwork_color_9",
-   "fieldtype": "Color",
-   "label": "Koti Artwork Color 9"
-  },
-  {
-   "depends_on": "eval:doc.koti_artwork_color >= 10",
-   "fieldname": "koti_artwork_color_10",
-   "fieldtype": "Color",
-   "label": "Koti Artwork Color 10"
-  },
-  {
-   "fieldname": "column_break_kurv",
-   "fieldtype": "Column Break"
-  },
-  {
-   "depends_on": "eval:doc.bottom_artwork_color >= 1",
-   "fieldname": "bottom_artwork_color_1",
-   "fieldtype": "Color",
-   "label": "Bottom Artwork Color 1"
-  },
-  {
-   "depends_on": "eval:doc.bottom_artwork_color >= 2",
-   "fieldname": "bottom_artwork_color_2",
-   "fieldtype": "Color",
-   "label": "Bottom Artwork Color 2"
-  },
-  {
-   "depends_on": "eval:doc.bottom_artwork_color >= 3",
-   "fieldname": "bottom_artwork_color_3",
-   "fieldtype": "Color",
-   "label": "Bottom Artwork Color 3"
-  },
-  {
-   "depends_on": "eval:doc.bottom_artwork_color >= 4",
-   "fieldname": "bottom_artwork_color_4",
-   "fieldtype": "Color",
-   "label": "Bottom Artwork Color 4"
-  },
-  {
-   "depends_on": "eval:doc.bottom_artwork_color >= 5",
-   "fieldname": "bottom_artwork_color_5",
-   "fieldtype": "Color",
-   "label": "Bottom Artwork Color 5"
-  },
-  {
-   "depends_on": "eval:doc.bottom_artwork_color >= 6",
-   "fieldname": "bottom_artwork_color_6",
-   "fieldtype": "Color",
-   "label": "Bottom Artwork Color 6"
-  },
-  {
-   "depends_on": "eval:doc.bottom_artwork_color >= 7",
-   "fieldname": "bottom_artwork_color_7",
-   "fieldtype": "Color",
-   "label": "Bottom Artwork Color 7"
-  },
-  {
-   "depends_on": "eval:doc.bottom_artwork_color >= 8",
-   "fieldname": "bottom_artwork_color_8",
-   "fieldtype": "Color",
-   "label": "Bottom Artwork Color 8"
-  },
-  {
-   "depends_on": "eval:doc.bottom_artwork_color >= 9",
-   "fieldname": "bottom_artwork_color_9",
-   "fieldtype": "Color",
-   "label": "Bottom Artwork Color 9"
-  },
-  {
-   "depends_on": "eval:doc.bottom_artwork_color >= 10",
-   "fieldname": "bottom_artwork_color_10",
-   "fieldtype": "Color",
-   "label": "Bottom Artwork Color 10"
-  },
-  {
-   "fieldname": "column_break_igpx",
-   "fieldtype": "Column Break"
-  },
-  {
-   "depends_on": "eval:doc.dupatta_artwork_color >= 1",
-   "fieldname": "dupatta_artwork_color_1",
-   "fieldtype": "Color",
-   "label": "Dupatta Artwork Color 1"
-  },
-  {
-   "depends_on": "eval:doc.dupatta_artwork_color >= 2",
-   "fieldname": "dupatta_artwork_color_2",
-   "fieldtype": "Color",
-   "label": "Dupatta Artwork Color 2"
-  },
-  {
-   "depends_on": "eval:doc.dupatta_artwork_color >= 3",
-   "fieldname": "dupatta_artwork_color_3",
-   "fieldtype": "Color",
-   "label": "Dupatta Artwork Color 3"
-  },
-  {
-   "depends_on": "eval:doc.dupatta_artwork_color >= 4",
-   "fieldname": "dupatta_artwork_color_4",
-   "fieldtype": "Color",
-   "label": "Dupatta Artwork Color 4"
-  },
-  {
-   "depends_on": "eval:doc.dupatta_artwork_color >= 5",
-   "fieldname": "dupatta_artwork_color_5",
-   "fieldtype": "Color",
-   "label": "Dupatta Artwork Color 5"
-  },
-  {
-   "depends_on": "eval:doc.dupatta_artwork_color >= 6",
-   "fieldname": "dupatta_artwork_color_6",
-   "fieldtype": "Color",
-   "label": "Dupatta Artwork Color 6"
-  },
-  {
-   "depends_on": "eval:doc.dupatta_artwork_color >= 7",
-   "fieldname": "dupatta_artwork_color_7",
-   "fieldtype": "Color",
-   "label": "Dupatta Artwork Color 7"
-  },
-  {
-   "depends_on": "eval:doc.dupatta_artwork_color >= 8",
-   "fieldname": "dupatta_artwork_color_8",
-   "fieldtype": "Color",
-   "label": "Dupatta Artwork Color 8"
-  },
-  {
-   "depends_on": "eval:doc.dupatta_artwork_color >= 9",
-   "fieldname": "dupatta_artwork_color_9",
-   "fieldtype": "Color",
-   "label": "Dupatta Artwork Color 9"
-  },
-  {
-   "depends_on": "eval:doc.dupatta_artwork_color >= 10",
-   "fieldname": "dupatta_artwork_color_10",
-   "fieldtype": "Color",
-   "label": "Dupatta Artwork Color 10"
+   "fieldname": "dupatta_artwork_colors",
+   "fieldtype": "Table",
+   "label": "Dupatta Artwork Colors",
+   "options": "Sketch Specification Color Unit"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-02 21:01:23.000000",
+ "modified": "2026-06-04 10:24:25.075370",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Sketch Specification",

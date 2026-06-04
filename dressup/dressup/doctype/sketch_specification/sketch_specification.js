@@ -41,7 +41,6 @@ frappe.ui.form.on('Sketch Specification', {
 			});
 		}
 
-		toggle_color_fields(frm);
 		toggle_artwork_color_fields(frm);
 		render_image_previews(frm);
 	},
@@ -52,24 +51,10 @@ frappe.ui.form.on('Sketch Specification', {
 		render_image_previews(frm);
 	},
 	onload: function (frm) {
-		toggle_color_fields(frm);
 		toggle_artwork_color_fields(frm);
 	},
-	color_units: function (frm) {
-		toggle_color_fields(frm);
-	},
-	body_artwork_color: function (frm) {
-		toggle_artwork_color_fields(frm);
-	},
-	koti_artwork_color: function (frm) {
-		toggle_artwork_color_fields(frm);
-	},
-	bottom_artwork_color: function (frm) {
-		toggle_artwork_color_fields(frm);
-	},
-	dupatta_artwork_color: function (frm) {
-		toggle_artwork_color_fields(frm);
-	},
+
+
 	designer: function (frm) {
 		if (frm.doc.designer) {
 			// Generate design no if empty OR if it's currently an Employee ID (EID-xxxx)
@@ -114,40 +99,6 @@ frappe.ui.form.on('Sketch TP Image', {
 	}
 });
 
-var toggle_color_fields = function (frm) {
-	let units = parseInt(frm.doc.color_units) || 0;
-
-	frm.toggle_display('color', units >= 1);
-	frm.toggle_display('data_xmgl', units >= 1);
-
-	frm.toggle_display('color_2', units >= 2);
-	frm.toggle_display('data_ryzm', units >= 2);
-
-	frm.toggle_display('color_3', units >= 3);
-	frm.toggle_display('data_muzc', units >= 3);
-
-	frm.toggle_display('color_4', units >= 4);
-	frm.toggle_display('data_lfwb', units >= 4);
-
-	frm.toggle_display('color_5', units >= 5);
-	frm.toggle_display('data_hnjh', units >= 5);
-
-	frm.toggle_display('color_6', units >= 6);
-	frm.toggle_display('data_zsdd', units >= 6);
-
-	frm.toggle_display('color_7', units >= 7);
-	frm.toggle_display('data_uxrz', units >= 7);
-
-	frm.toggle_display('color_8', units >= 8);
-	frm.toggle_display('data_mnat', units >= 8);
-
-	frm.toggle_display('color_9', units >= 9);
-	frm.toggle_display('data_wptw', units >= 9);
-
-	frm.toggle_display('color_10', units >= 10);
-	frm.toggle_display('data_znsh', units >= 10);
-};
-
 var toggle_artwork_color_fields = function (frm) {
 	// Check which artwork types exist in the child table
 	let rows = frm.doc.table_jtfk || [];
@@ -156,29 +107,10 @@ var toggle_artwork_color_fields = function (frm) {
 	let has_bottom_artwork = rows.some(r => r.name1 === 'Bottom Artwork');
 	let has_dupatta_artwork = rows.some(r => r.name1 === 'Dupatta Artwork');
 
-	// Body Artwork Color fields
-	frm.toggle_display('body_artwork_color', has_top_artwork);
-	for (let i = 1; i <= 10; i++) {
-		frm.toggle_display('body_artwork_color_' + i, has_top_artwork && parseInt(frm.doc.body_artwork_color) >= i);
-	}
-
-	// Koti Artwork Color fields
-	frm.toggle_display('koti_artwork_color', has_koti_artwork);
-	for (let i = 1; i <= 10; i++) {
-		frm.toggle_display('koti_artwork_color_' + i, has_koti_artwork && parseInt(frm.doc.koti_artwork_color) >= i);
-	}
-
-	// Bottom Artwork Color fields
-	frm.toggle_display('bottom_artwork_color', has_bottom_artwork);
-	for (let i = 1; i <= 10; i++) {
-		frm.toggle_display('bottom_artwork_color_' + i, has_bottom_artwork && parseInt(frm.doc.bottom_artwork_color) >= i);
-	}
-
-	// Dupatta Artwork Color fields
-	frm.toggle_display('dupatta_artwork_color', has_dupatta_artwork);
-	for (let i = 1; i <= 10; i++) {
-		frm.toggle_display('dupatta_artwork_color_' + i, has_dupatta_artwork && parseInt(frm.doc.dupatta_artwork_color) >= i);
-	}
+	frm.toggle_display('body_artwork_colors', has_top_artwork);
+	frm.toggle_display('koti_artwork_colors', has_koti_artwork);
+	frm.toggle_display('bottom_artwork_colors', has_bottom_artwork);
+	frm.toggle_display('dupatta_artwork_colors', has_dupatta_artwork);
 };
 
 var render_image_previews = function (frm) {

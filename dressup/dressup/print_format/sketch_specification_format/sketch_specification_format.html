@@ -430,10 +430,24 @@
                                 <div class="section-box" style="page-break-inside: avoid; margin-bottom: 0;">
                                     <div class="section-header">Workstation - Screen Print:</div>
                                     <div class="info-row">Old Frame / SKU# {{ doc.old_frame__sku or '' }}, New Frame / SKU# {{ doc.new_frame__sku or '' }}</div>
-                                    <div class="info-row">Color Units # {{ doc.color_units }}</div>
+                                    <div class="info-row">Color Units # {{ doc.color_units|length }}</div>
+                                    {% if doc.color_units %}
                                     <div class="info-row" style="margin: 3px 0;">
-                                        <strong>{{ [doc.color, doc.color_2, doc.color_3, doc.color_4, doc.color_5, doc.color_6]|select|join(', ') }}</strong>
+                                        <strong>
+                                            {%- set colors = [] -%}
+                                            {%- for row in doc.color_units -%}
+                                                {%- if row.color -%}
+                                                    {%- if row.color_name -%}
+                                                        {%- set _ = colors.append(row.color_name ~ " (" ~ row.color ~ ")") -%}
+                                                    {%- else -%}
+                                                        {%- set _ = colors.append(row.color) -%}
+                                                    {%- endif -%}
+                                                {%- endif -%}
+                                            {%- endfor -%}
+                                            {{ colors|join(', ') }}
+                                        </strong>
                                     </div>
+                                    {% endif %}
                                     <table class="cost-table" style="font-size: 6.5pt;">
                                         <tr><td>Cost for 30 Unit</td><td class="cost-val">{{ doc.cost_for_30_unit or '' }}</td></tr>
                                         <tr><td>Cost for 50 Unit</td><td class="cost-val">{{ doc.cost_for_50_unit or '' }}</td></tr>

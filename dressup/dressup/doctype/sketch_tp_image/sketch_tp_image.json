@@ -16,7 +16,7 @@
             "fieldtype": "Select",
             "in_list_view": 1,
             "label": "Name",
-            "options": "\nTop Front\nTop Back\nBottom Front\nBottom Back\nTop Artwork\nBottom Artwork\nKoti Front\nKoti Back\nKoti Artwork\nDupatta\nDupatta Artwork",
+            "options": "\nTop Front\nTop Back\nTop Artwork\nBottom Front\nBottom Back\nBottom Artwork\nKoti Front\nKoti Back\nKoti Artwork\nDupatta Front\nDupatta Back\nDupatta Artwork",
             "reqd": 1
         },
         {
@@ -36,7 +36,7 @@
     "index_web_pages_for_search": 1,
     "istable": 1,
     "links": [],
-    "modified": "2026-05-26 08:21:10.952844",
+    "modified": "2026-06-04 10:29:15.350564",
     "modified_by": "Administrator",
     "module": "DressUp",
     "name": "Sketch TP Image",

@@ -41,6 +41,7 @@
   "column_break_4",
   "special_instructions",
   "communication_section",
+  "email_template",
   "email_sent",
   "column_break_5",
   "email_sent_on",
@@ -255,6 +256,12 @@
    "fieldname": "communication_section",
    "fieldtype": "Section Break",
    "label": "Communication Log"
+  },
+  {
+   "fieldname": "email_template",
+   "fieldtype": "Link",
+   "label": "Email Template",
+   "options": "Email Template"
   },
   {
    "default": "0",

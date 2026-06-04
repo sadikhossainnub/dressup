@@ -1,0 +1,164 @@
+{
+ "actions": [],
+ "creation": "2026-06-03 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "general_settings_section",
+  "enabled",
+  "loyalty_program",
+  "column_break_general",
+  "company",
+  "period_downgrade_section",
+  "enable_period_downgrade",
+  "evaluation_period",
+  "column_break_period",
+  "maintain_amount",
+  "period_downgrade_type",
+  "inactivity_downgrade_section",
+  "enable_inactivity_downgrade",
+  "inactive_days",
+  "column_break_inactivity",
+  "inactivity_downgrade_type"
+ ],
+ "fields": [
+  {
+   "fieldname": "general_settings_section",
+   "fieldtype": "Section Break",
+   "label": "General Settings"
+  },
+  {
+   "default": "0",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enable Loyalty Downgrade"
+  },
+  {
+   "depends_on": "eval:doc.enabled",
+   "fieldname": "loyalty_program",
+   "fieldtype": "Link",
+   "label": "Loyalty Program",
+   "options": "Loyalty Program",
+   "mandatory_depends_on": "eval:doc.enabled"
+  },
+  {
+   "fieldname": "column_break_general",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.enabled",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "mandatory_depends_on": "eval:doc.enabled"
+  },
+  {
+   "fieldname": "period_downgrade_section",
+   "fieldtype": "Section Break",
+   "label": "Period-Based Downgrade (Condition B)",
+   "depends_on": "eval:doc.enabled",
+   "description": "Downgrade customers who don't meet minimum purchase amount within a specified period."
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_period_downgrade",
+   "fieldtype": "Check",
+   "label": "Enable Period-Based Downgrade"
+  },
+  {
+   "depends_on": "eval:doc.enable_period_downgrade",
+   "fieldname": "evaluation_period",
+   "fieldtype": "Select",
+   "label": "Evaluation Period",
+   "options": "\nMonthly\nQuarterly\nYearly",
+   "mandatory_depends_on": "eval:doc.enable_period_downgrade"
+  },
+  {
+   "fieldname": "column_break_period",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.enable_period_downgrade",
+   "fieldname": "maintain_amount",
+   "fieldtype": "Currency",
+   "label": "Minimum Maintain Amount",
+   "description": "Minimum purchase amount required within the evaluation period to maintain current tier.",
+   "mandatory_depends_on": "eval:doc.enable_period_downgrade"
+  },
+  {
+   "depends_on": "eval:doc.enable_period_downgrade",
+   "fieldname": "period_downgrade_type",
+   "fieldtype": "Select",
+   "label": "Downgrade Type",
+   "options": "\nOne Step Down\nDrop to Lowest",
+   "default": "One Step Down",
+   "mandatory_depends_on": "eval:doc.enable_period_downgrade"
+  },
+  {
+   "fieldname": "inactivity_downgrade_section",
+   "fieldtype": "Section Break",
+   "label": "Inactivity-Based Downgrade (Condition C)",
+   "depends_on": "eval:doc.enabled",
+   "description": "Downgrade customers who haven't made any purchase within a specified number of days."
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_inactivity_downgrade",
+   "fieldtype": "Check",
+   "label": "Enable Inactivity-Based Downgrade"
+  },
+  {
+   "depends_on": "eval:doc.enable_inactivity_downgrade",
+   "fieldname": "inactive_days",
+   "fieldtype": "Int",
+   "label": "Inactive Days Threshold",
+   "description": "Number of days without any purchase after which customer will be downgraded.",
+   "mandatory_depends_on": "eval:doc.enable_inactivity_downgrade"
+  },
+  {
+   "fieldname": "column_break_inactivity",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.enable_inactivity_downgrade",
+   "fieldname": "inactivity_downgrade_type",
+   "fieldtype": "Select",
+   "label": "Downgrade Type",
+   "options": "\nOne Step Down\nDrop to Lowest",
+   "default": "One Step Down",
+   "mandatory_depends_on": "eval:doc.enable_inactivity_downgrade"
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-06-03 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Loyalty Downgrade Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

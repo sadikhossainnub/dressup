@@ -49,6 +49,7 @@ frappe.ui.form.on("Job Applicant Invitation", {
 			function() {
 				frappe.dom.freeze(__("Sending Invitation Email..."));
 				frm.call({
+					doc: frm.doc,
 					method: "send_invitation_email",
 					callback: function(r) {
 						frappe.dom.unfreeze();
@@ -65,6 +66,7 @@ frappe.ui.form.on("Job Applicant Invitation", {
 			function() {
 				frappe.dom.freeze(__("Updating RSVP..."));
 				frm.call({
+					doc: frm.doc,
 					method: "update_rsvp",
 					args: {
 						rsvp_status: status
@@ -81,6 +83,7 @@ frappe.ui.form.on("Job Applicant Invitation", {
 	create_interview: function(frm) {
 		frappe.dom.freeze(__("Creating HRMS Interview..."));
 		frm.call({
+			doc: frm.doc,
 			method: "create_hrms_interview",
 			callback: function(r) {
 				frappe.dom.unfreeze();

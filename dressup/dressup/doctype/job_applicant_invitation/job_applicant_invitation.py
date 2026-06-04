@@ -57,30 +57,41 @@ class JobApplicantInvitation(Document):
 		print_format = "Invitation Letter"
 		
 		# Generate Email body
-		subject = _("Interview Invitation: {0} for {1}").format(self.interview_round, self.job_opening or self.designation or "Position")
-		
-		meeting_info = ""
-		if self.interview_mode != "In-Person" and self.meeting_link:
-			meeting_info = f"<p><strong>Meeting Link:</strong> <a href='{self.meeting_link}'>{self.meeting_link}</a></p>"
+		template_name = self.email_template or frappe.db.get_single_value("HR Settings", "custom_default_invitation_template")
+		if template_name:
+			email_template = frappe.get_doc("Email Template", template_name)
+			template_content = email_template.response_html if email_template.use_html else email_template.response
+			
+			context = self.as_dict()
+			context["doc"] = self
+			
+			subject = frappe.render_template(email_template.subject, context)
+			message = frappe.render_template(template_content, context)
 		else:
-			meeting_info = f"<p><strong>Venue:</strong> {self.venue or ''}</p>"
+			subject = _("Interview Invitation: {0} for {1}").format(self.interview_round, self.job_opening or self.designation or "Position")
+			
+			meeting_info = ""
+			if self.interview_mode != "In-Person" and self.meeting_link:
+				meeting_info = f"<p><strong>Meeting Link:</strong> <a href='{self.meeting_link}'>{self.meeting_link}</a></p>"
+			else:
+				meeting_info = f"<p><strong>Venue:</strong> {self.venue or ''}</p>"
 
-		message = f"""
-		<p>Dear {self.applicant_name or 'Candidate'},</p>
-		<p>We are pleased to invite you for an interview for the position of <strong>{self.job_opening or self.designation or 'Position'}</strong>.</p>
-		<p><strong>Interview Details:</strong></p>
-		<ul>
-			<li><strong>Round:</strong> {self.interview_round}</li>
-			<li><strong>Date:</strong> {self.interview_date}</li>
-			<li><strong>Time:</strong> {self.interview_time} to {self.interview_end_time}</li>
-			<li><strong>Mode:</strong> {self.interview_mode}</li>
-		</ul>
-		{meeting_info}
-		<p>Please find the formal invitation letter attached to this email.</p>
-		<p>Please RSVP to confirm your availability.</p>
-		<p>Best regards,</p>
-		<p>HR Team<br>DressUp Manufacturing</p>
-		"""
+			message = f"""
+			<p>Dear {self.applicant_name or 'Candidate'},</p>
+			<p>We are pleased to invite you for an interview for the position of <strong>{self.job_opening or self.designation or 'Position'}</strong>.</p>
+			<p><strong>Interview Details:</strong></p>
+			<ul>
+				<li><strong>Round:</strong> {self.interview_round}</li>
+				<li><strong>Date:</strong> {self.interview_date}</li>
+				<li><strong>Time:</strong> {self.interview_time} to {self.interview_end_time}</li>
+				<li><strong>Mode:</strong> {self.interview_mode}</li>
+			</ul>
+			{meeting_info}
+			<p>Please find the formal invitation letter attached to this email.</p>
+			<p>Please RSVP to confirm your availability.</p>
+			<p>Best regards,</p>
+			<p>HR Team<br>DressUp Manufacturing</p>
+			"""
 
 		try:
 			# Attach PDF of the invitation letter

@@ -98,17 +98,6 @@
 {%- set mc_list = frappe.get_all("Measurement Chart", filters={"style_no": doc.design_no}, limit=1) -%}
 {%- set mc_doc = frappe.get_doc("Measurement Chart", mc_list[0].name) if mc_list else None -%}
 
-{%- set body_color_fields = ['body_artwork_color_1','body_artwork_color_2','body_artwork_color_3','body_artwork_color_4','body_artwork_color_5','body_artwork_color_6','body_artwork_color_7','body_artwork_color_8','body_artwork_color_9','body_artwork_color_10'] -%}
-{%- set koti_color_fields = ['koti_artwork_color_1','koti_artwork_color_2','koti_artwork_color_3','koti_artwork_color_4','koti_artwork_color_5','koti_artwork_color_6','koti_artwork_color_7','koti_artwork_color_8','koti_artwork_color_9','koti_artwork_color_10'] -%}
-{%- set bottom_color_fields = ['bottom_artwork_color_1','bottom_artwork_color_2','bottom_artwork_color_3','bottom_artwork_color_4','bottom_artwork_color_5','bottom_artwork_color_6','bottom_artwork_color_7','bottom_artwork_color_8','bottom_artwork_color_9','bottom_artwork_color_10'] -%}
-{%- set dupatta_color_fields = ['dupatta_artwork_color_1','dupatta_artwork_color_2','dupatta_artwork_color_3','dupatta_artwork_color_4','dupatta_artwork_color_5','dupatta_artwork_color_6','dupatta_artwork_color_7','dupatta_artwork_color_8','dupatta_artwork_color_9','dupatta_artwork_color_10'] -%}
-
-{%- set artwork_colors = {
-    'body': body_color_fields,
-    'koti': koti_color_fields,
-    'bottom': bottom_color_fields,
-    'dupatta': dupatta_color_fields
-} -%}
 
 <table class="page-wrapper">
 <!-- ═══════════ REPEATING HEADER ═══════════ -->
@@ -129,7 +118,7 @@
 </tr>
 <tr>
     <td class="lbl">Category</td><td class="val">{{ doc.category or '' }}</td>
-    <td class="lbl">No. of Colorways</td><td class="val">{{ doc.color_units or '' }}</td>
+    <td class="lbl">No. of Colorways</td><td class="val">T-{{ doc.body_artwork_colors|length }}/B-{{ doc.bottom_artwork_colors|length }}/K-{{ doc.koti_artwork_colors|length }}/D-{{ doc.dupatta_artwork_colors|length }}</td>
     <td class="lbl">Sourcing Lead</td><td class="val"></td>
 </tr>
 <tr>
@@ -381,12 +370,23 @@
     <!-- Print Colors (right ~27%) -->
     <td style="width:27%;vertical-align:top;padding:0 0 0 5px;border:none;">
         <div style="margin-top:5px;">
-        {%- set color_field_list = artwork_colors.get(art_img.art_type, body_color_fields) -%}
-        {% for cf in color_field_list %}
-            {% if doc.get(cf) %}
+        {%- set colors_map = {
+            'body': doc.body_artwork_colors,
+            'koti': doc.koti_artwork_colors,
+            'bottom': doc.bottom_artwork_colors,
+            'dupatta': doc.dupatta_artwork_colors
+        } -%}
+        {%- set selected_colors = colors_map.get(art_img.art_type, []) -%}
+        {% for row in selected_colors %}
+            {% if row.color %}
             <div class="pc-box">
-                <div class="pc-swatch" style="background-color:{{ doc.get(cf) }};"></div>
-                <div class="pc-name">{{ doc.get(cf) }} <span style="font-size:7px;color:#666;">(Color {{ loop.index }})</span></div>
+                <div class="pc-swatch" style="background-color:{{ row.color }};"></div>
+                <div class="pc-name">{{ row.color }}
+                    {%- if row.color_name -%}
+                        <span style="font-size:7px;color:#666;"> ({{ row.color_name }})</span>
+                    {%- endif -%}
+                    <span style="font-size:7px;color:#666;"> (Color {{ loop.index }})</span>
+                </div>
             </div>
             {% endif %}
         {% endfor %}
