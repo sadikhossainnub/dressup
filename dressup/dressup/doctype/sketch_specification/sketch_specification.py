@@ -80,8 +80,8 @@ class SketchSpecification(Document):
 def generate_design_no(designer):
 	abbr = frappe.db.get_value("Employee", designer, "abbr")
 	if abbr:
-		date_str = frappe.utils.now_datetime().strftime("%m.%y")
-		prefix = f"{abbr}-{date_str}."
+		date_str = frappe.utils.now_datetime().strftime("%m-%y")
+		prefix = f"{abbr}-{date_str}-"
 		
 		# Find the last sequence number for this prefix
 		last_design_no = frappe.db.sql("""
@@ -92,7 +92,7 @@ def generate_design_no(designer):
 		
 		if last_design_no and last_design_no[0][0]:
 			try:
-				last_num = last_design_no[0][0].split('.')[-1]
+				last_num = last_design_no[0][0].split('-')[-1]
 				next_num = int(last_num) + 1
 			except (ValueError, IndexError):
 				next_num = 1
