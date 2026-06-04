@@ -10,7 +10,7 @@
         "production_qty",
         "color",
         "length",
-        "bust",
+        "neck",
         "waist",
         "sleeve",
         "sleeve_opening",
@@ -54,10 +54,10 @@
             "label": "Length (Body)"
         },
         {
-            "fieldname": "bust",
+            "fieldname": "neck",
             "fieldtype": "Data",
             "in_list_view": 1,
-            "label": "Bust"
+            "label": "Neck"
         },
         {
             "fieldname": "waist",

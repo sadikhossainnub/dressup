@@ -159,16 +159,22 @@
 <table class="standard-table" style="font-family: 'HindSiliguri', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
     <thead>
         <tr>
-            <th style="width: 16%;">Size</th>
+            <th style="width: 5%;">Size</th>
             <th style="text-align: center;">Production Qty</th>
             <th style="text-align: center;">Color</th>
-            <th style="text-align: center;">Length</th>
-            <th style="text-align: center;">Bust</th>
-            <th style="text-align: center;">Waist</th>
-            <th style="text-align: center;">Btm Length</th>
-            <th style="text-align: center;">Btm Waist</th>
+            <th style="text-align: center;">Length (Body)</th>
+            <th style="text-align: center;">Neck</th>
+            <th style="text-align: center;">Waist (Body)</th>
+            <th style="text-align: center;">Sleeve</th>
+            <th style="text-align: center;">Sleeve Opening</th>
+            <th style="text-align: center;">Bottom Length</th>
+            <th style="text-align: center;">Bottom Waist</th>
+            <th style="text-align: center;">Bottom Thigh</th>
+            <th style="text-align: center;">Bottom Crotch</th>
             <th style="text-align: center;">Leg Open</th>
-            <th style="text-align: center;">Koti / Shrug</th>
+            <th style="text-align: center;">Koti / Shrug Length</th>
+            <th style="text-align: center;">Koti / Shrug Sleeve</th>
+            <th style="text-align: center;">Koti / Shrug Sleeve Opening</th>
             <th style="text-align: center;">Others</th>
         </tr>
     </thead>
@@ -179,13 +185,19 @@
             <td style="text-align: center;">{{ row.production_qty or '0' }}</td>
             <td style="text-align: center;">{{ row.color or '-' }}</td>
             <td style="text-align: center;">{{ row.length or '-' }}</td>
-            <td style="text-align: center;">{{ row.bust or '-' }}</td>
+            <td style="text-align: center;">{{ row.neck or '-' }}</td>
             <td style="text-align: center;">{{ row.waist or '-' }}</td>
+            <td style="text-align: center;">{{ row.sleeve or '-' }}</td>
+            <td style="text-align: center;">{{ row.sleeve_opening or '-' }}</td>
             <td style="text-align: center;">{{ row.bottom_length or '-' }}</td>
             <td style="text-align: center;">{{ row.bottom_waist or '-' }}</td>
+            <td style="text-align: center;">{{ row.bottom_thigh or '-' }}</td>
+            <td style="text-align: center;">{{ row.bottom_crotch or '-' }}</td>
             <td style="text-align: center;">{{ row.leg_opening or '-' }}</td>
+            <td style="text-align: center;">{{ row.shrug_koti_length or '-' }}</td>
+            <td style="text-align: center;">{{ row.koti_sleeve or '-' }}</td>
+            <td style="text-align: center;">{{ row.koti_sleeve_opening or '-' }}</td>
             <td style="text-align: center;">{{ row.others or '-' }}</td>
-            <td style="text-align: center;">{{ row.others1 or '-' }}</td>
         </tr>
         {% endfor %}
     </tbody>
