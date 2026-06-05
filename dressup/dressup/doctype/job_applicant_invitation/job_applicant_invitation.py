@@ -97,9 +97,10 @@ class JobApplicantInvitation(Document):
 			# Attach PDF of the invitation letter
 			attachments = []
 			try:
-				pdf_content = frappe.attach_print(
+				html = frappe.get_print(
 					self.doctype, self.name, print_format=print_format
 				)
+				pdf_content = frappe.utils.pdf.get_pdf(html)
 				attachments.append({
 					"fname": f"Interview_Invitation_{self.name}.pdf",
 					"fcontent": pdf_content
