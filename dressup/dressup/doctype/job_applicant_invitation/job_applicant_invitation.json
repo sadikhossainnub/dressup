@@ -83,6 +83,7 @@
    "fieldname": "applicant_email",
    "fieldtype": "Data",
    "label": "Applicant Email",
+   "options": "Email",
    "read_only": 1
   },
   {
@@ -90,6 +91,7 @@
    "fieldname": "applicant_phone",
    "fieldtype": "Data",
    "label": "Applicant Phone",
+   "options": "Phone",
    "read_only": 1
   },
   {
