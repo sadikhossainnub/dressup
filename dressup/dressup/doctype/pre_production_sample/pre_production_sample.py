@@ -317,10 +317,7 @@ def link_stock_entry_to_pps(doc, method=None):
 
 
 def unlink_stock_entry_from_pps(doc, method=None):
-	"""Unlink Stock Entry from PPS if it's cancelled"""
-	if not doc.work_order:
-		return
-
+	"""Unlink Stock Entry from PPS if it's cancelled or deleted"""
 	# Find PPS that is linked to this Stock Entry
 	pps_name = frappe.db.get_value("Pre Production Sample", {"stock_entry": doc.name}, "name")
 	if pps_name:

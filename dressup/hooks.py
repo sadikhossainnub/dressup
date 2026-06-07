@@ -176,7 +176,8 @@ doc_events = {
 	},
 	"Stock Entry": {
 		"on_submit": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.link_stock_entry_to_pps",
-		"on_cancel": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.unlink_stock_entry_from_pps"
+		"on_cancel": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.unlink_stock_entry_from_pps",
+		"on_trash": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.unlink_stock_entry_from_pps"
 	}
 }
 
