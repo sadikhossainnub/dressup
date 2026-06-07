@@ -167,60 +167,14 @@ class PreProductionSample(Document):
 			self.finish_time_date = now()
 
 	def on_submit(self):
-		"""Create Stock Entry for material issue"""
-		if not self.source_warehouse:
-			frappe.throw("Source Warehouse is required for stock reduction")
-		company = frappe.defaults.get_defaults().company
-		if not company:
-			frappe.throw("Default Company is not configured. Please set a default company before submitting PPS")
-
-		expense_account = frappe.db.get_value("Company", company, "default_expense_account")
-		if not expense_account:
-			frappe.throw(
-				f"Default Expense Account is not set for company {company}. "
-				"Please configure Company.default_expense_account"
-			)
-		
-		# Collect all items with actual quantity > 0
-		items = []
-		for table in ['fabrics', 'trim_accessories', 'fabric_dupatta']:
-			# Check if table exists and is not None
-			table_data = self.get(table)
-			if table_data:
-				for row in table_data:
-					if row.actual_quantity:
-						items.append({
-							"item_code": row.item_code,
-							"qty": row.actual_quantity,
-							"uom": row.default_unit_of_measurement,
-							"s_warehouse": self.source_warehouse,
-							"t_warehouse": None,
-							"expense_account": expense_account,
-						})
-		
-		if not items:
-			return
-
-		# Create Stock Entry
-		stock_entry = frappe.get_doc({
-			"doctype": "Stock Entry",
-			"stock_entry_type": "Material Issue",
-			"company": company,
-			"items": items,
-			"remarks": f"Issued for Pre Production Sample: {self.name}"
-		})
-		stock_entry.insert()
-		stock_entry.submit()
-		
-		self.db_set("stock_entry", stock_entry.name)
+		"""Create Stock Entry for material issue (Disabled)"""
+		# Automatic Stock Entry creation disabled as per request
+		pass
 
 	def on_cancel(self):
-		"""Cancel associated Stock Entry"""
-		if self.stock_entry:
-			se = frappe.get_doc("Stock Entry", self.stock_entry)
-			if se.docstatus == 1:
-				se.cancel()
-			self.db_set("stock_entry", None)
+		"""Cancel associated Stock Entry (Disabled)"""
+		# Automatic Stock Entry cancellation disabled as per request
+		pass
 
 
 @frappe.whitelist()
@@ -344,3 +298,30 @@ def link_work_order_to_pps(doc, method):
 			doc.db_set("pre_production_sample", pps_name)
 
 		frappe.db.set_value("Pre Production Sample", pps_name, "work_order", doc.name)
+
+
+def link_stock_entry_to_pps(doc, method=None):
+	"""Link Stock Entry to PPS if it's created from a Work Order which is linked to a PPS"""
+	if not doc.work_order:
+		return
+
+	# Try finding PPS name from Work Order first
+	pps_name = frappe.db.get_value("Work Order", doc.work_order, "pre_production_sample")
+
+	# If not found (or column doesn't exist), try finding it by querying Pre Production Sample
+	if not pps_name:
+		pps_name = frappe.db.get_value("Pre Production Sample", {"work_order": doc.work_order}, "name")
+
+	if pps_name:
+		frappe.db.set_value("Pre Production Sample", pps_name, "stock_entry", doc.name)
+
+
+def unlink_stock_entry_from_pps(doc, method=None):
+	"""Unlink Stock Entry from PPS if it's cancelled"""
+	if not doc.work_order:
+		return
+
+	# Find PPS that is linked to this Stock Entry
+	pps_name = frappe.db.get_value("Pre Production Sample", {"stock_entry": doc.name}, "name")
+	if pps_name:
+		frappe.db.set_value("Pre Production Sample", pps_name, "stock_entry", None)

@@ -172,6 +172,10 @@ doc_events = {
 	},
 	"Sales Invoice": {
 		"before_submit": "dressup.dressup.loyalty_auto_assign.auto_assign_loyalty_program"
+	},
+	"Stock Entry": {
+		"on_submit": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.link_stock_entry_to_pps",
+		"on_cancel": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.unlink_stock_entry_from_pps"
 	}
 }
 
