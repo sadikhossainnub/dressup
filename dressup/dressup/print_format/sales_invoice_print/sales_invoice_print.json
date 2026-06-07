@@ -1,6 +1,7 @@
 {
     "align_labels_right": 0,
     "creation": "2026-01-13 18:00:00.000000",
+    "custom_format": 0,
     "default_print_language": "en",
     "disabled": 0,
     "doc_type": "Sales Invoice",
@@ -17,6 +18,7 @@
     "module": "DressUp",
     "name": "Sales Invoice Print",
     "owner": "Administrator",
+    "page_size": "A4",
     "print_format_builder": 0,
     "print_format_type": "Jinja",
     "raw_printing": 0,

@@ -1,12 +1,32 @@
 {% set doc = doc %}
-{% set rand_inv_no = range(10000000, 99999999) | random %}
 <!DOCTYPE html>
 <html>
 
 <head>
   <meta charset="utf-8">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 10mm;
+    }
+
+    :root {
+      --brand: #2D2A6E;
+      --brand-light: #4A45A5;
+      --brand-bg: #F4F3FF;
+      --brand-accent: #7C6EF5;
+      --text-primary: #1B1B2F;
+      --text-secondary: #5A5A72;
+      --text-muted: #9494A8;
+      --border: #E8E8F0;
+      --border-light: #F0F0F6;
+      --surface: #FAFAFE;
+      --white: #FFFFFF;
+      --success: #22C55E;
+      --warn: #E76F51;
+    }
 
     * {
       margin: 0;
@@ -15,443 +35,656 @@
     }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: #fff;
-      color: #1a1a1a;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--white);
+      color: var(--text-primary);
+      font-size: 11px;
+      line-height: 1.5;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
-    .inv-wrap {
+    .invoice {
       max-width: 780px;
       margin: 0 auto;
-      border: 1px solid #ddd;
+      position: relative;
     }
 
-    /* ── HEADER ── */
-    .header-section {
+    /* ═══════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════ */
+    .inv-header {
       display: table;
       width: 100%;
-      border-bottom: 0.5px solid #000;
-      padding-bottom: 12px;
-      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #000;
+      padding: 0 0 16px 0;
+      border-bottom: 2px solid var(--brand);
     }
 
-    .header-left {
+    .inv-header-left {
       display: table-cell;
-      text-align: left;
       vertical-align: middle;
+      width: 65%;
     }
 
-    .header-right {
+    .inv-header-right {
       display: table-cell;
+      vertical-align: middle;
       text-align: right;
+      width: 35%;
+    }
+
+    .brand-logo img {
+      height: 42px;
+      margin-bottom: 6px;
+    }
+
+    .brand-info {
+      font-size: 8.5px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      letter-spacing: 0.01em;
+    }
+
+    .brand-info span {
+      color: var(--text-muted);
+      margin: 0 4px;
+    }
+
+    .header-qr {
+      width: 78px;
+      height: 78px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px;
+    }
+
+    /* ═══════════════════════════════════════
+       INVOICE TITLE BAR
+    ═══════════════════════════════════════ */
+    .inv-title-bar {
+      background: var(--brand-bg);
+      padding: 10px 24px;
+      display: table;
+      width: 100%;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .inv-title-left {
+      display: table-cell;
       vertical-align: middle;
-      width: 100px;
     }
 
-    .header-logo {
-      margin-bottom: 8px;
+    .inv-title-right {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: right;
     }
 
-    .header-logo img {
-      height: 45px;
+    .inv-title-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brand);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
-    .header-address {
-      font-size: 8pt;
-      line-height: 1.5;
+    .inv-title-no {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--brand-light);
     }
 
-    /* ── META ── */
+    /* ═══════════════════════════════════════
+       META INFO (Customer + Transaction)
+    ═══════════════════════════════════════ */
     .inv-meta {
       display: table;
       width: 100%;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid var(--border);
     }
 
     .inv-meta-cell {
       display: table-cell;
       width: 50%;
-      padding: 12px 28px;
+      padding: 14px 24px;
       vertical-align: top;
     }
 
     .inv-meta-cell:first-child {
-      border-right: 1px solid #e5e5e5;
+      border-right: 1px solid var(--border);
     }
 
     .inv-meta-cell:last-child {
       text-align: right;
     }
 
-    .inv-meta-label {
-      font-size: 9.5px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: #534AB7;
+    .meta-label {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 3px;
+      color: var(--brand-accent);
+      margin-bottom: 6px;
     }
 
-    .inv-meta-val {
-      font-size: 13px;
-      font-weight: 600;
+    .meta-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 2px;
     }
 
-    .inv-meta-sub {
-      font-size: 11px;
-      color: #666;
+    .meta-sub {
+      font-size: 10px;
+      color: var(--text-secondary);
+      line-height: 1.6;
     }
 
-    /* ── TABLE ── */
-    .inv-table-wrap {
-      padding: 0;
+    .meta-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-top: 4px;
     }
 
-    .inv-table {
+    .meta-cashier {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ═══════════════════════════════════════
+       ITEMS TABLE
+    ═══════════════════════════════════════ */
+    .inv-items {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12.5px;
     }
 
-    .inv-table thead tr {
-      background: #EEEDFE;
-    }
-
-    .inv-table thead th {
-      padding: 8px 10px 8px 28px;
-      font-weight: 600;
-      font-size: 10px;
-      letter-spacing: 0.07em;
+    .inv-items thead th {
+      background: var(--brand-bg);
+      padding: 9px 14px 9px 24px;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #3C3489;
+      color: var(--brand);
       text-align: left;
+      border-bottom: 1px solid var(--border);
     }
 
-    .inv-table thead th:nth-child(3),
-    .inv-table thead th:nth-child(4),
-    .inv-table thead th:nth-child(5),
-    .inv-table thead th:nth-child(6) {
+    .inv-items thead th.r {
       text-align: right;
-      padding-right: 28px;
+      padding-right: 24px;
     }
 
-    .inv-table tbody tr {
-      border-bottom: 1px solid #f0f0f0;
+    .inv-items tbody td {
+      padding: 10px 14px 10px 24px;
+      font-size: 11px;
+      color: var(--text-primary);
+      vertical-align: top;
+      border-bottom: 1px solid var(--border-light);
     }
 
-    .inv-table tbody tr:last-child {
+    .inv-items tbody td.r {
+      text-align: right;
+      padding-right: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+    }
+
+    .inv-items tbody tr:last-child td {
       border-bottom: none;
     }
 
-    .inv-table tbody td {
-      padding: 9px 10px 9px 28px;
-      color: #1a1a1a;
-      vertical-align: top;
-    }
-
-    .inv-table tbody td:nth-child(3),
-    .inv-table tbody td:nth-child(4),
-    .inv-table tbody td:nth-child(5),
-    .inv-table tbody td:nth-child(6) {
-      text-align: right;
-      padding-right: 28px;
-    }
-
-    .inv-sl {
-      color: #999;
-      font-size: 11px;
-    }
-
-    .inv-item-code {
+    .item-sl {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 10px;
-      color: #888;
-      font-family: monospace;
+      color: var(--text-muted);
     }
 
-    .inv-item-name {
-      font-weight: 500;
-      font-size: 13px;
+    .item-name {
+      font-weight: 600;
+      font-size: 11.5px;
+      color: var(--text-primary);
     }
 
-    /* ── BOTTOM SPLIT ── */
+    .item-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .item-desc {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .discount-val {
+      color: var(--warn);
+    }
+
+    /* ═══════════════════════════════════════
+       BOTTOM SECTION (Loyalty + Totals)
+    ═══════════════════════════════════════ */
     .inv-bottom {
       display: table;
       width: 100%;
-      border-top: 1px solid #e5e5e5;
+      border-top: 2px solid var(--border);
     }
 
     .inv-bottom-left {
       display: table-cell;
-      width: 48%;
-      padding: 16px 28px;
-      border-right: 1px solid #e5e5e5;
+      width: 46%;
+      padding: 16px 24px;
+      border-right: 1px solid var(--border);
       vertical-align: top;
     }
 
     .inv-bottom-right {
       display: table-cell;
-      width: 52%;
-      padding: 16px 28px;
+      width: 54%;
+      padding: 16px 24px;
       vertical-align: top;
     }
 
-    .inv-loyalty-title {
-      font-size: 9.5px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: #534AB7;
+    /* Loyalty */
+    .loyalty-title {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      color: var(--brand-accent);
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed var(--border);
     }
 
-    .inv-loyalty-row {
-      display: flex;
-      justify-content: space-between;
+    .loyalty-row {
+      display: table;
+      width: 100%;
+      font-size: 10.5px;
+      padding: 3px 0;
+      color: var(--text-secondary);
+    }
+
+    .loyalty-row .ll {
+      display: table-cell;
+      text-align: left;
+    }
+
+    .loyalty-row .lr {
+      display: table-cell;
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    .loyalty-row.highlight {
+      font-weight: 700;
+      color: var(--brand);
+      padding-top: 6px;
+      margin-top: 4px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    /* Totals */
+    .total-row {
+      display: table;
+      width: 100%;
       font-size: 11.5px;
-      padding: 2px 0;
-      color: #444;
+      padding: 4px 0;
     }
 
-    .inv-loyalty-row.bold {
-      font-weight: 600;
-      color: #3C3489;
+    .total-row .tl {
+      display: table-cell;
+      text-align: left;
+      color: var(--text-secondary);
     }
 
-    .inv-total-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12.5px;
+    .total-row .tr {
+      display: table-cell;
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    /* Net Payable Box */
+    .net-payable {
+      background: var(--brand-bg);
+      border: 2px solid var(--brand);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 12px 0 8px;
+      display: table;
+      width: 100%;
+    }
+
+    .net-payable .np-label {
+      display: table-cell;
+      vertical-align: middle;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--brand-accent);
+    }
+
+    .net-payable .np-val {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: right;
+      font-family: 'Inter', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--brand);
+      letter-spacing: -0.02em;
+    }
+
+    /* Payment rows */
+    .paid-row {
+      display: table;
+      width: 100%;
+      font-size: 10.5px;
       padding: 3px 0;
     }
 
-    .inv-total-row .lbl {
-      color: #666;
+    .paid-row .pl {
+      display: table-cell;
+      text-align: left;
+      color: var(--text-muted);
     }
 
-    .inv-total-net {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #3C3489;
-      border-radius: 6px;
-      padding: 10px 14px;
-      margin: 10px 0 6px;
+    .paid-row .pr {
+      display: table-cell;
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-primary);
     }
 
-    .inv-total-net .lbl {
-      color: #AFA9EC;
-      font-size: 10.5px;
+    .change-row {
+      display: table;
+      width: 100%;
+      font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.06em;
+      color: var(--warn);
+      padding: 4px 0;
+      margin-top: 2px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .change-row .cl {
+      display: table-cell;
+      text-align: left;
+    }
+
+    .change-row .cr {
+      display: table-cell;
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    .inv-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .footer-policies {
+      padding: 10px 24px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-policies p {
+      font-size: 8px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 2px;
+    }
+
+    .footer-policies strong {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .footer-bar {
+      display: table;
+      width: 100%;
+      height: 4px;
+    }
+
+    .footer-bar-left {
+      display: table-cell;
+      width: 40%;
+      background: var(--border);
+    }
+
+    .footer-bar-right {
+      display: table-cell;
+      width: 60%;
+      background: var(--brand-accent);
+      opacity: 0.3;
+    }
+
+    .footer-brand {
+      text-align: center;
+      padding: 5px 0;
+      font-size: 7.5px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
       text-transform: uppercase;
     }
 
-    .inv-total-net .val {
-      color: #fff;
-      font-size: 20px;
-      font-weight: 700;
+    /* ═══════════════════════════════════════
+       IN WORDS
+    ═══════════════════════════════════════ */
+    .in-words {
+      padding: 8px 24px;
+      background: var(--surface);
+      border-top: 1px solid var(--border-light);
+      font-size: 9px;
+      color: var(--text-muted);
+      font-style: italic;
     }
 
-    .inv-paid-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      padding: 2px 0;
+    .in-words strong {
+      font-style: normal;
+      color: var(--text-secondary);
     }
 
-    .inv-change {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: #D85A30;
-      padding: 2px 0;
-    }
+    /* ═══════════════════════════════════════
+       PRINT ADJUSTMENTS
+    ═══════════════════════════════════════ */
+    @media print {
+      body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
 
-    /* ── FOOTER ── */
-    .inv-footer {
-      background: #EEEDFE;
-      padding: 14px 28px;
-      border-top: 1px solid #ddd;
-    }
-
-    .inv-footer p {
-      font-size: 10px;
-      color: #534AB7;
-      line-height: 1.6;
-      margin-bottom: 4px;
-    }
-
-    .inv-eco {
-      background: #fff;
-      border-left: 3px solid #534AB7;
-      padding: 6px 12px;
-      margin-top: 8px;
-      font-size: 10px;
-      color: #534AB7;
-      border-radius: 0 3px 3px 0;
-    }
-
-    .inv-footer-contact {
-      display: flex;
-      gap: 24px;
-      justify-content: center;
-      margin-top: 10px;
-      font-size: 10px;
-      color: #7F77DD;
-    }
-
-    .inv-powered {
-      text-align: center;
-      margin-top: 6px;
-      font-size: 10px;
-      color: #7F77DD;
+      .invoice {
+        border: none;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="inv-wrap">
+  <div class="invoice">
 
-    <!-- HEADER -->
-    <div class="header-section">
-      <div class="header-left">
-        <div class="header-logo">
+    <!-- ══ HEADER ══ -->
+    <div class="inv-header">
+      <div class="inv-header-left">
+        <div class="brand-logo">
           <img src="{{ frappe.utils.get_url() }}/files/Capture.PNG" alt="DressUp">
         </div>
-        <div class="header-address">
-          House # 5, Road # 6, Kollyanpur, Dhaka &nbsp;|&nbsp; +8809678247247<br>
-          support@dressup.com.bd &nbsp;|&nbsp; dressupbangladesh <i class="fa fa-facebook-square"></i> &nbsp;|&nbsp;
-          www.dressup.com.bd
+        <div class="brand-info">
+          House # 5, Road # 6, Kollyanpur, Dhaka <span>|</span> +8809678247247<br>
+          support@dressup.com.bd <span>|</span> dressupbangladesh <span>|</span> www.dressup.com.bd
         </div>
       </div>
-      <div class="header-right">
+      <div class="inv-header-right">
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ doc.name }}" class="header-qr"
-          alt="QR Code">
+          alt="QR">
       </div>
     </div>
 
-    <!-- META -->
+    <!-- ══ TITLE BAR ══ -->
+    <div class="inv-title-bar">
+      <div class="inv-title-left">
+        <div class="inv-title-label">Sales Invoice</div>
+      </div>
+      <div class="inv-title-right">
+        <div class="inv-title-no">{{ doc.name }}</div>
+      </div>
+    </div>
+
+    <!-- ══ META ══ -->
     <div class="inv-meta">
       <div class="inv-meta-cell">
-        <div class="inv-meta-label">Customer Information</div>
-        <div class="inv-meta-val">{{ doc.customer_name }}</div>
-        <div class="inv-meta-sub">
+        <div class="meta-label">Customer Information</div>
+        <div class="meta-name">{{ doc.customer_name }}</div>
+        <div class="meta-sub">
           {% if doc.contact_display %}{{ doc.contact_display }}<br>{% endif %}
+          {% if doc.contact_mobile %}📞 {{ doc.contact_mobile }}<br>{% endif %}
           {{ doc.address_display or doc.customer or '' }}
         </div>
       </div>
       <div class="inv-meta-cell">
-        <div class="inv-meta-label">Transaction Details</div>
-        <div class="inv-meta-val">Invoice No: {{ rand_inv_no }}</div>
-        <div class="inv-meta-sub">
-          Date: {{ doc.posting_date }}
+        <div class="meta-label">Transaction Details</div>
+        <div class="meta-date">
+          📅 {{ frappe.utils.formatdate(doc.posting_date, "dd MMM yyyy") }}
           {% if doc.posting_time %} · {{ doc.posting_time }}{% endif %}
-          {% if doc.cashier %} · {{ doc.cashier }}{% endif %}
         </div>
+        {% if doc.cashier %}
+        <div class="meta-cashier">Cashier: {{ doc.cashier }}</div>
+        {% endif %}
+        {% if doc.pos_profile %}
+        <div class="meta-cashier">POS: {{ doc.pos_profile }}</div>
+        {% endif %}
       </div>
     </div>
 
-    <!-- ITEMS TABLE -->
-    <div class="inv-table-wrap">
-      <table class="inv-table">
-        <thead>
-          <tr>
-            <th style="width:36px;">SL</th>
-            <th>Item Description</th>
-            <th style="width:80px;">Price</th>
-            <th style="width:50px;">Qty</th>
-            <th style="width:70px;">Discount</th>
-            <th style="width:90px;">Total (BDT)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in doc.items %}
-          <tr>
-            <td class="inv-sl">{{ "%02d" % loop.index }}</td>
-            <td>
-              <div class="inv-item-name">
-                {% if item.serial_no %}{{ item.serial_no | replace('\n', ', ') }} - {% elif item.batch_no %}{{
-                item.batch_no }} - {% endif %}{{ item.item_code }}: {{ item.item_name }}
-              </div>
-              {% if item.description and item.description != item.item_name %}
-              <div style="font-size:10px;color:#888;">{{ item.description }}</div>
-              {% endif %}
-            </td>
-            <td>{{ "{:,.2f}".format(item.rate) }}</td>
-            <td>{{ "{:,.2f}".format(item.qty) }}</td>
-            <td>{{ "{:,.2f}".format(item.discount_amount or 0) }}</td>
-            <td>{{ "{:,.2f}".format(item.amount) }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+    <!-- ══ ITEMS TABLE ══ -->
+    <table class="inv-items">
+      <thead>
+        <tr>
+          <th style="width:36px;">SL</th>
+          <th>Item Description</th>
+          <th class="r" style="width:85px;">Price</th>
+          <th class="r" style="width:46px;">Qty</th>
+          <th class="r" style="width:80px;">Discount</th>
+          <th class="r" style="width:95px;">Total (BDT)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in doc.items %}
+        <tr>
+          <td><span class="item-sl">{{ "%02d" % loop.index }}</span></td>
+          <td>
+            <div class="item-name">{{ item.item_name }}</div>
+            <div class="item-code">
+              {% if item.serial_no %}SN: {{ item.serial_no | replace('\n', ', ') }} · {% endif %}
+              {% if item.batch_no %}Batch: {{ item.batch_no }} · {% endif %}
+              {{ item.item_code }}
+            </div>
+            {% if item.description and item.description != item.item_name %}
+            <div class="item-desc">{{ item.description }}</div>
+            {% endif %}
+          </td>
+          <td class="r">{{ "{:,.2f}".format(item.rate) }}</td>
+          <td class="r">{{ "{:,.2f}".format(item.qty) }}</td>
+          <td class="r"><span class="discount-val">{{ "{:,.2f}".format(item.discount_amount or 0) }}</span></td>
+          <td class="r" style="font-weight:600;">{{ "{:,.2f}".format(item.amount) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
-    <!-- BOTTOM: LOYALTY + TOTALS -->
+    <!-- ══ IN WORDS ══ -->
+    {% if doc.in_words %}
+    <div class="in-words">
+      <strong>In Words:</strong> {{ doc.in_words }}
+    </div>
+    {% endif %}
+
+    <!-- ══ BOTTOM: LOYALTY + TOTALS ══ -->
     <div class="inv-bottom">
       <div class="inv-bottom-left">
-        <div class="inv-loyalty-title">Loyalty &amp; Rewards</div>
-        <div class="inv-loyalty-row"><span>Current Invoice Earn Point:</span><span
-            style="color:#534AB7;font-weight:600;">{{ doc.get('loyalty_points') or '—' }}</span></div>
-        <div class="inv-loyalty-row"><span>Total Accumulated Point:</span><span>{{ doc.get('loyalty_point_accumulated')
-            or '—' }}</span></div>
-        <div class="inv-loyalty-row"><span>Total Redeemed Point:</span><span>{{ doc.get('loyalty_points_redeemed') or
-            '—' }}</span></div>
-        <div class="inv-loyalty-row bold"><span>Current Balance Point:</span><span>{{ doc.get('loyalty_point_balance')
-            or '—' }}</span></div>
+        <div class="loyalty-title">Loyalty & Rewards</div>
+        <div class="loyalty-row">
+          <span class="ll">Current Invoice Earn Point</span>
+          <span class="lr" style="color:var(--brand-accent);">{{ doc.get('loyalty_points') or '—' }}</span>
+        </div>
+        <div class="loyalty-row">
+          <span class="ll">Total Accumulated Point</span>
+          <span class="lr">{{ doc.get('loyalty_point_accumulated') or '—' }}</span>
+        </div>
+        <div class="loyalty-row">
+          <span class="ll">Total Redeemed Point</span>
+          <span class="lr">{{ doc.get('loyalty_points_redeemed') or '—' }}</span>
+        </div>
+        <div class="loyalty-row highlight">
+          <span class="ll">Current Balance Point</span>
+          <span class="lr">{{ doc.get('loyalty_point_balance') or '—' }}</span>
+        </div>
       </div>
       <div class="inv-bottom-right">
-        <div class="inv-total-row">
-          <span class="lbl">Sub Total:</span>
-          <span>{{ "{:,.2f}".format(doc.total) }}</span>
+        <div class="total-row">
+          <span class="tl">Sub Total</span>
+          <span class="tr">{{ "{:,.2f}".format(doc.total) }}</span>
         </div>
-        <div class="inv-total-row">
-          <span class="lbl">(-) Discount:</span>
-          <span>{{ "{:,.2f}".format(doc.discount_amount or 0) }}</span>
+        <div class="total-row">
+          <span class="tl">(-) Discount</span>
+          <span class="tr" style="color:var(--warn);">{{ "{:,.2f}".format(doc.discount_amount or 0) }}</span>
         </div>
-        <div class="inv-total-row">
-          <span class="lbl">(+) Add VAT:</span>
-          <span>{{ "{:,.2f}".format(doc.total_taxes_and_charges or 0) }}</span>
+        <div class="total-row">
+          <span class="tl">(+) VAT / Tax</span>
+          <span class="tr">{{ "{:,.2f}".format(doc.total_taxes_and_charges or 0) }}</span>
         </div>
-        <div class="inv-total-net">
-          <span class="lbl">Net Payable</span>
-          <span class="val">{{ "{:,.2f}".format(doc.grand_total) }}</span>
+
+        <div class="net-payable">
+          <span class="np-label">Net Payable</span>
+          <span class="np-val">৳ {{ "{:,.2f}".format(doc.grand_total) }}</span>
         </div>
+
         {% for payment in doc.payments %}
-        <div class="inv-paid-row">
-          <span style="color:#666;">Paid ({{ payment.mode_of_payment }}):</span>
-          <span style="font-weight:500;">{{ "{:,.2f}".format(payment.amount) }}</span>
+        <div class="paid-row">
+          <span class="pl">Paid ({{ payment.mode_of_payment }})</span>
+          <span class="pr">{{ "{:,.2f}".format(payment.amount) }}</span>
         </div>
         {% endfor %}
+
         {% if doc.change_amount and doc.change_amount > 0 %}
-        <div class="inv-change">
-          <span>Change:</span>
-          <span>{{ "{:,.2f}".format(doc.change_amount) }}</span>
+        <div class="change-row">
+          <span class="cl">Change</span>
+          <span class="cr">{{ "{:,.2f}".format(doc.change_amount) }}</span>
         </div>
         {% endif %}
       </div>
     </div>
 
-    <!-- FOOTER (fixed at bottom) -->
-    <div style="position: fixed; bottom: 0; left: 0; width: 100%;">
-      <div
-        style="padding: 8px 28px; font-size: 8pt; color: #444; line-height: 1.5; font-family: 'DM Sans', sans-serif;">
-        <p style="margin-bottom: 4px;"><strong>Policies &amp; Terms:</strong> 30-day exchange subject to Aarong policy
-          (once only). Silver jewellery exchangeable at 90% value within 7 days. Non-returnable: innerwear, food,
-          stationery, nose pins, pearl jewellery. No cash refunds; credit notes provided.</p>
-        <p style="margin: 0;"><strong>Eco Bonus:</strong> Bring your own bag and get <strong>Tk 15 cashback</strong> on
-          invoices over Tk 100 (excl. VAT/Dairy).<br>
-          <strong>VAT Info:</strong> 5% Gold/Silver, 10% Wearables, 7.5% Others. No VAT on Plants, Clay, Books, and
-          Jute.
-        </p>
+    <!-- ══ FOOTER ══ -->
+    <div class="inv-footer">
+      <div class="footer-policies">
+        <p><strong>Terms & Conditions:</strong> Goods once sold are non-refundable. Exchange is applicable within 7 days with original receipt and tags intact. Altered or used items are not eligible for exchange.</p>
+        <p><strong>Thank you for shopping with DressUp!</strong> For queries, contact support@dressup.com.bd or call +8809678247247.</p>
       </div>
-      <div style="width: 100%; display: flex; height: 15px;">
-        <!-- Left Black Section -->
-        <div style="width: 38%; background-color: #222; margin-right: 2px;"></div>
-        <!-- Right Red Section -->
-        <div style="width: 62%; background-color: #d32f2f;"></div>
+      <div class="footer-brand">Powered by DressUp Bangladesh</div>
+      <div class="footer-bar">
+        <div class="footer-bar-left"></div>
+        <div class="footer-bar-right"></div>
       </div>
     </div>
 

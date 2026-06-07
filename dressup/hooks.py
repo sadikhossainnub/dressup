@@ -100,7 +100,8 @@ jinja = {
 # ------------
 
 # before_install = "dressup.install.before_install"
-# after_install = "dressup.install.after_install"
+after_install = "dressup.setup.after_install"
+after_migrate = "dressup.setup.after_migrate"
 
 # Uninstallation
 # ------------
@@ -147,7 +148,8 @@ jinja = {
 # Override standard doctype classes
 
 override_doctype_class = {
-	"Quality Inspection": "dressup.dressup.custom_quality_inspection.CustomQualityInspection"
+	"Quality Inspection": "dressup.dressup.custom_quality_inspection.CustomQualityInspection",
+	"Shipping Rule": "dressup.dressup.custom_shipping_rule.CustomShippingRule"
 }
 
 # Document Events
@@ -167,6 +169,9 @@ doc_events = {
 	},
 	"Pre Production Sample": {
 		"before_cancel": "dressup.utils.linked_cancel.cancel_linked_documents"
+	},
+	"Sales Invoice": {
+		"before_submit": "dressup.dressup.loyalty_auto_assign.auto_assign_loyalty_program"
 	}
 }
 
