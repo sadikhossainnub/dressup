@@ -1,6 +1,14 @@
 frappe.ui.form.on("BOM", {
 	refresh(frm) {
 		frm.trigger("setup_pps_mapping");
+		frm.trigger("set_bom_creator");
+	},
+
+	set_bom_creator(frm) {
+		// Auto-fill BOM Creator with the current user's full name on new documents
+		if (frm.is_new() && !frm.doc.custom_bom_creator) {
+			frm.set_value("custom_bom_creator", frappe.session.user_fullname);
+		}
 	},
 
 	setup_pps_mapping(frm) {

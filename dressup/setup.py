@@ -6,10 +6,28 @@ import frappe
 
 def after_install():
 	add_net_qty_to_shipping_rule()
+	create_work_order_report()
 
 
 def after_migrate():
 	add_net_qty_to_shipping_rule()
+	create_work_order_report()
+
+
+def create_work_order_report():
+	if not frappe.db.exists("Report", "Work Order Material Availability"):
+		report = frappe.get_doc({
+			"doctype": "Report",
+			"report_name": "Work Order Material Availability",
+			"ref_doctype": "Work Order",
+			"report_type": "Script Report",
+			"is_standard": "Yes",
+			"module": "DressUp",
+		})
+		report.flags.ignore_permissions = True
+		report.insert()
+		frappe.db.commit()
+
 
 
 def add_net_qty_to_shipping_rule():

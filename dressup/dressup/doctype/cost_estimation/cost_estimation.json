@@ -6,6 +6,7 @@
  "creation": "2024-01-01 00:00:00",
  "doctype": "DocType",
  "engine": "InnoDB",
+ "image_field": "image",
  "field_order": [
   "naming_series",
   "company",
@@ -19,6 +20,8 @@
   "stock_reservation_status",
   "source_warehouse",
   "column_break_1",
+  "image",
+  "image_view",
   "date",
   "category",
   "cut_fit_style",
@@ -125,6 +128,18 @@
   {
    "fieldname": "column_break_1",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "tech_pack_no.image",
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Design Image"
+  },
+  {
+   "fieldname": "image_view",
+   "fieldtype": "Image",
+   "label": "Image Preview",
+   "options": "image"
   },
   {
    "fetch_from": "tech_pack_no.design_no",

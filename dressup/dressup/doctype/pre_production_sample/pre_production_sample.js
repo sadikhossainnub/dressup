@@ -46,6 +46,12 @@ frappe.ui.form.on("Pre Production Sample", {
 					create_bom(frm, "Bulk Production");
 				}, __('Create'));
 			}
+
+			if (frappe.user.has_role("Manufacturing Manager")) {
+				frm.add_custom_button(__('Update Size Chart'), function() {
+					frm.trigger('update_size_chart_dialog');
+				});
+			}
 		}
 
 		// Fetch from Cost Estimation button
@@ -222,6 +228,193 @@ frappe.ui.form.on("Pre Production Sample", {
 		let total = flt(frm.doc.wash_iron) + flt(frm.doc.qc_packaging) + flt(frm.doc.transportation) + flt(frm.doc.fusingandpasting) + flt(frm.doc.others);
 		frm.set_value("total_finishing", total);
 		calculate_suggested_selling_prices(frm);
+	},
+
+	update_size_chart_dialog: function(frm) {
+		const dialog = new frappe.ui.Dialog({
+			title: __("Update Size Chart"),
+			size: "extra-large",
+			fields: [
+				{
+					fieldname: "size_chart",
+					fieldtype: "Table",
+					label: __("Size Chart in Inch"),
+					allow_bulk_edit: true,
+					cannot_add_rows: false,
+					cannot_delete_rows: false,
+					data: (frm.doc.size_chart_in_inch || []).map(d => ({
+						docname: d.name,
+						size_chart_in_inch: d.size_chart_in_inch,
+						production_qty: d.production_qty,
+						color: d.color,
+						length: d.length,
+						neck: d.neck,
+						waist: d.waist,
+						sleeve: d.sleeve,
+						sleeve_opening: d.sleeve_opening,
+						bottom_length: d.bottom_length,
+						bottom_waist: d.bottom_waist,
+						bottom_thigh: d.bottom_thigh,
+						bottom_crotch: d.bottom_crotch,
+						leg_opening: d.leg_opening,
+						shrug_koti_length: d.shrug_koti_length,
+						koti_sleeve: d.koti_sleeve,
+						koti_sleeve_opening: d.koti_sleeve_opening,
+						others1: d.others1
+					})),
+					fields: [
+						{
+							fieldname: "docname",
+							fieldtype: "Data",
+							label: __("Docname"),
+							read_only: 1,
+							hidden: 1
+						},
+						{
+							fieldname: "size_chart_in_inch",
+							fieldtype: "Select",
+							label: __("Size"),
+							options: "\n32\n34\n36\n38\n40\n42\n44\n46\n48\n50\nunstitch",
+							reqd: 1,
+							in_list_view: 1
+						},
+						{
+							fieldname: "production_qty",
+							fieldtype: "Int",
+							label: __("Production Qty"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "color",
+							fieldtype: "Link",
+							label: __("Color"),
+							options: "Color",
+							in_list_view: 1
+						},
+						{
+							fieldname: "length",
+							fieldtype: "Data",
+							label: __("Length (Body)"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "neck",
+							fieldtype: "Data",
+							label: __("Neck"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "waist",
+							fieldtype: "Data",
+							label: __("Waist (Body)"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "sleeve",
+							fieldtype: "Data",
+							label: __("Sleeve"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "sleeve_opening",
+							fieldtype: "Data",
+							label: __("Sleeve Opening"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "bottom_length",
+							fieldtype: "Data",
+							label: __("Bottom Length"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "bottom_waist",
+							fieldtype: "Data",
+							label: __("Bottom Waist"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "bottom_thigh",
+							fieldtype: "Data",
+							label: __("Bottom Thigh"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "bottom_crotch",
+							fieldtype: "Data",
+							label: __("Bottom Crotch"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "leg_opening",
+							fieldtype: "Data",
+							label: __("Leg Opening"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "shrug_koti_length",
+							fieldtype: "Data",
+							label: __("Shrug/ Koti Length"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "koti_sleeve",
+							fieldtype: "Data",
+							label: __("Koti Sleeve"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "koti_sleeve_opening",
+							fieldtype: "Data",
+							label: __("Koti/ Sleeve Opening"),
+							in_list_view: 1
+						},
+						{
+							fieldname: "others1",
+							fieldtype: "Data",
+							label: __("Others"),
+							in_list_view: 1
+						}
+					]
+				}
+			],
+			primary_action_label: __("Update"),
+			primary_action: () => {
+				let size_chart_data = dialog.fields_dict.size_chart.df.data || [];
+				frappe.call({
+					method: "dressup.dressup.doctype.pre_production_sample.pre_production_sample.update_submitted_size_chart",
+					args: {
+						docname: frm.doc.name,
+						size_chart: size_chart_data.map(d => ({
+							size_chart_in_inch: d.size_chart_in_inch,
+							production_qty: d.production_qty,
+							color: d.color,
+							length: d.length,
+							neck: d.neck,
+							waist: d.waist,
+							sleeve: d.sleeve,
+							sleeve_opening: d.sleeve_opening,
+							bottom_length: d.bottom_length,
+							bottom_waist: d.bottom_waist,
+							bottom_thigh: d.bottom_thigh,
+							bottom_crotch: d.bottom_crotch,
+							leg_opening: d.leg_opening,
+							shrug_koti_length: d.shrug_koti_length,
+							koti_sleeve: d.koti_sleeve,
+							koti_sleeve_opening: d.koti_sleeve_opening,
+							others1: d.others1
+						}))
+					},
+					freeze: true,
+					freeze_message: __("Updating Size Chart..."),
+					callback: (r) => {
+						frm.reload_doc();
+						dialog.hide();
+					}
+				});
+			}
+		});
+		dialog.show();
 	},
 });
 

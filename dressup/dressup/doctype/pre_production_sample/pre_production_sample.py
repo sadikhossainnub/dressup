@@ -322,3 +322,62 @@ def unlink_stock_entry_from_pps(doc, method=None):
 	pps_name = frappe.db.get_value("Pre Production Sample", {"stock_entry": doc.name}, "name")
 	if pps_name:
 		frappe.db.set_value("Pre Production Sample", pps_name, "stock_entry", None)
+
+
+@frappe.whitelist()
+def update_submitted_size_chart(docname, size_chart):
+	import json
+	from frappe.utils import cint
+
+	if isinstance(size_chart, str):
+		size_chart = json.loads(size_chart)
+
+	# Check authorization: Only Manufacturing Manager is allowed
+	if not "Manufacturing Manager" in frappe.get_roles(frappe.session.user):
+		frappe.throw(_("Not authorized. Only users with the 'Manufacturing Manager' role can update the size chart of a submitted Pre Production Sample."))
+
+	doc = frappe.get_doc("Pre Production Sample", docname)
+	if doc.docstatus != 1:
+		frappe.throw(_("Size Chart can only be updated for submitted documents."))
+
+	# Delete existing child rows
+	frappe.db.delete("Size Chart in Inch", {"parent": docname})
+
+	total_qty = 0
+	# Insert new child rows
+	for idx, row in enumerate(size_chart):
+		child = frappe.get_doc({
+			"doctype": "Size Chart in Inch",
+			"parent": docname,
+			"parenttype": "Pre Production Sample",
+			"parentfield": "size_chart_in_inch",
+			"idx": idx + 1,
+			"size_chart_in_inch": row.get("size_chart_in_inch"),
+			"production_qty": cint(row.get("production_qty")),
+			"color": row.get("color"),
+			"length": row.get("length"),
+			"neck": row.get("neck"),
+			"waist": row.get("waist"),
+			"sleeve": row.get("sleeve"),
+			"sleeve_opening": row.get("sleeve_opening"),
+			"bottom_length": row.get("bottom_length"),
+			"bottom_waist": row.get("bottom_waist"),
+			"bottom_thigh": row.get("bottom_thigh"),
+			"bottom_crotch": row.get("bottom_crotch"),
+			"leg_opening": row.get("leg_opening"),
+			"shrug_koti_length": row.get("shrug_koti_length"),
+			"koti_sleeve": row.get("koti_sleeve"),
+			"koti_sleeve_opening": row.get("koti_sleeve_opening"),
+			"others1": row.get("others1")
+		})
+		child.insert(ignore_permissions=True)
+		total_qty += cint(row.get("production_qty"))
+
+	# Update parent total production qty
+	doc.db_set("total_production_qty", total_qty)
+
+	# Commit changes
+	frappe.db.commit()
+
+	return True
+

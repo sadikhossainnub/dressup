@@ -333,3 +333,260 @@ def trigger_request_for_approval(docname):
 	notification = frappe.get_doc("Notification", "Cost Estamitation Approval")
 	notification.send(doc)
 	return True
+
+
+@frappe.whitelist()
+def update_stock_reservation(docname, reserve_stock):
+	from frappe.utils import cint
+	reserve_stock = cint(reserve_stock)
+	
+	doc = frappe.get_doc("Cost Estimation", docname)
+	
+	if doc.docstatus != 1:
+		frappe.throw("Stock reservation can only be updated for submitted documents.")
+	
+	# Update the parent checkbox value in DB
+	doc.db_set("reserve_stock", reserve_stock)
+	doc.reserve_stock = reserve_stock
+	
+	if reserve_stock:
+		# Cancel existing first (to avoid duplicates or handle updates)
+		doc._cancel_existing_reservations()
+		# Create fresh reservation entries
+		doc.create_stock_reservation_entries()
+		frappe.msgprint("Stock Reservation Entries updated successfully.", indicator="green", alert=True)
+	else:
+		doc._cancel_existing_reservations()
+		frappe.msgprint("Stock Reservation Entries cancelled.", indicator="orange", alert=True)
+		
+	return True
+
+
+@frappe.whitelist()
+def create_stock_reservation_entries_via_dialog(docname, items_details):
+	import json
+	if isinstance(items_details, str):
+		items_details = json.loads(items_details)
+		
+	doc = frappe.get_doc("Cost Estimation", docname)
+	
+	if doc.docstatus != 1:
+		frappe.throw("Stock reservation can only be updated for submitted documents.")
+		
+	from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import get_available_qty_to_reserve
+	
+	created_any = False
+	for item in items_details:
+		row_id = item.get("row_id")
+		child_doctype = item.get("child_doctype")
+		item_code = item.get("item_code")
+		warehouse = item.get("warehouse")
+		qty_to_reserve = flt(item.get("qty_to_reserve"))
+		
+		if qty_to_reserve <= 0:
+			continue
+			
+		available_qty = get_available_qty_to_reserve(item_code, warehouse)
+		
+		# Create Stock Reservation Entry
+		sre = frappe.get_doc({
+			"doctype": "Stock Reservation Entry",
+			"item_code": item_code,
+			"warehouse": warehouse,
+			"voucher_type": doc.doctype,
+			"voucher_no": doc.name,
+			"voucher_detail_no": row_id,
+			"reserved_qty": qty_to_reserve,
+			"voucher_qty": qty_to_reserve,
+			"available_qty": available_qty,
+			"company": doc.company,
+			"status": "Reserved"
+		})
+		sre.insert(ignore_permissions=True)
+		sre.submit()
+		
+		# Update the specific child table row
+		frappe.db.set_value(child_doctype, row_id, "reserved_qty", qty_to_reserve)
+		created_any = True
+		
+	if created_any:
+		# Reload the doc to get latest child table values
+		doc.reload()
+		
+		# Recalculate status
+		has_reservation = False
+		all_reserved = True
+		
+		for row in doc.materials:
+			if flt(row.reserved_qty) > 0:
+				has_reservation = True
+				if flt(row.reserved_qty) < flt(row.qty):
+					all_reserved = False
+			else:
+				all_reserved = False
+				
+		for row in doc.accessories:
+			if flt(row.reserved_qty) > 0:
+				has_reservation = True
+				if flt(row.reserved_qty) < flt(row.qty):
+					all_reserved = False
+			else:
+				all_reserved = False
+				
+		if has_reservation:
+			if all_reserved:
+				doc.db_set("stock_reservation_status", "Reserved")
+			else:
+				doc.db_set("stock_reservation_status", "Partially Reserved")
+			doc.db_set("reserve_stock", 1)
+		else:
+			doc.db_set("stock_reservation_status", "Unreserved")
+			doc.db_set("reserve_stock", 0)
+			
+		frappe.msgprint("Stock Reservation Entries Created", alert=True, indicator="green")
+		
+	return True
+
+
+@frappe.whitelist()
+def cancel_stock_reservation_entries_via_dialog(docname, sre_list):
+	import json
+	if isinstance(sre_list, str):
+		sre_list = json.loads(sre_list)
+		
+	doc = frappe.get_doc("Cost Estimation", docname)
+	
+	if doc.docstatus != 1:
+		frappe.throw("Stock reservation can only be updated for submitted documents.")
+		
+	for sre_name in sre_list:
+		sre = frappe.get_doc("Stock Reservation Entry", sre_name)
+		if sre.docstatus == 1:
+			sre.cancel()
+			
+		# Find the matching row in materials or accessories and reset/reduce its reserved_qty
+		row_found = False
+		for row in doc.materials:
+			if row.name == sre.voucher_detail_no:
+				new_reserved = max(0.0, flt(row.reserved_qty) - flt(sre.reserved_qty))
+				row.db_set("reserved_qty", new_reserved)
+				row_found = True
+				break
+		if not row_found:
+			for row in doc.accessories:
+				if row.name == sre.voucher_detail_no:
+					new_reserved = max(0.0, flt(row.reserved_qty) - flt(sre.reserved_qty))
+					row.db_set("reserved_qty", new_reserved)
+					row_found = True
+					break
+					
+		frappe.delete_doc("Stock Reservation Entry", sre_name)
+		
+	# Recalculate status
+	has_reservation = False
+	all_reserved = True
+	
+	doc.reload()
+	for row in doc.materials:
+		if flt(row.reserved_qty) > 0:
+			has_reservation = True
+			if flt(row.reserved_qty) < flt(row.qty):
+				all_reserved = False
+		else:
+			all_reserved = False
+			
+	for row in doc.accessories:
+		if flt(row.reserved_qty) > 0:
+			has_reservation = True
+			if flt(row.reserved_qty) < flt(row.qty):
+				all_reserved = False
+		else:
+			all_reserved = False
+			
+	if has_reservation:
+		if all_reserved:
+			doc.db_set("stock_reservation_status", "Reserved")
+		else:
+			doc.db_set("stock_reservation_status", "Partially Reserved")
+		doc.db_set("reserve_stock", 1)
+	else:
+		doc.db_set("stock_reservation_status", "Unreserved")
+		doc.db_set("reserve_stock", 0)
+			
+	frappe.msgprint("Stock Reservation Entries Cancelled", alert=True, indicator="red")
+	return True
+
+
+@frappe.whitelist()
+def update_submitted_items(docname, materials=None, accessories=None):
+	import json
+	if isinstance(materials, str):
+		materials = json.loads(materials)
+	if isinstance(accessories, str):
+		accessories = json.loads(accessories)
+		
+	doc = frappe.get_doc("Cost Estimation", docname)
+	if doc.docstatus != 1:
+		frappe.throw("Items can only be updated for submitted documents.")
+		
+	# 1. Cancel existing stock reservations first
+	doc._cancel_existing_reservations()
+	
+	# 2. Update child table materials
+	if materials:
+		for item in materials:
+			row_name = item.get("docname")
+			qty = flt(item.get("qty"))
+			rate = flt(item.get("rate"))
+			warehouse = item.get("warehouse")
+			amount = qty * rate
+			
+			frappe.db.set_value("Cost Estimation Material", row_name, {
+				"qty": qty,
+				"rate": rate,
+				"warehouse": warehouse,
+				"amount": amount
+			})
+			
+	# 3. Update child table accessories
+	if accessories:
+		for item in accessories:
+			row_name = item.get("docname")
+			qty = flt(item.get("qty"))
+			rate = flt(item.get("rate"))
+			warehouse = item.get("warehouse")
+			amount = qty * rate
+			
+			frappe.db.set_value("Cost Estimation Accessory", row_name, {
+				"qty": qty,
+				"rate": rate,
+				"warehouse": warehouse,
+				"amount": amount
+			})
+			
+	# 4. Reload doc to get updated child table rows
+	doc.reload()
+	
+	# 5. Run calculations
+	doc.calculate_total_fabric()
+	doc.calculate_total_accessories()
+	doc.calculate_total_tailoring()
+	doc.calculate_total_finishing()
+	doc.calculate_suggested_selling_prices()
+	
+	# 6. Update parent totals and suggested prices in database
+	doc.db_set({
+		"total_fabric": doc.total_fabric,
+		"total_trim_and_accessories": doc.total_trim_and_accessories,
+		"total_tailoring": doc.total_tailoring,
+		"total_finishing": doc.total_finishing,
+		"screen_print_machine_emb_only": doc.screen_print_machine_emb_only,
+		"for_pattern_variation_only": doc.for_pattern_variation_only,
+		"hand_embroidery_only": doc.hand_embroidery_only,
+		"stock_reservation_status": "Unreserved",
+		"reserve_stock": 0
+	})
+	
+	frappe.msgprint("Items updated successfully.", indicator="green", alert=True)
+	return True
+
