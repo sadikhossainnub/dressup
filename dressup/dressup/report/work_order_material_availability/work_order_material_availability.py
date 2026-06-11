@@ -227,14 +227,16 @@ def get_data(filters):
 		# 4. Material Request
 		mr_item = frappe.db.sql("""
 			SELECT
-				parent as mr_name,
-				warehouse as mr_warehouse
+				mri.parent as mr_name,
+				mri.warehouse as mr_warehouse
 			FROM
-				`tabMaterial Request Item`
+				`tabMaterial Request Item` mri
+			JOIN
+				`tabMaterial Request` mr ON mr.name = mri.parent
 			WHERE
-				work_order = %s
-				AND item_code = %s
-				AND docstatus < 2
+				mr.work_order = %s
+				AND mri.item_code = %s
+				AND mr.docstatus < 2
 			LIMIT 1
 		""", (wo_name, item_code), as_dict=True)
 		
