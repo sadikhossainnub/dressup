@@ -219,7 +219,10 @@ def get_data(filters):
 			actual_qty = frappe.db.get_value("Bin", {"item_code": item_code, "warehouse": source_warehouse}, "actual_qty") or 0.0
 			
 		# 3. All Warehouse Availability
-		all_wh_avail = frappe.db.get_value("Bin", {"item_code": item_code}, "sum(actual_qty)") or 0.0
+		all_wh_avail = frappe.db.sql(
+			"SELECT SUM(actual_qty) FROM `tabBin` WHERE item_code = %s",
+			item_code
+		)[0][0] or 0.0
 		
 		# 4. Material Request
 		mr_item = frappe.db.sql("""
