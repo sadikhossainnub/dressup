@@ -23,6 +23,18 @@ frappe.query_reports["Work Order Material Availability"] = {
 			options: "BOM",
 		},
 		{
+			fieldname: "bom_type",
+			label: __("BOM Type"),
+			fieldtype: "Select",
+			options: "\nTemplate\nDefault",
+		},
+		{
+			fieldname: "bom_variant",
+			label: __("BOM Variant"),
+			fieldtype: "Select",
+			options: "\nSample Making\nBulk Production",
+		},
+		{
 			fieldname: "item_code",
 			label: __("Item Code (Raw Material)"),
 			fieldtype: "Link",

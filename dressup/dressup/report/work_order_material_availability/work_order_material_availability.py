@@ -154,6 +154,16 @@ def get_data(filters):
 	if filters.get("item_code"):
 		conditions.append("woi.item_code = %(item_code)s")
 		values["item_code"] = filters.get("item_code")
+
+	if filters.get("bom_type"):
+		if filters.get("bom_type") == "Template":
+			conditions.append("bom.is_default = 0")
+		elif filters.get("bom_type") == "Default":
+			conditions.append("bom.is_default = 1")
+
+	if filters.get("bom_variant"):
+		conditions.append("bom.custom_bom_type = %(bom_variant)s")
+		values["bom_variant"] = filters.get("bom_variant")
 		
 	condition_str = " AND ".join(conditions) if conditions else "1=1"
 	
