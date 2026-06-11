@@ -193,6 +193,12 @@ def get_reservation_details(item_code):
             )
 
             for sre in sre_list:
+                # Ensure the linked voucher is submitted and not cancelled/draft/deleted
+                if sre.voucher_type and sre.voucher_no:
+                    voucher_docstatus = frappe.db.get_value(sre.voucher_type, sre.voucher_no, "docstatus")
+                    if voucher_docstatus != 1:
+                        continue
+
                 remaining = (sre.reserved_qty or 0) - (sre.delivered_qty or 0)
                 if remaining > 0:
                     customer = ""

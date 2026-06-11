@@ -1,5 +1,6 @@
 # Copyright (c) 2026, Prime Technology of Bangladesh and contributors
-// For license information, please see license.txt
+# For license information, please see license.txt
+
 
 import frappe
 from frappe import _
@@ -197,6 +198,7 @@ def get_data(filters):
 				voucher_type = 'Work Order'
 				AND voucher_no = %s
 				AND item_code = %s
+				AND docstatus = 1
 				AND status not in ('Cancelled', 'Delivered')
 			GROUP BY
 				warehouse
