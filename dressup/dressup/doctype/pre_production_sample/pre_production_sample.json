@@ -485,6 +485,8 @@
   {
    "fieldname": "tech_pack_no",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Tech Pack No",
    "options": "Sketch Specification",
    "reqd": 1

@@ -10,11 +10,26 @@ from frappe.model.mapper import get_mapped_doc  # type: ignore
 class CostEstimation(Document):
 	def validate(self):
 		"""Validate and calculate all totals"""
+		self.validate_template_items()
 		self.calculate_total_fabric()
 		self.calculate_total_accessories()
 		self.calculate_total_tailoring()
 		self.calculate_total_finishing()
 		self.calculate_suggested_selling_prices()
+
+	def validate_template_items(self):
+		"""Ensure no template items are added in materials or accessories child tables"""
+		for row in self.materials:
+			if row.item_code and frappe.db.get_value("Item", row.item_code, "has_variants"):
+				frappe.throw(
+					frappe._("Item {0} in Materials is a template item and cannot be added. Please select a specific variant.").format(row.item_code)
+				)
+
+		for row in self.accessories:
+			if row.itemcode and frappe.db.get_value("Item", row.itemcode, "has_variants"):
+				frappe.throw(
+					frappe._("Item {0} in Accessories is a template item and cannot be added. Please select a specific variant.").format(row.itemcode)
+				)
 
 
 	def calculate_total_fabric(self):

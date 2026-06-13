@@ -5,6 +5,19 @@ frappe.ui.form.on("Cost Estimation Accessory", {
 	itemcode(frm, cdt, cdn) {
 		let row = locals[cdt][cdn];
 		if (row.itemcode) {
+			// Block template items (has_variants = 1)
+			frappe.db.get_value("Item", row.itemcode, "has_variants", (r) => {
+				if (r && r.has_variants) {
+					frappe.msgprint({
+						title: __("Template Item Not Allowed"),
+						message: __("Item {0} is a Template Item with variants. Please select a specific variant instead.", [row.itemcode]),
+						indicator: "red"
+					});
+					frappe.model.set_value(cdt, cdn, "itemcode", "");
+					frappe.model.set_value(cdt, cdn, "item_name", "");
+					return;
+				}
+			});
 			frappe.call({
 				method: "frappe.client.get_list",
 				args: {
@@ -71,6 +84,19 @@ frappe.ui.form.on("Cost Estimation Material", {
 	item_code(frm, cdt, cdn) {
 		let row = locals[cdt][cdn];
 		if (row.item_code) {
+			// Block template items (has_variants = 1)
+			frappe.db.get_value("Item", row.item_code, "has_variants", (r) => {
+				if (r && r.has_variants) {
+					frappe.msgprint({
+						title: __("Template Item Not Allowed"),
+						message: __("Item {0} is a Template Item with variants. Please select a specific variant instead.", [row.item_code]),
+						indicator: "red"
+					});
+					frappe.model.set_value(cdt, cdn, "item_code", "");
+					frappe.model.set_value(cdt, cdn, "item_name", "");
+					return;
+				}
+			});
 			frappe.call({
 				method: "frappe.client.get_list",
 				args: {

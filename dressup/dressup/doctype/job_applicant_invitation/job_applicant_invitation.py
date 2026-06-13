@@ -206,7 +206,8 @@ class JobApplicantInvitation(Document):
 			self.db_set("interview", interview.name)
 			frappe.msgprint(_("HRMS Interview {0} created and linked successfully.").format(get_link_to_form("Interview", interview.name)), indicator="green")
 			return interview.name
+		except (frappe.ValidationError, frappe.LinkValidationError):
+			raise
 		except Exception as e:
 			frappe.log_error(message=frappe.get_traceback(), title="Auto-Create Interview Error")
-			frappe.msgprint(_("Could not auto-create HRMS Interview. Please check logs."))
-			return None
+			frappe.throw(_("Could not auto-create HRMS Interview: {0}").format(str(e)))

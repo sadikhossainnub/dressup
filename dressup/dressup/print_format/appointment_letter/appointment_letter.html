@@ -1,0 +1,396 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+    @media print {
+        @page {
+            size: A4 portrait;
+            margin: 20mm 15mm 20mm 15mm;
+        }
+        .no-print {
+            display: none !important;
+        }
+        body {
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+        }
+    }
+
+    :root {
+        --primary: #0f172a;
+        --secondary: #334155;
+        --light-gray: #f8fafc;
+        --border-color: #cbd5e1;
+        --accent: #2563eb;
+        --text-muted: #64748b;
+    }
+
+    .appointment-container {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: var(--primary);
+        font-size: 10pt;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 5px;
+    }
+
+    /* Header Styling */
+    .letter-header {
+        border-bottom: 2px solid var(--primary);
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+    }
+
+    .company-name {
+        font-family: 'Outfit', sans-serif;
+        font-size: 18pt;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--primary);
+        margin: 0;
+    }
+
+    .company-details {
+        font-size: 8.5pt;
+        color: var(--text-muted);
+        line-height: 1.4;
+        margin-top: 5px;
+    }
+
+    /* Doc Meta */
+    .doc-meta-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 25px;
+    }
+
+    .doc-meta-table td {
+        padding: 4px 0;
+        vertical-align: top;
+    }
+
+    .ref-no, .doc-date {
+        font-size: 9.5pt;
+        color: var(--secondary);
+    }
+
+    /* Applicant Address Info */
+    .recipient-info {
+        margin-bottom: 25px;
+        background: var(--light-gray);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 12px 18px;
+    }
+
+    .recipient-title {
+        font-size: 8pt;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-muted);
+        margin-bottom: 6px;
+    }
+
+    .recipient-name {
+        font-size: 11pt;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 4px;
+    }
+
+    .recipient-details {
+        font-size: 9.5pt;
+        color: var(--secondary);
+        line-height: 1.4;
+    }
+
+    /* Document Title */
+    .doc-title-container {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .doc-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 13pt;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--primary);
+        display: inline-block;
+        border-bottom: 2px solid var(--primary);
+        padding-bottom: 5px;
+    }
+
+    /* Letter Body */
+    .letter-body {
+        margin-bottom: 25px;
+        text-align: justify;
+    }
+
+    .letter-body p {
+        margin-top: 0;
+        margin-bottom: 12px;
+    }
+
+    /* Terms Section */
+    .terms-section {
+        margin-bottom: 30px;
+    }
+
+    .terms-heading {
+        font-family: 'Outfit', sans-serif;
+        font-size: 11pt;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--primary);
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 6px;
+        margin-bottom: 12px;
+    }
+
+    .terms-list {
+        list-style-type: none;
+        padding-left: 0;
+        margin: 0;
+    }
+
+    .term-item {
+        margin-bottom: 15px;
+        page-break-inside: avoid;
+    }
+
+    .term-title {
+        font-weight: 700;
+        font-size: 10pt;
+        color: var(--primary);
+        margin-bottom: 3px;
+    }
+
+    .term-desc {
+        font-size: 9.5pt;
+        color: var(--secondary);
+        text-align: justify;
+    }
+
+    /* Signatures */
+    .signature-container {
+        margin-top: 40px;
+        width: 100%;
+        page-break-inside: avoid;
+    }
+
+    .signature-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .signature-table td {
+        width: 48%;
+        vertical-align: top;
+    }
+
+    .sig-box {
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 15px;
+        background: var(--light-gray);
+        min-height: 140px;
+    }
+
+    .sig-company {
+        font-weight: 700;
+        font-size: 9.5pt;
+        text-transform: uppercase;
+        color: var(--primary);
+        margin-bottom: 45px;
+    }
+
+    .sig-line {
+        border-top: 1px dashed var(--text-muted);
+        margin-top: 45px;
+        margin-bottom: 6px;
+    }
+
+    .sig-label {
+        font-size: 9pt;
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+    .sig-sub-label {
+        font-size: 8pt;
+        color: var(--text-muted);
+    }
+
+    /* Footer */
+    .letter-footer {
+        margin-top: 50px;
+        border-top: 1px solid var(--border-color);
+        padding-top: 12px;
+        text-align: center;
+        font-size: 8pt;
+        color: var(--text-muted);
+        line-height: 1.4;
+    }
+</style>
+
+{% set company = None %}
+{% if doc.company %}
+    {% set company = frappe.get_doc("Company", doc.company) %}
+{% endif %}
+
+{% set applicant = None %}
+{% if doc.job_applicant %}
+    {% set applicant = frappe.get_doc("Job Applicant", doc.job_applicant) %}
+{% endif %}
+
+<div class="appointment-container">
+    {% if letter_head %}
+    <div class="letter-head-container" style="width: 100%; text-align: left; margin-bottom: 20px;">
+        {{ letter_head }}
+    </div>
+    {% else %}
+    <div class="letter-header">
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td>
+                    <h1 class="company-name">{{ company.company_name if company else (doc.company or "DRESSUP MANUFACTURING") }}</h1>
+                    <div class="company-details">
+                        {% if company and company.address %}
+                            {{ company.address | replace('\n', ', ') }}<br>
+                        {% endif %}
+                        {% if company and company.phone_no %}Phone: {{ company.phone_no }} | {% endif %}
+                        {% if company and company.email %}Email: {{ company.email }} | {% endif %}
+                        {% if company and company.website %}Website: {{ company.website }}{% endif %}
+                        {% if not company %}
+                            Premium Quality Apparel Production & Fashion Design<br>
+                            Dhaka, Bangladesh | info@dressup.com.bd
+                        {% endif %}
+                    </div>
+                </td>
+                <td style="text-align: right; vertical-align: bottom;">
+                    <div class="ref-no">Ref: <strong>{{ doc.name }}</strong></div>
+                    <div class="doc-date">Date: <strong>{{ frappe.utils.format_date(doc.appointment_date) if doc.appointment_date else frappe.utils.format_date(frappe.utils.today()) }}</strong></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    {% endif %}
+
+    <div class="doc-title-container">
+        <div class="doc-title">Letter of Appointment</div>
+    </div>
+
+    <table class="doc-meta-table">
+        <tr>
+            <td style="width: 50%;">
+                <div class="recipient-info">
+                    <div class="recipient-title">To:</div>
+                    <div class="recipient-name">{{ doc.applicant_name }}</div>
+                    <div class="recipient-details">
+                        {% if applicant %}
+                            {% if applicant.email_id %}<strong>Email:</strong> {{ applicant.email_id }}<br>{% endif %}
+                            {% if applicant.phone_number %}<strong>Phone:</strong> {{ applicant.phone_number }}<br>{% endif %}
+                            {% if applicant.designation %}<strong>Designation:</strong> {{ applicant.designation }}<br>{% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </td>
+            <td style="width: 50%; padding-left: 20px; vertical-align: middle;">
+                <table style="width: 100%; font-size: 9.5pt;">
+                    <tr>
+                        <td style="font-weight: 700; color: var(--secondary); padding: 3px 0; width: 120px;">Position:</td>
+                        <td style="padding: 3px 0;">{{ applicant.designation if (applicant and applicant.designation) else "-" }}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700; color: var(--secondary); padding: 3px 0;">Effective Date:</td>
+                        <td style="padding: 3px 0;">{{ frappe.utils.format_date(doc.appointment_date) if doc.appointment_date else "-" }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <div class="letter-body">
+        <p>Dear {{ doc.applicant_name }},</p>
+        
+        {% if doc.introduction %}
+            {% if "<p>" in doc.introduction or "<div>" in doc.introduction %}
+                {{ doc.introduction }}
+            {% else %}
+                {{ doc.introduction | replace("\n", "<br>") }}
+            {% endif %}
+        {% else %}
+            <p>We are pleased to offer you employment with {{ company.company_name if company else (doc.company or "DRESSUP MANUFACTURING") }} under the terms and conditions outlined below.</p>
+        {% endif %}
+    </div>
+
+    {% if doc.terms and doc.terms | length > 0 %}
+    <div class="terms-section">
+        <div class="terms-heading">Terms & Conditions of Employment</div>
+        <ul class="terms-list">
+            {% for term in doc.terms %}
+            <li class="term-item">
+                <div class="term-title">{{ loop.index }}. {{ term.title }}</div>
+                <div class="term-desc">
+                    {% if "<p>" in term.description or "<div>" in term.description %}
+                        {{ term.description }}
+                    {% else %}
+                        {{ term.description | replace("\n", "<br>") }}
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if doc.closing_notes %}
+    <div class="letter-body" style="margin-top: 20px; page-break-inside: avoid;">
+        {% if "<p>" in doc.closing_notes or "<div>" in doc.closing_notes %}
+            {{ doc.closing_notes }}
+        {% else %}
+            {{ doc.closing_notes | replace("\n", "<br>") }}
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="signature-container">
+        <table class="signature-table">
+            <tr>
+                <td>
+                    <div class="sig-box">
+                        <div class="sig-company">For {{ company.company_name if company else (doc.company or "DRESSUP MANUFACTURING") }}</div>
+                        <div class="sig-line"></div>
+                        <div class="sig-label">Authorized Signature</div>
+                        <div class="sig-sub-label">Human Resources & Administration</div>
+                    </div>
+                </td>
+                <td style="width: 4%;"></td>
+                <td>
+                    <div class="sig-box">
+                        <div class="sig-company">Candidate Acceptance</div>
+                        <div style="font-size: 8pt; color: var(--secondary); margin-bottom: 20px; line-height: 1.3;">
+                            I accept the terms and conditions of this appointment.
+                        </div>
+                        <div class="sig-line" style="margin-top: 15px;"></div>
+                        <div class="sig-label">Signature of the Candidate</div>
+                        <div class="sig-sub-label">Date: ____ / ____ / ________</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="letter-footer">
+        {{ company.company_name if company else (doc.company or "DRESSUP MANUFACTURING") }}
+        {% if company and company.address %}
+             | {{ company.address | replace('\n', ', ') }}
+        {% endif %}
+        <br>
+        <span style="font-size: 7.5pt; color: var(--text-muted);">Printed on: {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</span>
+    </div>
+</div>
