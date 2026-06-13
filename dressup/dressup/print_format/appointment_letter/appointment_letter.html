@@ -247,12 +247,32 @@
     {% set applicant = frappe.get_doc("Job Applicant", doc.job_applicant) %}
 {% endif %}
 
+{# Auto-fetch the company's default letter head (header + footer) if not provided via print settings #}
+{% set _company_lh_content = None %}
+{% set _company_lh_footer = None %}
+{% if doc.company %}
+    {% set _lh_name = frappe.db.get_value("Company", doc.company, "default_letter_head") %}
+    {% if _lh_name %}
+        {% if not letter_head %}
+            {% set _company_lh_content = frappe.db.get_value("Letter Head", _lh_name, "content") %}
+        {% endif %}
+        {% set _company_lh_footer = frappe.db.get_value("Letter Head", _lh_name, "footer") %}
+    {% endif %}
+{% endif %}
+
 <div class="appointment-container">
     {% if letter_head %}
+    {# Letter head explicitly selected in print settings #}
     <div class="letter-head-container" style="width: 100%; text-align: left; margin-bottom: 20px;">
         {{ letter_head }}
     </div>
+    {% elif _company_lh_content %}
+    {# Auto-fetched from doc.company's default letter head in ERPNext #}
+    <div class="letter-head-container" style="width: 100%; text-align: left; margin-bottom: 20px;">
+        {{ _company_lh_content }}
+    </div>
     {% else %}
+    {# Fallback: no letter head configured — show manual header #}
     <div class="letter-header">
         <table style="width: 100%; border-collapse: collapse;">
             <tr>
@@ -385,6 +405,18 @@
         </table>
     </div>
 
+    {% if letter_footer %}
+    {# Footer explicitly passed from print settings #}
+    <div style="width: 100%; margin-top: 30px;">
+        {{ letter_footer }}
+    </div>
+    {% elif _company_lh_footer %}
+    {# Auto-fetched footer from company's default letter head #}
+    <div style="width: 100%; margin-top: 30px;">
+        {{ _company_lh_footer }}
+    </div>
+    {% else %}
+    {# Fallback: no letter head footer — show manual footer #}
     <div class="letter-footer">
         {{ company.company_name if company else (doc.company or "DRESSUP MANUFACTURING") }}
         {% if company and company.address %}
@@ -393,4 +425,5 @@
         <br>
         <span style="font-size: 7.5pt; color: var(--text-muted);">Printed on: {{ frappe.utils.now_datetime().strftime("%d-%m-%Y %H:%M") }}</span>
     </div>
+    {% endif %}
 </div>
