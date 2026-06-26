@@ -7,11 +7,13 @@ import frappe
 def after_install():
 	add_net_qty_to_shipping_rule()
 	create_work_order_report()
+	add_show_created_by_custom_field()
 
 
 def after_migrate():
 	add_net_qty_to_shipping_rule()
 	create_work_order_report()
+	add_show_created_by_custom_field()
 
 
 def create_work_order_report():
@@ -66,3 +68,21 @@ def add_net_qty_to_shipping_rule():
 
 	frappe.clear_cache(doctype="Shipping Rule")
 	frappe.db.commit()
+
+
+def add_show_created_by_custom_field():
+	if not frappe.db.exists("Custom Field", {"dt": "List View Settings", "fieldname": "show_created_by"}):
+		cf = frappe.get_doc({
+			"doctype": "Custom Field",
+			"dt": "List View Settings",
+			"fieldname": "show_created_by",
+			"label": "Show Created By",
+			"fieldtype": "Check",
+			"insert_after": "disable_automatic_recency_filters",
+			"default": "0",
+			"module": "DressUp"
+		})
+		cf.flags.ignore_permissions = True
+		cf.insert()
+		frappe.db.commit()
+		frappe.clear_cache(doctype="List View Settings")
