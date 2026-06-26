@@ -8,11 +8,24 @@ $(document).on("app_ready", function () {
 	frappe.views.ListView.prototype.setup_columns = function () {
 		_setup_columns.call(this);
 
-		if (this.list_view_settings && cint(this.list_view_settings.show_created_by) === 1) {
+		console.log("ListView setup_columns called for:", this.doctype);
+		console.log("this.list_view_settings:", this.list_view_settings);
+
+		// Handle both standard and nested list_view_settings structure due to save_listview_settings callback
+		let settings = this.list_view_settings || {};
+		if (settings.listview_settings) {
+			settings = settings.listview_settings;
+		}
+
+		console.log("Evaluated show_created_by:", settings.show_created_by);
+
+		if (cint(settings.show_created_by) === 1) {
 			// Don't add if owner column already exists
 			const has_owner_col = this.columns.some(
 				(c) => c.df && c.df.fieldname === "owner"
 			);
+
+			console.log("has_owner_col:", has_owner_col);
 
 			if (!has_owner_col) {
 				this.columns.push({
@@ -24,6 +37,7 @@ $(document).on("app_ready", function () {
 						options: "User",
 					},
 				});
+				console.log("Added owner column to columns list!");
 			}
 		}
 	};
