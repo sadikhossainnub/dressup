@@ -1,8 +1,12 @@
 // Globally add "Created By" (owner) column to all DocType list views.
 // NOTE: owner data is already fetched via frappe.model.std_fields_list,
 // so we only need to add the column definition for display if selected in settings.
-$(document).on("app_ready", function () {
+
+function init_created_by_column() {
 	if (!frappe.views || !frappe.views.ListView) return;
+
+	if (frappe.views.ListView.prototype.setup_columns_patched) return;
+	frappe.views.ListView.prototype.setup_columns_patched = true;
 
 	const _setup_columns = frappe.views.ListView.prototype.setup_columns;
 	frappe.views.ListView.prototype.setup_columns = function () {
@@ -39,6 +43,22 @@ $(document).on("app_ready", function () {
 				});
 				console.log("Added owner column to columns list!");
 			}
+
+			// Custom formatter to show User's Full Name instead of Email ID
+			if (!this.settings.formatters) {
+				this.settings.formatters = {};
+			}
+			this.settings.formatters.owner = function (value) {
+				if (!value) return "";
+				const fullname = frappe.user.full_name(value) || value;
+				return `<a class="text-muted" href="/app/user/${encodeURIComponent(value)}">${frappe.utils.escape_html(fullname)}</a>`;
+			};
 		}
 	};
-});
+}
+
+if (window.frappe && frappe.views && frappe.views.ListView) {
+	init_created_by_column();
+} else {
+	$(document).on("app_ready", init_created_by_column);
+}
