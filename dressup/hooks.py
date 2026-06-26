@@ -38,7 +38,7 @@ fixtures = [
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/dressup/css/dressup.css"
-# app_include_js = []
+app_include_js = ["/assets/dressup/js/list_created_by.js"]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/dressup/css/dressup.css"
