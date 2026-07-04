@@ -135,6 +135,106 @@
         margin-bottom: 12px;
     }
 
+    /* Salary Section */
+    .salary-section {
+        margin-bottom: 30px;
+        page-break-inside: avoid;
+    }
+
+    .salary-heading {
+        font-family: 'Outfit', sans-serif;
+        font-size: 11pt;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--primary);
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 6px;
+        margin-bottom: 12px;
+    }
+
+    .salary-grid {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9.5pt;
+    }
+
+    .salary-grid th {
+        background: var(--primary);
+        color: #fff;
+        font-weight: 600;
+        text-align: left;
+        padding: 7px 10px;
+        font-size: 8.5pt;
+        letter-spacing: 0.04em;
+    }
+
+    .salary-grid th.text-right,
+    .salary-grid td.text-right {
+        text-align: right;
+    }
+
+    .salary-grid td {
+        padding: 6px 10px;
+        border-bottom: 1px solid #e2e8f0;
+        color: var(--secondary);
+        vertical-align: middle;
+    }
+
+    .salary-grid tr:nth-child(even) td {
+        background: var(--light-gray);
+    }
+
+    .salary-grid .type-badge {
+        display: inline-block;
+        padding: 1px 7px;
+        border-radius: 10px;
+        font-size: 7.5pt;
+        font-weight: 600;
+    }
+
+    .salary-grid .earning-badge {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .salary-grid .deduction-badge {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .salary-totals {
+        display: flex;
+        justify-content: flex-end;
+        gap: 20px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+    }
+
+    .salary-total-box {
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 8px 16px;
+        text-align: right;
+        min-width: 160px;
+    }
+
+    .salary-total-label {
+        font-size: 8pt;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .salary-total-value {
+        font-size: 12pt;
+        font-weight: 800;
+        color: var(--primary);
+        margin-top: 2px;
+    }
+
+
+
     /* Terms Section */
     .terms-section {
         margin-bottom: 30px;
@@ -347,6 +447,60 @@
             <p>We are pleased to offer you employment with {{ company.company_name if company else (doc.company or "DRESSUP MANUFACTURING") }} under the terms and conditions outlined below.</p>
         {% endif %}
     </div>
+
+    {% if doc.custom_salary_structure and doc.custom_salary_components and doc.custom_salary_components | length > 0 %}
+    {% set earnings = doc.custom_salary_components | selectattr("component_type", "equalto", "Earning") | list %}
+    {% set deductions = doc.custom_salary_components | selectattr("component_type", "equalto", "Deduction") | list %}
+    {% set total_earnings = earnings | map(attribute="amount") | list | sum %}
+    {% set total_deductions = deductions | map(attribute="amount") | list | sum %}
+    <div class="salary-section">
+        <div class="salary-heading">Salary Details</div>
+        <table class="salary-grid">
+            <thead>
+                <tr>
+                    <th style="width: 45%;">Salary Component</th>
+                    <th style="width: 10%;">Abbr</th>
+                    <th style="width: 15%;">Type</th>
+                    <th class="text-right" style="width: 30%;">Amount (BDT)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in doc.custom_salary_components %}
+                <tr>
+                    <td>{{ row.salary_component }}</td>
+                    <td>{{ row.abbr }}</td>
+                    <td>
+                        {% if row.component_type == "Earning" %}
+                            <span class="type-badge earning-badge">Earning</span>
+                        {% else %}
+                            <span class="type-badge deduction-badge">Deduction</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-right" style="font-weight: 600; color: var(--primary);">
+                        {{ frappe.utils.fmt_money(row.amount, currency="BDT") }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="salary-totals">
+            {% if total_deductions > 0 %}
+            <div class="salary-total-box">
+                <div class="salary-total-label">Total Earnings</div>
+                <div class="salary-total-value">{{ frappe.utils.fmt_money(total_earnings, currency="BDT") }}</div>
+            </div>
+            <div class="salary-total-box">
+                <div class="salary-total-label">Total Deductions</div>
+                <div class="salary-total-value" style="color: #dc2626;">{{ frappe.utils.fmt_money(total_deductions, currency="BDT") }}</div>
+            </div>
+            {% endif %}
+            <div class="salary-total-box">
+                <div class="salary-total-label">Gross Salary</div>
+                <div class="salary-total-value">{{ frappe.utils.fmt_money(doc.custom_gross_salary or total_earnings, currency="BDT") }}</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
     {% if doc.terms and doc.terms | length > 0 %}
     <div class="terms-section">
