@@ -4,7 +4,7 @@
     .payslip-container {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         color: #000;
-        font-size: 12px;
+        font-size: 10.5px;
         line-height: 1.4;
         width: 100%;
         box-sizing: border-box;
@@ -23,13 +23,13 @@
     }
     
     .company-name {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: bold;
         margin-bottom: 2px;
     }
     
     .company-address {
-        font-size: 11px;
+        font-size: 9.5px;
         color: #333;
         line-height: 1.3;
     }
@@ -38,13 +38,13 @@
         position: absolute;
         right: 0;
         bottom: 0;
-        font-size: 12px;
+        font-size: 10.5px;
         color: #000;
         font-weight: bold;
     }
     
     .report-title {
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
         text-align: center;
         margin: 10px 0;
@@ -99,7 +99,7 @@
     
     .net-salary-block {
         text-align: right;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: bold;
         margin: 15px 0;
     }
@@ -124,7 +124,7 @@
     .system-generated {
         text-align: center;
         font-weight: bold;
-        font-size: 11px;
+        font-size: 9.5px;
         margin-top: 15px;
     }
     
@@ -142,7 +142,7 @@
     .scissor-line span {
         background: #fff;
         padding: 0 10px;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
     }
 
@@ -190,7 +190,10 @@
                 <td class="label-cell">Designation</td>
                 <td>{{ doc.designation or '' }}</td>
                 <td class="label-cell">Join Date</td>
-                <td>{{ doc.get_formatted('date_of_joining') if doc.date_of_joining else '' }}</td>
+                <td>
+                    {% set date_of_joining = frappe.db.get_value("Employee", doc.employee, "date_of_joining") if doc.employee else None %}
+                    {{ frappe.utils.format_date(date_of_joining) if date_of_joining else '' }}
+                </td>
             </tr>
             <tr>
                 <td class="label-cell">Branch</td>
@@ -219,7 +222,7 @@
                 {% for row in doc.earnings %}
                 <tr>
                     <td>{{ row.salary_component }}</td>
-                    <td class="amount-col">{{ doc.get_formatted('amount', row) }}</td>
+                    <td class="amount-col">{{ row.get_formatted('amount') }}</td>
                 </tr>
                 {% endfor %}
                 
@@ -231,7 +234,7 @@
                 {% for row in doc.deductions %}
                 <tr>
                     <td>{{ row.salary_component }}</td>
-                    <td class="amount-col">{{ doc.get_formatted('amount', row) }}</td>
+                    <td class="amount-col">{{ row.get_formatted('amount') }}</td>
                 </tr>
                 {% else %}
                 <tr>
@@ -246,7 +249,7 @@
         <table class="slip-table" style="margin-top: -11px;">
             <tr class="total-row">
                 <td style="width: 35%;">Total Earnings</td>
-                <td class="amount-col" style="width: 15%;">{{ doc.get_formatted('total_earning') }}</td>
+                <td class="amount-col" style="width: 15%;">{{ doc.get_formatted('gross_pay') }}</td>
                 <td style="width: 30%;">Total Deductions</td>
                 <td class="amount-col" style="width: 20%;">{{ doc.get_formatted('total_deduction') }}</td>
             </tr>
