@@ -7,6 +7,7 @@
         padding: 0;
     }
 
+    /* ── Anti-Copy Security Layer ── */
     .payslip-container {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         color: #000;
@@ -14,10 +15,40 @@
         line-height: 1.25;
         width: 100%;
         background: #fff;
+        /* Disable text selection */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        position: relative;
     }
 
+    /* Diagonal "CONFIDENTIAL" watermark on each block */
     .payslip-block {
         width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .payslip-block::before {
+        content: "CONFIDENTIAL";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-35deg);
+        font-size: 52px;
+        font-weight: 900;
+        color: rgba(0, 0, 0, 0.045);
+        letter-spacing: 6px;
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* All content sits above the watermark */
+    .payslip-block > * {
+        position: relative;
+        z-index: 1;
     }
 
     /* Header */
@@ -119,6 +150,44 @@
         border-top: 1px solid #aaa;
     }
 
+    /* Attendance Days Row */
+    .attendance-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 3px;
+    }
+
+    .attendance-table td {
+        border: 1px solid #aaa;
+        padding: 2px 5px;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .attendance-table .att-label {
+        font-weight: bold;
+        background: #f0f0f0;
+        width: 20%;
+        text-align: left;
+    }
+
+    /* Security meta row (Ref + Generated date) */
+    .security-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 10.5px;
+        color: #333;
+        border: 1px solid #ccc;
+        background: #fafafa;
+        padding: 2px 6px;
+        margin-bottom: 3px;
+        border-radius: 2px;
+    }
+
+    .security-meta span {
+        font-weight: 600;
+    }
+
     /* Signatures */
     .signature-section {
         margin-top: 10px;
@@ -174,8 +243,17 @@
         .payslip-container {
             font-size: 12.5px;
         }
+        /* Ensure watermark prints */
+        .payslip-block::before {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
     }
 </style>
+
+{# ── Generate ref & timestamp once ── #}
+{% set _gen_date = frappe.utils.now_datetime().strftime('%d-%b-%Y %I:%M %p') %}
+{% set _ref_no   = doc.name %}
 
 <div class="payslip-container">
 
@@ -198,6 +276,12 @@
             {% else %}
                 Pay Slip Report
             {% endif %}
+        </div>
+
+        <!-- Security Meta: Ref No + Generation Date -->
+        <div class="security-meta">
+            <div>Ref No: <span>{{ _ref_no }}</span></div>
+            <div>Generated: <span>{{ _gen_date }}</span></div>
         </div>
 
         <!-- Employee Info -->
@@ -228,6 +312,18 @@
                 <td>{{ doc.custom_functional_designation or '-' }}</td>
                 <td class="label-cell">Salary Group</td>
                 <td>{{ doc.salary_structure or '-' }}</td>
+            </tr>
+        </table>
+
+        <!-- Attendance: Working Days / Absent Days / Payment Days -->
+        <table class="attendance-table">
+            <tr>
+                <td class="att-label">Working Days</td>
+                <td>{{ doc.total_working_days | int }}</td>
+                <td class="att-label">Absent Days</td>
+                <td>{{ doc.absent_days | int }}</td>
+                <td class="att-label">Payment Days</td>
+                <td>{{ doc.payment_days | int }}</td>
             </tr>
         </table>
 
@@ -288,7 +384,7 @@
         </div>
 
         <!-- System notice -->
-        <div class="system-generated">N.B: This is a system generated document</div>
+        <div class="system-generated">N.B: This is a system generated document &mdash; any alteration voids its authenticity.</div>
 
     </div>
     {% endmacro %}
@@ -305,3 +401,24 @@
     {{ render_payslip('Employee Copy') }}
 
 </div>
+
+{# ── Anti-Copy JavaScript Security ── #}
+<script>
+(function () {
+    /* Disable right-click context menu */
+    document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+    /* Block common copy shortcuts: Ctrl+C, Ctrl+A, Ctrl+X, Ctrl+U (view-source) */
+    document.addEventListener('keydown', function (e) {
+        if (e.ctrlKey && ['c','a','x','u','s'].includes(e.key.toLowerCase())) {
+            e.preventDefault();
+        }
+    });
+
+    /* Disable drag-select */
+    document.addEventListener('selectstart', function (e) { e.preventDefault(); });
+
+    /* Disable drag of any element */
+    document.addEventListener('dragstart', function (e) { e.preventDefault(); });
+})();
+</script>
