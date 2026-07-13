@@ -53,21 +53,48 @@
 
     /* Header */
     .header-section {
-        text-align: center;
         position: relative;
+        text-align: center;
         margin-bottom: 3px;
+        min-height: 40px;
+    }
+
+    .company-logo {
+        max-height: 38px;
+        max-width: 200px;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
     }
 
     .company-name {
-        font-size: 17px;
+        font-size: 15px;
         font-weight: bold;
         margin-bottom: 1px;
     }
 
-    .company-address {
-        font-size: 11px;
-        color: #333;
-        line-height: 1.2;
+    /* Employee photo — absolute top-left ~10mm x 10mm */
+    .employee-photo {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 38px;
+        height: 38px;
+        object-fit: cover;
+        border: 1px solid #aaa;
+        border-radius: 2px;
+        display: block;
+    }
+
+    .employee-photo-placeholder {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 38px;
+        height: 38px;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        background: #ebebeb;
     }
 
     .copy-type {
@@ -110,15 +137,21 @@
     .info-table {
         border: 1px solid #aaa;
         border-collapse: collapse;
-        margin-bottom: 3px;
+        margin-bottom: 1px;
         width: 100%;
+    }
+
+    .info-table tr {
+        height: 10px;
     }
 
     .info-table td {
         border: none !important;
         width: 25%;
-        padding: 2px 5px;
-        font-size: 12px;
+        padding: 0 4px;
+        font-size: 10.5px;
+        line-height: 1.0;
+        vertical-align: middle;
     }
 
     .label-cell {
@@ -154,13 +187,13 @@
     .attendance-table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 3px;
+        margin-bottom: 2px;
     }
 
     .attendance-table td {
         border: 1px solid #aaa;
-        padding: 2px 5px;
-        font-size: 12px;
+        padding: 1px 4px;
+        font-size: 11px;
         text-align: center;
     }
 
@@ -173,36 +206,55 @@
 
     /* Security meta row (Ref + Generated date) */
     .security-meta {
-        display: flex;
-        justify-content: space-between;
-        font-size: 10.5px;
+        width: 100%;
+        font-size: 10px;
         color: #333;
         border: 1px solid #ccc;
         background: #fafafa;
-        padding: 2px 6px;
-        margin-bottom: 3px;
+        padding: 1px 6px;
+        margin-bottom: 2px;
         border-radius: 2px;
+        overflow: hidden;
     }
 
-    .security-meta span {
+    .security-meta .meta-ref {
+        float: left;
         font-weight: 600;
     }
 
-    /* Signatures */
+    .security-meta .meta-date {
+        float: right;
+        font-weight: 600;
+    }
+
+    .security-meta::after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+
+    /* Signatures — table layout for PDF reliability */
     .signature-section {
-        margin-top: 10px;
-        margin-bottom: 3px;
-        display: flex;
-        justify-content: space-between;
+        width: 100%;
+        margin-top: 6px;
+        margin-bottom: 2px;
+        border-collapse: collapse;
+    }
+
+    .signature-section td {
+        width: 50%;
+        text-align: center;
         padding: 0 20px;
+        border: none;
     }
 
     .sig-box {
-        width: 140px;
+        display: inline-block;
+        width: 130px;
         text-align: center;
         border-top: 1px solid #000;
         padding-top: 2px;
-        font-size: 11.5px;
+        font-size: 11px;
         font-weight: 500;
     }
 
@@ -262,9 +314,27 @@
     <div class="payslip-block">
 
         <!-- Header -->
+        {%- set _logo    = frappe.db.get_value("Company", doc.company, "company_logo") -%}
+        {%- set _emp_img = frappe.db.get_value("Employee", doc.employee, "image") if doc.employee else None -%}
+        {%- set _site    = frappe.utils.get_url() -%}
         <div class="header-section">
-            <div class="company-name">{{ doc.company or "Dress Up Bangladesh" }}</div>
-            <div class="company-address">4th Floor, Plaza AR, Dhanmondi, Dhaka</div>
+
+            {# Employee photo — top-left corner #}
+            {% if _emp_img %}
+                <img class="employee-photo"
+                     src="{{ _site }}{{ _emp_img }}"
+                     alt="Employee Photo">
+            {% else %}
+                <div class="employee-photo-placeholder"></div>
+            {% endif %}
+
+            {# Company logo — centred #}
+            {% if _logo %}
+                <img class="company-logo"
+                     src="{{ _site }}{{ _logo }}"
+                     alt="{{ doc.company }}">
+            {% endif %}
+
             <div class="copy-type">{{ copy_label }}</div>
         </div>
 
@@ -280,8 +350,8 @@
 
         <!-- Security Meta: Ref No + Generation Date -->
         <div class="security-meta">
-            <div>Ref No: <span>{{ _ref_no }}</span></div>
-            <div>Generated: <span>{{ _gen_date }}</span></div>
+            <span class="meta-ref">Ref No: {{ _ref_no }}</span>
+            <span class="meta-date">Generated: {{ _gen_date }}</span>
         </div>
 
         <!-- Employee Info -->
@@ -296,10 +366,7 @@
                 <td class="label-cell">Designation</td>
                 <td>{{ doc.designation or '' }}</td>
                 <td class="label-cell">Join Date</td>
-                <td>
-                    {% set doj = frappe.db.get_value("Employee", doc.employee, "date_of_joining") if doc.employee else None %}
-                    {{ frappe.utils.format_date(doj) if doj else '' }}
-                </td>
+                <td>{% set doj = frappe.db.get_value("Employee", doc.employee, "date_of_joining") if doc.employee else None %}{{ frappe.utils.format_date(doj) if doj else '' }}</td>
             </tr>
             <tr>
                 <td class="label-cell">Branch</td>
@@ -378,10 +445,12 @@
         </div>
 
         <!-- Signatures -->
-        <div class="signature-section">
-            <div class="sig-box">Admin</div>
-            <div class="sig-box">Employee</div>
-        </div>
+        <table class="signature-section">
+            <tr>
+                <td><span class="sig-box">Admin</span></td>
+                <td><span class="sig-box">Employee</span></td>
+            </tr>
+        </table>
 
         <!-- System notice -->
         <div class="system-generated">N.B: This is a system generated document &mdash; any alteration voids its authenticity.</div>
@@ -402,23 +471,3 @@
 
 </div>
 
-{# ── Anti-Copy JavaScript Security ── #}
-<script>
-(function () {
-    /* Disable right-click context menu */
-    document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-
-    /* Block common copy shortcuts: Ctrl+C, Ctrl+A, Ctrl+X, Ctrl+U (view-source) */
-    document.addEventListener('keydown', function (e) {
-        if (e.ctrlKey && ['c','a','x','u','s'].includes(e.key.toLowerCase())) {
-            e.preventDefault();
-        }
-    });
-
-    /* Disable drag-select */
-    document.addEventListener('selectstart', function (e) { e.preventDefault(); });
-
-    /* Disable drag of any element */
-    document.addEventListener('dragstart', function (e) { e.preventDefault(); });
-})();
-</script>
