@@ -30,19 +30,19 @@
         overflow: hidden;
     }
 
-    .payslip-block::before {
-        content: "CONFIDENTIAL";
+    /* Logo watermark */
+    .watermark-logo {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%) rotate(-35deg);
-        font-size: 52px;
-        font-weight: 900;
-        color: rgba(0, 0, 0, 0.045);
-        letter-spacing: 6px;
-        white-space: nowrap;
+        width: 55%;
+        opacity: 0.06;
         pointer-events: none;
         z-index: 0;
+        display: block;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
 
     /* All content sits above the watermark */
@@ -313,10 +313,17 @@
     {% macro render_payslip(copy_label) %}
     <div class="payslip-block">
 
-        <!-- Header -->
+        {# Fetch logo, employee image, site URL first #}
         {%- set _logo    = frappe.db.get_value("Company", doc.company, "company_logo") -%}
         {%- set _emp_img = frappe.db.get_value("Employee", doc.employee, "image") if doc.employee else None -%}
         {%- set _site    = frappe.utils.get_url() -%}
+
+        {# Logo watermark — behind all content #}
+        {% if _logo %}
+        <img class="watermark-logo" src="{{ _site }}{{ _logo }}" alt="">
+        {% endif %}
+
+        <!-- Header -->
         <div class="header-section">
 
             {# Employee photo — top-left corner #}
