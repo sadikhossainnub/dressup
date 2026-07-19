@@ -11,8 +11,8 @@
     .payslip-container {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         color: #000;
-        font-size: 12.5px;
-        line-height: 1.25;
+        font-size: 11.5px;
+        line-height: 1;
         width: 100%;
         background: #fff;
         /* Disable text selection */
@@ -28,25 +28,29 @@
         width: 100%;
         position: relative;
         overflow: hidden;
+        page-break-inside: avoid;
+        break-inside: avoid;
     }
 
-    /* Logo watermark */
-    .watermark-logo {
+    /* Text watermark */
+    .watermark-text {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%) rotate(-35deg);
-        width: 55%;
-        opacity: 0.06;
+        -webkit-transform: translate(-50%, -50%) rotate(-30deg);
+        transform: translate(-50%, -50%) rotate(-30deg);
+        font-size: 38px;
+        font-weight: bold;
+        color: #eaeaea;
         pointer-events: none;
         z-index: 0;
-        display: block;
+        white-space: nowrap;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
 
     /* All content sits above the watermark */
-    .payslip-block > * {
+    .payslip-content {
         position: relative;
         z-index: 1;
     }
@@ -55,31 +59,38 @@
     .header-section {
         position: relative;
         text-align: center;
-        margin-bottom: 3px;
-        min-height: 40px;
+        margin-bottom: 2px;
+        height: 16mm;
     }
 
     .company-logo {
-        max-height: 38px;
-        max-width: 200px;
+        max-height: 35px;
+        max-width: 180px;
         object-fit: contain;
         display: block;
         margin: 0 auto;
     }
 
+    .company-contact {
+        font-size: 9px;
+        color: #000;
+        margin-top: 1px;
+        font-weight: 500;
+    }
+
     .company-name {
-        font-size: 15px;
+        font-size: 14px;
         font-weight: bold;
         margin-bottom: 1px;
     }
 
-    /* Employee photo — absolute top-left ~10mm x 10mm */
+    /* Employee photo — absolute top-left 15mm x 15mm */
     .employee-photo {
         position: absolute;
         left: 0;
         top: 0;
-        width: 38px;
-        height: 38px;
+        width: 15mm;
+        height: 15mm;
         object-fit: cover;
         border: 1px solid #aaa;
         border-radius: 2px;
@@ -90,8 +101,8 @@
         position: absolute;
         left: 0;
         top: 0;
-        width: 38px;
-        height: 38px;
+        width: 15mm;
+        height: 15mm;
         border: 1px solid #ccc;
         border-radius: 2px;
         background: #ebebeb;
@@ -101,7 +112,7 @@
         position: absolute;
         right: 0;
         top: 0;
-        font-size: 11.5px;
+        font-size: 10.5px;
         color: #000;
         font-weight: bold;
         border: 1px solid #000;
@@ -110,10 +121,10 @@
 
     /* Title */
     .report-title {
-        font-size: 14px;
+        font-size: 13px;
         font-weight: bold;
         text-align: center;
-        margin: 3px 0;
+        margin: 2px 0;
         text-decoration: underline;
     }
 
@@ -121,16 +132,16 @@
     .slip-table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 3px;
+        margin-bottom: 2px;
     }
 
     .slip-table th,
     .slip-table td {
         border: 1px solid #aaa;
-        padding: 2px 5px;
+        padding: 1.5px 4px;
         text-align: left;
         vertical-align: middle;
-        font-size: 12px;
+        font-size: 11px;
     }
 
     /* Info table - outer border only */
@@ -149,7 +160,7 @@
         border: none !important;
         width: 25%;
         padding: 0 4px;
-        font-size: 10.5px;
+        font-size: 10px;
         line-height: 1.0;
         vertical-align: middle;
     }
@@ -161,7 +172,7 @@
     .section-header th {
         font-weight: bold;
         background: #f0f0f0;
-        font-size: 12px;
+        font-size: 11px;
     }
 
     .amount-col {
@@ -176,10 +187,10 @@
 
     .net-salary-block {
         text-align: right;
-        font-size: 12.5px;
+        font-size: 11.5px;
         font-weight: bold;
-        margin: 3px 0;
-        padding: 2px 5px;
+        margin: 2px 0;
+        padding: 1.5px 4px;
         border-top: 1px solid #aaa;
     }
 
@@ -193,7 +204,7 @@
     .attendance-table td {
         border: 1px solid #aaa;
         padding: 1px 4px;
-        font-size: 11px;
+        font-size: 10px;
         text-align: center;
     }
 
@@ -207,7 +218,7 @@
     /* Security meta row (Ref + Generated date) */
     .security-meta {
         width: 100%;
-        font-size: 10px;
+        font-size: 9.5px;
         color: #333;
         border: 1px solid #ccc;
         background: #fafafa;
@@ -236,7 +247,7 @@
     /* Signatures — table layout for PDF reliability */
     .signature-section {
         width: 100%;
-        margin-top: 6px;
+        margin-top: 26px;
         margin-bottom: 2px;
         border-collapse: collapse;
     }
@@ -254,14 +265,14 @@
         text-align: center;
         border-top: 1px solid #000;
         padding-top: 2px;
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 500;
     }
 
     .system-generated {
         text-align: center;
-        font-size: 10px;
-        margin-top: 2px;
+        font-size: 9px;
+        margin-top: 1px;
         color: #555;
     }
 
@@ -269,7 +280,7 @@
     .scissor-line {
         text-align: center;
         border-top: 1px dashed #555;
-        margin: 6px 0;
+        margin: 4px 0;
         line-height: 0;
         position: relative;
     }
@@ -277,7 +288,7 @@
     .scissor-line span {
         background: #fff;
         padding: 0 8px;
-        font-size: 10px;
+        font-size: 9px;
         position: relative;
         top: -7px;
     }
@@ -285,7 +296,7 @@
     @media print {
         @page {
             size: A4 portrait;
-            margin: 5mm 8mm;
+            margin: 4mm 6mm;
         }
         body {
             margin: 0;
@@ -293,7 +304,7 @@
             background: #fff;
         }
         .payslip-container {
-            font-size: 12.5px;
+            font-size: 11px;
         }
         /* Ensure watermark prints */
         .payslip-block::before {
@@ -318,12 +329,11 @@
         {%- set _emp_img = frappe.db.get_value("Employee", doc.employee, "image") if doc.employee else None -%}
         {%- set _site    = frappe.utils.get_url() -%}
 
-        {# Logo watermark — behind all content #}
-        {% if _logo %}
-        <img class="watermark-logo" src="{{ _site }}{{ _logo }}" alt="">
-        {% endif %}
+        {# Text watermark — behind all content #}
+        <div class="watermark-text">Dressup Bangladesh</div>
 
-        <!-- Header -->
+        <div class="payslip-content">
+            <!-- Header -->
         <div class="header-section">
 
             {# Employee photo — top-left corner #}
@@ -341,6 +351,7 @@
                      src="{{ _site }}{{ _logo }}"
                      alt="{{ doc.company }}">
             {% endif %}
+            <div class="company-contact">Contact: +8801322852925</div>
 
             <div class="copy-type">{{ copy_label }}</div>
         </div>
@@ -462,6 +473,7 @@
         <!-- System notice -->
         <div class="system-generated">N.B: This is a system generated document &mdash; any alteration voids its authenticity.</div>
 
+        </div>
     </div>
     {% endmacro %}
 
