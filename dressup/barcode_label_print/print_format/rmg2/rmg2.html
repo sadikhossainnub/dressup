@@ -1,0 +1,247 @@
+<!-- Dressup Barcode Label Print Format: "QR Label" -->
+<!-- Grid layout: QR code (left) | Item Code/SKU (top-right) | Size/Color (bottom-left) | Price (bottom-right) -->
+<!-- Page size and margins come from the linked Barcode Label Template -->
+{% set template = frappe.get_doc("Barcode Label Template", doc.label_template) %}
+
+{% macro get_font_style(style_val, default_weight='normal') %}
+    {% if style_val == 'Bold' %}
+        font-weight: bold; font-style: normal;
+    {% elif style_val == 'Italic' %}
+        font-weight: {{ default_weight }}; font-style: italic;
+    {% elif style_val == 'Bold Italic' %}
+        font-weight: bold; font-style: italic;
+    {% else %}
+        font-weight: {{ default_weight }}; font-style: normal;
+    {% endif %}
+{% endmacro %}
+
+{# Calculate page dimensions: label size + margins #}
+{% set page_w = template.label_width + (template.left_margin or 0) + (template.right_margin or 0) %}
+{% set page_h = template.label_height + (template.top_margin or 0) + (template.bottom_margin or 0) %}
+
+<style>
+    /* ===== Page Setup — size driven by template ===== */
+    @page {
+        margin: 0mm !important;
+        padding: 0mm !important;
+        size: {{ page_w }}mm {{ page_h }}mm;
+    }
+
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        font-family: 'Liberation Sans', Arial, Helvetica, sans-serif;
+        color: #000;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .print-format,
+    .print-format-gutter,
+    .frappe-control,
+    .page-break {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        min-height: 0 !important;
+    }
+
+    /* ===== Single Label — one per page ===== */
+    .label-page {
+        width: {{ page_w }}mm;
+        height: {{ page_h }}mm;
+        padding-top: {{ template.top_margin or 0 }}mm;
+        padding-bottom: {{ template.bottom_margin or 0 }}mm;
+        padding-left: {{ template.left_margin or 0 }}mm;
+        padding-right: {{ template.right_margin or 0 }}mm;
+        box-sizing: border-box;
+        page-break-after: always;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .label-page:last-child {
+        page-break-after: auto;
+    }
+
+    /* ===== Outer grid: 2 rows x 2 columns ===== */
+    .label-grid {
+        width: {{ template.label_width }}mm;
+        height: {{ template.label_height }}mm;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        border: 0.3mm solid #000;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .grid-row {
+        display: flex;
+        flex: 1 1 50%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .grid-row + .grid-row {
+        border-top: 0.3mm solid #000;
+    }
+
+    /* Row 1: QR (left) + Item Code / SKU (right) */
+    .qr-cell {
+        flex: 0 0 {{ template.qr_column_width or '34%' }};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        border-right: 0.3mm solid #000;
+    }
+
+    .qr-cell img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .code-cell {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 1mm 2mm;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .code-label {
+        font-size: {{ template.item_code_font_size or ((template.font_size or 10) * 1.0) }}pt;
+        font-weight: 700;
+        line-height: 1.2;
+        max-height: 2.4em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+    }
+
+    /* Row 2: Size/Color (left) + Price (right) */
+    .attr-cell {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 1mm 2mm;
+        box-sizing: border-box;
+        border-right: 0.3mm solid #000;
+        overflow: hidden;
+    }
+
+    .attr-line {
+        font-size: {{ template.attribute_font_size or ((template.font_size or 10) * 0.95) }}pt;
+        line-height: 1.3;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .attr-line .attr-label {
+        font-weight: 700;
+    }
+
+    .price-cell {
+        flex: 0 0 {{ template.price_column_width or '32%' }};
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 1mm 2mm;
+        box-sizing: border-box;
+    }
+
+    .price-label {
+        font-size: {{ (template.price_font_size or ((template.font_size or 10) * 0.9)) }}pt;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .price-value {
+        font-size: {{ (template.price_font_size or ((template.font_size or 10) * 1.3)) }}pt;
+        {{ get_font_style(template.price_font_style, '800') }}
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    @media print {
+        html, body {
+            width: {{ page_w }}mm !important;
+            background: #fff !important;
+        }
+        .label-page {
+            box-shadow: none !important;
+            margin: 0 !important;
+        }
+        .print-heading,
+        .letter-head,
+        .page-break .page-number {
+            display: none !important;
+        }
+    }
+
+    @media screen {
+        .label-page {
+            border: 1px dashed #ccc;
+            margin-bottom: 5mm;
+        }
+    }
+</style>
+
+<div class="print-wrapper">
+    {% for item in doc.items %}
+        {% set qty = item.qty if item.qty > 0 else 1 %}
+        {% for i in range(qty) %}
+            {# QR code always encodes the item code (fallback to serial/batch if present) #}
+            {% set code_value = item.item_code %}
+            {% if item.batch_no %}{% set code_value = item.batch_no %}{% endif %}
+            {% if item.serial_no %}{% set code_value = item.serial_no %}{% endif %}
+
+            {% set qr_image = get_barcode_base64('qrcode', code_value) %}
+
+            <div class="label-page">
+                <div class="label-grid">
+
+                    {# ── Row 1: QR (left) + Item Code / SKU (right) ── #}
+                    <div class="grid-row">
+                        <div class="qr-cell">
+                            {% if qr_image %}
+                                <img src="{{ qr_image }}" alt="QR Code" />
+                            {% endif %}
+                        </div>
+                        <div class="code-cell">
+                            <div class="code-label">{{ item.item_name or '' }}</div>
+                        </div>
+                    </div>
+
+                    {# ── Row 2: Size/Color (left) + Price (right) ── #}
+                    <div class="grid-row">
+                        <div class="attr-cell">
+                            <div class="attr-line"><span class="attr-label">SIZE:</span> {{ item.size or '' }}</div>
+                            <div class="attr-line"><span class="attr-label">COLOR:</span> {{ item.color or '' }}</div>
+                        </div>
+                        <div class="price-cell">
+                            <div class="price-label">PRICE with VAT:</div>
+                            {% if (item.price or 0) > 0 %}
+                                <div class="price-value">{{ frappe.utils.fmt_money(item.price, currency=frappe.db.get_default("currency")) }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
