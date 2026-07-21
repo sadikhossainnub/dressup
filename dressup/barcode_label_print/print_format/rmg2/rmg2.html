@@ -118,7 +118,7 @@
     }
 
     .code-label {
-        font-size: {{ template.item_code_font_size or ((template.font_size or 10) * 1.0) }}pt;
+        font-size: {{ template.item_code_font_size or ((template.font_size or 10) * 0.75) }}pt;
         font-weight: 700;
         line-height: 1.2;
         max-height: 3.6em;
@@ -229,8 +229,8 @@
                     {# ── Row 2: Size/Color (left) + Price (right) ── #}
                     <div class="grid-row">
                         <div class="attr-cell">
-                            <div class="attr-line"><span class="attr-label">COLOR:</span> {{ item.color or '' }}</div>
-                            <div class="attr-line"><span class="attr-label">SIZE:</span> {{ item.size or '' }}</div>
+                            <div class="attr-line"><span class="attr-label">C:</span> {{ item.color or '' }}</div>
+                            <div class="attr-line"><span class="attr-label">S:</span> {{ item.size or '' }}</div>
                         </div>
                         <div class="price-cell">
                             <div class="price-label">PRICE with VAT:</div>
