@@ -13,6 +13,12 @@ fixtures = [
 	{
 		"doctype": "Role",
 		"filters": [["name", "in", ["Barcode Label Manager", "DressUp Manager"]]]
+	},
+	{
+		"dt": "Print Format",
+		"filters": [
+			["name", "in", ["POS Thermal Receipt"]]
+		]
 	}
 ]
 

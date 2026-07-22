@@ -1,0 +1,307 @@
+<!-- POS Invoice Thermal Receipt for Dress Up Bangladesh -->
+<!-- Designed for 80mm thermal printers -->
+<!-- DocType: Sales Invoice -->
+
+{%- macro add_header(page_num, max_pages, doc, letter_head, no_letterhead, footer, print_settings=None, print_heading_template=None) -%}
+{%- endmacro -%}
+
+<style>
+	@media print {
+		@page {
+			size: 80mm auto;
+			margin: 0mm;
+		}
+	}
+
+	.pos-receipt {
+		width: 72mm;
+		margin: 0 auto;
+		font-family: "Courier New", "Noto Sans Bengali", monospace;
+		font-size: 11px;
+		line-height: 1.4;
+		color: #000;
+	}
+
+	.pos-receipt * {
+		box-sizing: border-box;
+	}
+
+	.center { text-align: center; }
+	.right { text-align: right; }
+	.left { text-align: left; }
+	.bold { font-weight: bold; }
+
+	.brand-name {
+		font-size: 20px;
+		font-weight: bold;
+		letter-spacing: 1px;
+		margin-bottom: 2px;
+	}
+
+	.tagline {
+		font-size: 9px;
+		margin-bottom: 4px;
+	}
+
+	.dashed {
+		border-top: 1px dashed #000;
+		margin: 4px 0;
+	}
+
+	.solid {
+		border-top: 1px solid #000;
+		margin: 4px 0;
+	}
+
+	table.meta-table {
+		width: 100%;
+		font-size: 10px;
+		margin-bottom: 4px;
+	}
+
+	table.meta-table td {
+		padding: 0;
+		vertical-align: top;
+	}
+
+	table.items-table {
+		width: 100%;
+		font-size: 10px;
+		border-collapse: collapse;
+		margin-top: 4px;
+	}
+
+	table.items-table thead td {
+		border-bottom: 1px dashed #000;
+		border-top: 1px dashed #000;
+		padding: 2px 0;
+		font-weight: bold;
+	}
+
+	table.items-table tbody td {
+		padding: 2px 0;
+		vertical-align: top;
+	}
+
+	table.totals-table {
+		width: 100%;
+		font-size: 10.5px;
+		margin-top: 4px;
+	}
+
+	table.totals-table td {
+		padding: 1px 0;
+	}
+
+	.grand-total td {
+		font-weight: bold;
+		font-size: 12px;
+		border-top: 1px solid #000;
+		border-bottom: 1px solid #000;
+		padding: 3px 0 !important;
+	}
+
+	.loyalty-box {
+		font-size: 9.5px;
+		margin-top: 4px;
+	}
+
+	.loyalty-box table {
+		width: 100%;
+	}
+
+	.loyalty-box td {
+		padding: 1px 0;
+	}
+
+	.footer-note {
+		font-size: 8.5px;
+		line-height: 1.5;
+		margin-top: 6px;
+		text-align: justify;
+	}
+
+	.qr-box {
+		margin-top: 6px;
+	}
+</style>
+
+<div class="pos-receipt">
+	<!-- ===== Brand Header ===== -->
+	<div class="center">
+		<div class="brand-name">DRESS UP</div>
+		<div class="tagline">Bangladesh</div>
+		<div class="tagline">
+			{{ doc.company_address_display or "" }}
+		</div>
+		{% if doc.tax_id or frappe.db.get_value("Company", doc.company, "tax_id") %}
+			<div class="tagline">VAT Reg: {{ doc.tax_id or frappe.db.get_value("Company", doc.company, "tax_id") }}</div>
+		{% endif %}
+	</div>
+
+	<div class="center tagline" style="margin-top:2px;">
+		Govt. of the People's Republic of Bangladesh<br>
+		National Board of Revenue<br>
+		<span class="bold">Tax Invoice (MUSAK-6.3)</span>
+	</div>
+
+	<div class="dashed"></div>
+
+	<!-- ===== Invoice Meta ===== -->
+	<table class="meta-table">
+		<tr>
+			<td class="left">Invoice No:</td>
+			<td class="right">{{ doc.name }}</td>
+		</tr>
+		<tr>
+			<td class="left">Date:</td>
+			<td class="right">{{ frappe.utils.format_date(doc.posting_date, "dd-MM-yyyy") }} {{ doc.posting_time.strftime("%I:%M %p") if doc.posting_time else "" }}</td>
+		</tr>
+		<tr>
+			<td class="left">Cashier:</td>
+			<td class="right">{{ doc.owner_name or doc.owner }}</td>
+		</tr>
+	</table>
+
+	<div class="dashed"></div>
+
+	<!-- ===== Items Table ===== -->
+	<table class="items-table">
+		<thead>
+			<tr>
+				<td class="left" style="width:8%;">SL</td>
+				<td class="left" style="width:44%;">Product</td>
+				<td class="right" style="width:16%;">Price</td>
+				<td class="right" style="width:12%;">Qty</td>
+				<td class="right" style="width:20%;">Amount</td>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in doc.items %}
+			<tr>
+				<td class="left">{{ loop.index }}</td>
+				<td class="left">{{ item.item_name }}</td>
+				<td class="right">{{ item.get_formatted("rate", doc) }}</td>
+				<td class="right">{{ item.get_formatted("qty", 0) }}</td>
+				<td class="right">{{ item.get_formatted("amount", doc) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<div class="dashed"></div>
+
+	<!-- ===== Totals ===== -->
+	<table class="totals-table">
+		<tr>
+			<td class="left">Sub Total</td>
+			<td class="right">{{ doc.get_formatted("total", doc) }}</td>
+		</tr>
+
+		{% if doc.discount_amount %}
+		<tr>
+			<td class="left">(-) Less Discount</td>
+			<td class="right">{{ doc.get_formatted("discount_amount", doc) }}</td>
+		</tr>
+		{% endif %}
+
+		{% for tax in doc.taxes %}
+			{% if tax.tax_amount %}
+			<tr>
+				<td class="left">(+) {{ tax.description }}</td>
+				<td class="right">{{ tax.get_formatted("tax_amount") }}</td>
+			</tr>
+			{% endif %}
+		{% endfor %}
+
+		<tr class="grand-total">
+			<td class="left">Net Payable</td>
+			<td class="right">{{ doc.get_formatted("grand_total", doc) }}</td>
+		</tr>
+
+		{% if doc.rounding_adjustment %}
+		<tr>
+			<td class="left">Rounding</td>
+			<td class="right">{{ doc.get_formatted("rounding_adjustment", doc) }}</td>
+		</tr>
+		{% endif %}
+
+		<tr>
+			<td class="left bold">Net Due</td>
+			<td class="right bold">{{ doc.get_formatted("rounded_total", doc) }}</td>
+		</tr>
+	</table>
+
+	<div class="dashed"></div>
+
+	<!-- ===== Payment ===== -->
+	<table class="totals-table">
+		<tr>
+			<td class="left">Mode of Payment</td>
+			<td class="right">
+				{% for pay in doc.payments %}{{ pay.mode_of_payment }}{% if not loop.last %}, {% endif %}{% endfor %}
+			</td>
+		</tr>
+		<tr>
+			<td class="left">Paid Amount</td>
+			<td class="right">{{ doc.get_formatted("paid_amount", doc) }}</td>
+		</tr>
+
+		{% if doc.change_amount %}
+		<tr>
+			<td class="left">Change</td>
+			<td class="right">{{ doc.get_formatted("change_amount", doc) }}</td>
+		</tr>
+		{% endif %}
+	</table>
+
+	<div class="dashed"></div>
+
+	<!-- ===== Customer ===== -->
+	<div class="left" style="font-size:10px;">
+		<span class="bold">Customer:</span> {{ doc.customer_name }}
+		{% if doc.contact_mobile %}<br>Mobile: {{ doc.contact_mobile }}{% endif %}
+	</div>
+
+	<!-- ===== Loyalty Points (Dress Up tier program) ===== -->
+	{% set customer_loyalty = frappe.db.get_value("Customer", doc.customer, ["loyalty_points", "loyalty_program"], as_dict=True) %}
+
+	<div class="loyalty-box">
+		<div class="dashed"></div>
+		<table>
+			<tr>
+				<td class="left">Current Invoice Earn Point</td>
+				<td class="right">{{ doc.loyalty_points or 0 }}</td>
+			</tr>
+			<tr>
+				<td class="left">Total Accumulated Point</td>
+				<td class="right">{{ customer_loyalty.loyalty_points if customer_loyalty else 0 }}</td>
+			</tr>
+			<tr>
+				<td class="left">Total Redeem Point(s)</td>
+				<td class="right">{{ doc.redeem_loyalty_points and doc.loyalty_points_redeemed or 0 }}</td>
+			</tr>
+			{% if customer_loyalty and customer_loyalty.loyalty_program %}
+			<tr>
+				<td class="left">Membership Tier</td>
+				<td class="right">{{ customer_loyalty.loyalty_program }}</td>
+			</tr>
+			{% endif %}
+		</table>
+	</div>
+
+	<div class="dashed"></div>
+
+	<!-- ===== Footer Note ===== -->
+	<div class="footer-note center">
+		Items may be exchanged subject to Dress Up's exchange policy within 7 days of purchase
+		with the original receipt. Sale items are non-exchangeable and non-refundable.
+		Please bring the product with tags intact, receipt, and original packaging for any exchange.
+		Loyalty points are not redeemable for cash and are valid as per program terms.
+		VAT is applicable and included as per NBR regulations.
+	</div>
+
+	<div class="center bold" style="margin-top:6px; font-size:11px;">
+		Thank you for shopping with Dress Up!
+	</div>
+</div>
