@@ -1,153 +1,153 @@
 {
-    "actions": [],
-    "allow_rename": 1,
-    "creation": "2025-11-13 01:46:01.946990",
-    "doctype": "DocType",
-    "editable_grid": 1,
-    "engine": "InnoDB",
-    "field_order": [
-        "size_chart_in_inch",
-        "production_qty",
-        "color",
-        "length",
-        "neck",
-        "waist",
-        "sleeve",
-        "sleeve_opening",
-        "column_break_jxaf",
-        "bottom_length",
-        "bottom_waist",
-        "bottom_thigh",
-        "bottom_crotch",
-        "leg_opening",
-        "shrug_koti_length",
-        "koti_sleeve",
-        "koti_sleeve_opening",
-        "others1"
-    ],
-    "fields": [
-        {
-            "fieldname": "size_chart_in_inch",
-            "fieldtype": "Select",
-            "in_list_view": 1,
-            "label": "Size",
-            "options": "\n32\n34\n36\n38\n40\n42\n44\n46\n48\n50\nunstitch",
-            "reqd": 1
-        },
-        {
-            "fieldname": "production_qty",
-            "fieldtype": "Int",
-            "in_list_view": 1,
-            "label": "Production Qty"
-        },
-        {
-            "fieldname": "color",
-            "fieldtype": "Link",
-            "in_list_view": 1,
-            "label": "Color",
-            "options": "Color"
-        },
-        {
-            "fieldname": "length",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Length (Body)"
-        },
-        {
-            "fieldname": "neck",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Neck"
-        },
-        {
-            "fieldname": "waist",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Waist (Body)"
-        },
-        {
-            "fieldname": "sleeve",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Sleeve"
-        },
-        {
-            "fieldname": "sleeve_opening",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Sleeve Opening"
-        },
-        {
-            "fieldname": "column_break_jxaf",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "bottom_length",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Bottom Length"
-        },
-        {
-            "fieldname": "bottom_waist",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Bottom Waist"
-        },
-        {
-            "fieldname": "bottom_thigh",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Bottom Thigh"
-        },
-        {
-            "fieldname": "bottom_crotch",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Bottom Crotch"
-        },
-        {
-            "fieldname": "leg_opening",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Leg Opening"
-        },
-        {
-            "fieldname": "shrug_koti_length",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Shrug/ Koti Length"
-        },
-        {
-            "fieldname": "koti_sleeve",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Koti Sleeve"
-        },
-        {
-            "fieldname": "koti_sleeve_opening",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Koti/ Sleeve Opening"
-        },
-        {
-            "fieldname": "others1",
-            "fieldtype": "Data",
-            "in_list_view": 1,
-            "label": "Others"
-        }
-    ],
-    "grid_page_length": 50,
-    "index_web_pages_for_search": 1,
-    "istable": 1,
-    "links": [],
-    "modified": "2026-06-04 16:20:00.000000",
-    "modified_by": "Administrator",
-    "module": "DressUp",
-    "name": "Size Chart in Inch",
-    "owner": "Administrator",
-    "permissions": [],
-    "row_format": "Dynamic",
-    "sort_field": "modified",
-    "sort_order": "DESC",
-    "states": []
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-11-13 01:46:01.946990",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "size_chart_in_inch",
+  "production_qty",
+  "color",
+  "length",
+  "neck",
+  "waist",
+  "sleeve",
+  "sleeve_opening",
+  "column_break_jxaf",
+  "bottom_length",
+  "bottom_waist",
+  "bottom_thigh",
+  "bottom_crotch",
+  "leg_opening",
+  "shrug_koti_length",
+  "koti_sleeve",
+  "koti_sleeve_opening",
+  "others1"
+ ],
+ "fields": [
+  {
+   "fieldname": "size_chart_in_inch",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Size",
+   "options": "\n32\n34\n36\n38\n40\n42\n44\n46\n48\n50\nUnstitch\nFree Size",
+   "reqd": 1
+  },
+  {
+   "fieldname": "production_qty",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Production Qty"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Color",
+   "options": "Color"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Length (Body)"
+  },
+  {
+   "fieldname": "neck",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Neck"
+  },
+  {
+   "fieldname": "waist",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Waist (Body)"
+  },
+  {
+   "fieldname": "sleeve",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Sleeve"
+  },
+  {
+   "fieldname": "sleeve_opening",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Sleeve Opening"
+  },
+  {
+   "fieldname": "column_break_jxaf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bottom_length",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bottom Length"
+  },
+  {
+   "fieldname": "bottom_waist",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bottom Waist"
+  },
+  {
+   "fieldname": "bottom_thigh",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bottom Thigh"
+  },
+  {
+   "fieldname": "bottom_crotch",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bottom Crotch"
+  },
+  {
+   "fieldname": "leg_opening",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Leg Opening"
+  },
+  {
+   "fieldname": "shrug_koti_length",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Shrug/ Koti Length"
+  },
+  {
+   "fieldname": "koti_sleeve",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Koti Sleeve"
+  },
+  {
+   "fieldname": "koti_sleeve_opening",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Koti/ Sleeve Opening"
+  },
+  {
+   "fieldname": "others1",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Others"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-07-23 10:42:47.337996",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Size Chart in Inch",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
 }
