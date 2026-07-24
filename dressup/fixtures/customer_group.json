@@ -1,0 +1,10 @@
+[
+ {
+  "doctype": "Customer Group",
+  "name": "Employee",
+  "customer_group_name": "Employee",
+  "parent_customer_group": "All Customer Groups",
+  "is_group": 0,
+  "modified": "2026-07-24 00:00:00.000000"
+ }
+]

@@ -1,21 +1,28 @@
 """
 Sales Order – Discount Approval hooks and whitelisted methods.
 
-Pricing-rule comparison:
-  - Uses ERPNext's get_pricing_rule_for_item() to find the standard discount
-    that SHOULD apply for each row, independent of what is currently saved.
-  - If NO pricing rule matches an item → standard discount = 0.
-    Any manual discount on such an item therefore counts as "extra".
-    This is intentional and documented here for review.
-  - Tolerance: 0.01 percentage points (e.g. 5.00% vs 5.009% → NOT flagged).
-    Flagged for reviewer: adjust DISCOUNT_TOLERANCE if a looser threshold is needed.
+Checks TWO levels of discount:
+
+1. ROW-LEVEL  — each item's discount_percentage vs what the Pricing Rule engine
+                would normally apply (get_pricing_rule_for_item).
+                No Pricing Rule match → standard = 0, any manual discount is extra.
+
+2. HEADER-LEVEL — additional_discount_percentage (% on net/grand total) and
+                  discount_amount (fixed ৳ on net/grand total).
+                  Any non-zero value in either field is treated as extra discount
+                  because there is no ERPNext-standard Pricing Rule that governs
+                  these header fields — they are always manually entered.
+
+Tolerance: 0.01 percentage points for row-level comparison.
+Header-level: any value > 0 is flagged (no tolerance — it's always manual).
+Flagged for reviewer: adjust DISCOUNT_TOLERANCE if a looser threshold is needed.
 """
 
 import frappe
 from frappe import _
 from frappe.utils import flt, now_datetime
 
-DISCOUNT_TOLERANCE = 0.01  # percentage points — flagged for reviewer
+DISCOUNT_TOLERANCE = 0.01  # percentage points — for row-level comparison only
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -25,14 +32,14 @@ DISCOUNT_TOLERANCE = 0.01  # percentage points — flagged for reviewer
 def check_extra_discount(doc, method=None):
 	"""
 	Called on Sales Order validate.
-	Compares each item's discount_percentage against the standard
-	Pricing Rule discount. Sets approval fields accordingly.
-	Does NOT block submission.
+	Checks both row-level item discounts and header-level additional discount.
+	Sets approval fields accordingly. Does NOT block submission.
 	"""
 	from erpnext.accounts.doctype.pricing_rule.pricing_rule import get_pricing_rule_for_item
 
 	flagged_lines = []
 
+	# ── 1. ROW-LEVEL: per-item discount_percentage ───────────────────────
 	for row in doc.items:
 		if not row.item_code:
 			continue
@@ -79,7 +86,6 @@ def check_extra_discount(doc, method=None):
 		try:
 			pr_result = get_pricing_rule_for_item(pr_args)
 		except Exception:
-			# If pricing rule lookup fails for any reason, skip this row safely
 			frappe.log_error(
 				frappe.get_traceback(),
 				f"Discount check: pricing rule lookup failed for item {row.item_code} on {doc.name}"
@@ -89,7 +95,6 @@ def check_extra_discount(doc, method=None):
 		standard_discount = flt(pr_result.get("discount_percentage") or 0)
 		applied_rule_name = None
 
-		# Extract the first matched pricing rule name for the reason string
 		if pr_result.get("pricing_rules"):
 			import json as _json
 			try:
@@ -99,7 +104,6 @@ def check_extra_discount(doc, method=None):
 			except Exception:
 				pass
 
-		# Compare with tolerance
 		if row_discount - standard_discount > DISCOUNT_TOLERANCE:
 			rule_info = f" (Pricing Rule: {applied_rule_name})" if applied_rule_name else " (No Pricing Rule)"
 			flagged_lines.append(
@@ -107,6 +111,27 @@ def check_extra_discount(doc, method=None):
 				f"{row_discount:.2f}% given vs {standard_discount:.2f}% standard{rule_info}"
 			)
 
+	# ── 2. HEADER-LEVEL: additional_discount_percentage ──────────────────
+	# This is the "Additional Discount %" field on the SO form (applied on
+	# Net Total or Grand Total). Any non-zero value is always manual — no
+	# Pricing Rule governs it — so it always requires approval.
+	additional_disc_pct = flt(doc.get("additional_discount_percentage"))
+	if additional_disc_pct > 0:
+		apply_on = doc.get("apply_discount_on") or "Grand Total"
+		flagged_lines.append(
+			f"Additional Discount %: {additional_disc_pct:.2f}% on {apply_on} (header-level)"
+		)
+
+	# ── 3. HEADER-LEVEL: discount_amount (fixed ৳ amount) ────────────────
+	# The fixed "Discount Amount" field on the SO form.
+	discount_amount = flt(doc.get("discount_amount"))
+	if discount_amount > 0:
+		apply_on = doc.get("apply_discount_on") or "Grand Total"
+		flagged_lines.append(
+			f"Additional Discount Amount: {doc.get('currency', '')} {discount_amount:,.2f} on {apply_on} (header-level)"
+		)
+
+	# ── Set approval fields ───────────────────────────────────────────────
 	if flagged_lines:
 		doc.custom_has_extra_discount = 1
 		# Preserve Approved/Rejected status if already actioned — don't reset
@@ -115,15 +140,10 @@ def check_extra_discount(doc, method=None):
 		doc.custom_approval_reason = "\n".join(flagged_lines)
 	else:
 		doc.custom_has_extra_discount = 0
-		# Only reset to "Not Required" if not already approved/rejected
-		if doc.custom_approval_status not in ("Approved", "Rejected", "Under Review"):
+		# Fully clear if no discount found and not yet approved/rejected
+		if doc.custom_approval_status not in ("Approved", "Rejected"):
 			doc.custom_approval_status = "Not Required"
-		if not flagged_lines:
-			# If previously flagged but now all discounts are within range,
-			# fully clear (handles edits that remove the excess discount)
-			if doc.custom_approval_status not in ("Approved", "Rejected"):
-				doc.custom_approval_status = "Not Required"
-				doc.custom_approval_reason = ""
+			doc.custom_approval_reason = ""
 
 
 # ─────────────────────────────────────────────────────────────────────────────

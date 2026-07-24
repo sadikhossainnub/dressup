@@ -163,11 +163,11 @@ erpnext.utils.update_child_items = function (opts) {
 			change: function () {
 				const me = this;
 
-				frm.call({
+				frappe.call({
 					method: "erpnext.stock.get_item_details.get_item_details",
 					args: {
 						doc: frm.doc,
-						args: {
+						args: JSON.stringify({
 							item_code: this.value,
 							set_warehouse: frm.doc.set_warehouse,
 							customer: frm.doc.customer || frm.doc.party_name,
@@ -194,7 +194,7 @@ erpnext.utils.update_child_items = function (opts) {
 							tax_category: frm.doc.tax_category,
 							child_doctype: frm.doc.doctype + " Item",
 							is_old_subcontracting_flow: frm.doc.is_old_subcontracting_flow,
-						},
+						}),
 					},
 					callback: function (r) {
 						if (!r.message) return;

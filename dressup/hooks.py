@@ -19,7 +19,11 @@ fixtures = [
 		"filters": [
 			["name", "in", ["POS Thermal Receipt"]]
 		]
-	}
+	},
+	{
+		"doctype": "Customer Group",
+		"filters": [["name", "in", ["Employee"]]],
+	},
 ]
 
 
@@ -68,6 +72,8 @@ doctype_js = {
 	"Job Applicant": "public/js/job_applicant.js",
 	"Stock Entry": "public/js/stock_entry.js",
 	"Appointment Letter": "public/js/appointment_letter.js",
+	# Create Customer button + View Customer link on Employee form
+	"Employee": "public/js/employee_customer_button.js",
 	# Overrides erpnext.utils.update_child_items to add Discount % and Discount Amount
 	# columns in the "Update Items" dialog. Loaded after ERPNext's utils.js so it
 	# correctly replaces the function.
