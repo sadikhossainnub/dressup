@@ -12,7 +12,7 @@ fixtures = [
 	},
 	{
 		"doctype": "Role",
-		"filters": [["name", "in", ["Barcode Label Manager", "DressUp Manager"]]]
+		"filters": [["name", "in", ["Barcode Label Manager", "DressUp Manager", "Discount Approver"]]]
 	},
 	{
 		"dt": "Print Format",
@@ -68,6 +68,13 @@ doctype_js = {
 	"Job Applicant": "public/js/job_applicant.js",
 	"Stock Entry": "public/js/stock_entry.js",
 	"Appointment Letter": "public/js/appointment_letter.js",
+	# Overrides erpnext.utils.update_child_items to add Discount % and Discount Amount
+	# columns in the "Update Items" dialog. Loaded after ERPNext's utils.js so it
+	# correctly replaces the function.
+	"Sales Order": [
+		"public/js/sales_order_update_items_override.js",
+		"public/js/sales_order_approval.js",
+	],
 }
 doctype_list_js = {"BOM": "public/js/bom_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -178,8 +185,20 @@ doc_events = {
 	"Pre Production Sample": {
 		"before_cancel": "dressup.utils.linked_cancel.cancel_linked_documents"
 	},
+	"Sales Order": {
+		# Discount Approval: check for extra discounts on every save
+		"validate": "dressup.dressup.custom_scripts.sales_order.check_extra_discount",
+		# Notify approvers after submit if pending
+		"on_submit": "dressup.dressup.custom_scripts.sales_order.notify_approvers_on_submit",
+	},
 	"Sales Invoice": {
-		"before_submit": "dressup.dressup.loyalty_auto_assign.auto_assign_loyalty_program"
+		"before_submit": "dressup.dressup.loyalty_auto_assign.auto_assign_loyalty_program",
+		# Discount Approval guard: block if source SO discount is not approved
+		"validate": "dressup.dressup.custom_scripts.discount_approval_guard.block_if_not_approved",
+	},
+	"Delivery Note": {
+		# Discount Approval guard: block if source SO discount is not approved
+		"validate": "dressup.dressup.custom_scripts.discount_approval_guard.block_if_not_approved",
 	},
 	"Stock Entry": {
 		"on_submit": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.link_stock_entry_to_pps",

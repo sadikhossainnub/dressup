@@ -1024,5 +1024,123 @@
   "translatable": 0,
   "unique": 0,
   "width": null
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Order", "module": "DressUp",
+  "name": "Sales Order-custom_discount_approval_section",
+  "fieldname": "custom_discount_approval_section", "fieldtype": "Section Break",
+  "label": "Discount Approval", "insert_after": "last_scanned_warehouse",
+  "collapsible": 1, "read_only": 0, "allow_on_submit": 0,
+  "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Order", "module": "DressUp",
+  "name": "Sales Order-custom_has_extra_discount",
+  "fieldname": "custom_has_extra_discount", "fieldtype": "Check",
+  "label": "Has Extra Discount", "insert_after": "custom_discount_approval_section",
+  "read_only": 1, "allow_on_submit": 0, "default": "0",
+  "in_standard_filter": 1, "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Order", "module": "DressUp",
+  "name": "Sales Order-custom_approval_status",
+  "fieldname": "custom_approval_status", "fieldtype": "Select",
+  "label": "Discount Approval Status",
+  "options": "Not Required\nPending\nUnder Review\nApproved\nRejected",
+  "insert_after": "custom_has_extra_discount",
+  "default": "Not Required", "read_only": 1, "allow_on_submit": 1,
+  "in_list_view": 1, "in_standard_filter": 1,
+  "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Order", "module": "DressUp",
+  "name": "Sales Order-custom_approval_reason",
+  "fieldname": "custom_approval_reason", "fieldtype": "Small Text",
+  "label": "Approval Reason", "insert_after": "custom_approval_status",
+  "read_only": 1, "allow_on_submit": 1,
+  "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Order", "module": "DressUp",
+  "name": "Sales Order-custom_rejection_reason",
+  "fieldname": "custom_rejection_reason", "fieldtype": "Small Text",
+  "label": "Rejection Reason", "insert_after": "custom_approval_reason",
+  "read_only": 1, "allow_on_submit": 1,
+  "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Order", "module": "DressUp",
+  "name": "Sales Order-custom_reviewed_by",
+  "fieldname": "custom_reviewed_by", "fieldtype": "Link",
+  "label": "Reviewed By", "options": "User",
+  "insert_after": "custom_rejection_reason",
+  "read_only": 1, "allow_on_submit": 1,
+  "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Order", "module": "DressUp",
+  "name": "Sales Order-custom_cb_approval",
+  "fieldname": "custom_cb_approval", "fieldtype": "Column Break",
+  "label": "", "insert_after": "custom_reviewed_by",
+  "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Order", "module": "DressUp",
+  "name": "Sales Order-custom_approved_by",
+  "fieldname": "custom_approved_by", "fieldtype": "Link",
+  "label": "Approved / Rejected By", "options": "User",
+  "insert_after": "custom_cb_approval",
+  "read_only": 1, "allow_on_submit": 1,
+  "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Order", "module": "DressUp",
+  "name": "Sales Order-custom_approved_on",
+  "fieldname": "custom_approved_on", "fieldtype": "Datetime",
+  "label": "Approved / Rejected On", "insert_after": "custom_approved_by",
+  "read_only": 1, "allow_on_submit": 1,
+  "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Invoice", "module": "DressUp",
+  "name": "Sales Invoice-custom_so_approval_section",
+  "fieldname": "custom_so_approval_section", "fieldtype": "Section Break",
+  "label": "Source SO Discount Approval", "insert_after": "last_scanned_warehouse",
+  "collapsible": 1, "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Invoice", "module": "DressUp",
+  "name": "Sales Invoice-custom_so_approval_status",
+  "fieldname": "custom_so_approval_status", "fieldtype": "Data",
+  "label": "SO Discount Approval Status", "insert_after": "custom_so_approval_section",
+  "read_only": 1, "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Sales Invoice", "module": "DressUp",
+  "name": "Sales Invoice-custom_so_approval_reason",
+  "fieldname": "custom_so_approval_reason", "fieldtype": "Small Text",
+  "label": "SO Approval Reason", "insert_after": "custom_so_approval_status",
+  "read_only": 1, "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Delivery Note", "module": "DressUp",
+  "name": "Delivery Note-custom_so_approval_section",
+  "fieldname": "custom_so_approval_section", "fieldtype": "Section Break",
+  "label": "Source SO Discount Approval", "insert_after": "last_scanned_warehouse",
+  "collapsible": 1, "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Delivery Note", "module": "DressUp",
+  "name": "Delivery Note-custom_so_approval_status",
+  "fieldname": "custom_so_approval_status", "fieldtype": "Data",
+  "label": "SO Discount Approval Status", "insert_after": "custom_so_approval_section",
+  "read_only": 1, "modified": "2026-07-24 00:00:00.000000"
+ },
+ {
+  "doctype": "Custom Field", "dt": "Delivery Note", "module": "DressUp",
+  "name": "Delivery Note-custom_so_approval_reason",
+  "fieldname": "custom_so_approval_reason", "fieldtype": "Small Text",
+  "label": "SO Approval Reason", "insert_after": "custom_so_approval_status",
+  "read_only": 1, "modified": "2026-07-24 00:00:00.000000"
  }
 ]
