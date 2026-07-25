@@ -24,12 +24,6 @@ function _render_approval_ui(frm) {
 
 	if (!needs_action) return;
 
-	frappe.call({
-		method: "frappe.client.has_permission",
-		args: { doctype: "Sales Order", ptype: "write" },
-		callback() {}, // fire-and-forget; role check below is what matters
-	});
-
 	// Check role client-side (cosmetic — server enforces independently)
 	if (!frappe.user.has_role("Discount Approver")) return;
 
