@@ -298,7 +298,7 @@ def reject_extra_discount(sales_order_name, reason):
 
 def _assert_discount_approver_role():
 	"""Throw PermissionError if current user does not have Discount Approver role."""
-	if not frappe.has_role("Discount Approver"):
+	if "Discount Approver" not in frappe.get_roles(frappe.session.user):
 		frappe.throw(
 			_("You do not have permission to perform this action. "
 			  "The 'Discount Approver' role is required."),
