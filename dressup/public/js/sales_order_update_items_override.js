@@ -30,7 +30,7 @@ erpnext.utils.update_child_items = function (opts) {
 	const cannot_add_row =
 		typeof opts.cannot_add_row === "undefined" ? true : opts.cannot_add_row;
 	const child_docname =
-		typeof opts.cannot_add_row === "undefined" ? "items" : opts.child_docname;
+		typeof opts.child_docname === "undefined" ? "items" : opts.child_docname;
 	const child_meta = frappe.get_meta(`${frm.doc.doctype} Item`);
 	const has_reserved_stock = opts.has_reserved_stock ? true : false;
 
