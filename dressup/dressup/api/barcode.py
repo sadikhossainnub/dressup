@@ -9,7 +9,7 @@ def get_barcode(value, barcode_type="code128", height=35, width=1.5):
 	code = barcode.get(barcode_type.lower(), value, writer=ImageWriter())
 
 	buffer = io.BytesIO()
-	code.write(buffer, options={"module_height": float(height) / 10, "quiet_zone": 1})
+	code.write(buffer, options={"module_height": float(height) / 10, "quiet_zone": 1, "write_text": False})
 
 	frappe.response["type"] = "download"
 	frappe.response["filecontent"] = buffer.getvalue()

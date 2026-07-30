@@ -233,6 +233,13 @@ scheduler_events = {
 # override_whitelisted_methods = {
 # 	"frappe.desk.doctype.event.event.get_events": "dressup.event.get_events"
 # }
+
+# Compatibility shim: normalises 'args' ↔ 'ctx' keyword for get_item_details
+# so the call works regardless of client JS version vs ERPNext server version.
+# Ref: https://github.com/frappe/erpnext/issues/51345
+override_whitelisted_methods = {
+	"erpnext.stock.get_item_details.get_item_details": "dressup.overrides.item_details_fix.get_item_details",
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
