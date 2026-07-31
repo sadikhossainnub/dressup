@@ -239,6 +239,7 @@ scheduler_events = {
 # Ref: https://github.com/frappe/erpnext/issues/51345
 override_whitelisted_methods = {
 	"erpnext.stock.get_item_details.get_item_details": "dressup.overrides.item_details_fix.get_item_details",
+	"erpnext.controllers.accounts_controller.update_child_qty_rate": "dressup.overrides.update_child_qty_rate_override.update_child_qty_rate",
 }
 #
 # each overriding function accepts a `data` argument;
