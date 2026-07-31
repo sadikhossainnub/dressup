@@ -45,6 +45,8 @@ def check_extra_discount(doc, method=None):
 			continue
 
 		row_discount = flt(row.discount_percentage)
+		if row_discount <= DISCOUNT_TOLERANCE:
+			continue
 
 		# Build the args dict that get_pricing_rule_for_item expects
 		pr_args = frappe._dict({
@@ -169,13 +171,11 @@ def notify_approvers_on_submit(doc, method=None):
 		"<a href='/app/sales-order/{name}'>Open Sales Order</a>"
 	).format(name=doc.name, reason=(doc.custom_approval_reason or "").replace("\n", "<br>"))
 
-	for user in approver_users:
-		frappe.sendmail(
-			recipients=[user],
-			subject=subject,
-			message=message,
-			delayed=False,
-		)
+	frappe.sendmail(
+		recipients=approver_users,
+		subject=subject,
+		message=message,
+	)
 
 	# Also create a Frappe Notification document for in-app alert
 	try:
@@ -333,7 +333,7 @@ def _notify_owner_on_rejection(so_doc, reason):
 		items=(so_doc.custom_approval_reason or "").replace("\n", "<br>"),
 	)
 
-	frappe.sendmail(recipients=[owner], subject=subject, message=message, delayed=False)
+	frappe.sendmail(recipients=[owner], subject=subject, message=message)
 
 	try:
 		frappe.get_doc({

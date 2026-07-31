@@ -17,6 +17,8 @@ frappe.ui.form.on("Sales Order", {
 });
 
 function _render_approval_ui(frm) {
+	frm.dashboard.clear_comment();
+
 	const status = frm.doc.custom_approval_status;
 	const needs_action =
 		frm.doc.docstatus === 1 &&
