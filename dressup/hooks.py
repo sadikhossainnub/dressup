@@ -12,7 +12,7 @@ fixtures = [
 	},
 	{
 		"doctype": "Role",
-		"filters": [["name", "in", ["Barcode Label Manager", "DressUp Manager", "Discount Approver"]]]
+		"filters": [["name", "in", ["Barcode Label Manager", "DressUp Manager", "Discount Approver", "PO Approver"]]]
 	},
 	{
 		"dt": "Print Format",
@@ -81,6 +81,7 @@ doctype_js = {
 		"public/js/sales_order_update_items_override.js",
 		"public/js/sales_order_approval.js",
 	],
+	"Purchase Order": "public/js/purchase_order_approval.js",
 }
 doctype_list_js = {"BOM": "public/js/bom_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -210,6 +211,10 @@ doc_events = {
 		"on_submit": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.link_stock_entry_to_pps",
 		"on_cancel": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.unlink_stock_entry_from_pps",
 		"on_trash": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.unlink_stock_entry_from_pps"
+	},
+	"Purchase Order": {
+		# Set approval status to Pending and notify PO Approvers after submit
+		"on_submit": "dressup.dressup.custom_scripts.purchase_order.notify_approvers_on_submit",
 	}
 }
 

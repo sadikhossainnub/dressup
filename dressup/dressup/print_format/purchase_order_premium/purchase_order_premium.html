@@ -268,11 +268,16 @@
             <img src="{{ frappe.utils.get_url() }}/files/Capture.PNG" alt="DressUp">
           </div>
           <div class="header-address">
-            House # 5, Road # 6<br>
-            Kollyanpur, Dhaka<br>
-            +8809678247247<br>
-            support@dressup.com.bd<br>
-            www.dressup.com.bd
+            {%- set comp_addr_name = frappe.db.get_value("Address", {"is_primary_address": 1, "address_title": doc.company}, "name") %}
+            {%- set comp_addr = frappe.get_doc("Address", comp_addr_name) if comp_addr_name else None %}
+            {% if comp_addr %}
+              {% if comp_addr.address_line1 %}{{ comp_addr.address_line1 }}<br>{% endif %}
+              {% if comp_addr.address_line2 %}{{ comp_addr.address_line2 }}<br>{% endif %}
+              {% if comp_addr.city %}{{ comp_addr.city }}{% if comp_addr.state %}, {{ comp_addr.state }}{% endif %}<br>{% endif %}
+            {% endif %}
+            {% if company_doc.phone_no %}{{ company_doc.phone_no }}<br>{% endif %}
+            {% if company_doc.email %}{{ company_doc.email }}<br>{% endif %}
+            {% if company_doc.website %}{{ company_doc.website }}{% endif %}
           </div>
         </div>
       </td>
