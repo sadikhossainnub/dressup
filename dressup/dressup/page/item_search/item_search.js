@@ -222,9 +222,11 @@ class ItemSearch {
 								` : ''}
 							</div>
 
-							<div class="description-section">
-								<h6>Description</h6>
-								<p class="text-muted">${data.description || 'No description available.'}</p>
+							<div class="description-section mt-3">
+								<h2 class="description-heading" style="color: red; font-weight: bold; margin-bottom: 8px;">Description</h2>
+								<div class="description-box highlighted-description">
+									${data.description || 'No description available.'}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -628,6 +630,30 @@ class ItemSearch {
 			}
 			.item-group-badge {
 				white-space: nowrap;
+			}
+
+			/* ===== Description Section ===== */
+			.description-section {
+				margin-top: 15px;
+			}
+			.description-heading {
+				color: red !important;
+				font-size: 1.5rem;
+				font-weight: 700;
+				margin-bottom: 8px;
+			}
+			.highlighted-description {
+				background-color: #ffffcc;
+				border-left: 4px solid #ffc107;
+				border-top: 1px solid #ffe066;
+				border-right: 1px solid #ffe066;
+				border-bottom: 1px solid #ffe066;
+				padding: 12px 16px;
+				border-radius: 6px;
+				font-size: 15px;
+				font-weight: 500;
+				color: #212529;
+				line-height: 1.6;
 			}
 
 			/* ===== Indicator ===== */

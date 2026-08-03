@@ -345,11 +345,17 @@
                 </div>
               {% endif %}
 
-              {% if doc.workflow_state %}
-                {%- set ws_lower = doc.workflow_state | lower %}
+              {% set app_status = (doc.custom_po_approval_status if doc.docstatus == 1 else None) or doc.workflow_state %}
+              {% if app_status %}
+                {%- set ws_lower = app_status | lower %}
                 <div class="workflow-badge{% if 'approved' in ws_lower or 'ordered' in ws_lower %} approved{% elif 'reject' in ws_lower %} rejected{% elif 'cancel' in ws_lower %} cancelled{% endif %}">
-                  {{ doc.workflow_state }}
+                  {{ app_status }}
                 </div>
+                {% if doc.custom_po_approved_by and doc.docstatus == 1 %}
+                  <div style="font-size: 7.5pt; color: #666; margin-top: 3px;">
+                    By: {{ doc.custom_po_approved_by }}
+                  </div>
+                {% endif %}
               {% endif %}
             </div>
           </div>

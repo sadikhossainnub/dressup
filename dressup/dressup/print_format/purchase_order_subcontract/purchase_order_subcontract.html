@@ -363,11 +363,17 @@
         <div style="font-size: 9pt; color: #C53030; margin-top: 4px;">Delivery Target: <strong>{{ frappe.format(doc.schedule_date, "Date") }}</strong></div>
       {% endif %}
       
-      {% if doc.workflow_state %}
-        {%- set ws_lower = doc.workflow_state | lower %}
+      {% set app_status = (doc.custom_po_approval_status if doc.docstatus == 1 else None) or doc.workflow_state %}
+      {% if app_status %}
+        {%- set ws_lower = app_status | lower %}
         <div class="workflow-badge{% if 'approved' in ws_lower or 'ordered' in ws_lower %} approved{% elif 'reject' in ws_lower %} rejected{% endif %}">
-          {{ doc.workflow_state }}
+          {{ app_status }}
         </div>
+        {% if doc.custom_po_approved_by and doc.docstatus == 1 %}
+          <div style="font-size: 7.5pt; color: #718096; margin-top: 3px;">
+            By: {{ doc.custom_po_approved_by }}
+          </div>
+        {% endif %}
       {% endif %}
     </div>
   </div>

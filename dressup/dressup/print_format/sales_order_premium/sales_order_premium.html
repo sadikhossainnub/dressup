@@ -538,6 +538,11 @@
                     | Delivery: {{ doc.get_formatted("delivery_date") }}
                 {% endif %}
             </div>
+            {% if doc.custom_approval_status %}
+            <div class="sop-receipt-line">
+                Approval Status: <strong>{{ doc.custom_approval_status }}</strong>
+            </div>
+            {% endif %}
             {% if doc.po_no %}
             <div class="sop-receipt-line">
                 PO Ref: {{ doc.po_no }}
