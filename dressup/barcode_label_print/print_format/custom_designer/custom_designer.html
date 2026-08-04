@@ -1,0 +1,159 @@
+<!-- Dressup Barcode Label Print Format: "Custom Drag & Drop Designer" -->
+{% set template = frappe.get_doc("Barcode Label Template", doc.label_template) %}
+
+{% macro get_font_style(style_val) %}
+    {% if style_val == 'Bold' %}
+        font-weight: bold; font-style: normal;
+    {% elif style_val == 'Italic' %}
+        font-weight: normal; font-style: italic;
+    {% elif style_val == 'Bold Italic' %}
+        font-weight: bold; font-style: italic;
+    {% else %}
+        font-weight: normal; font-style: normal;
+    {% endif %}
+{% endmacro %}
+
+{# Calculate page dimensions #}
+{% set page_w = template.label_width + (template.left_margin or 0) + (template.right_margin or 0) %}
+{% set page_h = template.label_height + (template.top_margin or 0) + (template.bottom_margin or 0) %}
+
+{# Parse layout JSON #}
+{% set layout_elements = [] %}
+{% if template.custom_layout_json %}
+    {% set layout_elements = json.loads(template.custom_layout_json) %}
+{% endif %}
+
+<style>
+    @page {
+        margin: 0mm !important;
+        padding: 0mm !important;
+        size: {{ page_w }}mm {{ page_h }}mm;
+    }
+
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        font-family: 'Liberation Sans', Arial, Helvetica, sans-serif;
+        color: #000;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .print-format, .print-format-gutter, .frappe-control, .page-break {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        min-height: 0 !important;
+    }
+
+    .label-page {
+        width: {{ page_w }}mm;
+        height: {{ page_h }}mm;
+        padding-top: {{ template.top_margin or 0 }}mm;
+        padding-bottom: {{ template.bottom_margin or 0 }}mm;
+        padding-left: {{ template.left_margin or 0 }}mm;
+        padding-right: {{ template.right_margin or 0 }}mm;
+        box-sizing: border-box;
+        page-break-after: always;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .label-page:last-child {
+        page-break-after: auto;
+    }
+
+    .label-canvas-render {
+        width: {{ template.label_width }}mm;
+        height: {{ template.label_height }}mm;
+        position: relative;
+        box-sizing: border-box;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .render-el {
+        position: absolute;
+        box-sizing: border-box;
+        overflow: hidden;
+        line-height: 1.1;
+        display: flex;
+        align-items: center;
+    }
+
+    @media print {
+        html, body {
+            width: {{ page_w }}mm !important;
+            background: #fff !important;
+        }
+        .label-page { box-shadow: none !important; margin: 0 !important; }
+        .print-heading, .letter-head, .page-break .page-number { display: none !important; }
+    }
+
+    @media screen {
+        .label-page { border: 1px dashed #ccc; margin-bottom: 5mm; }
+    }
+</style>
+
+<div class="print-wrapper">
+    {% for item in doc.items %}
+        {% set qty = item.qty if item.qty > 0 else 1 %}
+        {% for i in range(qty) %}
+            {% set code_value = item.item_code %}
+            {% if item.batch_no %}{% set code_value = item.batch_no %}{% endif %}
+            {% if item.serial_no %}{% set code_value = item.serial_no %}{% endif %}
+
+            {% set qr_image = get_barcode_base64('qrcode', code_value) %}
+            {% set barcode_image = get_barcode_base64(template.barcode_type or 'code128', code_value) %}
+
+            <div class="label-page">
+                <div class="label-canvas-render">
+                    {% for el in layout_elements %}
+                        <div class="render-el" style="
+                            left: {{ el.x }}mm;
+                            top: {{ el.y }}mm;
+                            width: {{ el.w }}mm;
+                            height: {{ el.h }}mm;
+                            font-size: {{ el.fontSize or 8 }}pt;
+                            text-align: {{ el.align or 'left' }};
+                            justify-content: {{ 'center' if el.align == 'center' else ('flex-end' if el.align == 'right' else 'flex-start') }};
+                            {{ get_font_style(el.style) }}
+                        ">
+                            {% if el.type == 'qr_code' %}
+                                {% if qr_image %}
+                                    <img src="{{ qr_image }}" style="width: 100%; height: 100%; object-fit: contain;" alt="QR Code" />
+                                {% endif %}
+                            {% elif el.type == 'barcode' %}
+                                {% if barcode_image %}
+                                    <img src="{{ barcode_image }}" style="width: 100%; height: 100%; object-fit: fill;" alt="Barcode" />
+                                {% endif %}
+                            {% elif el.type == 'item_code' %}
+                                <span>{{ item.item_code }}</span>
+                            {% elif el.type == 'item_name' %}
+                                <span>{{ item.item_name or '' }}</span>
+                            {% elif el.type == 'size' %}
+                                <span>Size: {{ item.size or '' }}</span>
+                            {% elif el.type == 'color' %}
+                                <span>Color: {{ item.color or '' }}</span>
+                            {% elif el.type == 'price' %}
+                                {% if (item.price or 0) > 0 %}
+                                    <span>{{ frappe.utils.fmt_money(item.price, currency=frappe.db.get_default("currency")) }}</span>
+                                {% endif %}
+                            {% elif el.type == 'batch_no' %}
+                                <span>Batch: {{ item.batch_no or '' }}</span>
+                            {% elif el.type == 'serial_no' %}
+                                <span>S/N: {{ item.serial_no or '' }}</span>
+                            {% elif el.type == 'static_text' %}
+                                <span>{{ el.label or '' }}</span>
+                            {% else %}
+                                <span>{{ item.get(el.type) or '' }}</span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>

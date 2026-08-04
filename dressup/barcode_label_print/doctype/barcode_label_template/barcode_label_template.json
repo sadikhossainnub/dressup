@@ -8,6 +8,7 @@
     "engine": "InnoDB",
     "field_order": [
         "template_name",
+        "designer_mode",
         "label_width",
         "label_height",
         "font_size",
@@ -50,7 +51,10 @@
         "attribute_font_size",
         "attribute_font_style",
         "price_font_size",
-        "price_font_style"
+        "price_font_style",
+        "section_break_designer",
+        "designer_html",
+        "custom_layout_json"
     ],
     "fields": [
         {
@@ -318,6 +322,31 @@
             "fieldname": "barcode_image_height",
             "fieldtype": "Float",
             "label": "Barcode/QR Height (mm)"
+        },
+        {
+            "default": "Preset Grid",
+            "fieldname": "designer_mode",
+            "fieldtype": "Select",
+            "label": "Designer Mode",
+            "options": "Preset Grid\nCustom Drag & Drop",
+            "description": "Choose 'Custom Drag & Drop' to visually position elements on label"
+        },
+        {
+            "fieldname": "section_break_designer",
+            "fieldtype": "Section Break",
+            "label": "Visual Drag & Drop Designer",
+            "depends_on": "eval:doc.designer_mode=='Custom Drag & Drop'"
+        },
+        {
+            "fieldname": "designer_html",
+            "fieldtype": "HTML",
+            "label": "Designer Canvas"
+        },
+        {
+            "fieldname": "custom_layout_json",
+            "fieldtype": "Code",
+            "options": "JSON",
+            "label": "Custom Layout JSON"
         }
     ],
     "index_web_pages_for_search": 1,

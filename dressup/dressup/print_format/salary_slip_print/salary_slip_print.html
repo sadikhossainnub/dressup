@@ -211,7 +211,7 @@
     .attendance-table .att-label {
         font-weight: bold;
         background: #f0f0f0;
-        width: 20%;
+        width: 15%;
         text-align: left;
     }
 
@@ -400,15 +400,17 @@
             </tr>
         </table>
 
-        <!-- Attendance: Working Days / Absent Days / Payment Days -->
+        <!-- Attendance: Working Days / Absent Days / Leave Without Pay / Payment Days -->
         <table class="attendance-table">
             <tr>
                 <td class="att-label">Working Days</td>
-                <td>{{ doc.total_working_days | int }}</td>
+                <td style="width: 10%;">{{ (doc.total_working_days or 0) | int }}</td>
                 <td class="att-label">Absent Days</td>
-                <td>{{ doc.absent_days | int }}</td>
+                <td style="width: 10%;">{{ (doc.absent_days or 0) | int }}</td>
+                <td class="att-label">LWP Days</td>
+                <td style="width: 10%;">{{ (doc.leave_without_pay or 0) | int }}</td>
                 <td class="att-label">Payment Days</td>
-                <td>{{ doc.payment_days | int }}</td>
+                <td style="width: 10%;">{{ (doc.payment_days or 0) | int }}</td>
             </tr>
         </table>
 
