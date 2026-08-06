@@ -160,6 +160,9 @@ def notify_approvers_on_submit(doc, method=None):
 	if doc.custom_approval_status != "Pending":
 		return
 
+	if not _is_discount_approval_notification_enabled():
+		return
+
 	approver_users = _get_discount_approver_users()
 	if not approver_users:
 		return
@@ -313,6 +316,20 @@ def _get_discount_approver_users():
 		filters={"role": "Discount Approver", "parenttype": "User"},
 		pluck="parent",
 	)
+
+
+def _is_discount_approval_notification_enabled():
+	"""Return True when discount approval notifications are enabled in Dressup Settings."""
+	enabled = frappe.db.get_single_value(
+		"Dressup Settings",
+		"enable_discount_approval_notifications",
+	)
+	if enabled is None:
+		return True
+	try:
+		return bool(int(enabled))
+	except Exception:
+		return True
 
 
 def _notify_owner_on_rejection(so_doc, reason):

@@ -6,7 +6,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "default_pps_inspection"
+  "default_pps_inspection",
+  "enable_discount_approval_notifications"
  ],
  "fields": [
   {
@@ -14,6 +15,13 @@
    "fieldtype": "Link",
    "label": "Default PPS Inspection",
    "options": "Quality Inspection Template"
+  },
+  {
+   "fieldname": "enable_discount_approval_notifications",
+   "fieldtype": "Check",
+   "label": "Enable Discount Approval Notifications",
+   "description": "Send email and in-app alerts to Discount Approvers when a Sales Order requires approval.",
+   "default": 1
   }
  ],
  "grid_page_length": 50,
