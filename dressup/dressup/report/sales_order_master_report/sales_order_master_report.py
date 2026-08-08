@@ -11,38 +11,8 @@ def execute(filters=None):
 		filters = {}
 	columns = get_columns()
 	data    = get_data(filters)
-
-	if data:
-		data.append(get_total_row(data))
-
 	return columns, data
 
-
-# ---------------------------------------------------------------------------
-# Total Row
-# ---------------------------------------------------------------------------
-
-def get_total_row(data):
-	"""Return a bold summary row summing all numeric/currency columns."""
-	# Numeric fields to sum
-	sum_fields = [
-		"qty", "amount", "delivered_qty", "billed_amt",
-		"total_qty", "net_total", "total_taxes_and_charges",
-		"grand_total", "advance_paid", "outstanding_amount",
-		"si_grand_total", "si_outstanding_amount",
-	]
-
-	totals = {f: 0.0 for f in sum_fields}
-	for row in data:
-		for f in sum_fields:
-			totals[f] = flt(totals[f]) + flt(row.get(f) or 0)
-
-	total_row = {
-		"sales_order":    _("Total"),
-		"bold":           1,
-	}
-	total_row.update(totals)
-	return total_row
 
 
 # ---------------------------------------------------------------------------
@@ -152,8 +122,7 @@ def get_columns():
 		{
 			"label":     _("Created By"),
 			"fieldname": "created_by",
-			"fieldtype": "Link",
-			"options":   "User",
+			"fieldtype": "Data",
 			"width":     180,
 		},
 		{
@@ -400,7 +369,8 @@ def get_data(filters):
 			so.delivery_date               AS delivery_date,
 			so.status                      AS status,
 			so.per_delivered               AS per_delivered,
-			so.owner                       AS created_by,
+			COALESCE(NULLIF(usr.full_name, ''), so.owner)
+			                               AS created_by,
 			so.creation                    AS creation,
 			so.customer                    AS customer,
 			so.customer_name               AS customer_name,
@@ -441,6 +411,8 @@ def get_data(filters):
 			`tabSales Order` so
 		INNER JOIN
 			`tabSales Order Item` soi ON soi.parent = so.name
+		LEFT JOIN
+			`tabUser` usr ON usr.name = so.owner
 		WHERE
 			so.docstatus < 2
 			{conditions}
@@ -611,7 +583,7 @@ def attach_sales_invoices(rows):
 		si_rows = frappe.db.sql(
 			f"""
 			SELECT
-				sii.sales_order_item   AS soi_name,
+				sii.so_detail          AS soi_name,
 				sii.parent             AS sales_invoice,
 				si.posting_date        AS si_posting_date,
 				si.status              AS si_status,
@@ -622,7 +594,7 @@ def attach_sales_invoices(rows):
 			INNER JOIN
 				`tabSales Invoice` si ON si.name = sii.parent
 			WHERE
-				sii.sales_order_item IN ({placeholders})
+				sii.so_detail IN ({placeholders})
 				AND si.docstatus < 2
 			ORDER BY
 				si.posting_date ASC
