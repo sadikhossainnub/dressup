@@ -164,7 +164,7 @@ def fetch_attendance_rows(filters):
 			att.employee        AS employee,
 			att.employee_name   AS employee_name,
 			att.department      AS department,
-			att.designation     AS designation,
+			emp.designation     AS designation,
 			att.attendance_date AS attendance_date,
 			att.status          AS status,
 			att.leave_type      AS leave_type,
@@ -173,6 +173,8 @@ def fetch_attendance_rows(filters):
 			att.attendance_request AS attendance_request
 		FROM
 			`tabAttendance` att
+		LEFT JOIN
+			`tabEmployee` emp ON emp.name = att.employee
 		WHERE
 			att.docstatus = 1
 			{conditions}
