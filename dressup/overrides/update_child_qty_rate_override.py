@@ -36,21 +36,28 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 				disc_pct = frappe.utils.flt(d.get("discount_percentage"))
 				disc_amt = frappe.utils.flt(d.get("discount_amount"))
 				price_list_rate = frappe.utils.flt(d.get("price_list_rate")) or frappe.utils.flt(child_row.price_list_rate)
+				row_rate = frappe.utils.flt(d.get("rate")) or frappe.utils.flt(child_row.rate)
 
 				# If price list rate and rate allow deriving discount
-				if price_list_rate > 0 and child_row.rate < price_list_rate:
-					derived_pct = ((price_list_rate - child_row.rate) / price_list_rate) * 100.0
-					derived_amt = price_list_rate - child_row.rate
+				if price_list_rate > 0 and row_rate < price_list_rate:
+					derived_pct = ((price_list_rate - row_rate) / price_list_rate) * 100.0
+					derived_amt = price_list_rate - row_rate
 					disc_pct = disc_pct if disc_pct > 0 else derived_pct
 					disc_amt = disc_amt if disc_amt > 0 else derived_amt
+
+				field_updates = {
+					"discount_percentage": disc_pct,
+					"discount_amount": disc_amt,
+				}
+				if price_list_rate > 0:
+					field_updates["price_list_rate"] = price_list_rate
+				if row_rate > 0:
+					field_updates["rate"] = row_rate
 
 				frappe.db.set_value(
 					child_row.doctype,
 					child_row.name,
-					{
-						"discount_percentage": disc_pct,
-						"discount_amount": disc_amt,
-					},
+					field_updates,
 					update_modified=False,
 				)
 				updated = True
