@@ -12,6 +12,17 @@
 function init_created_by_column() {
 	if (!frappe.views || !frappe.views.ListView) return;
 
+	// Helper method on ListView to filter list view by owner on click
+	frappe.views.ListView.filter_by_owner = function (e, owner) {
+		if (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+		if (cur_list && cur_list.filter_area) {
+			cur_list.filter_area.add(cur_list.doctype, "owner", "=", owner);
+		}
+	};
+
 	// Guard against double-patching
 	if (frappe.views.ListView.prototype._created_by_patched) return;
 	frappe.views.ListView.prototype._created_by_patched = true;
@@ -26,19 +37,33 @@ function init_created_by_column() {
 		const settings = this.list_view_settings || {};
 		const show = cint(settings.show_created_by) === 1;
 
+		const owner_formatter = function (value) {
+			if (!value) return "";
+			const info = frappe.user_info ? frappe.user_info(value) : null;
+			const fullname = (info && info.fullname) || value;
+			const escaped_owner = frappe.utils.escape_html(value);
+			const escaped_fullname = frappe.utils.escape_html(fullname);
+			return `<a class="text-muted created-by-filter" href="#" onclick="frappe.views.ListView.filter_by_owner(event, '${escaped_owner}'); return false;" title="${__('Filter by {0}', [escaped_fullname])}">${escaped_fullname}</a>`;
+		};
+
+		// Register custom formatter
+		if (!this.settings.formatters) {
+			this.settings.formatters = {};
+		}
+		this.settings.formatters.owner = owner_formatter;
+
 		if (!show) return;
+
+		// Ensure 'owner' field is fetched in list query
+		if (this.fields && !this.fields.some((f) => f[0] === "owner")) {
+			this.fields.push(["owner", this.doctype]);
+		}
 
 		// Don't add if owner column already exists
 		const already_has = this.columns.some(
 			(c) => c.df && c.df.fieldname === "owner"
 		);
 		if (already_has) return;
-
-		// Append owner column at the end (before ID column which is last)
-		// Find the position: insert before the trailing "name" column if present
-		const name_col_idx = this.columns.findLastIndex(
-			(c) => c.type === "Field" && c.df && c.df.fieldname === "name"
-		);
 
 		const owner_col = {
 			type: "Field",
@@ -47,26 +72,23 @@ function init_created_by_column() {
 				fieldname: "owner",
 				fieldtype: "Link",
 				options: "User",
+				formatter: owner_formatter,
 			},
 		};
 
+		// Find the position of ID column (fieldname === "name")
+		const name_col_idx = this.columns.findIndex(
+			(c) => c.df && c.df.fieldname === "name"
+		);
+
 		if (name_col_idx !== -1) {
-			// Insert just before the trailing ID/name column
-			this.columns.splice(name_col_idx, 0, owner_col);
+			// Insert right after the ID (name) column
+			this.columns.splice(name_col_idx + 1, 0, owner_col);
+		} else if (this.columns.length > 0) {
+			// Insert after the first column (which is the primary ID/Subject column)
+			this.columns.splice(1, 0, owner_col);
 		} else {
 			this.columns.push(owner_col);
-		}
-
-		// Register a custom formatter so it shows Full Name instead of email
-		if (!this.settings.formatters) {
-			this.settings.formatters = {};
-		}
-		if (!this.settings.formatters.owner) {
-			this.settings.formatters.owner = function (value) {
-				if (!value) return "";
-				const fullname = frappe.user.full_name(value) || value;
-				return `<a class="text-muted" href="/app/user/${encodeURIComponent(value)}">${frappe.utils.escape_html(fullname)}</a>`;
-			};
 		}
 	};
 }
@@ -77,3 +99,4 @@ if (window.frappe && frappe.views && frappe.views.ListView) {
 } else {
 	$(document).on("app_ready", init_created_by_column);
 }
+
