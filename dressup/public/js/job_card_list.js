@@ -4,10 +4,11 @@
  * Adds "Bulk Start Job" and "Bulk Complete Job" actions to the Job Card List View.
  *
  * Visibility rule (client-side filter before API call):
- *   - Bulk Start Job  → only processes cards with status "Open"
- *   - Bulk Complete Job → only processes cards with status "Work In Progress"
+ *   - Bulk Start Job    → only "Open" cards
+ *   - Bulk Complete Job → only "Work In Progress" cards
+ *                         + optional sub-operation selection dialog
  *
- * Uses server-side methods in dressup.dressup.api.job_card
+ * Server methods: dressup.dressup.api.job_card.*
  */
 
 frappe.listview_settings["Job Card"] = frappe.listview_settings["Job Card"] || {};
@@ -21,12 +22,12 @@ frappe.listview_settings["Job Card"].add_fields = (
 const _existing_job_card_onload = frappe.listview_settings["Job Card"].onload;
 
 frappe.listview_settings["Job Card"].onload = function (listview) {
-	// Call any previously registered onload first
 	if (_existing_job_card_onload) {
 		_existing_job_card_onload.call(this, listview);
 	}
 
-	// ── Helper: build result summary HTML ────────────────────────────────────
+	// ── Helpers ─────────────────────────────────────────────────────────────
+
 	function build_summary(result_rows) {
 		const rows = result_rows
 			.map(
@@ -37,7 +38,6 @@ frappe.listview_settings["Job Card"].onload = function (listview) {
 		return `<ul>${rows}</ul>`;
 	}
 
-	// ── Helper: show result msgprint ─────────────────────────────────────────
 	function show_result(title, count_label, count, skipped, failed) {
 		let lines = [];
 		if (count) {
@@ -65,6 +65,36 @@ frappe.listview_settings["Job Card"].onload = function (listview) {
 		});
 	}
 
+	function do_complete(names, sub_operation) {
+		frappe.dom.freeze(__("Completing Job Cards…"));
+		frappe.call({
+			method: "dressup.dressup.api.job_card.bulk_complete_job_cards",
+			args: { job_cards: names, sub_operation: sub_operation || null },
+			callback: function (response) {
+				frappe.dom.unfreeze();
+				const result = response.message || {};
+				show_result(
+					"Bulk Complete Result",
+					__("Job Card(s) completed successfully."),
+					(result.completed || []).length,
+					result.skipped || [],
+					result.failed || []
+				);
+				listview.refresh();
+			},
+			error: function () {
+				frappe.dom.unfreeze();
+				frappe.msgprint({
+					title: __("Error"),
+					message: __(
+						"An unexpected error occurred while completing Job Cards. Please check the Error Log."
+					),
+					indicator: "red",
+				});
+			},
+		});
+	}
+
 	// ════════════════════════════════════════════════════════════════════════
 	// Bulk Start Job  —  only for status = "Open"
 	// ════════════════════════════════════════════════════════════════════════
@@ -80,7 +110,6 @@ frappe.listview_settings["Job Card"].onload = function (listview) {
 			return;
 		}
 
-		// ── Filter: only "Open" cards ────────────────────────────────────────
 		const eligible = selected.filter((row) => row.status === "Open");
 		const ineligible = selected.filter((row) => row.status !== "Open");
 
@@ -106,7 +135,6 @@ frappe.listview_settings["Job Card"].onload = function (listview) {
 
 		frappe.confirm(confirm_msg, function () {
 			frappe.dom.freeze(__("Starting Job Cards…"));
-
 			frappe.call({
 				method: "dressup.dressup.api.job_card.bulk_start_job_cards",
 				args: { job_cards: names },
@@ -138,6 +166,7 @@ frappe.listview_settings["Job Card"].onload = function (listview) {
 
 	// ════════════════════════════════════════════════════════════════════════
 	// Bulk Complete Job  —  only for status = "Work In Progress"
+	//                        + optional sub-operation selector
 	// ════════════════════════════════════════════════════════════════════════
 	listview.page.add_action_item(__("Bulk Complete Job"), function () {
 		const selected = listview.get_checked_items();
@@ -151,7 +180,6 @@ frappe.listview_settings["Job Card"].onload = function (listview) {
 			return;
 		}
 
-		// ── Filter: only "Work In Progress" cards ────────────────────────────
 		const eligible = selected.filter(
 			(row) => row.status === "Work In Progress"
 		);
@@ -163,7 +191,7 @@ frappe.listview_settings["Job Card"].onload = function (listview) {
 			frappe.msgprint({
 				title: __("Nothing to Complete"),
 				message: __(
-					"None of the selected Job Cards have status <strong>Work In Progress</strong>. Only Work In Progress cards can be completed."
+					"None of the selected Job Cards have status <strong>Work In Progress</strong>."
 				),
 				indicator: "orange",
 			});
@@ -171,43 +199,93 @@ frappe.listview_settings["Job Card"].onload = function (listview) {
 		}
 
 		const names = eligible.map((row) => row.name);
-		let confirm_msg = __(
-			"Are you sure you want to <strong>Complete</strong> {0} Job Card(s)? Open timers will be closed automatically.",
-			[names.length]
-		);
-		if (ineligible.length) {
-			confirm_msg += `<br><span style="color:orange;">${__("{0} selected card(s) will be skipped (not Work In Progress).", [ineligible.length])}</span>`;
-		}
 
-		frappe.confirm(confirm_msg, function () {
-			frappe.dom.freeze(__("Completing Job Cards…"));
+		// ── Step 1: Fetch sub-operations from server ─────────────────────────
+		frappe.dom.freeze(__("Checking sub-operations…"));
 
-			frappe.call({
-				method: "dressup.dressup.api.job_card.bulk_complete_job_cards",
-				args: { job_cards: names },
-				callback: function (response) {
-					frappe.dom.unfreeze();
-					const result = response.message || {};
-					show_result(
-						"Bulk Complete Result",
-						__("Job Card(s) completed successfully."),
-						(result.completed || []).length,
-						result.skipped || [],
-						result.failed || []
-					);
-					listview.refresh();
-				},
-				error: function () {
-					frappe.dom.unfreeze();
-					frappe.msgprint({
-						title: __("Error"),
-						message: __(
-							"An unexpected error occurred while completing Job Cards. Please check the Error Log."
+		frappe.call({
+			method:
+				"dressup.dressup.api.job_card.get_sub_operations_for_job_cards",
+			args: { job_cards: names },
+			callback: function (r) {
+				frappe.dom.unfreeze();
+
+				const sub_ops = r.message || []; // [{value, label}, ...]
+
+				// ── Step 2: Show dialog ──────────────────────────────────────
+				const has_sub_ops = sub_ops.length > 0;
+
+				const fields = [];
+
+				// Info row
+				let info_html = `<p>${__(
+					"<strong>{0}</strong> Job Card(s) will be marked as completed.",
+					[names.length]
+				)}`;
+				if (ineligible.length) {
+					info_html += `<br><span style="color:orange;">${__("{0} card(s) skipped (not Work In Progress).", [ineligible.length])}</span>`;
+				}
+				info_html += `</p>`;
+
+				fields.push({
+					fieldtype: "HTML",
+					options: info_html,
+				});
+
+				if (has_sub_ops) {
+					// Sub-operation select
+					const options_list = [
+						{ value: "", label: __("— Complete entire Job Card —") },
+						...sub_ops,
+					];
+
+					fields.push({
+						fieldtype: "Select",
+						fieldname: "sub_operation",
+						label: __("Sub Operation"),
+						options: options_list
+							.map((o) => o.value)
+							.join("\n"),
+						description: __(
+							"Select a sub-operation to mark only that step as complete, or leave blank to complete the entire Job Card."
 						),
-						indicator: "red",
 					});
-				},
-			});
+				} else {
+					fields.push({
+						fieldtype: "HTML",
+						options: `<p style="color:#888;">${__("No pending sub-operations found. The entire Job Card will be completed.")}</p>`,
+					});
+				}
+
+				const dialog = new frappe.ui.Dialog({
+					title: __("Bulk Complete Job"),
+					fields: fields,
+					primary_action_label: __("Complete"),
+					primary_action: function (values) {
+						dialog.hide();
+
+						const sub_op = has_sub_ops
+							? (values.sub_operation || "").trim()
+							: "";
+
+						do_complete(names, sub_op || null);
+					},
+				});
+
+				dialog.show();
+			},
+			error: function () {
+				frappe.dom.unfreeze();
+				// If the sub-op fetch fails, fall back to direct complete
+				frappe.msgprint({
+					title: __("Warning"),
+					message: __(
+						"Could not fetch sub-operation list. Proceeding to complete entire Job Card(s)."
+					),
+					indicator: "orange",
+				});
+				do_complete(names, null);
+			},
 		});
 	});
 };

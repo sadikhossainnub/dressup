@@ -10,60 +10,61 @@ from frappe import _
 from frappe.utils import flt, now_datetime
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _parse_list(value, param_name="value"):
+	"""Accept a Python list or a JSON-encoded string; return a list."""
+	if isinstance(value, str):
+		try:
+			value = json.loads(value)
+		except (ValueError, TypeError):
+			frappe.throw(_(f"Invalid {param_name}: expected a list or JSON string."))
+	return value or []
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Bulk Start
+# ─────────────────────────────────────────────────────────────────────────────
+
 @frappe.whitelist()
 def bulk_start_job_cards(job_cards):
 	"""
 	Start multiple Job Cards in bulk.
 
-	Accepts a list (or JSON string) of Job Card names.
-	For each card:
-	  - Skip if it already has an open time_log (no to_time) → already running
-	  - Skip if status is "Completed" or "Cancelled"
-	  - Otherwise append a new time_log row and set status to "Work In Progress"
+	Only cards with status "Open" are processed; others are skipped.
+	Appends a new time_log row (from_time = now, completed_qty = 0)
+	and sets status to "Work In Progress".
 
-	Returns a dict with three lists: started, skipped, failed.
+	Returns: {started, skipped, failed}
 	"""
-	# Accept either a Python list or a JSON-encoded string
-	if isinstance(job_cards, str):
-		try:
-			job_cards = json.loads(job_cards)
-		except (ValueError, TypeError):
-			frappe.throw(_("Invalid job_cards argument: expected a list or JSON string."))
-
+	job_cards = _parse_list(job_cards, "job_cards")
 	if not job_cards:
 		frappe.throw(_("No Job Cards provided."))
 
-	started = []
-	skipped = []
-	failed = []
-
-	# Current user – used as employee proxy when no employee link is available
-	current_user = frappe.session.user
+	started, skipped, failed = [], [], []
 
 	for name in job_cards:
 		try:
 			doc = frappe.get_doc("Job Card", name)
 
-			# ── Skip condition: only "Open" cards can be started ────────────────
+			# Only "Open" cards can be started
 			if doc.status != "Open":
-				skipped.append({"name": name, "reason": f"Status is '{doc.status}' (expected Open)"})
+				skipped.append({
+					"name": name,
+					"reason": f"Status is '{doc.status}' (expected Open)",
+				})
 				continue
 
-			# ── Start the Job Card ───────────────────────────────────────────
-			# Resolve employee: use the linked employee field if present, else None
 			employee = getattr(doc, "employee", None) or None
-
-			doc.append(
-				"time_logs",
-				{
-					"employee": employee,
-					"from_time": now_datetime(),
-					"completed_qty": 0,
-				},
-			)
+			doc.append("time_logs", {
+				"employee": employee,
+				"from_time": now_datetime(),
+				"completed_qty": 0,
+			})
 			doc.status = "Work In Progress"
 			doc.save(ignore_permissions=False)
-
 			started.append(name)
 
 		except Exception as exc:
@@ -76,63 +77,118 @@ def bulk_start_job_cards(job_cards):
 	return {"started": started, "skipped": skipped, "failed": failed}
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Sub-operation helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
 @frappe.whitelist()
-def bulk_complete_job_cards(job_cards):
+def get_sub_operations_for_job_cards(job_cards):
+	"""
+	Return distinct sub-operation names that appear in the given Job Cards'
+	sub_operations child table (status != 'Complete').
+
+	Returns a list of {value, label} dicts suitable for a Select/Link field.
+	"""
+	job_cards = _parse_list(job_cards, "job_cards")
+	if not job_cards:
+		return []
+
+	placeholders = ", ".join(["%s"] * len(job_cards))
+	rows = frappe.db.sql(
+		f"""
+		SELECT DISTINCT jco.sub_operation
+		FROM   `tabJob Card Operation` jco
+		WHERE  jco.parent IN ({placeholders})
+		  AND  jco.sub_operation IS NOT NULL
+		  AND  jco.sub_operation != ''
+		  AND  jco.status != 'Complete'
+		ORDER BY jco.sub_operation
+		""",
+		tuple(job_cards),
+		as_dict=True,
+	)
+
+	return [{"value": r.sub_operation, "label": r.sub_operation} for r in rows]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Bulk Complete
+# ─────────────────────────────────────────────────────────────────────────────
+
+@frappe.whitelist()
+def bulk_complete_job_cards(job_cards, sub_operation=None):
 	"""
 	Complete multiple Job Cards in bulk.
 
-	Accepts a list (or JSON string) of Job Card names.
-	For each card:
-	  - Skip if status is already "Completed" or "Cancelled"
-	  - Close any open time_log row (to_time = now) so the card is not left running
-	  - Set completed_qty on the open row to the card's for_qty (target qty)
-	  - Set status to "Completed" and save
+	Only cards with status "Work In Progress" are processed.
 
-	Returns a dict with three lists: completed, skipped, failed.
+	sub_operation (optional):
+	  - If provided  → mark only that sub-operation row as "Complete" on each card.
+	                    If ALL sub-operations on the card are now Complete, also set
+	                    the card status to "Completed" and close any open time_log.
+	  - If omitted   → close open time_logs, set completed_qty from for_qty,
+	                    and set card status to "Completed" directly.
+
+	Returns: {completed, skipped, failed}
 	"""
-	if isinstance(job_cards, str):
-		try:
-			job_cards = json.loads(job_cards)
-		except (ValueError, TypeError):
-			frappe.throw(_("Invalid job_cards argument: expected a list or JSON string."))
-
+	job_cards = _parse_list(job_cards, "job_cards")
 	if not job_cards:
-		frappe.throw(_(("No Job Cards provided.")))
+		frappe.throw(_("No Job Cards provided."))
 
-	completed = []
-	skipped = []
-	failed = []
+	# sub_operation may arrive as a JSON string "null" or empty string
+	if isinstance(sub_operation, str):
+		sub_operation = sub_operation.strip() or None
+	if sub_operation == "null":
+		sub_operation = None
+
+	completed, skipped, failed = [], [], []
 
 	for name in job_cards:
 		try:
 			doc = frappe.get_doc("Job Card", name)
 
-			# ── Skip condition: only "Work In Progress" cards can be completed ──
+			# Only "Work In Progress" cards can be completed
 			if doc.status != "Work In Progress":
-				skipped.append({"name": name, "reason": f"Status is '{doc.status}' (expected Work In Progress)"})
+				skipped.append({
+					"name": name,
+					"reason": f"Status is '{doc.status}' (expected Work In Progress)",
+				})
 				continue
 
 			now = now_datetime()
 
-			# ── Close any open time_log rows ─────────────────────────────────
-			# An open row has from_time set but no to_time
-			has_open = False
-			for row in doc.time_logs or []:
-				if row.from_time and not row.to_time:
-					row.to_time = now
-					# Fill completed_qty with remaining target qty if not already set
-					target_qty = flt(getattr(doc, "for_qty", 0) or 0)
-					if not flt(row.completed_qty):
-						row.completed_qty = target_qty
-					has_open = True
+			if sub_operation:
+				# ── Complete a specific sub-operation row ──────────────────
+				matched = False
+				for row in doc.sub_operations or []:
+					if row.sub_operation == sub_operation:
+						row.status = "Complete"
+						row.completed_qty = flt(getattr(doc, "for_qty", 0) or 0)
+						row.completed_time = str(now)
+						matched = True
 
-			# If no open time_log exists, we still complete the card.
-			# Optionally, we could add a synthetic log entry — skipped here for
-			# simplicity to avoid double-counting.
+				if not matched:
+					skipped.append({
+						"name": name,
+						"reason": f"Sub-operation '{sub_operation}' not found on this card",
+					})
+					continue
 
-			doc.status = "Completed"
+				# If ALL sub-operations are now Complete → also complete the card
+				all_done = all(
+					row.status == "Complete"
+					for row in (doc.sub_operations or [])
+				)
+				if all_done:
+					_close_open_time_logs(doc, now)
+					doc.status = "Completed"
+
+			else:
+				# ── Complete the whole card ────────────────────────────────
+				_close_open_time_logs(doc, now)
+				doc.status = "Completed"
+
 			doc.save(ignore_permissions=False)
-
 			completed.append(name)
 
 		except Exception as exc:
@@ -143,3 +199,13 @@ def bulk_complete_job_cards(job_cards):
 			failed.append({"name": name, "error": str(exc)})
 
 	return {"completed": completed, "skipped": skipped, "failed": failed}
+
+
+def _close_open_time_logs(doc, now):
+	"""Close any open time_log rows (from_time set, to_time empty) and fill qty."""
+	target_qty = flt(getattr(doc, "for_qty", 0) or 0)
+	for row in doc.time_logs or []:
+		if row.from_time and not row.to_time:
+			row.to_time = now
+			if not flt(row.completed_qty):
+				row.completed_qty = target_qty
