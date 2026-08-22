@@ -9,6 +9,28 @@
 // - Patch setup_columns() to append owner AFTER reorder_listview_fields() runs (at the end)
 // - Read show_created_by from this.list_view_settings (saved in DB via the patched DocType)
 
+function get_configured_fieldnames(settings) {
+	if (!settings || !settings.fields) return [];
+	let fields = settings.fields;
+	if (typeof fields === "string") {
+		try {
+			fields = JSON.parse(fields);
+		} catch (e) {
+			return [];
+		}
+	}
+	if (!Array.isArray(fields)) return [];
+
+	return fields
+		.map((f) => {
+			if (typeof f === "string") return f;
+			if (Array.isArray(f)) return f[0];
+			if (typeof f === "object" && f !== null) return f.fieldname || f.value;
+			return null;
+		})
+		.filter(Boolean);
+}
+
 function init_created_by_column() {
 	if (!frappe.views || !frappe.views.ListView) return;
 
@@ -33,9 +55,22 @@ function init_created_by_column() {
 		// Run the original setup_columns (includes reorder_listview_fields inside)
 		_original_setup_columns.call(this);
 
-		// NOW safely check the setting — by this point reorder is already done
+		// Ensure virtual 'owner' meta field exists so list settings dialog can pick it up
+		if (this.meta && this.meta.fields && !this.meta.fields.some((f) => f.fieldname === "owner")) {
+			this.meta.fields.push({
+				fieldname: "owner",
+				label: __("Created By"),
+				fieldtype: "Link",
+				options: "User",
+				read_only: 1,
+			});
+		}
+
+		// Check settings and dynamic field ordering
 		const settings = this.list_view_settings || {};
-		const show = cint(settings.show_created_by) === 1;
+		const configured_fields = get_configured_fieldnames(settings);
+		const is_in_configured = configured_fields.includes("owner");
+		const show = is_in_configured || cint(settings.show_created_by) === 1;
 
 		const owner_formatter = function (value) {
 			if (!value) return "";
@@ -76,21 +111,102 @@ function init_created_by_column() {
 			},
 		};
 
-		// Find the position of ID column (fieldname === "name")
-		const name_col_idx = this.columns.findIndex(
-			(c) => c.df && c.df.fieldname === "name"
-		);
+		if (is_in_configured) {
+			const owner_idx_in_config = configured_fields.indexOf("owner");
+			let inserted = false;
 
-		if (name_col_idx !== -1) {
-			// Insert right after the ID (name) column
-			this.columns.splice(name_col_idx + 1, 0, owner_col);
-		} else if (this.columns.length > 0) {
-			// Insert after the first column (which is the primary ID/Subject column)
-			this.columns.splice(1, 0, owner_col);
+			// Look backward in configured fields for a column present in this.columns
+			for (let i = owner_idx_in_config - 1; i >= 0; i--) {
+				const prev_field = configured_fields[i];
+				const prev_col_idx = this.columns.findIndex(
+					(c) => c.df && c.df.fieldname === prev_field
+				);
+				if (prev_col_idx !== -1) {
+					this.columns.splice(prev_col_idx + 1, 0, owner_col);
+					inserted = true;
+					break;
+				}
+			}
+
+			// Look forward if no preceding field was found
+			if (!inserted) {
+				for (let i = owner_idx_in_config + 1; i < configured_fields.length; i++) {
+					const next_field = configured_fields[i];
+					const next_col_idx = this.columns.findIndex(
+						(c) => c.df && c.df.fieldname === next_field
+					);
+					if (next_col_idx !== -1) {
+						this.columns.splice(next_col_idx, 0, owner_col);
+						inserted = true;
+						break;
+					}
+				}
+			}
+
+			if (!inserted) {
+				this.columns.push(owner_col);
+			}
 		} else {
-			this.columns.push(owner_col);
+			// Default placement: right after 'name' column or 2nd column
+			const name_col_idx = this.columns.findIndex(
+				(c) => c.df && c.df.fieldname === "name"
+			);
+
+			if (name_col_idx !== -1) {
+				this.columns.splice(name_col_idx + 1, 0, owner_col);
+			} else if (this.columns.length > 0) {
+				this.columns.splice(1, 0, owner_col);
+			} else {
+				this.columns.push(owner_col);
+			}
 		}
 	};
+
+	// -------------------------------------------------------------------------
+	// Patch List View Settings Dialog to render "Show Created By" checkbox
+	// -------------------------------------------------------------------------
+
+	if (frappe.views.ListView.prototype.get_list_settings_fields) {
+		const _original_get_fields = frappe.views.ListView.prototype.get_list_settings_fields;
+		frappe.views.ListView.prototype.get_list_settings_fields = function () {
+			const fields = _original_get_fields.call(this) || [];
+			if (!fields.some((f) => f.fieldname === "show_created_by")) {
+				fields.push({
+					fieldname: "show_created_by",
+					fieldtype: "Check",
+					label: __("Show Created By"),
+					default: cint(this.list_view_settings ? this.list_view_settings.show_created_by : 0),
+				});
+			}
+			return fields;
+		};
+	}
+
+	if (frappe.views.ListView.prototype.show_list_settings_dialog) {
+		const _original_show_dialog = frappe.views.ListView.prototype.show_list_settings_dialog;
+		frappe.views.ListView.prototype.show_list_settings_dialog = function () {
+			_original_show_dialog.call(this);
+
+			const dialog =
+				this.list_settings_dialog ||
+				this.settings_dialog ||
+				(cur_dialog && (cur_dialog.title === __("List Settings") || cur_dialog.title === __("List View Settings"))
+					? cur_dialog
+					: null);
+
+			if (dialog && !dialog.has_field("show_created_by")) {
+				dialog.add_field({
+					fieldname: "show_created_by",
+					fieldtype: "Check",
+					label: __("Show Created By"),
+					default: cint(this.list_view_settings ? this.list_view_settings.show_created_by : 0),
+				});
+				if (this.list_view_settings && this.list_view_settings.show_created_by !== undefined) {
+					dialog.set_value("show_created_by", cint(this.list_view_settings.show_created_by));
+				}
+			}
+		};
+	}
 }
 
 // Execute immediately if ListView is already loaded, else wait for app_ready

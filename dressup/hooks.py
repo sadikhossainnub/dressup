@@ -203,6 +203,7 @@ doc_events = {
 	},
 	"Sales Invoice": {
 		"before_submit": "dressup.dressup.loyalty_auto_assign.auto_assign_loyalty_program",
+		"on_submit": "dressup.dressup.loyalty_auto_assign.create_custom_loyalty_point_entry",
 		# Discount Approval guard: block if source SO discount is not approved
 		"validate": "dressup.dressup.custom_scripts.discount_approval_guard.block_if_not_approved",
 	},
@@ -248,6 +249,8 @@ scheduler_events = {
 override_whitelisted_methods = {
 	"erpnext.stock.get_item_details.get_item_details": "dressup.overrides.item_details_fix.get_item_details",
 	"erpnext.controllers.accounts_controller.update_child_qty_rate": "dressup.overrides.update_child_qty_rate_override.update_child_qty_rate",
+	"erpnext.accounts.doctype.loyalty_program.loyalty_program.get_loyalty_program_details_with_points": "dressup.dressup.loyalty_auto_assign.custom_get_loyalty_program_details_with_points",
+	"erpnext.accounts.doctype.sales_invoice.sales_invoice.get_loyalty_program_details_with_points": "dressup.dressup.loyalty_auto_assign.custom_get_loyalty_program_details_with_points",
 }
 #
 # each overriding function accepts a `data` argument;

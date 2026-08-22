@@ -7,13 +7,17 @@ import frappe
 def after_install():
 	add_net_qty_to_shipping_rule()
 	create_work_order_report()
+	create_customer_ledger_report()
 	add_show_created_by_custom_field()
+	add_tier_enable_amount_custom_field()
 
 
 def after_migrate():
 	add_net_qty_to_shipping_rule()
 	create_work_order_report()
+	create_customer_ledger_report()
 	add_show_created_by_custom_field()
+	add_tier_enable_amount_custom_field()
 
 
 def create_work_order_report():
@@ -30,6 +34,20 @@ def create_work_order_report():
 		report.insert()
 		frappe.db.commit()
 
+
+def create_customer_ledger_report():
+	if not frappe.db.exists("Report", "Customer Ledger Report"):
+		report = frappe.get_doc({
+			"doctype": "Report",
+			"report_name": "Customer Ledger Report",
+			"ref_doctype": "Customer",
+			"report_type": "Script Report",
+			"is_standard": "Yes",
+			"module": "DressUp",
+		})
+		report.flags.ignore_permissions = True
+		report.insert()
+		frappe.db.commit()
 
 
 def add_net_qty_to_shipping_rule():
@@ -86,3 +104,22 @@ def add_show_created_by_custom_field():
 		cf.insert()
 		frappe.db.commit()
 		frappe.clear_cache(doctype="List View Settings")
+
+
+def add_tier_enable_amount_custom_field():
+	if not frappe.db.exists("Custom Field", {"dt": "Loyalty Program Collection", "fieldname": "tier_enable_amount"}):
+		cf = frappe.get_doc({
+			"doctype": "Custom Field",
+			"dt": "Loyalty Program Collection",
+			"fieldname": "tier_enable_amount",
+			"label": "Tier Enable Amount (Check Point)",
+			"fieldtype": "Currency",
+			"insert_after": "min_spent",
+			"description": "Minimum total spend in current month (1st to 30th/31st) to activate this Tier.",
+			"module": "DressUp"
+		})
+		cf.flags.ignore_permissions = True
+		cf.insert()
+		frappe.db.commit()
+		frappe.clear_cache(doctype="Loyalty Program Collection")
+
