@@ -219,6 +219,12 @@ doc_events = {
 	"Purchase Order": {
 		# Set approval status to Pending and notify PO Approvers after submit
 		"on_submit": "dressup.dressup.custom_scripts.purchase_order.notify_approvers_on_submit",
+	},
+	"Purchase Receipt": {
+		"validate": "dressup.dressup.custom_scripts.purchase_order.validate_po_approval_guard",
+	},
+	"Purchase Invoice": {
+		"validate": "dressup.dressup.custom_scripts.purchase_order.validate_po_approval_guard",
 	}
 }
 

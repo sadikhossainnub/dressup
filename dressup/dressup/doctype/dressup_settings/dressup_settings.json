@@ -7,7 +7,9 @@
  "engine": "InnoDB",
  "field_order": [
   "default_pps_inspection",
-  "enable_discount_approval_notifications"
+  "enable_discount_approval_notifications",
+  "po_approval_section",
+  "po_approval_roles"
  ],
  "fields": [
   {
@@ -17,18 +19,30 @@
    "options": "Quality Inspection Template"
   },
   {
+   "default": 1,
+   "description": "Send email and in-app alerts to Discount Approvers when a Sales Order requires approval.",
    "fieldname": "enable_discount_approval_notifications",
    "fieldtype": "Check",
-   "label": "Enable Discount Approval Notifications",
-   "description": "Send email and in-app alerts to Discount Approvers when a Sales Order requires approval.",
-   "default": 1
+   "label": "Enable Discount Approval Notifications"
+  },
+  {
+   "fieldname": "po_approval_section",
+   "fieldtype": "Section Break",
+   "label": "Purchase Order Approval Settings"
+  },
+  {
+   "description": "Select the user roles permitted to approve and reject Purchase Orders. If empty, defaults to 'PO Approver'.",
+   "fieldname": "po_approval_roles",
+   "fieldtype": "Table MultiSelect",
+   "label": "PO Approval Roles",
+   "options": "PO Approval Role"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-05-01 20:28:25.113428",
+ "modified": "2026-08-26 11:45:00.000000",
  "modified_by": "Administrator",
  "module": "DressUp",
  "name": "Dressup Settings",

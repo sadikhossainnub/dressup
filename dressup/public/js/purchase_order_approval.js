@@ -1,13 +1,14 @@
 /**
- * Purchase Order – Role-Based Approval Buttons
+ * Purchase Order – Dynamic Role-Based Approval Buttons & Button Guard
  *
- * Shown only when:
- *   - Current user has the "PO Approver" role
- *   - Document is submitted (docstatus == 1)
- *   - custom_po_approval_status is "Pending"
- *
- * Security: button visibility is UI-only.
- * Real enforcement lives in server-side whitelisted methods which re-check the role.
+ * Flow:
+ * 1. If PO is submitted (docstatus == 1) and custom_po_approval_status is not "Approved" (Pending or Rejected):
+ *    - Suppress/clear ALL standard buttons (Create, Update Items, etc.) for ALL users.
+ * 2. If status is "Pending":
+ *    - Check current user roles against configured roles from DressUp Settings -> PO Approval Roles.
+ *    - If authorized, show "Approve" and "Reject" buttons under "PO Approval".
+ * 3. If status is "Approved":
+ *    - Standard ERPNext buttons (Create -> Purchase Receipt/Invoice, etc.) appear as normal.
  */
 
 frappe.ui.form.on("Purchase Order", {
@@ -26,34 +27,55 @@ function _render_po_approval_ui(frm) {
 		_render_status_banner(frm, status);
 	}
 
-	// Only show action buttons if user is a PO Approver AND status is Pending
-	if (
-		frm.doc.docstatus !== 1 ||
-		status !== "Pending" ||
-		!frappe.user.has_role("PO Approver")
-	) return;
+	// Guard: Suppress ALL action buttons for ALL users if doc is submitted and NOT Approved
+	if (frm.doc.docstatus === 1 && status !== "Approved") {
+		frm.clear_custom_buttons();
+		frm.page.clear_inner_toolbar();
+	}
 
-	// Approve button
-	frm.add_custom_button(
-		__("Approve"),
-		() => _do_approve(frm),
-		__("PO Approval")
-	);
+	// Only check for approval buttons if doc is submitted and status is Pending
+	if (frm.doc.docstatus !== 1 || status !== "Pending") {
+		return;
+	}
 
-	// Reject button
-	frm.add_custom_button(
-		__("Reject"),
-		() => _do_reject(frm),
-		__("PO Approval")
-	);
+	// Fetch allowed PO approver roles dynamically from DressUp Settings
+	frappe.call({
+		method: "dressup.dressup.custom_scripts.purchase_order.get_po_approver_roles",
+		callback(r) {
+			const allowed_roles = r.message || ["PO Approver"];
+			const can_approve = allowed_roles.some((role) => frappe.user.has_role(role));
 
-	// Style the PO Approval group button as warning
-	frm.page.btn_primary.removeClass("btn-primary").addClass("btn-default");
-	frm.page
-		.get_inner_toolbar()
-		.find(`[data-label="${encodeURIComponent(__("PO Approval"))}"]`)
-		.removeClass("btn-default")
-		.addClass("btn-warning");
+			if (!can_approve) {
+				return;
+			}
+
+			// Clear custom buttons again before adding approval options to prevent duplicates
+			frm.clear_custom_buttons();
+			frm.page.clear_inner_toolbar();
+
+			// Add Approve button
+			frm.add_custom_button(
+				__("Approve"),
+				() => _do_approve(frm),
+				__("PO Approval")
+			);
+
+			// Add Reject button
+			frm.add_custom_button(
+				__("Reject"),
+				() => _do_reject(frm),
+				__("PO Approval")
+			);
+
+			// Style the PO Approval group button
+			frm.page.btn_primary.removeClass("btn-primary").addClass("btn-default");
+			frm.page
+				.get_inner_toolbar()
+				.find(`[data-label="${encodeURIComponent(__("PO Approval"))}"]`)
+				.removeClass("btn-default")
+				.addClass("btn-warning");
+		},
+	});
 }
 
 function _render_status_banner(frm, status) {
