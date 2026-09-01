@@ -262,7 +262,7 @@ class ItemSearch {
 		let stock_cards_html = data.stock.map(s => `
 			<div class="stock-card">
 				<div class="stock-card-warehouse">
-					<span class="indicator-pill ${s.qty > 0 ? 'green' : 'red'}"></span>
+					<span class="stock-status-dot ${s.qty > 0 ? 'green' : 'red'}"></span>
 					${s.warehouse}
 				</div>
 				<div class="stock-card-details">
@@ -306,7 +306,7 @@ class ItemSearch {
 						<tbody>
 							${data.stock.map(s => `
 								<tr>
-									<td><span class="indicator-pill ${s.qty > 0 ? 'green' : 'red'}"></span> ${s.warehouse}</td>
+									<td><span class="stock-status-dot ${s.qty > 0 ? 'green' : 'red'}"></span> ${s.warehouse}</td>
 									<td class="text-right font-weight-bold">${s.qty} ${data.uom}</td>
 									<td class="text-right">${s.reserved_qty || 0} ${data.uom}</td>
 									<td class="text-right">${s.unreserved_qty || 0} ${data.uom}</td>
@@ -515,15 +515,15 @@ class ItemSearch {
 			}
 
 			/* ===== Search Section ===== */
-			.search-section {
+			.item-search-container .search-section {
 				position: relative;
 			}
-			.search-input-group {
+			.item-search-container .search-input-group {
 				max-width: 500px;
 				display: flex;
 				align-items: stretch;
 			}
-			.search-input-group .form-control {
+			.item-search-container .search-input-group .form-control {
 				border-radius: 10px 0 0 10px;
 				border: 2px solid #e9ecef;
 				border-right: none;
@@ -533,17 +533,17 @@ class ItemSearch {
 				height: auto;
 				padding: 12px 16px;
 			}
-			.search-input-group .form-control:focus {
+			.item-search-container .search-input-group .form-control:focus {
 				border-color: var(--primary-color, #2490EF);
 				box-shadow: none;
 			}
-			.search-input-group .form-control:focus + .input-group-append .btn-search {
+			.item-search-container .search-input-group .form-control:focus + .input-group-append .btn-search {
 				border-color: var(--primary-color, #2490EF);
 			}
-			.search-input-group .input-group-append {
+			.item-search-container .search-input-group .input-group-append {
 				display: flex;
 			}
-			.search-input-group .btn-search {
+			.item-search-container .search-input-group .btn-search {
 				border-radius: 0 10px 10px 0;
 				padding: 12px 24px;
 				min-width: 54px;
@@ -556,13 +556,13 @@ class ItemSearch {
 				font-size: 16px;
 				transition: background-color 0.2s, border-color 0.2s;
 			}
-			.search-input-group .btn-search:hover {
+			.item-search-container .search-input-group .btn-search:hover {
 				background-color: var(--primary-color-dark, #1a73e8);
 				border-color: var(--primary-color-dark, #1a73e8);
 			}
 
 			/* ===== Suggestions ===== */
-			.suggestions-container {
+			.item-search-container .suggestions-container {
 				max-width: 500px;
 				background: white;
 				border: 1px solid #e9ecef;
@@ -578,19 +578,19 @@ class ItemSearch {
 				overflow-y: auto;
 				max-height: 300px;
 			}
-			.suggestion-item {
+			.item-search-container .suggestion-item {
 				padding: 10px 15px;
 				cursor: pointer;
 				transition: background-color 0.2s;
 				border-bottom: 1px solid #f8f9fa;
 			}
-			.suggestion-item:last-child {
+			.item-search-container .suggestion-item:last-child {
 				border-bottom: none;
 			}
-			.suggestion-item:hover {
+			.item-search-container .suggestion-item:hover {
 				background-color: #f1f3f5;
 			}
-			.suggestion-icon {
+			.item-search-container .suggestion-icon {
 				width: 30px;
 				height: 30px;
 				background: #f8f9fa;
@@ -601,48 +601,48 @@ class ItemSearch {
 				margin-right: 12px;
 				color: #6c757d;
 			}
-			.suggestion-label {
+			.item-search-container .suggestion-label {
 				font-weight: 500;
 				font-size: 14px;
 				color: #212529;
 			}
-			.suggestion-type {
+			.item-search-container .suggestion-type {
 				font-size: 11px;
 				text-transform: uppercase;
 				letter-spacing: 0.5px;
 			}
 
 			/* ===== Item Card ===== */
-			.item-card {
+			.item-search-container .item-card {
 				border-radius: 15px;
 				overflow: hidden;
 			}
-			.img-placeholder {
+			.item-search-container .img-placeholder {
 				background: #e9ecef;
 				height: 180px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
 			}
-			.item-image {
+			.item-search-container .item-image {
 				box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 				border: 1px solid #eee;
 			}
-			.item-group-badge {
+			.item-search-container .item-group-badge {
 				white-space: nowrap;
 			}
 
 			/* ===== Description Section ===== */
-			.description-section {
+			.item-search-container .description-section {
 				margin-top: 15px;
 			}
-			.description-heading {
+			.item-search-container .description-heading {
 				color: red !important;
 				font-size: 1.5rem;
 				font-weight: 700;
 				margin-bottom: 8px;
 			}
-			.highlighted-description {
+			.item-search-container .highlighted-description {
 				background-color: #ffffcc;
 				border-left: 4px solid #ffc107;
 				border-top: 1px solid #ffe066;
@@ -656,8 +656,8 @@ class ItemSearch {
 				line-height: 1.6;
 			}
 
-			/* ===== Indicator ===== */
-			.indicator-pill {
+			/* ===== Stock Status Dot ===== */
+			.item-search-container .stock-status-dot {
 				height: 10px;
 				width: 10px;
 				border-radius: 50%;
@@ -665,29 +665,29 @@ class ItemSearch {
 				margin-right: 8px;
 				flex-shrink: 0;
 			}
-			.indicator-pill.green { background: #28a745; }
-			.indicator-pill.red { background: #dc3545; }
+			.item-search-container .stock-status-dot.green { background: #28a745; }
+			.item-search-container .stock-status-dot.red { background: #dc3545; }
 
 			/* ===== Stock Table (Desktop) ===== */
-			.stock-table-container {
+			.item-search-container .stock-table-container {
 				background: white;
 				padding: 12px;
 				border-radius: 10px;
 			}
 
 			/* ===== Stock Cards (Mobile) ===== */
-			.stock-cards-container {
+			.item-search-container .stock-cards-container {
 				display: flex;
 				flex-direction: column;
 				gap: 8px;
 			}
-			.stock-card {
+			.item-search-container .stock-card {
 				background: white;
 				border: 1px solid #e9ecef;
 				border-radius: 10px;
 				padding: 10px;
 			}
-			.stock-card-warehouse {
+			.item-search-container .stock-card-warehouse {
 				font-weight: 600;
 				font-size: 14px;
 				margin-bottom: 6px;
@@ -695,32 +695,32 @@ class ItemSearch {
 				align-items: center;
 				word-break: break-word;
 			}
-			.stock-card-details {
+			.item-search-container .stock-card-details {
 				display: flex;
 				justify-content: space-between;
 				gap: 8px;
 			}
-			.stock-card-detail {
+			.item-search-container .stock-card-detail {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
 				flex: 1;
 				text-align: center;
 			}
-			.stock-card-detail small {
+			.item-search-container .stock-card-detail small {
 				font-size: 11px;
 			}
-			.stock-card-detail strong {
+			.item-search-container .stock-card-detail strong {
 				font-size: 14px;
 			}
 
 			/* ===== Price Section ===== */
-			.price-table-container {
+			.item-search-container .price-table-container {
 				background: white;
 				padding: 12px;
 				border-radius: 10px;
 			}
-			.price-type-badge {
+			.item-search-container .price-type-badge {
 				display: inline-block;
 				padding: 2px 8px;
 				border-radius: 12px;
@@ -728,81 +728,81 @@ class ItemSearch {
 				font-weight: 600;
 				white-space: nowrap;
 			}
-			.price-type-badge.price-type-selling {
+			.item-search-container .price-type-badge.price-type-selling {
 				background: #d4edda;
 				color: #155724;
 			}
-			.price-type-badge.price-type-buying {
+			.item-search-container .price-type-badge.price-type-buying {
 				background: #cce5ff;
 				color: #004085;
 			}
-			.price-type-badge.price-type-n\/a {
+			.item-search-container .price-type-badge.price-type-n\/a {
 				background: #e9ecef;
 				color: #6c757d;
 			}
-			.price-cards-container {
+			.item-search-container .price-cards-container {
 				display: flex;
 				flex-direction: column;
 				gap: 8px;
 			}
-			.price-card {
+			.item-search-container .price-card {
 				background: white;
 				border: 1px solid #e9ecef;
 				border-radius: 10px;
 				padding: 10px;
 			}
-			.price-card-header {
+			.item-search-container .price-card-header {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				margin-bottom: 6px;
 			}
-			.price-card-rate {
+			.item-search-container .price-card-rate {
 				font-size: 16px;
 				margin-bottom: 4px;
 			}
-			.price-card-validity {
+			.item-search-container .price-card-validity {
 				font-size: 12px;
 			}
-			.price-card-validity i {
+			.item-search-container .price-card-validity i {
 				width: 16px;
 				margin-right: 4px;
 			}
-			.price-section h5 i {
+			.item-search-container .price-section h5 i {
 				margin-right: 6px;
 			}
 
 			/* ===== Reservation Section ===== */
-			.reservation-header {
+			.item-search-container .reservation-header {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				flex-wrap: wrap;
 				gap: 6px;
 			}
-			.reservation-header h5 i {
+			.item-search-container .reservation-header h5 i {
 				margin-right: 6px;
 			}
-			.reservation-total-badge {
+			.item-search-container .reservation-total-badge {
 				font-size: 13px;
 				padding: 6px 12px;
 			}
-			.reservation-table-container {
+			.item-search-container .reservation-table-container {
 				background: white;
 				padding: 12px;
 				border-radius: 10px;
 			}
-			.reservation-link {
+			.item-search-container .reservation-link {
 				font-weight: 600;
 				color: var(--primary-color, #5e64ff);
 				text-decoration: none;
 			}
-			.reservation-link:hover {
+			.item-search-container .reservation-link:hover {
 				text-decoration: underline;
 			}
 
 			/* Status badges */
-			.reservation-status-badge {
+			.item-search-container .reservation-status-badge {
 				display: inline-block;
 				padding: 3px 10px;
 				border-radius: 20px;
@@ -810,27 +810,27 @@ class ItemSearch {
 				font-weight: 600;
 				white-space: nowrap;
 			}
-			.reservation-status-badge.status-reserved,
-			.reservation-status-badge.status-partially-reserved {
+			.item-search-container .reservation-status-badge.status-reserved,
+			.item-search-container .reservation-status-badge.status-partially-reserved {
 				background: #fff3cd;
 				color: #856404;
 			}
-			.reservation-status-badge.status-partially-delivered {
+			.item-search-container .reservation-status-badge.status-partially-delivered {
 				background: #d4edda;
 				color: #155724;
 			}
-			.reservation-status-badge.status-pending-delivery {
+			.item-search-container .reservation-status-badge.status-pending-delivery {
 				background: #cce5ff;
 				color: #004085;
 			}
 
 			/* ===== Reservation Cards (Mobile) ===== */
-			.reservation-cards-container {
+			.item-search-container .reservation-cards-container {
 				display: flex;
 				flex-direction: column;
 				gap: 8px;
 			}
-			.reservation-card {
+			.item-search-container .reservation-card {
 				background: white;
 				border: 1px solid #e9ecef;
 				border-radius: 10px;
