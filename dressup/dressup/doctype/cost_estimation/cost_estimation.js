@@ -243,12 +243,14 @@ frappe.ui.form.on("Cost Estimation", {
 			// Stock Reservation button group
 			let has_unreserved_stock = false;
 			(frm.doc.materials || []).forEach(row => {
-				if (flt(row.qty) > flt(row.reserved_qty) && row.item_code && row.warehouse) {
+				let wh = row.warehouse || frm.doc.source_warehouse;
+				if (flt(row.qty) > flt(row.reserved_qty) && row.item_code && wh) {
 					has_unreserved_stock = true;
 				}
 			});
 			(frm.doc.accessories || []).forEach(row => {
-				if (flt(row.qty) > flt(row.reserved_qty) && row.itemcode && row.warehouse) {
+				let wh = row.warehouse || frm.doc.source_warehouse;
+				if (flt(row.qty) > flt(row.reserved_qty) && row.itemcode && wh) {
 					has_unreserved_stock = true;
 				}
 			});
@@ -352,6 +354,9 @@ frappe.ui.form.on("Cost Estimation", {
 			primary_action_label: __("Reserve Stock"),
 			primary_action: () => {
 				var selected_items = dialog.fields_dict.items.grid.get_selected_children();
+				if (!selected_items || selected_items.length === 0) {
+					selected_items = dialog.fields_dict.items.df.data || [];
+				}
 
 				if (selected_items && selected_items.length > 0) {
 					frappe.call({
@@ -362,7 +367,7 @@ frappe.ui.form.on("Cost Estimation", {
 								row_id: d.row_id,
 								child_doctype: d.child_doctype,
 								item_code: d.item_code,
-								warehouse: d.warehouse,
+								warehouse: d.warehouse || frm.doc.source_warehouse,
 								qty_to_reserve: d.qty_to_reserve
 							}))
 						},
@@ -382,13 +387,14 @@ frappe.ui.form.on("Cost Estimation", {
 
 		(frm.doc.materials || []).forEach((item) => {
 			let unreserved_qty = flt(item.qty) - flt(item.reserved_qty);
-			if (unreserved_qty > 0 && item.item_code && item.warehouse) {
+			let wh = item.warehouse || frm.doc.source_warehouse;
+			if (unreserved_qty > 0 && item.item_code && wh) {
 				dialog.fields_dict.items.df.data.push({
 					__checked: 1,
 					row_id: item.name,
 					child_doctype: "Cost Estimation Material",
 					item_code: item.item_code,
-					warehouse: item.warehouse,
+					warehouse: wh,
 					qty_to_reserve: unreserved_qty,
 				});
 			}
@@ -396,13 +402,14 @@ frappe.ui.form.on("Cost Estimation", {
 
 		(frm.doc.accessories || []).forEach((item) => {
 			let unreserved_qty = flt(item.qty) - flt(item.reserved_qty);
-			if (unreserved_qty > 0 && item.itemcode && item.warehouse) {
+			let wh = item.warehouse || frm.doc.source_warehouse;
+			if (unreserved_qty > 0 && item.itemcode && wh) {
 				dialog.fields_dict.items.df.data.push({
 					__checked: 1,
 					row_id: item.name,
 					child_doctype: "Cost Estimation Accessory",
 					item_code: item.itemcode,
-					warehouse: item.warehouse,
+					warehouse: wh,
 					qty_to_reserve: unreserved_qty,
 				});
 			}
@@ -468,6 +475,9 @@ frappe.ui.form.on("Cost Estimation", {
 			primary_action_label: __("Unreserve Stock"),
 			primary_action: () => {
 				var selected_entries = dialog.fields_dict.sr_entries.grid.get_selected_children();
+				if (!selected_entries || selected_entries.length === 0) {
+					selected_entries = dialog.fields_dict.sr_entries.df.data || [];
+				}
 
 				if (selected_entries && selected_entries.length > 0) {
 					frappe.call({
@@ -501,6 +511,7 @@ frappe.ui.form.on("Cost Estimation", {
 					r.message.forEach((sre) => {
 						if (flt(sre.reserved_qty) > flt(sre.delivered_qty)) {
 							dialog.fields_dict.sr_entries.df.data.push({
+								__checked: 1,
 								sre: sre.name,
 								item_code: sre.item_code,
 								warehouse: sre.warehouse,

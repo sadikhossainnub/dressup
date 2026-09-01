@@ -67,7 +67,7 @@ def get_item_details(barcode):
     # Get stock details
     stock_details = frappe.get_all(
         "Bin",
-        filters={"item_code": item_code, "actual_qty": [">", 0]},
+        filters={"item_code": item_code},
         fields=["warehouse", "actual_qty as qty", "reserved_qty", "valuation_rate"],
     )
 
@@ -81,14 +81,32 @@ def get_item_details(barcode):
             reservation.get("remaining_qty") or 0
         )
 
+    existing_warehouses = set()
+    filtered_stock = []
     for stock in stock_details:
+        wh = stock.get("warehouse")
+        existing_warehouses.add(wh)
         bin_reserved = stock.get("reserved_qty") or 0
-        live_reserved = reserved_by_warehouse.get(stock.get("warehouse"), 0)
+        live_reserved = reserved_by_warehouse.get(wh, 0)
         effective_reserved = live_reserved if live_reserved > 0 else bin_reserved
         stock["reserved_qty"] = effective_reserved
         stock["unreserved_qty"] = (stock.get("qty") or 0) - effective_reserved
         if not has_cost:
             stock.pop("valuation_rate", None)
+        if stock.get("qty") > 0 or effective_reserved > 0:
+            filtered_stock.append(stock)
+
+    # Add warehouses that have live reservations but no Bin entry
+    for wh, live_res_qty in reserved_by_warehouse.items():
+        if wh not in existing_warehouses and live_res_qty > 0:
+            filtered_stock.append({
+                "warehouse": wh,
+                "qty": 0,
+                "reserved_qty": live_res_qty,
+                "unreserved_qty": -live_res_qty,
+            })
+
+    stock_details = filtered_stock
 
     # Get item prices
     prices = get_item_prices(item_code, has_cost)
@@ -195,8 +213,11 @@ def get_reservation_details(item_code):
             for sre in sre_list:
                 # Ensure the linked voucher is submitted and not cancelled/draft/deleted
                 if sre.voucher_type and sre.voucher_no:
-                    voucher_docstatus = frappe.db.get_value(sre.voucher_type, sre.voucher_no, "docstatus")
-                    if voucher_docstatus != 1:
+                    if frappe.db.exists(sre.voucher_type, sre.voucher_no):
+                        voucher_docstatus = frappe.db.get_value(sre.voucher_type, sre.voucher_no, "docstatus")
+                        if voucher_docstatus != 1:
+                            continue
+                    else:
                         continue
 
                 remaining = (sre.reserved_qty or 0) - (sre.delivered_qty or 0)
@@ -204,9 +225,15 @@ def get_reservation_details(item_code):
                     customer = ""
                     if sre.voucher_type == "Sales Order" and sre.voucher_no:
                         customer = frappe.db.get_value("Sales Order", sre.voucher_no, "customer_name") or ""
+                    elif sre.voucher_type == "Cost Estimation" and sre.voucher_no:
+                        customer = frappe.db.get_value("Cost Estimation", sre.voucher_no, "tech_pack_no") or ""
 
                     # Get full name of the user who created the reservation
                     reserved_by = frappe.db.get_value("User", sre.owner, "full_name") or sre.owner or ""
+
+                    date_str = ""
+                    if sre.creation:
+                        date_str = str(sre.creation).split()[0]
 
                     reservations.append({
                         "source": "Stock Reservation",
@@ -219,10 +246,10 @@ def get_reservation_details(item_code):
                         "customer": customer,
                         "reserved_by": reserved_by,
                         "status": sre.status,
-                        "date": str(sre.creation.date()) if sre.creation else ""
+                        "date": date_str
                     })
-        except Exception:
-            pass
+        except Exception as e:
+            frappe.log_error(f"Error in get_reservation_details for {item_code}: {e}")
 
     # 2. If no Stock Reservation Entries, fall back to Sales Order Items with pending delivery
     if not reservations:
@@ -249,6 +276,9 @@ def get_reservation_details(item_code):
 
             for row in pending_so_items:
                 reserved_by = frappe.db.get_value("User", row.so_owner, "full_name") or row.so_owner or ""
+                date_str = ""
+                if row.transaction_date:
+                    date_str = str(row.transaction_date).split()[0]
 
                 reservations.append({
                     "source": "Sales Order",
@@ -261,10 +291,10 @@ def get_reservation_details(item_code):
                     "customer": row.customer_name or "",
                     "reserved_by": reserved_by,
                     "status": "Pending Delivery",
-                    "date": str(row.transaction_date) if row.transaction_date else ""
+                    "date": date_str
                 })
-        except Exception:
-            pass
+        except Exception as e:
+            frappe.log_error(f"Error fetching pending SO items for {item_code}: {e}")
 
     return reservations
 

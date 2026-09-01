@@ -105,16 +105,12 @@ class CostEstimation(Document):
 			self.hand_embroidery_only = 0
 	
 	def on_update(self):
-		"""Auto create/cancel stock reservation on save based on reserve_stock checkbox"""
-		if self.reserve_stock:
-			# Cancel existing reservations first (to handle item changes)
-			self._cancel_existing_reservations()
-			# Create fresh reservations
-			self.create_stock_reservation_entries()
-			frappe.msgprint("Stock Reservation Entries created successfully.", indicator="green", alert=True)
-		else:
-			# If reserve_stock is unchecked, cancel any existing reservations
-			if self._has_existing_reservations():
+		"""Auto create/cancel stock reservation on save based on reserve_stock checkbox for submitted documents"""
+		if self.docstatus == 1:
+			if self.reserve_stock and not self._has_existing_reservations():
+				self.create_stock_reservation_entries()
+				frappe.msgprint("Stock Reservation Entries created successfully.", indicator="green", alert=True)
+			elif not self.reserve_stock and self._has_existing_reservations():
 				self._cancel_existing_reservations()
 				frappe.msgprint("Stock Reservation Entries cancelled.", indicator="orange", alert=True)
 
@@ -143,7 +139,7 @@ class CostEstimation(Document):
 		})
 
 	def _cancel_existing_reservations(self):
-		"""Cancel and delete all associated Stock Reservation Entries, reset child table qty"""
+		"""Cancel all associated Stock Reservation Entries, reset child table qty"""
 		entries = frappe.get_all("Stock Reservation Entry", filters={
 			"voucher_type": self.doctype,
 			"voucher_no": self.name,
@@ -154,7 +150,8 @@ class CostEstimation(Document):
 			sre = frappe.get_doc("Stock Reservation Entry", entry.name)
 			if sre.docstatus == 1:
 				sre.cancel()
-			frappe.delete_doc("Stock Reservation Entry", entry.name)
+			elif sre.docstatus == 0:
+				frappe.delete_doc("Stock Reservation Entry", entry.name)
 
 		self.db_set("stock_reservation_status", "Unreserved")
 
@@ -166,24 +163,32 @@ class CostEstimation(Document):
 
 	def create_stock_reservation_entries(self):
 		"""Create Stock Reservation Entry for each item in materials and accessories"""
+		if self.docstatus != 1:
+			return
+
 		has_reservation = False
 		
 		# Process Materials
 		for item in self.materials:
-			if item.item_code and item.warehouse and flt(item.qty) > 0:
-				self.create_reservation_entry(item.item_code, item.warehouse, item.qty, item)
+			wh = item.warehouse or self.source_warehouse
+			unreserved_qty = flt(item.qty) - flt(item.reserved_qty)
+			if item.item_code and wh and unreserved_qty > 0:
+				self.create_reservation_entry(item.item_code, wh, unreserved_qty, item, "Cost Estimation Material")
 				has_reservation = True
 		
 		# Process Accessories
 		for item in self.accessories:
-			if item.itemcode and item.warehouse and flt(item.qty) > 0:
-				self.create_reservation_entry(item.itemcode, item.warehouse, item.qty, item)
+			wh = item.warehouse or self.source_warehouse
+			unreserved_qty = flt(item.qty) - flt(item.reserved_qty)
+			if item.itemcode and wh and unreserved_qty > 0:
+				self.create_reservation_entry(item.itemcode, wh, unreserved_qty, item, "Cost Estimation Accessory")
 				has_reservation = True
 
 		if has_reservation:
 			self.db_set("stock_reservation_status", "Reserved")
+			self.db_set("reserve_stock", 1)
 		
-	def create_reservation_entry(self, item_code, warehouse, qty, row):
+	def create_reservation_entry(self, item_code, warehouse, qty, row, child_doctype=None):
 		"""Helper to create a single Stock Reservation Entry"""
 		from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import get_available_qty_to_reserve  # type: ignore
 		
@@ -204,7 +209,10 @@ class CostEstimation(Document):
 		})
 		sre.insert(ignore_permissions=True)
 		sre.submit()
-		row.db_set("reserved_qty", qty)
+		new_reserved = flt(row.reserved_qty) + flt(qty)
+		row.db_set("reserved_qty", new_reserved)
+		if child_doctype:
+			frappe.db.set_value(child_doctype, row.name, "reserved_qty", new_reserved)
 
 	def cancel_stock_reservation_entries(self):
 		"""Cancel and delete all associated Stock Reservation Entries"""
@@ -395,10 +403,10 @@ def create_stock_reservation_entries_via_dialog(docname, items_details):
 		row_id = item.get("row_id")
 		child_doctype = item.get("child_doctype")
 		item_code = item.get("item_code")
-		warehouse = item.get("warehouse")
+		warehouse = item.get("warehouse") or doc.source_warehouse
 		qty_to_reserve = flt(item.get("qty_to_reserve"))
 		
-		if qty_to_reserve <= 0:
+		if qty_to_reserve <= 0 or not item_code or not warehouse:
 			continue
 			
 		available_qty = get_available_qty_to_reserve(item_code, warehouse)
@@ -420,8 +428,9 @@ def create_stock_reservation_entries_via_dialog(docname, items_details):
 		sre.insert(ignore_permissions=True)
 		sre.submit()
 		
-		# Update the specific child table row
-		frappe.db.set_value(child_doctype, row_id, "reserved_qty", qty_to_reserve)
+		# Update the specific child table row incrementally
+		current_reserved = flt(frappe.db.get_value(child_doctype, row_id, "reserved_qty"))
+		frappe.db.set_value(child_doctype, row_id, "reserved_qty", current_reserved + qty_to_reserve)
 		created_any = True
 		
 	if created_any:
@@ -478,6 +487,8 @@ def cancel_stock_reservation_entries_via_dialog(docname, sre_list):
 		sre = frappe.get_doc("Stock Reservation Entry", sre_name)
 		if sre.docstatus == 1:
 			sre.cancel()
+		elif sre.docstatus == 0:
+			frappe.delete_doc("Stock Reservation Entry", sre_name)
 			
 		# Find the matching row in materials or accessories and reset/reduce its reserved_qty
 		row_found = False
@@ -494,8 +505,6 @@ def cancel_stock_reservation_entries_via_dialog(docname, sre_list):
 					row.db_set("reserved_qty", new_reserved)
 					row_found = True
 					break
-					
-		frappe.delete_doc("Stock Reservation Entry", sre_name)
 		
 	# Recalculate status
 	has_reservation = False
