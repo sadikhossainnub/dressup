@@ -3,6 +3,13 @@
 
 frappe.ui.form.on("Pre Production Sample", {
 	refresh(frm) {
+		// Only System Manager role can edit production_qty in size_chart_in_inch child table
+		const is_system_manager = frappe.user.has_role("System Manager");
+		frm.set_df_property("size_chart_in_inch", "read_only", is_system_manager ? 0 : 1, frm.doc.name, "production_qty");
+		if (frm.fields_dict.size_chart_in_inch && frm.fields_dict.size_chart_in_inch.grid) {
+			frm.fields_dict.size_chart_in_inch.grid.update_docfield_property("production_qty", "read_only", is_system_manager ? 0 : 1);
+		}
+
 		if (!frm.is_new() && frm.doc.docstatus === 0) {
 			frappe.call({
 				method: 'frappe.client.get_count',
@@ -282,6 +289,7 @@ frappe.ui.form.on("Pre Production Sample", {
 							fieldname: "production_qty",
 							fieldtype: "Int",
 							label: __("Production Qty"),
+							read_only: frappe.user.has_role("System Manager") ? 0 : 1,
 							in_list_view: 1
 						},
 						{
