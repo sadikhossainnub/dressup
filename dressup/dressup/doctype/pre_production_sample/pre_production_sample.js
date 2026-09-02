@@ -97,6 +97,14 @@ frappe.ui.form.on("Pre Production Sample", {
 	},
 
 	before_submit(frm) {
+		for (let row of (frm.doc.size_chart_in_inch || [])) {
+			if (!row.production_qty || row.production_qty === 0) {
+				frappe.throw(__("Row {0} (Size: {1}): Production Qty must be filled before submitting.", [row.idx, row.size_chart_in_inch || ""]));
+				frappe.validated = false;
+				return false;
+			}
+		}
+
 		// Check if Quality Inspection exists and is accepted
 		return frappe.call({
 			method: 'frappe.client.get_list',

@@ -32,12 +32,21 @@ class PreProductionSample(Document):
 		"""Auto-populate fields from Tech Pack"""
 		if self.tech_pack_no:
 			self.fetch_tech_pack_data()
+		self.validate_production_qty()
 		self.calculate_total_fabrics()
 		self.calculate_total_trim_accessories()
 		self.calculate_total_tailoring()
 		self.calculate_total_finishing()
 		self.calculate_total_production_qty()
 		self.calculate_suggested_selling_prices()
+
+	def validate_production_qty(self):
+		"""Ensure production_qty in size_chart_in_inch is filled before submitting"""
+		for row in (self.size_chart_in_inch or []):
+			if not row.production_qty or row.production_qty == 0:
+				frappe.throw(
+					f"Row {row.idx} (Size: {row.size_chart_in_inch}): Production Qty must be filled before submitting."
+				)
 
 	def calculate_total_fabrics(self):
 		"""Calculate total amount of all fabrics"""
