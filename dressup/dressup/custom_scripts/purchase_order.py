@@ -246,3 +246,26 @@ def _notify_owner(po_doc, status, reason=None):
 		}).insert(ignore_permissions=True)
 	except Exception:
 		pass
+
+
+def fetch_purpose_from_material_request(doc, method=None):
+	"""
+	Auto-fetch Purpose (custom_purpose) from Material Request when creating or saving Purchase Order.
+	- Parent level: Fetches Purpose from linked Material Request if doc.custom_purpose is empty.
+	- Child level: Fetches Purpose from linked Material Request Item if item.custom_purpose is empty.
+	"""
+	# Fetch parent custom_purpose from Material Request if not already set
+	if not doc.get("custom_purpose"):
+		mr_names = [item.material_request for item in doc.get("items", []) if getattr(item, "material_request", None)]
+		if mr_names:
+			mr_purpose = frappe.db.get_value("Material Request", mr_names[0], "custom_purpose")
+			if mr_purpose:
+				doc.custom_purpose = mr_purpose
+
+	# Fetch child custom_purpose from Material Request Item if not already set
+	for item in doc.get("items", []):
+		if not item.get("custom_purpose") and getattr(item, "material_request_item", None):
+			mr_item_purpose = frappe.db.get_value("Material Request Item", item.material_request_item, "custom_purpose")
+			if mr_item_purpose:
+				item.custom_purpose = mr_item_purpose
+

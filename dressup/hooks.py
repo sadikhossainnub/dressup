@@ -217,6 +217,7 @@ doc_events = {
 		"on_trash": "dressup.dressup.doctype.pre_production_sample.pre_production_sample.unlink_stock_entry_from_pps"
 	},
 	"Purchase Order": {
+		"validate": "dressup.dressup.custom_scripts.purchase_order.fetch_purpose_from_material_request",
 		# Set approval status to Pending and notify PO Approvers after submit
 		"on_submit": "dressup.dressup.custom_scripts.purchase_order.notify_approvers_on_submit",
 	},
