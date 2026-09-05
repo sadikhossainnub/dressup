@@ -207,6 +207,9 @@ def get_raw_activity_logs(filters):
 			doctype_permission_cache[dt] = frappe.has_permission(dt, "read")
 		return doctype_permission_cache[dt]
 
+	if doctype_filter and not can_read_doctype(doctype_filter):
+		return []
+
 	# Fetch user full names
 	users = frappe.db.get_all("User", fields=["name", "full_name"])
 	for u in users:
