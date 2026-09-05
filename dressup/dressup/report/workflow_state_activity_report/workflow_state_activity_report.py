@@ -11,12 +11,53 @@ def execute(filters=None):
 	if not filters:
 		filters = {}
 
+	ensure_report_roles_and_permissions()
+
 	columns = get_columns(filters)
 	data = get_data(filters)
 	chart = get_chart_data(data, filters)
 	report_summary = get_report_summary(data, filters)
 
 	return columns, data, None, chart, report_summary
+
+
+def ensure_report_roles_and_permissions():
+	roles_to_ensure = [
+		"Fashion Designer Manager",
+		"Production Manager",
+		"Quality Manager",
+		"Sales Manager",
+		"Purchase Manager",
+		"Stock Manager",
+		"HR Manager",
+	]
+
+	try:
+		for r in roles_to_ensure:
+			if not frappe.db.exists("Role", r):
+				role_doc = frappe.get_doc({
+					"doctype": "Role",
+					"role_name": r,
+					"desk_access": 1,
+				})
+				role_doc.insert(ignore_permissions=True)
+
+		report_name = "Workflow State Activity Report"
+		if frappe.db.exists("Report", report_name):
+			report_doc = frappe.get_doc("Report", report_name)
+			existing_roles = [d.role for d in report_doc.roles]
+			all_roles = ["System Manager"] + roles_to_ensure
+
+			updated = False
+			for r in all_roles:
+				if r not in existing_roles:
+					report_doc.append("roles", {"role": r})
+					updated = True
+
+			if updated:
+				report_doc.save(ignore_permissions=True)
+	except Exception:
+		pass
 
 
 def get_columns(filters):
