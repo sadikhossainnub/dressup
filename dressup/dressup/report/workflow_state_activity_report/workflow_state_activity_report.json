@@ -15,5 +15,31 @@
  "owner": "Administrator",
  "ref_doctype": "Workflow Action",
  "report_name": "Workflow State Activity Report",
- "report_type": "Script Report"
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Design Manager"
+  },
+  {
+   "role": "Production Manager"
+  },
+  {
+   "role": "Quality Manager"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Purchase Manager"
+  },
+  {
+   "role": "Stock Manager"
+  },
+  {
+   "role": "HR Manager"
+  }
+ ]
 }

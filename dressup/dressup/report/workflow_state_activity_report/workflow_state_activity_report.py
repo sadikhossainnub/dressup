@@ -198,6 +198,14 @@ def get_raw_activity_logs(filters):
 
 	logs = []
 	user_map = {}
+	doctype_permission_cache = {}
+
+	def can_read_doctype(dt):
+		if not dt:
+			return False
+		if dt not in doctype_permission_cache:
+			doctype_permission_cache[dt] = frappe.has_permission(dt, "read")
+		return doctype_permission_cache[dt]
 
 	# Fetch user full names
 	users = frappe.db.get_all("User", fields=["name", "full_name"])
@@ -235,6 +243,10 @@ def get_raw_activity_logs(filters):
 	)
 
 	for c in comments:
+		# Check read permission for the reference doctype
+		if not can_read_doctype(c.reference_doctype):
+			continue
+
 		user_id = c.comment_email or c.comment_by
 		full_name = user_map.get(user_id, c.comment_by or user_id)
 		prev_state, new_state = parse_comment_content(c.content)
@@ -297,6 +309,9 @@ def get_raw_activity_logs(filters):
 		)
 
 		for wa in workflow_actions:
+			if not can_read_doctype(wa.reference_doctype):
+				continue
+
 			user_id = wa.completed_by or wa.user
 			full_name = user_map.get(user_id, user_id)
 
