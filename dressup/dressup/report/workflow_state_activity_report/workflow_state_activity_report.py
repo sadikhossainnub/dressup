@@ -49,6 +49,10 @@ def ensure_report_roles_and_permissions():
 			all_roles = ["System Manager"] + roles_to_ensure
 
 			updated = False
+			if report_doc.ref_doctype != "":
+				report_doc.ref_doctype = ""
+				updated = True
+
 			for r in all_roles:
 				if r not in existing_roles:
 					report_doc.append("roles", {"role": r})

@@ -32,6 +32,10 @@ def execute():
 		all_roles = ["System Manager"] + manager_roles
 
 		updated = False
+		if report_doc.ref_doctype != "":
+			report_doc.ref_doctype = ""
+			updated = True
+
 		for r in all_roles:
 			if r not in existing_roles:
 				report_doc.append("roles", {"role": r})
