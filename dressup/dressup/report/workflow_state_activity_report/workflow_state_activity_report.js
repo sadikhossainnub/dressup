@@ -36,6 +36,26 @@ frappe.query_reports["Workflow State Activity Report"] = {
 					},
 				};
 			},
+			on_change: function () {
+				let reference_doctype = frappe.query_report.get_filter_value("reference_doctype");
+				if (!reference_doctype) {
+					frappe.query_report.set_filter_value("reference_name", "");
+				}
+			},
+		},
+		{
+			fieldname: "reference_name",
+			label: __("Document"),
+			fieldtype: "Dynamic Link",
+			options: "reference_doctype",
+			get_options: function () {
+				let reference_doctype = frappe.query_report.get_filter_value("reference_doctype");
+				if (!reference_doctype) {
+					frappe.msgprint(__("Please select a DocType first"));
+					return "";
+				}
+				return reference_doctype;
+			},
 		},
 		{
 			fieldname: "workflow_state",

@@ -220,6 +220,7 @@ def get_raw_activity_logs(filters):
 	to_date = filters.get("to_date")
 	user_filter = filters.get("user")
 	doctype_filter = filters.get("reference_doctype")
+	docname_filter = filters.get("reference_name") or filters.get("document_name")
 	state_filter = filters.get("workflow_state")
 
 	logs = []
@@ -257,6 +258,9 @@ def get_raw_activity_logs(filters):
 	if doctype_filter:
 		comment_conditions.append("reference_doctype = %(doctype)s")
 		values["doctype"] = doctype_filter
+	if docname_filter:
+		comment_conditions.append("reference_name = %(docname)s")
+		values["docname"] = docname_filter
 
 	where_clause = " WHERE " + " AND ".join(comment_conditions) if comment_conditions else ""
 
@@ -319,6 +323,9 @@ def get_raw_activity_logs(filters):
 	if doctype_filter:
 		action_conditions.append("reference_doctype = %(doctype)s")
 		action_values["doctype"] = doctype_filter
+	if docname_filter:
+		action_conditions.append("reference_name = %(docname)s")
+		action_values["docname"] = docname_filter
 	if state_filter:
 		action_conditions.append("workflow_state LIKE %(state)s")
 		action_values["state"] = f"%{state_filter}%"
