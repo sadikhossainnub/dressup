@@ -17,6 +17,9 @@ frappe.ui.form.on("Purchase Order", {
 	refresh(frm) {
 		_render_po_approval_ui(frm);
 	},
+	onload_post_render(frm) {
+		_render_po_approval_ui(frm);
+	},
 });
 
 function _render_po_approval_ui(frm) {
@@ -74,21 +77,31 @@ function _render_po_approval_ui(frm) {
 		},
 	});
 
-	// Additional deferred cleanup: ERPNext purchase_order.js adds buttons during its own refresh handler
-	// after custom app scripts execute. Re-run cleanup after standard handlers settle.
-	setTimeout(() => {
-		if (frm.doc.docstatus === 1 && frm.doc.custom_po_approval_status !== "Approved") {
-			_filter_buttons_for_pending_po(frm);
-		}
-	}, 150);
+	// Multi-stage deferred cleanup to purge standard buttons added late by ERPNext/Frappe layout
+	[50, 150, 400, 800].forEach((delay) => {
+		setTimeout(() => {
+			if (frm.doc.docstatus === 1 && frm.doc.custom_po_approval_status !== "Approved") {
+				_filter_buttons_for_pending_po(frm);
+			}
+		}, delay);
+	});
 }
 
 function _clear_all_toolbar_buttons(frm) {
+	frm.custom_make_buttons = {};
 	frm.clear_custom_buttons();
 	frm.page.clear_inner_toolbar();
+	frm.page.clear_user_actions();
+
+	if (frm.page.btn_secondary) {
+		frm.page.btn_secondary.addClass("hide").hide();
+	}
 }
 
 function _filter_buttons_for_pending_po(frm) {
+	// Prevent Frappe from generating the "Create" button dropdown
+	frm.custom_make_buttons = {};
+
 	// Remove standard custom buttons added by ERPNext (Create, Status, Update Items, etc.)
 	const inner_toolbar = frm.page.get_inner_toolbar();
 	if (inner_toolbar) {
@@ -102,12 +115,23 @@ function _filter_buttons_for_pending_po(frm) {
 		});
 	}
 
-	// Remove standard page action buttons (e.g. Cancel button)
+	// Remove standard page action buttons (e.g. Cancel button / Update Items)
 	if (frm.page.btn_secondary) {
 		const sec_label = (frm.page.btn_secondary.text() || "").trim();
-		if (sec_label === __("Cancel") || sec_label === __("Update Items")) {
-			frm.page.btn_secondary.hide();
+		if (sec_label === __("Cancel") || sec_label === __("Update Items") || sec_label === "") {
+			frm.page.btn_secondary.addClass("hide").hide();
 		}
+	}
+
+	// Extra cleanup: hide any secondary buttons in wrapper page-actions area
+	if (frm.page.wrapper) {
+		frm.page.wrapper.find(".page-actions .btn-secondary, .page-actions .btn-default").each(function () {
+			const $btn = $(this);
+			const txt = ($btn.text() || "").trim();
+			if (txt === __("Cancel") || txt === __("Update Items")) {
+				$btn.addClass("hide").hide();
+			}
+		});
 	}
 }
 
