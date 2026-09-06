@@ -41,25 +41,6 @@ def ensure_report_roles_and_permissions():
 					"desk_access": 1,
 				})
 				role_doc.insert(ignore_permissions=True)
-
-		report_name = "Workflow State Activity Report"
-		if frappe.db.exists("Report", report_name):
-			report_doc = frappe.get_doc("Report", report_name)
-			existing_roles = [d.role for d in report_doc.roles]
-			all_roles = ["System Manager"] + roles_to_ensure
-
-			updated = False
-			if report_doc.ref_doctype != "":
-				report_doc.ref_doctype = ""
-				updated = True
-
-			for r in all_roles:
-				if r not in existing_roles:
-					report_doc.append("roles", {"role": r})
-					updated = True
-
-			if updated:
-				report_doc.save(ignore_permissions=True)
 	except Exception:
 		pass
 
