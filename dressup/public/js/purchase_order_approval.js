@@ -3,11 +3,13 @@
  *
  * Flow:
  * 1. If PO is submitted (docstatus == 1) and custom_po_approval_status is not "Approved" (Pending or Rejected):
- *    - Suppress/clear ALL standard buttons (Create, Update Items, etc.) for ALL users.
+ *    - Suppress/clear ALL standard buttons (Create, Update Items, Status, Cancel) for ALL users.
  * 2. If status is "Pending":
  *    - Check current user roles against configured roles from DressUp Settings -> PO Approval Roles.
  *    - If authorized, show "Approve" and "Reject" buttons under "PO Approval".
- * 3. If status is "Approved":
+ * 3. On Reject:
+ *    - Rejection sets status to "Rejected" and cancels the document (docstatus = 2).
+ * 4. If status is "Approved":
  *    - Standard ERPNext buttons (Create -> Purchase Receipt/Invoice, etc.) appear as normal.
  */
 
@@ -22,19 +24,15 @@ function _render_po_approval_ui(frm) {
 
 	const status = frm.doc.custom_po_approval_status;
 
-	// Show status banner for everyone (submitted docs only)
-	if (frm.doc.docstatus === 1 && status) {
+	// Show status banner for everyone (submitted or cancelled docs with status)
+	if (status && (frm.doc.docstatus === 1 || frm.doc.docstatus === 2)) {
 		_render_status_banner(frm, status);
 	}
 
 	// Guard: Suppress ALL action buttons for ALL users if doc is submitted and NOT Approved
 	if (frm.doc.docstatus === 1 && status !== "Approved") {
-		frm.clear_custom_buttons();
-		frm.page.clear_inner_toolbar();
-	}
-
-	// Only check for approval buttons if doc is submitted and status is Pending
-	if (frm.doc.docstatus !== 1 || status !== "Pending") {
+		_clear_all_toolbar_buttons(frm);
+	} else {
 		return;
 	}
 
@@ -45,13 +43,12 @@ function _render_po_approval_ui(frm) {
 			const allowed_roles = r.message || ["PO Approver"];
 			const can_approve = allowed_roles.some((role) => frappe.user.has_role(role));
 
-			if (!can_approve) {
+			// Re-clear standard buttons in case ERPNext standard JS rendered them asynchronously
+			_clear_all_toolbar_buttons(frm);
+
+			if (!can_approve || frm.doc.docstatus !== 1 || status !== "Pending") {
 				return;
 			}
-
-			// Clear custom buttons again before adding approval options to prevent duplicates
-			frm.clear_custom_buttons();
-			frm.page.clear_inner_toolbar();
 
 			// Add Approve button
 			frm.add_custom_button(
@@ -76,13 +73,49 @@ function _render_po_approval_ui(frm) {
 				.addClass("btn-warning");
 		},
 	});
+
+	// Additional deferred cleanup: ERPNext purchase_order.js adds buttons during its own refresh handler
+	// after custom app scripts execute. Re-run cleanup after standard handlers settle.
+	setTimeout(() => {
+		if (frm.doc.docstatus === 1 && frm.doc.custom_po_approval_status !== "Approved") {
+			_filter_buttons_for_pending_po(frm);
+		}
+	}, 150);
+}
+
+function _clear_all_toolbar_buttons(frm) {
+	frm.clear_custom_buttons();
+	frm.page.clear_inner_toolbar();
+}
+
+function _filter_buttons_for_pending_po(frm) {
+	// Remove standard custom buttons added by ERPNext (Create, Status, Update Items, etc.)
+	const inner_toolbar = frm.page.get_inner_toolbar();
+	if (inner_toolbar) {
+		inner_toolbar.find(".btn-group, .btn").each(function () {
+			const $btn = $(this);
+			const label = ($btn.attr("data-label") || $btn.text() || "").trim();
+
+			if (label !== __("PO Approval") && !$btn.parents(`[data-label="${encodeURIComponent(__("PO Approval"))}"]`).length) {
+				$btn.remove();
+			}
+		});
+	}
+
+	// Remove standard page action buttons (e.g. Cancel button)
+	if (frm.page.btn_secondary) {
+		const sec_label = (frm.page.btn_secondary.text() || "").trim();
+		if (sec_label === __("Cancel") || sec_label === __("Update Items")) {
+			frm.page.btn_secondary.hide();
+		}
+	}
 }
 
 function _render_status_banner(frm, status) {
 	const status_map = {
 		"Pending": { color: "orange", icon: "⏳", label: __("Approval Pending") },
 		"Approved": { color: "green", icon: "✅", label: __("Approved") },
-		"Rejected": { color: "red", icon: "❌", label: __("Rejected") },
+		"Rejected": { color: "red", icon: "❌", label: __("Rejected & Cancelled") },
 	};
 
 	const s = status_map[status];
@@ -148,7 +181,7 @@ function _do_reject(frm) {
 				description: __("Mandatory — explain why this Purchase Order cannot be approved."),
 			},
 		],
-		primary_action_label: __("Reject"),
+		primary_action_label: __("Reject & Cancel PO"),
 		primary_action(values) {
 			const reason = (values.rejection_reason || "").trim();
 
@@ -166,10 +199,10 @@ function _do_reject(frm) {
 					reason: reason,
 				},
 				freeze: true,
-				freeze_message: __("Rejecting..."),
+				freeze_message: __("Rejecting and Cancelling PO..."),
 				callback(r) {
 					if (!r.exc) {
-						frappe.show_alert({ message: __("Purchase Order Rejected"), indicator: "red" });
+						frappe.show_alert({ message: __("Purchase Order Rejected & Cancelled"), indicator: "red" });
 						frm.reload_doc();
 					}
 				},

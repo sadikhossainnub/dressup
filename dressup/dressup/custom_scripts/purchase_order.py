@@ -118,7 +118,7 @@ def approve_purchase_order(po_name):
 
 @frappe.whitelist()
 def reject_purchase_order(po_name, reason):
-	"""Reject the Purchase Order. Restricted to configured PO Approver roles."""
+	"""Reject the Purchase Order. Restricted to configured PO Approver roles. Cancels the PO (docstatus = 2)."""
 	_assert_po_approver_role()
 
 	if not (reason or "").strip():
@@ -134,7 +134,10 @@ def reject_purchase_order(po_name, reason):
 		"custom_po_approved_on": now_datetime(),
 		"custom_po_rejection_reason": reason.strip(),
 	})
-	frappe.db.commit()
+
+	po.reload()
+	po.flags.ignore_permissions = True
+	po.cancel()
 
 	# Notify the PO owner about rejection
 	_notify_owner(po, status="Rejected", reason=reason.strip())
