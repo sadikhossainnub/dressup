@@ -6,6 +6,8 @@ def get_item_details(barcode):
     if not barcode:
         return None
 
+    searched_batch = None
+
     # Search for item by various identifiers
     # 1. Search in Item Barcode child table
     try:
@@ -28,9 +30,13 @@ def get_item_details(barcode):
     if not item_code and frappe.db.exists("DocType", "Batch"):
         try:
             item_code = frappe.db.get_value("Batch", barcode, "item_code")
+            if item_code:
+                searched_batch = barcode
         except Exception:
             try:
                 item_code = frappe.db.get_value("Batch", barcode, "item")
+                if item_code:
+                    searched_batch = barcode
             except Exception:
                 pass
 
@@ -55,6 +61,9 @@ def get_item_details(barcode):
 
     if not item_code:
         return None
+
+    if not searched_batch and frappe.db.exists("DocType", "Batch") and frappe.db.exists("Batch", barcode):
+        searched_batch = barcode
 
     item = frappe.get_doc("Item", item_code)
     
@@ -111,6 +120,9 @@ def get_item_details(barcode):
     # Get item prices
     prices = get_item_prices(item_code, has_cost)
 
+    # Get batch details
+    batches = get_batch_details(item_code)
+
     return {
         "item_code": item.item_code,
         "item_name": item.item_name,
@@ -123,8 +135,27 @@ def get_item_details(barcode):
         "valuation_rate": item.get("valuation_rate") if has_cost else None,
         "has_cost_access": has_cost,
         "reservations": reservations,
-        "prices": prices
+        "prices": prices,
+        "batches": batches,
+        "searched_batch": searched_batch,
     }
+
+
+def get_batch_details(item_code):
+    """Fetch active batch details for an item."""
+    if not frappe.db.exists("DocType", "Batch"):
+        return []
+
+    batches = frappe.get_all(
+        "Batch",
+        filters={"item": item_code, "disabled": 0},
+        fields=["name as batch_no", "batch_qty", "manufacturing_date", "expiry_date"],
+        order_by="expiry_date asc, creation desc",
+    )
+    for b in batches:
+        b["manufacturing_date"] = str(b.manufacturing_date) if b.get("manufacturing_date") else ""
+        b["expiry_date"] = str(b.expiry_date) if b.get("expiry_date") else ""
+    return batches
 
 
 def has_cost_access():
@@ -211,11 +242,11 @@ def get_reservation_details(item_code):
             )
 
             for sre in sre_list:
-                # Ensure the linked voucher is submitted and not cancelled/draft/deleted
+                # Ensure the linked voucher exists and is not cancelled (docstatus == 2)
                 if sre.voucher_type and sre.voucher_no:
                     if frappe.db.exists(sre.voucher_type, sre.voucher_no):
                         voucher_docstatus = frappe.db.get_value(sre.voucher_type, sre.voucher_no, "docstatus")
-                        if voucher_docstatus != 1:
+                        if voucher_docstatus == 2:
                             continue
                     else:
                         continue
@@ -226,7 +257,9 @@ def get_reservation_details(item_code):
                     if sre.voucher_type == "Sales Order" and sre.voucher_no:
                         customer = frappe.db.get_value("Sales Order", sre.voucher_no, "customer_name") or ""
                     elif sre.voucher_type == "Cost Estimation" and sre.voucher_no:
-                        customer = frappe.db.get_value("Cost Estimation", sre.voucher_no, "tech_pack_no") or ""
+                        ce_data = frappe.db.get_value("Cost Estimation", sre.voucher_no, ["tech_pack_no", "item_name"], as_dict=True) or {}
+                        tp = ce_data.get("tech_pack_no") or ""
+                        customer = f"Tech Pack: {tp}" if tp else (ce_data.get("item_name") or "")
 
                     # Get full name of the user who created the reservation
                     reserved_by = frappe.db.get_value("User", sre.owner, "full_name") or sre.owner or ""
@@ -341,4 +374,25 @@ def get_suggestions(query):
                 "type": "Barcode"
             })
 
+    # 3. Search by Batch - join with Item to ensure it's active
+    if frappe.db.exists("DocType", "Batch"):
+        batches = frappe.db.sql("""
+            SELECT b.name as batch_no, b.item as item_code
+            FROM `tabBatch` b
+            JOIN `tabItem` i ON b.item = i.name
+            WHERE b.name LIKE %s
+              AND b.disabled = 0
+              AND i.disabled = 0
+            LIMIT 5
+        """, (f"%{query}%",), as_dict=True)
+
+        for b in batches:
+            if not any(s["value"] == b["batch_no"] for s in suggestions):
+                suggestions.append({
+                    "value": b["batch_no"],
+                    "label": f"Batch: {b['batch_no']} ({b['item_code']})",
+                    "type": "Batch"
+                })
+
     return suggestions
+

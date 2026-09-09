@@ -131,7 +131,7 @@ class ItemSearch {
 		let html = suggestions.map(s => `
 			<div class="suggestion-item d-flex align-items-center" data-value="${s.value}">
 				<div class="suggestion-icon">
-					<i class="fa ${s.type === 'Barcode' ? 'fa-barcode' : 'fa-tag'}"></i>
+					<i class="fa ${s.type === 'Barcode' ? 'fa-barcode' : (s.type === 'Batch' ? 'fa-cubes' : 'fa-tag')}"></i>
 				</div>
 				<div class="suggestion-text">
 					<div class="suggestion-label">${s.label}</div>
@@ -178,6 +178,7 @@ class ItemSearch {
 		this.$result_section.empty().show();
 
 		let stock_html = this.build_stock_html(data);
+		let batch_html = this.build_batch_html(data);
 		let price_html = this.build_price_html(data);
 		let reservation_html = this.build_reservation_html(data);
 
@@ -234,6 +235,8 @@ class ItemSearch {
 					<hr class="my-2">
 					
 					${stock_html}
+
+					${batch_html}
 
 					${price_html}
 
@@ -499,6 +502,91 @@ class ItemSearch {
 				</div>
 			</div>
 		`;
+	}
+
+	build_batch_html(data) {
+		if (!data.batches || data.batches.length === 0) {
+			return '';
+		}
+
+		let searched_batch = data.searched_batch || '';
+
+		let table_rows = data.batches.map(b => {
+			let is_highlighted = searched_batch && b.batch_no === searched_batch;
+			let row_class = is_highlighted ? 'table-success font-weight-bold' : '';
+			let badge = is_highlighted ? '<span class="badge badge-success ml-2">Scanned Batch</span>' : '';
+
+			return `
+				<tr class="${row_class}">
+					<td>
+						<i class="fa fa-cubes text-info mr-1"></i>
+						<strong>${b.batch_no}</strong>
+						${badge}
+					</td>
+					<td class="text-right font-weight-bold">${b.batch_qty} ${data.uom || ''}</td>
+					<td>${b.manufacturing_date || '-'}</td>
+					<td>${b.expiry_date ? `<span class="${this.is_expired(b.expiry_date) ? 'text-danger font-weight-bold' : ''}">${b.expiry_date}</span>` : '-'}</td>
+				</tr>
+			`;
+		}).join('');
+
+		let mobile_cards = data.batches.map(b => {
+			let is_highlighted = searched_batch && b.batch_no === searched_batch;
+			let card_class = is_highlighted ? 'border-success bg-light' : '';
+			let badge = is_highlighted ? '<span class="badge badge-success ml-2">Scanned</span>' : '';
+
+			return `
+				<div class="batch-card ${card_class}">
+					<div class="batch-card-header d-flex justify-content-between align-items-center">
+						<span class="font-weight-bold">
+							<i class="fa fa-cubes text-info mr-1"></i> ${b.batch_no} ${badge}
+						</span>
+						<span class="badge badge-info p-2">${b.batch_qty} ${data.uom || ''}</span>
+					</div>
+					<div class="batch-card-dates text-muted small mt-2 d-flex gap-3">
+						${b.manufacturing_date ? `<div class="mr-3"><strong>Mfg:</strong> ${b.manufacturing_date}</div>` : ''}
+						${b.expiry_date ? `<div><strong>Exp:</strong> <span class="${this.is_expired(b.expiry_date) ? 'text-danger font-weight-bold' : ''}">${b.expiry_date}</span></div>` : ''}
+					</div>
+				</div>
+			`;
+		}).join('');
+
+		return `
+			<hr class="my-2">
+			<div class="batch-section mt-2">
+				<h5 class="mb-2">
+					<i class="fa fa-cubes text-info"></i> Batch Details
+				</h5>
+
+				<!-- Desktop table -->
+				<div class="batch-table-container d-none d-md-block">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Batch No</th>
+								<th class="text-right">Batch Qty</th>
+								<th>Mfg Date</th>
+								<th>Expiry Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							${table_rows}
+						</tbody>
+					</table>
+				</div>
+
+				<!-- Mobile cards -->
+				<div class="batch-cards-container d-md-none">
+					${mobile_cards}
+				</div>
+			</div>
+		`;
+	}
+
+	is_expired(expiry_date_str) {
+		if (!expiry_date_str) return false;
+		let today = new Date().toISOString().split('T')[0];
+		return expiry_date_str < today;
 	}
 
 	show_empty_state() {
@@ -823,6 +911,23 @@ class ItemSearch {
 				background: #cce5ff;
 				color: #004085;
 			}
+
+			/* ===== Batch Cards & Tables ===== */
+			.item-search-container .batch-cards-container {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+			.item-search-container .batch-card {
+				background: #fff;
+				border: 1px solid #e2e8f0;
+				border-radius: 8px;
+				padding: 10px 14px;
+			}
+			.item-search-container .batch-card.border-success {
+				border-color: #28a745 !important;
+			}
+
 
 			/* ===== Reservation Cards (Mobile) ===== */
 			.item-search-container .reservation-cards-container {
