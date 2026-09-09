@@ -227,6 +227,7 @@ doc_events = {
 		"validate": "dressup.dressup.custom_scripts.purchase_order.validate_po_approval_guard",
 	},
 	"Salary Slip": {
+		"before_validate": "dressup.payroll.calculate_late_entries",
 		"validate": "dressup.payroll.calculate_late_entries",
 	}
 }

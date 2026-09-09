@@ -1,5 +1,14 @@
 import frappe
 
+# Register total_late_entries in HRMS evaluation context defaults
+try:
+	from hrms.payroll.utils import SALARY_SLIP_EVAL_DEFAULTS
+
+	SALARY_SLIP_EVAL_DEFAULTS["total_late_entries"] = 0
+except ImportError:
+	pass
+
+
 
 def calculate_late_entries(doc, method=None):
 	"""
