@@ -32,7 +32,6 @@ class PreProductionSample(Document):
 		"""Auto-populate fields from Tech Pack"""
 		if self.tech_pack_no:
 			self.fetch_tech_pack_data()
-		self.validate_production_qty()
 		self.calculate_total_fabrics()
 		self.calculate_total_trim_accessories()
 		self.calculate_total_tailoring()
@@ -146,6 +145,7 @@ class PreProductionSample(Document):
 	
 	def before_submit(self):
 		"""Validation before submission"""
+		self.validate_production_qty()
 		if not self.fabrics and not self.trim_accessories and not self.fabric_dupatta:
 			frappe.throw("Please add at least one fabric, trim/accessory, or dupatta item")
 		
