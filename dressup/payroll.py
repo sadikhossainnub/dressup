@@ -1,10 +1,11 @@
 import frappe
 
-# Register total_late_entries in HRMS evaluation context defaults
+# Register total_late_entries and frappe in HRMS evaluation context
 try:
-	from hrms.payroll.utils import SALARY_SLIP_EVAL_DEFAULTS
+	from hrms.payroll.utils import COMPONENT_EVAL_GLOBALS, SALARY_SLIP_EVAL_DEFAULTS
 
 	SALARY_SLIP_EVAL_DEFAULTS["total_late_entries"] = 0
+	COMPONENT_EVAL_GLOBALS["frappe"] = frappe
 except ImportError:
 	pass
 
