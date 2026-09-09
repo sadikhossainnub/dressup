@@ -85,7 +85,6 @@ doctype_js = {
 }
 doctype_list_js = {
 	"BOM": "public/js/bom_list.js",
-	"Job Card": "public/js/job_card_list.js",
 }
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -226,8 +225,12 @@ doc_events = {
 	},
 	"Purchase Invoice": {
 		"validate": "dressup.dressup.custom_scripts.purchase_order.validate_po_approval_guard",
+	},
+	"Salary Slip": {
+		"validate": "dressup.payroll.calculate_late_entries",
 	}
 }
+
 
 # Scheduled Tasks
 # ---------------
