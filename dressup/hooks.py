@@ -181,6 +181,9 @@ override_doctype_class = {
 # Hook on document methods and events
 
 doc_events = {
+	"Employee": {
+		"before_insert": "dressup.overrides.employee.set_employee_number"
+	},
 	"*": {
 		"on_update": "dressup.utils.workflow_tracker.track_workflow_action"
 	},
