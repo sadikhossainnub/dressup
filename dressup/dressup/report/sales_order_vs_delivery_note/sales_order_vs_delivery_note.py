@@ -11,7 +11,10 @@ def execute(filters=None):
 		filters = {}
 	columns = get_columns()
 	data    = get_data(filters)
-	return columns, data
+	company = filters.get("company") or frappe.defaults.get_user_default("Company")
+	company_currency = frappe.get_cached_value("Company", company, "default_currency") or frappe.db.get_default("currency") or "BDT"
+	report_summary = get_report_summary(data, company_currency)
+	return columns, data, None, None, report_summary
 
 
 # ---------------------------------------------------------------------------
@@ -43,6 +46,12 @@ def get_columns():
 		{
 			"label":     _("SO Status"),
 			"fieldname": "so_status",
+			"fieldtype": "Data",
+			"width":     160,
+		},
+		{
+			"label":     _("Created By"),
+			"fieldname": "created_by",
 			"fieldtype": "Data",
 			"width":     160,
 		},
@@ -145,6 +154,20 @@ def get_columns():
 			"width":     120,
 		},
 		{
+			"label":     _("Delivered Amount"),
+			"fieldname": "dn_amount",
+			"fieldtype": "Currency",
+			"options":   "currency",
+			"width":     130,
+		},
+		{
+			"label":     _("Pending Amount"),
+			"fieldname": "pending_amount",
+			"fieldtype": "Currency",
+			"options":   "currency",
+			"width":     130,
+		},
+		{
 			"label":     _("SO Grand Total"),
 			"fieldname": "so_grand_total",
 			"fieldtype": "Currency",
@@ -225,6 +248,8 @@ def get_data(filters):
 			so.delivery_date           AS so_delivery_date,
 			so.status                  AS so_status,
 			so.per_delivered           AS per_delivered,
+			COALESCE(NULLIF(usr.full_name, ''), so.owner)
+			                           AS created_by,
 			so.customer                AS customer,
 			so.customer_name           AS customer_name,
 			so.customer_group          AS customer_group,
@@ -245,6 +270,8 @@ def get_data(filters):
 			`tabSales Order` so
 		INNER JOIN
 			`tabSales Order Item` soi ON soi.parent = so.name
+		LEFT JOIN
+			`tabUser` usr ON usr.name = so.owner
 		WHERE
 			so.docstatus < 2
 			{conditions}
@@ -264,10 +291,13 @@ def get_data(filters):
 	# ── Step 3: attach delivery notes ───────────────────────────────────────
 	rows = attach_delivery_notes(rows, filters)
 
-	# ── Step 4: compute delivery status and pending qty ─────────────────────
+	# ── Step 4: compute delivery status, pending qty and amounts ─────────────
 	for row in rows:
 		row["delivery_status"] = compute_delivery_status(flt(row.get("per_delivered")))
 		row["pending_qty"]     = flt(row.get("so_qty")) - flt(row.get("dn_qty"))
+		so_rate                = flt(row.get("so_rate"))
+		row["dn_amount"]       = flt(row.get("dn_qty")) * so_rate
+		row["pending_amount"]  = flt(row.get("pending_qty")) * so_rate
 
 	# ── Step 5: apply post-fetch filters ────────────────────────────────────
 	rows = apply_post_filters(rows, filters)
@@ -301,6 +331,10 @@ def build_so_conditions(filters):
 	if filters.get("sales_order"):
 		parts.append("AND so.name = %(sales_order)s")
 		values["sales_order"] = filters["sales_order"]
+
+	if filters.get("created_by"):
+		parts.append("AND so.owner = %(created_by)s")
+		values["created_by"] = filters["created_by"]
 
 	if filters.get("customer"):
 		parts.append("AND so.customer = %(customer)s")
@@ -482,3 +516,61 @@ def compute_delivery_status(per_delivered):
 		return "Partially Delivered"
 	else:
 		return "Fully Delivered"
+
+
+# ---------------------------------------------------------------------------
+# Helper: Report Summary Cards
+# ---------------------------------------------------------------------------
+
+def get_report_summary(rows, company_currency):
+	if not rows:
+		return []
+
+	total_so_qty = sum(flt(r.get("so_qty")) for r in rows)
+	total_dn_qty = sum(flt(r.get("dn_qty")) for r in rows)
+	total_pending_qty = sum(flt(r.get("pending_qty")) for r in rows)
+
+	total_so_amount = sum(flt(r.get("so_amount")) for r in rows)
+	total_dn_amount = sum(flt(r.get("dn_amount")) for r in rows)
+	total_pending_amount = sum(flt(r.get("pending_amount")) for r in rows)
+
+	return [
+		{
+			"value": total_so_qty,
+			"label": _("Total SO Qty"),
+			"datatype": "Float",
+		},
+		{
+			"value": total_dn_qty,
+			"label": _("Total Delivered Qty"),
+			"datatype": "Float",
+			"indicator": "Green",
+		},
+		{
+			"value": total_pending_qty,
+			"label": _("Total Pending Qty"),
+			"datatype": "Float",
+			"indicator": "Orange" if total_pending_qty > 0 else "Green",
+		},
+		{
+			"value": total_so_amount,
+			"label": _("Total SO Amount"),
+			"datatype": "Currency",
+			"currency": company_currency,
+			"indicator": "Blue",
+		},
+		{
+			"value": total_dn_amount,
+			"label": _("Total Delivered Amount"),
+			"datatype": "Currency",
+			"currency": company_currency,
+			"indicator": "Green",
+		},
+		{
+			"value": total_pending_amount,
+			"label": _("Total Pending Amount"),
+			"datatype": "Currency",
+			"currency": company_currency,
+			"indicator": "Red" if total_pending_amount > 0 else "Green",
+		},
+	]

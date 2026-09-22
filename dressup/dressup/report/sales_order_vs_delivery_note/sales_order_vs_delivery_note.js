@@ -40,6 +40,12 @@ frappe.query_reports["Sales Order vs Delivery Note"] = {
 			options: "Sales Order",
 		},
 		{
+			fieldname: "created_by",
+			label: __("Created By"),
+			fieldtype: "Link",
+			options: "User",
+		},
+		{
 			fieldname: "customer",
 			label: __("Customer"),
 			fieldtype: "Link",
@@ -139,12 +145,12 @@ frappe.query_reports["Sales Order vs Delivery Note"] = {
 			}
 		}
 
-		// Pending qty — highlight if > 0
-		if (column.fieldname === "pending_qty") {
-			const qty = parseFloat((data && data.pending_qty) || 0);
-			if (qty > 0) {
+		// Pending qty / amount — highlight if > 0
+		if (column.fieldname === "pending_qty" || column.fieldname === "pending_amount") {
+			const val = parseFloat((data && data[column.fieldname]) || 0);
+			if (val > 0) {
 				value = `<span style="color:#dc2626; font-weight:600;">${value}</span>`;
-			} else if (qty === 0) {
+			} else if (val === 0) {
 				value = `<span style="color:#059669; font-weight:600;">${value}</span>`;
 			}
 		}
