@@ -526,51 +526,76 @@ def get_report_summary(rows, company_currency):
 	if not rows:
 		return []
 
-	total_so_qty = sum(flt(r.get("so_qty")) for r in rows)
-	total_dn_qty = sum(flt(r.get("dn_qty")) for r in rows)
-	total_pending_qty = sum(flt(r.get("pending_qty")) for r in rows)
+	# ── Unique counts ────────────────────────────────────────────────────────
+	unique_so_count = len({r["sales_order"] for r in rows if r.get("sales_order")})
 
-	total_so_amount = sum(flt(r.get("so_amount")) for r in rows)
-	total_dn_amount = sum(flt(r.get("dn_amount")) for r in rows)
-	total_pending_amount = sum(flt(r.get("pending_amount")) for r in rows)
+	unique_dn_names = set()
+	for r in rows:
+		dn_field = r.get("delivery_note") or ""
+		for dn in dn_field.split(","):
+			dn = dn.strip()
+			if dn:
+				unique_dn_names.add(dn)
+	unique_dn_count = len(unique_dn_names)
+
+	# ── Qty / Amount totals ──────────────────────────────────────────────────
+	total_so_qty          = sum(flt(r.get("so_qty"))          for r in rows)
+	total_dn_qty          = sum(flt(r.get("dn_qty"))          for r in rows)
+	total_pending_qty     = sum(flt(r.get("pending_qty"))     for r in rows)
+
+	total_so_amount       = sum(flt(r.get("so_amount"))       for r in rows)
+	total_dn_amount       = sum(flt(r.get("dn_amount"))       for r in rows)
+	total_pending_amount  = sum(flt(r.get("pending_amount"))  for r in rows)
 
 	return [
 		{
-			"value": total_so_qty,
-			"label": _("Total SO Qty"),
-			"datatype": "Float",
-		},
-		{
-			"value": total_dn_qty,
-			"label": _("Total Delivered Qty"),
-			"datatype": "Float",
-			"indicator": "Green",
-		},
-		{
-			"value": total_pending_qty,
-			"label": _("Total Pending Qty"),
-			"datatype": "Float",
-			"indicator": "Orange" if total_pending_qty > 0 else "Green",
-		},
-		{
-			"value": total_so_amount,
-			"label": _("Total SO Amount"),
-			"datatype": "Currency",
-			"currency": company_currency,
+			"value":     unique_so_count,
+			"label":     _("Sales Order Count"),
+			"datatype":  "Int",
 			"indicator": "Blue",
 		},
 		{
-			"value": total_dn_amount,
-			"label": _("Total Delivered Amount"),
-			"datatype": "Currency",
-			"currency": company_currency,
+			"value":     unique_dn_count,
+			"label":     _("Delivery Note Count"),
+			"datatype":  "Int",
 			"indicator": "Green",
 		},
 		{
-			"value": total_pending_amount,
-			"label": _("Total Pending Amount"),
-			"datatype": "Currency",
-			"currency": company_currency,
+			"value":    total_so_qty,
+			"label":    _("Total SO Qty"),
+			"datatype": "Float",
+		},
+		{
+			"value":     total_dn_qty,
+			"label":     _("Total Delivered Qty"),
+			"datatype":  "Float",
+			"indicator": "Green",
+		},
+		{
+			"value":     total_pending_qty,
+			"label":     _("Total Pending Qty"),
+			"datatype":  "Float",
+			"indicator": "Orange" if total_pending_qty > 0 else "Green",
+		},
+		{
+			"value":     total_so_amount,
+			"label":     _("Total SO Amount"),
+			"datatype":  "Currency",
+			"currency":  company_currency,
+			"indicator": "Blue",
+		},
+		{
+			"value":     total_dn_amount,
+			"label":     _("Total Delivered Amount"),
+			"datatype":  "Currency",
+			"currency":  company_currency,
+			"indicator": "Green",
+		},
+		{
+			"value":     total_pending_amount,
+			"label":     _("Total Pending Amount"),
+			"datatype":  "Currency",
+			"currency":  company_currency,
 			"indicator": "Red" if total_pending_amount > 0 else "Green",
 		},
 	]

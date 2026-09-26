@@ -14,17 +14,14 @@ class PreProductionSample(Document):
 			for size in ['36', '38', '40', '42','44']:
 				self.append('size_chart_in_inch', {'size_chart_in_inch': size})
 	
-	def after_insert(self):
-		"""When PPS is created from CE, release stock reservation"""
-		if self.cost_estimation:
-			self.release_stock_reservation()
-
 	def release_stock_reservation(self):
 		"""Cancel stock reservation entries from parent Cost Estimation"""
+		if not self.cost_estimation:
+			return
 		ce = frappe.get_doc("Cost Estimation", self.cost_estimation)
 		ce.cancel_stock_reservation_entries()
 		frappe.msgprint(
-			f"Stock reservation from {self.cost_estimation} has been released",
+			f"Stock reservation from {self.cost_estimation} has been released.",
 			indicator="green", alert=True
 		)
 	
@@ -176,9 +173,9 @@ class PreProductionSample(Document):
 			self.finish_time_date = now()
 
 	def on_submit(self):
-		"""Create Stock Entry for material issue (Disabled)"""
+		"""On PPS submission, release stock reservation from linked Cost Estimation"""
 		# Automatic Stock Entry creation disabled as per request
-		pass
+		self.release_stock_reservation()
 
 	def on_cancel(self):
 		"""Cancel associated Stock Entry (Disabled)"""
