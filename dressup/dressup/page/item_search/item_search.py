@@ -123,6 +123,18 @@ def get_item_details(barcode):
     # Get batch details
     batches = get_batch_details(item_code)
 
+    # Get variant stock details
+    variants_stock = []
+    has_variants = item.get("has_variants") or 0
+    variant_of = item.get("variant_of") or ""
+
+    if has_variants:
+        # This is a template item — show all its variants' stock
+        variants_stock = get_variant_stock(item_code, has_cost)
+    elif variant_of:
+        # This is a variant — show sibling variants' stock (from same template)
+        variants_stock = get_variant_stock(variant_of, has_cost)
+
     return {
         "item_code": item.item_code,
         "item_name": item.item_name,
@@ -138,7 +150,75 @@ def get_item_details(barcode):
         "prices": prices,
         "batches": batches,
         "searched_batch": searched_batch,
+        "has_variants": has_variants,
+        "variant_of": variant_of,
+        "variants_stock": variants_stock,
     }
+
+
+def get_variant_stock(template_item_code, has_cost):
+    """Fetch stock details for all variants of a template item."""
+    variants = frappe.get_all(
+        "Item",
+        filters={"variant_of": template_item_code, "disabled": 0},
+        fields=["name", "item_name", "image"],
+        order_by="item_name asc",
+    )
+
+    if not variants:
+        return []
+
+    result = []
+    for variant in variants:
+        # Get variant attributes
+        attributes = frappe.get_all(
+            "Item Variant Attribute",
+            filters={"parent": variant.name},
+            fields=["attribute", "attribute_value"],
+            order_by="idx asc",
+        )
+
+        attr_str = ", ".join([f"{a.attribute}: {a.attribute_value}" for a in attributes])
+
+        # Get stock per warehouse
+        bins = frappe.get_all(
+            "Bin",
+            filters={"item_code": variant.name},
+            fields=["warehouse", "actual_qty as qty", "reserved_qty", "valuation_rate"],
+        )
+
+        total_qty = 0
+        total_reserved = 0
+        warehouses = []
+        for b in bins:
+            qty = b.get("qty") or 0
+            reserved = b.get("reserved_qty") or 0
+            if qty > 0 or reserved > 0:
+                wh_data = {
+                    "warehouse": b.warehouse,
+                    "qty": qty,
+                    "reserved_qty": reserved,
+                    "unreserved_qty": qty - reserved,
+                }
+                if has_cost:
+                    wh_data["valuation_rate"] = b.get("valuation_rate") or 0
+                warehouses.append(wh_data)
+                total_qty += qty
+                total_reserved += reserved
+
+        result.append({
+            "item_code": variant.name,
+            "item_name": variant.item_name,
+            "image": variant.image or "",
+            "attributes": attr_str,
+            "attribute_list": [{"attribute": a.attribute, "value": a.attribute_value} for a in attributes],
+            "total_qty": total_qty,
+            "total_reserved": total_reserved,
+            "total_unreserved": total_qty - total_reserved,
+            "warehouses": warehouses,
+        })
+
+    return result
 
 
 def get_batch_details(item_code):
@@ -339,20 +419,20 @@ def get_suggestions(query):
 
     # 1. Search by Item Code or Item Name using SQL for better OR handling
     items = frappe.db.sql("""
-        SELECT name, item_name 
+        SELECT name, item_name, has_variants
         FROM `tabItem` 
         WHERE (name LIKE %s OR item_name LIKE %s)
           AND disabled = 0 
-          AND has_variants = 0
         LIMIT 10
     """, (f"%{query}%", f"%{query}%"), as_dict=True)
 
     suggestions = []
     for item in items:
+        item_type = "Template" if item.get("has_variants") else "Item"
         suggestions.append({
             "value": item.name,
             "label": f"{item.item_name} ({item.name})",
-            "type": "Item"
+            "type": item_type
         })
 
     # 2. Search by Barcode - join with Item to ensure it's active

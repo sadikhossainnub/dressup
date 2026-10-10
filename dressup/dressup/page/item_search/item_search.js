@@ -131,7 +131,7 @@ class ItemSearch {
 		let html = suggestions.map(s => `
 			<div class="suggestion-item d-flex align-items-center" data-value="${s.value}">
 				<div class="suggestion-icon">
-					<i class="fa ${s.type === 'Barcode' ? 'fa-barcode' : (s.type === 'Batch' ? 'fa-cubes' : 'fa-tag')}"></i>
+					<i class="fa ${s.type === 'Barcode' ? 'fa-barcode' : (s.type === 'Batch' ? 'fa-cubes' : (s.type === 'Template' ? 'fa-clone' : 'fa-tag'))}"></i>
 				</div>
 				<div class="suggestion-text">
 					<div class="suggestion-label">${s.label}</div>
@@ -181,6 +181,7 @@ class ItemSearch {
 		let batch_html = this.build_batch_html(data);
 		let price_html = this.build_price_html(data);
 		let reservation_html = this.build_reservation_html(data);
+		let variants_html = this.build_variants_html(data);
 
 		let html = `
 			<div class="card item-card shadow-sm border-0">
@@ -241,6 +242,8 @@ class ItemSearch {
 					${price_html}
 
 					${reservation_html}
+
+					${variants_html}
 				</div>
 			</div>
 		`;
@@ -587,6 +590,156 @@ class ItemSearch {
 		if (!expiry_date_str) return false;
 		let today = new Date().toISOString().split('T')[0];
 		return expiry_date_str < today;
+	}
+
+	build_variants_html(data) {
+		if (!data.variants_stock || data.variants_stock.length === 0) {
+			return '';
+		}
+
+		let section_label = data.has_variants
+			? 'Variant Stock (All Variants)'
+			: `Variant Stock (Variants of ${data.variant_of})`;
+
+		let grand_total_qty = data.variants_stock.reduce((sum, v) => sum + (v.total_qty || 0), 0);
+		let grand_total_reserved = data.variants_stock.reduce((sum, v) => sum + (v.total_reserved || 0), 0);
+
+		// Desktop table rows (Flat per warehouse or showing primary warehouses)
+		let table_rows = [];
+
+		data.variants_stock.forEach((v) => {
+			let is_current = v.item_code === data.item_code;
+			let row_class = is_current ? 'table-info font-weight-bold' : '';
+			let current_badge = is_current ? '<span class="badge badge-info ml-2">Current</span>' : '';
+
+			if (v.warehouses && v.warehouses.length > 0) {
+				v.warehouses.forEach((w, w_idx) => {
+					let qty_class = w.qty > 0 ? 'text-success font-weight-bold' : 'text-muted';
+					table_rows.push(`
+						<tr class="${row_class}">
+							<td>
+								<span class="stock-status-dot ${w.qty > 0 ? 'green' : 'red'}"></span>
+								<strong>${v.item_code}</strong>${w_idx === 0 ? current_badge : ''}
+							</td>
+							<td>
+								<span class="badge badge-light border text-dark font-weight-semibold">
+									<i class="fa fa-warehouse text-secondary mr-1"></i>${w.warehouse}
+								</span>
+							</td>
+							<td><small class="text-muted">${v.attributes || '-'}</small></td>
+							<td class="text-right ${qty_class}">${w.qty} ${data.uom}</td>
+							<td class="text-right">${w.reserved_qty || 0} ${data.uom}</td>
+							<td class="text-right">${w.unreserved_qty || 0} ${data.uom}</td>
+							${data.has_cost_access ? `<td class="text-right">${format_number(w.valuation_rate || 0)}</td>` : ''}
+						</tr>
+					`);
+				});
+			} else {
+				// No stock in any warehouse
+				table_rows.push(`
+					<tr class="${row_class}">
+						<td>
+							<span class="stock-status-dot red"></span>
+							<strong>${v.item_code}</strong>${current_badge}
+						</td>
+						<td><span class="text-muted small">No Stock</span></td>
+						<td><small class="text-muted">${v.attributes || '-'}</small></td>
+						<td class="text-right text-danger font-weight-bold">0 ${data.uom}</td>
+						<td class="text-right">0 ${data.uom}</td>
+						<td class="text-right">0 ${data.uom}</td>
+						${data.has_cost_access ? '<td class="text-right">-</td>' : ''}
+					</tr>
+				`);
+			}
+		});
+
+		// Mobile cards
+		let mobile_cards = data.variants_stock.map((v) => {
+			let is_current = v.item_code === data.item_code;
+			let card_class = is_current ? 'border-info' : '';
+			let current_badge = is_current ? '<span class="badge badge-info ml-1">Current</span>' : '';
+
+			let attr_badges = (v.attribute_list || []).map(a => `
+				<span class="variant-attr-badge">${a.attribute}: <strong>${a.value}</strong></span>
+			`).join('');
+
+			let wh_details_html = '';
+			if (v.warehouses && v.warehouses.length > 0) {
+				wh_details_html = v.warehouses.map(w => `
+					<div class="variant-wh-item py-1 border-bottom">
+						<div class="d-flex justify-content-between align-items-center mb-1">
+							<span class="font-weight-semibold text-dark small">
+								<i class="fa fa-warehouse text-secondary mr-1"></i>${w.warehouse}
+							</span>
+							<span class="badge ${w.qty > 0 ? 'badge-success' : 'badge-secondary'}">${w.qty} ${data.uom}</span>
+						</div>
+						<div class="d-flex justify-content-between text-muted extra-small" style="font-size: 11px;">
+							<span>Reserved: <strong>${w.reserved_qty || 0}</strong></span>
+							<span>Unreserved: <strong>${w.unreserved_qty || 0}</strong></span>
+							${data.has_cost_access ? `<span>Val: <strong>${format_number(w.valuation_rate || 0)}</strong></span>` : ''}
+						</div>
+					</div>
+				`).join('');
+			} else {
+				wh_details_html = `<div class="text-muted small py-1">No stock in any warehouse</div>`;
+			}
+
+			return `
+				<div class="variant-card ${card_class}">
+					<div class="variant-card-header d-flex justify-content-between align-items-center mb-1">
+						<div>
+							<span class="stock-status-dot ${v.total_qty > 0 ? 'green' : 'red'}"></span>
+							<strong>${v.item_code}</strong>${current_badge}
+						</div>
+						<span class="badge ${v.total_qty > 0 ? 'badge-primary' : 'badge-danger'} p-2">Total: ${v.total_qty} ${data.uom}</span>
+					</div>
+					${attr_badges ? `<div class="variant-attr-row mb-2">${attr_badges}</div>` : ''}
+					<div class="variant-wh-section bg-light p-2 rounded">
+						<div class="small font-weight-bold text-muted mb-1">Warehouse Stock:</div>
+						${wh_details_html}
+					</div>
+				</div>
+			`;
+		}).join('');
+
+		return `
+			<hr class="my-2">
+			<div class="variant-section mt-2">
+				<div class="variant-header d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+					<h5 class="mb-0">
+						<i class="fa fa-clone text-purple mr-1"></i> ${section_label}
+					</h5>
+					<span class="badge badge-primary variant-total-badge">
+						Total Stock: ${grand_total_qty} ${data.uom} (Reserved: ${grand_total_reserved})
+					</span>
+				</div>
+
+				<!-- Desktop table -->
+				<div class="variant-table-container d-none d-md-block">
+					<table class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th>Variant Code</th>
+								<th>Warehouse</th>
+								<th>Attributes</th>
+								<th class="text-right">Available Qty</th>
+								<th class="text-right">Reserved</th>
+								<th class="text-right">Unreserved</th>
+								${data.has_cost_access ? '<th class="text-right">Valuation Rate</th>' : ''}
+							</tr>
+						</thead>
+						<tbody>
+							${table_rows.join('')}
+						</tbody>
+					</table>
+				</div>
+
+				<!-- Mobile cards -->
+				<div class="variant-cards-container d-md-none">
+					${mobile_cards}
+				</div>
+			</div>
+		`;
 	}
 
 	show_empty_state() {
@@ -991,6 +1144,109 @@ class ItemSearch {
 			.reservation-card-date {
 				font-size: 12px;
 				margin-top: 8px;
+			}
+
+			/* ===== Variant Stock Section ===== */
+			.item-search-container .variant-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				flex-wrap: wrap;
+				gap: 6px;
+			}
+			.item-search-container .variant-header h5 i {
+				margin-right: 6px;
+				color: #7c3aed;
+			}
+			.item-search-container .variant-total-badge {
+				font-size: 13px;
+				padding: 6px 12px;
+			}
+			.item-search-container .variant-table-container {
+				background: white;
+				padding: 12px;
+				border-radius: 10px;
+			}
+			.item-search-container .variant-main-row:hover {
+				background-color: #f1f3f5;
+			}
+			.item-search-container .variant-warehouse-row td {
+				border-top: none !important;
+				padding-top: 4px;
+				padding-bottom: 4px;
+			}
+			.item-search-container .variant-cards-container {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+			.item-search-container .variant-card {
+				background: white;
+				border: 1px solid #e9ecef;
+				border-radius: 10px;
+				padding: 12px;
+			}
+			.item-search-container .variant-card.border-info {
+				border-color: #17a2b8 !important;
+				border-width: 2px;
+			}
+			.item-search-container .variant-card-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				flex-wrap: wrap;
+				gap: 6px;
+			}
+			.item-search-container .variant-attr-row {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 4px;
+			}
+			.item-search-container .variant-attr-badge {
+				display: inline-block;
+				background: #f0f0ff;
+				border: 1px solid #d8d8ff;
+				border-radius: 12px;
+				padding: 2px 10px;
+				font-size: 11px;
+				color: #555;
+			}
+			.item-search-container .variant-card-totals {
+				display: flex;
+				justify-content: space-between;
+				gap: 8px;
+				margin-top: 10px;
+				padding-top: 10px;
+				border-top: 1px solid #f0f0f0;
+			}
+			.item-search-container .variant-card-total-item {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				flex: 1;
+				text-align: center;
+			}
+			.item-search-container .variant-card-total-item small {
+				font-size: 11px;
+			}
+			.item-search-container .variant-card-total-item strong {
+				font-size: 14px;
+			}
+			.item-search-container .variant-wh-item {
+				padding: 4px 0;
+				border-bottom: 1px solid #f5f5f5;
+			}
+			.item-search-container .variant-wh-item:last-child {
+				border-bottom: none;
+			}
+			.item-search-container .variant-wh-qty-row {
+				display: flex;
+				justify-content: space-between;
+				font-size: 13px;
+				padding-left: 16px;
+			}
+			.item-search-container .variant-wh-toggle:hover {
+				color: #333 !important;
 			}
 
 			/* ===== Mobile Responsive ===== */
