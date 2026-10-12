@@ -206,18 +206,22 @@ class ItemSearch {
 							</div>
 							
 							<div class="row mb-2 item-meta-row">
-								<div class="col-6 col-sm-4">
+								<div class="col-6 col-sm-3">
 									<small class="text-muted d-block">UOM</small>
 									<strong>${data.uom}</strong>
 								</div>
+								<div class="col-6 col-sm-3">
+									<small class="text-muted d-block">Total Quantity</small>
+									<strong class="text-primary">${data.total_qty || 0} ${data.uom}</strong>
+								</div>
 								${data.brand ? `
-									<div class="col-6 col-sm-4">
+									<div class="col-6 col-sm-3">
 										<small class="text-muted d-block">Brand</small>
 										<strong>${data.brand}</strong>
 									</div>
 								` : ''}
 								${data.has_cost_access ? `
-									<div class="col-6 col-sm-4">
+									<div class="col-6 col-sm-3">
 										<small class="text-muted d-block">Standard Rate</small>
 										<strong>${format_number(data.valuation_rate || 0)}</strong>
 									</div>
@@ -265,6 +269,10 @@ class ItemSearch {
 			`;
 		}
 
+		let total_qty = data.total_qty || data.stock.reduce((sum, s) => sum + (s.qty || 0), 0);
+		let total_reserved = data.total_reserved_qty || data.stock.reduce((sum, s) => sum + (s.reserved_qty || 0), 0);
+		let total_unreserved = data.total_unreserved_qty || data.stock.reduce((sum, s) => sum + (s.unreserved_qty || 0), 0);
+
 		let stock_cards_html = data.stock.map(s => `
 			<div class="stock-card">
 				<div class="stock-card-warehouse">
@@ -296,7 +304,12 @@ class ItemSearch {
 
 		return `
 			<div class="stock-section mt-2">
-				<h5 class="mb-2">Warehouse Stock</h5>
+				<div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
+					<h5 class="mb-0">Warehouse Stock</h5>
+					<span class="badge badge-success p-2">
+						Total Available: <strong>${total_qty} ${data.uom}</strong> (Reserved: ${total_reserved} | Unreserved: ${total_unreserved})
+					</span>
+				</div>
 				<!-- Desktop table view -->
 				<div class="stock-table-container d-none d-md-block">
 					<table class="table table-hover">
@@ -320,6 +333,15 @@ class ItemSearch {
 								</tr>
 							`).join('')}
 						</tbody>
+						<tfoot>
+							<tr class="table-secondary font-weight-bold">
+								<td>Total Quantity</td>
+								<td class="text-right text-success font-weight-bold">${total_qty} ${data.uom}</td>
+								<td class="text-right">${total_reserved} ${data.uom}</td>
+								<td class="text-right">${total_unreserved} ${data.uom}</td>
+								${data.has_cost_access ? `<td></td>` : ''}
+							</tr>
+						</tfoot>
 					</table>
 				</div>
 				<!-- Mobile card view -->

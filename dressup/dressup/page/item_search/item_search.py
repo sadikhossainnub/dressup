@@ -117,6 +117,11 @@ def get_item_details(barcode):
 
     stock_details = filtered_stock
 
+    # Calculate total quantities across all warehouses
+    total_qty = sum(s.get("qty") or 0 for s in stock_details)
+    total_reserved_qty = sum(s.get("reserved_qty") or 0 for s in stock_details)
+    total_unreserved_qty = sum(s.get("unreserved_qty") or 0 for s in stock_details)
+
     # Get item prices
     prices = get_item_prices(item_code, has_cost)
 
@@ -141,6 +146,9 @@ def get_item_details(barcode):
         "description": item.description,
         "image": item.image,
         "stock": stock_details,
+        "total_qty": total_qty,
+        "total_reserved_qty": total_reserved_qty,
+        "total_unreserved_qty": total_unreserved_qty,
         "uom": item.stock_uom,
         "brand": item.brand,
         "item_group": item.item_group,

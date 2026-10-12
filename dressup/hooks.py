@@ -82,6 +82,7 @@ doctype_js = {
 		"public/js/sales_order_approval.js",
 	],
 	"Purchase Order": "public/js/purchase_order_approval.js",
+	"Shift Type": "public/js/shift_type.js",
 }
 doctype_list_js = {
 	"BOM": "public/js/bom_list.js",
