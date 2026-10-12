@@ -1,16 +1,16 @@
 # Copyright (c) 2026, Prime Technology of Bangladesh and contributors
 # For license information, please see license.txt
 
-"""Recheck / fix Employee Checkins whose *skip_auto_attendance* flag was set
-because a duplicate-Absent attendance already existed when HRMS tried to
-mark attendance from late-arriving biometric punches.
+"""Recheck and fix Employee Checkins whose *skip_auto_attendance* flag was set
+because an auto-Absent attendance already existed when late biometric punches arrived.
 
-Usage (bench console):
-    from dressup.skipped_attendance import recheck_skipped_attendance
-    recheck_skipped_attendance("Day Shift", "2026-10-01", "2026-10-12", dry_run=1)
-
-Usage (client):
-    Called from the "Recheck Skipped Attendance" button on the Shift Type form.
+Key design feature:
+    Does NOT cancel the Attendance record! Updates it directly in-place:
+    - Status changes from Absent -> Present / Half Day
+    - Working hours, in_time, out_time, shift, overtime properly calculated & saved
+    - Employee Checkin records are linked to the Attendance and un-skipped
+    - Full audit comment logged on the Attendance doc
+    - Works even if Salary Slip is linked (no cancel errors)
 """
 
 from __future__ import annotations
@@ -20,44 +20,40 @@ from itertools import groupby
 
 import frappe
 from frappe import _
-from frappe.utils import getdate
+from frappe.utils import cint, flt, getdate
+
+from hrms.hr.doctype.employee_checkin.employee_checkin import (
+	get_overtime_data,
+	mark_attendance_and_link_log,
+)
+from hrms.hr.doctype.shift_assignment.shift_assignment import get_employee_shift
 
 
 # ---------------------------------------------------------------------------
-# Public API
+# Public APIs
 # ---------------------------------------------------------------------------
 
 @frappe.whitelist()
 def recheck_skipped_attendance(
-	shift_type: str,
-	from_date: str,
-	to_date: str,
+	shift_type: str | None = None,
+	from_date: str = "",
+	to_date: str = "",
 	employee: str | None = None,
 	dry_run: int | bool = 1,
 ) -> dict:
-	"""Find skipped checkins, optionally cancel auto-Absent attendance and
-	re-run ``process_auto_attendance`` so HRMS creates the correct record.
+	"""Bulk scan and update skipped checkins in-place without cancelling Attendance.
 
-	Returns a dict with keys:
-	    dry_run, to_fix, untouched, failed, process_message
+	Can be triggered from Shift Type or Attendance List View.
 	"""
 	dry_run = int(dry_run)
 
-	shift = frappe.get_doc("Shift Type", shift_type)
-	shift.check_permission("write")
+	if shift_type:
+		shift_doc = frappe.get_doc("Shift Type", shift_type)
+		shift_doc.check_permission("write")
+	else:
+		frappe.has_permission("Attendance", "write", throw=True)
 
-	if shift.has_incorrect_shift_config():
-		frappe.throw(
-			_(
-				"Shift Type {0} has incomplete auto-attendance configuration. "
-				"Please set 'Enable Auto Attendance', 'Process Attendance After' "
-				"and 'Last Sync of Checkin' before running this tool."
-			).format(frappe.bold(shift_type))
-		)
-
-	# ------------------------------------------------------------------
 	# 1. Fetch skipped checkins
-	# ------------------------------------------------------------------
 	logs = _get_skipped_checkins(shift_type, from_date, to_date, employee)
 	if not logs:
 		return {
@@ -68,10 +64,8 @@ def recheck_skipped_attendance(
 			"process_message": _("No skipped checkins found for the given filters."),
 		}
 
-	# ------------------------------------------------------------------
 	# 2. Group by (employee, attendance_date)
-	# ------------------------------------------------------------------
-	group_key = lambda log: (log.employee, getdate(log.shift_start))
+	group_key = lambda log: (log.employee, getdate(log.shift_start or log.time))
 	sorted_logs = sorted(logs, key=group_key)
 
 	to_fix: list[dict] = []
@@ -83,73 +77,127 @@ def recheck_skipped_attendance(
 		emp_name = group_logs[0].employee_name
 		checkin_names = [l.name for l in group_logs]
 
-		# Find submitted attendance for this employee + date
-		attendance = _get_submitted_attendance(emp, att_date)
-		if not attendance:
-			# No submitted attendance at all — nothing to cancel.
-			# The checkins can simply be un-skipped so the next
-			# process_auto_attendance picks them up.
-			to_fix.append(
-				_row(emp, emp_name, att_date, checkin_names, None, "No Attendance (will un-skip)")
-			)
-			if not dry_run:
-				_reset_skip_flag(checkin_names)
-			continue
-
-		if not _is_auto_marked_absent(attendance):
-			# Present / Half Day / On Leave / manual Absent — do not touch
-			untouched.append(
+		# Resolve shift for this group
+		resolved_shift = _resolve_shift(shift_type, group_logs, emp, att_date)
+		if not resolved_shift:
+			failed.append(
 				_row(
-					emp, emp_name, att_date, checkin_names,
-					attendance.name, attendance.status,
+					emp,
+					emp_name,
+					att_date,
+					checkin_names,
+					None,
+					_("Cannot determine Shift Type"),
 				)
 			)
 			continue
 
-		# This is an auto-marked Absent that we should fix
+		# Calculate what the attendance would be from these checkins
+		(
+			calc_status,
+			working_hours,
+			late_entry,
+			early_exit,
+			in_time,
+			out_time,
+		) = _calculate_attendance(resolved_shift, emp, att_date, group_logs)
+
+		# Find existing attendance for this employee + date
+		attendance = _get_submitted_attendance(emp, att_date)
+
+		if not attendance:
+			# No attendance existed at all
+			target_remark = _("No Attendance → will mark {0} ({1}h)").format(
+				calc_status, working_hours
+			)
+			to_fix.append(
+				_row(emp, emp_name, att_date, checkin_names, None, target_remark)
+			)
+			if not dry_run:
+				try:
+					overtime_type = group_logs[0].get("overtime_type")
+					mark_attendance_and_link_log(
+						group_logs,
+						calc_status,
+						att_date,
+						working_hours,
+						late_entry,
+						early_exit,
+						in_time,
+						out_time,
+						resolved_shift.name,
+						overtime_type,
+					)
+				except Exception as exc:
+					failed.append(
+						_row(emp, emp_name, att_date, checkin_names, None, str(exc))
+					)
+			continue
+
+		# If an Attendance exists: check if it's an auto-marked Absent
+		if not _is_auto_marked_absent(attendance):
+			# Present / Half Day / On Leave / manual Absent — keep untouched
+			untouched.append(
+				_row(
+					emp,
+					emp_name,
+					att_date,
+					checkin_names,
+					attendance.name,
+					_("Kept as-is ({0})").format(attendance.status),
+				)
+			)
+			continue
+
+		# Auto-marked Absent found — update it in-place!
+		target_remark = _("Auto-Absent → will update to {0} ({1}h)").format(
+			calc_status, working_hours
+		)
 		to_fix.append(
-			_row(emp, emp_name, att_date, checkin_names, attendance.name, "Auto-Absent → will cancel")
+			_row(emp, emp_name, att_date, checkin_names, attendance.name, target_remark)
 		)
 
 		if not dry_run:
 			try:
-				frappe.db.savepoint("recheck_att")
-				att_doc = frappe.get_doc("Attendance", attendance.name)
-				att_doc.flags.ignore_permissions = True
-				att_doc.cancel()
-			except frappe.ValidationError as exc:
-				frappe.db.rollback(save_point="recheck_att")
-				frappe.clear_messages()
+				_update_attendance_in_place(
+					attendance.name,
+					resolved_shift,
+					calc_status,
+					working_hours,
+					late_entry,
+					early_exit,
+					in_time,
+					out_time,
+					checkin_names,
+					group_logs,
+				)
+			except Exception as exc:
 				failed.append(
 					_row(
-						emp, emp_name, att_date, checkin_names,
-						attendance.name, str(exc),
+						emp,
+						emp_name,
+						att_date,
+						checkin_names,
+						attendance.name,
+						str(exc),
 					)
 				)
-				continue
 
-			# Cancel succeeded — reset the skip flag on checkins
-			_reset_skip_flag(checkin_names)
+	if not dry_run and not frappe.flags.in_test:
+		frappe.db.commit()  # nosemgrep
 
-	# ------------------------------------------------------------------
-	# 3. Re-run process_auto_attendance (only when not dry_run)
-	# ------------------------------------------------------------------
 	process_message = ""
-	if not dry_run:
-		if not frappe.flags.in_test:
-			frappe.db.commit()  # nosemgrep
-		# Reload shift to pick up latest settings
-		shift.reload()
-		process_message = shift.process_auto_attendance(is_manually_triggered=True) or _(
-			"Attendance has been marked as per employee check-ins."
-		)
-	else:
+	if dry_run:
 		if to_fix:
 			process_message = _(
-				"{0} group(s) can be fixed. Un-check 'Preview only' and run again to apply."
+				"{0} record(s) can be updated to Present/Half Day. Click 'Fix Now' to apply."
 			).format(len(to_fix))
 		else:
 			process_message = _("Nothing to fix.")
+	else:
+		process_message = _(
+			"Successfully updated {0} attendance record(s) in-place."
+		).format(len(to_fix) - len(failed))
 
 	return {
 		"dry_run": dry_run,
@@ -160,32 +208,242 @@ def recheck_skipped_attendance(
 	}
 
 
+@frappe.whitelist()
+def recheck_single_attendance(attendance_name: str, dry_run: int | bool = 1) -> dict:
+	"""Recheck skipped checkins for a specific Attendance document and update it in-place."""
+	dry_run = int(dry_run)
+
+	att = frappe.get_doc("Attendance", attendance_name)
+	att.check_permission("write")
+
+	if att.docstatus != 1:
+		frappe.throw(_("Attendance must be submitted to recheck."))
+
+	att_date = att.attendance_date
+	emp = att.employee
+
+	# Fetch unlinked or skipped checkins for this employee on this date
+	logs = frappe.get_all(
+		"Employee Checkin",
+		filters={
+			"employee": emp,
+			"attendance": ("is", "not set"),
+			"time": (
+				"between",
+				[
+					datetime.combine(getdate(att_date), datetime.min.time()),
+					datetime.combine(getdate(att_date), datetime.max.time()),
+				],
+			),
+		},
+		fields=[
+			"name",
+			"employee",
+			"employee_name",
+			"shift_start",
+			"shift_end",
+			"shift_actual_start",
+			"shift_actual_end",
+			"log_type",
+			"time",
+			"shift",
+			"device_id",
+			"overtime_type",
+			"skip_auto_attendance",
+		],
+		order_by="time",
+	)
+
+	if not logs:
+		return {
+			"found": False,
+			"message": _("No unlinked or skipped check-in logs found for this employee on {0}.").format(
+				att_date
+			),
+		}
+
+	resolved_shift = _resolve_shift(att.shift, logs, emp, att_date)
+	if not resolved_shift:
+		frappe.throw(_("Could not determine Shift Type for employee {0}.").format(emp))
+
+	(
+		calc_status,
+		working_hours,
+		late_entry,
+		early_exit,
+		in_time,
+		out_time,
+	) = _calculate_attendance(resolved_shift, emp, att_date, logs)
+
+	checkin_names = [l.name for l in logs]
+
+	if dry_run:
+		return {
+			"found": True,
+			"dry_run": 1,
+			"attendance": att.name,
+			"current_status": att.status,
+			"new_status": calc_status,
+			"working_hours": working_hours,
+			"in_time": str(in_time) if in_time else "",
+			"out_time": str(out_time) if out_time else "",
+			"late_entry": bool(late_entry),
+			"early_exit": bool(early_exit),
+			"checkin_count": len(logs),
+			"shift": resolved_shift.name,
+		}
+
+	# Apply in-place update
+	_update_attendance_in_place(
+		att.name,
+		resolved_shift,
+		calc_status,
+		working_hours,
+		late_entry,
+		early_exit,
+		in_time,
+		out_time,
+		checkin_names,
+		logs,
+	)
+
+	if not frappe.flags.in_test:
+		frappe.db.commit()  # nosemgrep
+
+	return {
+		"found": True,
+		"dry_run": 0,
+		"success": True,
+		"new_status": calc_status,
+		"working_hours": working_hours,
+		"message": _(
+			"Attendance {0} updated to {1} ({2} hrs) and {3} checkin log(s) linked."
+		).format(att.name, calc_status, working_hours, len(logs)),
+	}
+
+
 # ---------------------------------------------------------------------------
-# Helpers
+# Internal Helpers
 # ---------------------------------------------------------------------------
 
+def _calculate_attendance(shift_doc, employee: str, attendance_date, logs: list):
+	"""Calculate attendance status and timings using Shift Type rules."""
+	working_hours_threshold_for_half_day = flt(shift_doc.working_hours_threshold_for_half_day)
+	working_hours_threshold_for_absent = flt(shift_doc.working_hours_threshold_for_absent)
+
+	if shift_doc.is_half_holiday(employee, attendance_date):
+		working_hours_threshold_for_half_day = working_hours_threshold_for_half_day / 2
+		working_hours_threshold_for_absent = working_hours_threshold_for_absent / 2
+
+	return shift_doc.get_attendance(
+		logs,
+		working_hours_threshold_for_absent,
+		working_hours_threshold_for_half_day,
+	)
+
+
+def _update_attendance_in_place(
+	attendance_name: str,
+	shift_doc,
+	status: str,
+	working_hours: float,
+	late_entry: int | bool,
+	early_exit: int | bool,
+	in_time,
+	out_time,
+	checkin_names: list[str],
+	logs: list[dict],
+):
+	"""Update Attendance record in-place without cancelling, and link checkins."""
+	update_values = {
+		"status": status,
+		"working_hours": working_hours,
+		"late_entry": cint(late_entry),
+		"early_exit": cint(early_exit),
+		"in_time": in_time,
+		"out_time": out_time,
+		"shift": shift_doc.name,
+	}
+
+	# Check overtime if Present
+	overtime_type = logs[0].get("overtime_type")
+	if overtime_type and status == "Present":
+		overtime_data = get_overtime_data(shift_doc.name, working_hours)
+		if overtime_data:
+			update_values.update({
+				"overtime_type": overtime_type,
+				"standard_working_hours": overtime_data.get("standard_working_hours"),
+				"actual_overtime_duration": overtime_data.get("actual_overtime_duration"),
+			})
+
+	# 1. Update Attendance row directly in DB
+	frappe.db.set_value("Attendance", attendance_name, update_values)
+
+	# 2. Link checkins and reset skip flag
+	EmployeeCheckin = frappe.qb.DocType("Employee Checkin")
+	(
+		frappe.qb.update(EmployeeCheckin)
+		.set("attendance", attendance_name)
+		.set("skip_auto_attendance", 0)
+		.where(EmployeeCheckin.name.isin(checkin_names))
+	).run()
+
+	# 3. Add audit comment
+	comment_text = _(
+		"Attendance updated in-place from {0} skipped Employee Checkin(s). "
+		"Status: {1}, Working Hours: {2}."
+	).format(
+		len(checkin_names),
+		frappe.bold(status),
+		frappe.bold(str(working_hours)),
+	)
+	frappe.get_doc({
+		"doctype": "Comment",
+		"comment_type": "Comment",
+		"reference_doctype": "Attendance",
+		"reference_name": attendance_name,
+		"content": comment_text,
+	}).insert(ignore_permissions=True)
+
+
+def _resolve_shift(shift_type: str | None, logs: list[dict], employee: str, attendance_date):
+	"""Determine Shift Type from parameter, checkin logs, or employee's shift assignment."""
+	shift_name = shift_type or (logs[0].get("shift") if logs else None)
+
+	if not shift_name:
+		timestamp = datetime.combine(getdate(attendance_date), datetime.min.time())
+		shift_details = get_employee_shift(employee, timestamp, True)
+		if shift_details and shift_details.shift_type:
+			shift_name = shift_details.shift_type.name
+
+	if not shift_name:
+		shift_name = frappe.db.get_value("Employee", employee, "default_shift")
+
+	if shift_name:
+		return frappe.get_doc("Shift Type", shift_name)
+	return None
+
+
 def _get_skipped_checkins(
-	shift_type: str,
+	shift_type: str | None,
 	from_date: str,
 	to_date: str,
 	employee: str | None = None,
 ) -> list[dict]:
 	"""Return Employee Checkin records that were skipped by HRMS."""
 	filters = {
-		"shift": shift_type,
 		"skip_auto_attendance": 1,
 		"attendance": ("is", "not set"),
 		"offshift": 0,
-		"shift_start": (
-			"between",
-			[
-				datetime.combine(getdate(from_date), datetime.min.time()),
-				datetime.combine(getdate(to_date), datetime.max.time()),
-			],
-		),
 	}
+	if shift_type:
+		filters["shift"] = shift_type
 	if employee:
 		filters["employee"] = employee
+
+	start_dt = datetime.combine(getdate(from_date), datetime.min.time())
+	end_dt = datetime.combine(getdate(to_date), datetime.max.time())
+	filters["time"] = ("between", [start_dt, end_dt])
 
 	return frappe.get_all(
 		"Employee Checkin",
@@ -209,8 +467,6 @@ def _get_skipped_checkins(
 
 
 def _get_submitted_attendance(employee: str, attendance_date) -> dict | None:
-	"""Return the first submitted (docstatus=1) attendance for the employee
-	on the given date, if any."""
 	records = frappe.get_all(
 		"Attendance",
 		filters={
@@ -225,25 +481,16 @@ def _get_submitted_attendance(employee: str, attendance_date) -> dict | None:
 
 
 def _is_auto_marked_absent(attendance: dict) -> bool:
-	"""Check if an attendance record is an auto-marked Absent created by
-	HRMS's ``mark_absent_for_dates_with_no_attendance``.
-
-	Conditions:
-	  1. status == "Absent"
-	  2. No Employee Checkin is linked to this attendance
-	  3. A Comment exists with the telltale HRMS message
-	"""
+	"""Check if an attendance record is auto-marked Absent created by HRMS."""
 	if attendance.status != "Absent":
 		return False
 
-	# Any checkin linked?
 	has_linked_checkin = frappe.db.exists(
 		"Employee Checkin", {"attendance": attendance.name}
 	)
 	if has_linked_checkin:
 		return False
 
-	# HRMS comment present?
 	has_comment = frappe.db.exists(
 		"Comment",
 		{
@@ -253,20 +500,6 @@ def _is_auto_marked_absent(attendance: dict) -> bool:
 		},
 	)
 	return bool(has_comment)
-
-
-def _reset_skip_flag(checkin_names: list[str]) -> None:
-	"""Set skip_auto_attendance = 0 on the given checkins without touching
-	modified timestamps."""
-	if not checkin_names:
-		return
-	EmployeeCheckin = frappe.qb.DocType("Employee Checkin")
-	(
-		frappe.qb.update(EmployeeCheckin)
-		.set("skip_auto_attendance", 0)
-		.set("attendance", None)
-		.where(EmployeeCheckin.name.isin(checkin_names))
-	).run()
 
 
 def _row(

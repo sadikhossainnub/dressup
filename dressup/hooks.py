@@ -83,9 +83,11 @@ doctype_js = {
 	],
 	"Purchase Order": "public/js/purchase_order_approval.js",
 	"Shift Type": "public/js/shift_type.js",
+	"Attendance": "public/js/attendance.js",
 }
 doctype_list_js = {
 	"BOM": "public/js/bom_list.js",
+	"Attendance": "public/js/attendance_list.js",
 }
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
