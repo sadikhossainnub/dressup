@@ -1,0 +1,118 @@
+{
+ "actions": [],
+ "creation": "2026-10-19 05:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "notification_section",
+  "enable_upgrade_notification",
+  "enable_downgrade_notification",
+  "col_break_notify",
+  "notify_customer_email",
+  "notify_customer_sms",
+  "notify_internal_users",
+  "expiry_section",
+  "expiry_warning_days",
+  "col_break_expiry",
+  "enable_expiry_sms",
+  "enable_expiry_email"
+ ],
+ "fields": [
+  {
+   "fieldname": "notification_section",
+   "fieldtype": "Section Break",
+   "label": "Notification Settings"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_upgrade_notification",
+   "fieldtype": "Check",
+   "label": "Enable Tier Upgrade Notification",
+   "description": "Tier Upgrade হলে কাস্টমারকে SMS + Email পাঠানো হবে।"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_downgrade_notification",
+   "fieldtype": "Check",
+   "label": "Enable Tier Downgrade Notification",
+   "description": "Tier Downgrade হলে কাস্টমারকে SMS + Email পাঠানো হবে।"
+  },
+  {
+   "fieldname": "col_break_notify",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "depends_on": "eval:doc.enable_upgrade_notification || doc.enable_downgrade_notification",
+   "fieldname": "notify_customer_email",
+   "fieldtype": "Check",
+   "label": "Notify via Email (customer email_id)"
+  },
+  {
+   "default": "1",
+   "depends_on": "eval:doc.enable_upgrade_notification || doc.enable_downgrade_notification",
+   "fieldname": "notify_customer_sms",
+   "fieldtype": "Check",
+   "label": "Notify via SMS (customer mobile_no)",
+   "description": "Frappe SMS Settings-এ Gateway কনফিগার থাকতে হবে।"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.enable_upgrade_notification || doc.enable_downgrade_notification",
+   "fieldname": "notify_internal_users",
+   "fieldtype": "Check",
+   "label": "Notify Internal Users (In-App Alert)",
+   "description": "Sales Manager ও Accounts Manager রোলের ইউজারদের In-App notification পাঠাবে।"
+  },
+  {
+   "fieldname": "expiry_section",
+   "fieldtype": "Section Break",
+   "label": "Point Expiry Warning"
+  },
+  {
+   "default": "7",
+   "fieldname": "expiry_warning_days",
+   "fieldtype": "Int",
+   "label": "Expiry Warning Days Before",
+   "description": "কত দিন আগে পয়েন্ট এক্সপায়ারি সতর্কতা পাঠানো হবে। (Daily scheduler চালু থাকতে হবে)"
+  },
+  {
+   "fieldname": "col_break_expiry",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_expiry_sms",
+   "fieldtype": "Check",
+   "label": "Send Expiry Warning via SMS"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_expiry_email",
+   "fieldtype": "Check",
+   "label": "Send Expiry Warning via Email"
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-10-19 05:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Loyalty Tier Upgrade Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Accounts Manager",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
+

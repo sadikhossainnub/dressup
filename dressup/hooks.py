@@ -245,6 +245,7 @@ doc_events = {
 scheduler_events = {
 	"daily": [
 		"dressup.dressup.loyalty_downgrade.check_loyalty_tier_downgrade",
+		"dressup.dressup.loyalty_downgrade.check_loyalty_point_expiry",
 	],
 }
 

@@ -134,7 +134,7 @@
     text-align: left;
   }
 
-  .items-table thead th:nth-child(n+3) { text-align: right; }
+  .items-table thead th:nth-child(n+4) { text-align: right; }
 
   .items-table tbody tr {
     border-bottom: 1px solid #eef0f7;
@@ -147,7 +147,7 @@
     vertical-align: top;
   }
 
-  .items-table tbody td:nth-child(n+3) { text-align: right; }
+  .items-table tbody td:nth-child(n+4) { text-align: right; }
 
   .item-img-wrap {
     width: 70px;
@@ -365,6 +365,7 @@
               <tr>
                 <th style="width:85px;">Image</th>
                 <th>Item Details</th>
+                <th style="width:95px;">Purpose</th>
                 <th style="width:65px;">Qty</th>
                 <th style="width:85px;">Rate</th>
                 <th style="width:115px;">Amount (BDT)</th>
@@ -384,6 +385,7 @@
                   <span style="font-weight:600; color:#0f3460;">{{ item.item_name }}</span>
                   {% if item.description %}<div style="font-size:8pt; color:#666; margin-top:2px;">{{ item.description | striptags | truncate(100) }}</div>{% endif %}
                 </td>
+                <td style="font-size:8.5pt; color:#444; white-space: pre-line;">{{ item.custom_purpose or '' }}</td>
                 <td>{{ item.qty | round(2) }}<br><small>{{ item.uom }}</small></td>
                 <td>{{ frappe.format(item.rate, "Currency", doc.currency) }}</td>
                 <td style="font-weight:600;">{{ frappe.format(item.amount, "Currency", doc.currency) }}</td>

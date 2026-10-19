@@ -1,0 +1,155 @@
+{
+ "actions": [],
+ "autoname": "format:LUL-{####}",
+ "creation": "2026-10-19 05:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "customer",
+  "customer_name",
+  "loyalty_program",
+  "col_break_info",
+  "upgrade_date",
+  "upgrade_reason",
+  "tier_section",
+  "previous_tier",
+  "col_break_tier",
+  "new_tier",
+  "details_section",
+  "triggered_by_invoice",
+  "details"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Customer Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "loyalty_program",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Loyalty Program",
+   "options": "Loyalty Program",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_info",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "upgrade_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Upgrade Date",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "upgrade_reason",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Upgrade Reason",
+   "options": "\nMonthly Spend Checkpoint\nYearly Spend Upgrade\nManual",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "tier_section",
+   "fieldtype": "Section Break",
+   "label": "Tier Change"
+  },
+  {
+   "fieldname": "previous_tier",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Previous Tier",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_tier",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "new_tier",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "New Tier",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "triggered_by_invoice",
+   "fieldtype": "Link",
+   "label": "Triggered by Invoice",
+   "options": "Sales Invoice",
+   "read_only": 1
+  },
+  {
+   "fieldname": "details",
+   "fieldtype": "Small Text",
+   "label": "Details",
+   "read_only": 1
+  }
+ ],
+ "in_create": 1,
+ "links": [],
+ "modified": "2026-10-19 05:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "DressUp",
+ "name": "Loyalty Tier Upgrade Log",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1
+  }
+ ],
+ "sort_field": "upgrade_date",
+ "sort_order": "DESC"
+}
+

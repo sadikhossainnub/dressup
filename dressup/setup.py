@@ -10,6 +10,9 @@ def after_install():
 	create_customer_ledger_report()
 	add_show_created_by_custom_field()
 	add_tier_enable_amount_custom_field()
+	add_yearly_upgrade_amount_custom_field()
+	create_loyalty_program_summary_report()
+	create_loyalty_tier_upgrade_settings()
 
 
 def after_migrate():
@@ -18,6 +21,9 @@ def after_migrate():
 	create_customer_ledger_report()
 	add_show_created_by_custom_field()
 	add_tier_enable_amount_custom_field()
+	add_yearly_upgrade_amount_custom_field()
+	create_loyalty_program_summary_report()
+	create_loyalty_tier_upgrade_settings()
 
 
 def create_work_order_report():
@@ -123,3 +129,53 @@ def add_tier_enable_amount_custom_field():
 		frappe.db.commit()
 		frappe.clear_cache(doctype="Loyalty Program Collection")
 
+
+def add_yearly_upgrade_amount_custom_field():
+	"""
+	Loyalty Program Collection-এ 'yearly_upgrade_amount' কাস্টম ফিল্ড যোগ করে।
+	এই ফিল্ডে মান দিলে Rolling 12 months-এর মোট খরচ যাচাই করে Tier আপগ্রেড হবে।
+	১ম Tier-এর জন্য ০ রাখুন — সেটি tier_enable_amount দিয়ে মাসিক চেক হবে।
+	"""
+	if not frappe.db.exists("Custom Field", {"dt": "Loyalty Program Collection", "fieldname": "yearly_upgrade_amount"}):
+		cf = frappe.get_doc({
+			"doctype": "Custom Field",
+			"dt": "Loyalty Program Collection",
+			"fieldname": "yearly_upgrade_amount",
+			"label": "Yearly Upgrade Amount",
+			"fieldtype": "Currency",
+			"insert_after": "tier_enable_amount",
+			"description": (
+				"Rolling 12 months-এ মোট কত টাকা কিনলে এই Tier-এ আপগ্রেড হবে। "
+				"১ম Tier-এর জন্য ০ রাখুন (সেটি Tier Enable Amount দিয়ে চলবে)।"
+			),
+			"module": "DressUp"
+		})
+		cf.flags.ignore_permissions = True
+		cf.insert()
+		frappe.db.commit()
+		frappe.clear_cache(doctype="Loyalty Program Collection")
+
+
+def create_loyalty_program_summary_report():
+	"""Loyalty Program Summary Report তৈরি করে যদি না থাকে।"""
+	if not frappe.db.exists("Report", "Loyalty Program Summary Report"):
+		report = frappe.get_doc({
+			"doctype": "Report",
+			"report_name": "Loyalty Program Summary Report",
+			"ref_doctype": "Customer",
+			"report_type": "Script Report",
+			"is_standard": "Yes",
+			"module": "DressUp",
+		})
+		report.flags.ignore_permissions = True
+		report.insert()
+		frappe.db.commit()
+
+
+def create_loyalty_tier_upgrade_settings():
+	"""Loyalty Tier Upgrade Settings Single DocType-এ ডিফল্ট রেকর্ড তৈরি করে।"""
+	if not frappe.db.exists("Loyalty Tier Upgrade Settings", "Loyalty Tier Upgrade Settings"):
+		doc = frappe.new_doc("Loyalty Tier Upgrade Settings")
+		doc.flags.ignore_permissions = True
+		doc.insert()
+		frappe.db.commit()

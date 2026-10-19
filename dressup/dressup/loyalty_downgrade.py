@@ -334,3 +334,127 @@ def perform_downgrade(customer, customer_name, loyalty_program, previous_tier, n
 			reason=downgrade_reason,
 		)
 	)
+
+	# Send downgrade notification (SMS + Email)
+	try:
+		from dressup.dressup.loyalty_auto_assign import _send_tier_change_notification
+		_send_tier_change_notification(
+			customer=customer,
+			loyalty_program=loyalty_program,
+			previous_tier=previous_tier,
+			new_tier=new_tier,
+			change_type="Downgrade",
+		)
+	except Exception:
+		frappe.log_error(
+			title="Loyalty Downgrade Notification Error",
+			message=frappe.get_traceback(),
+		)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Daily Scheduler: Point Expiry Warning
+# ─────────────────────────────────────────────────────────────────────────────
+
+def check_loyalty_point_expiry():
+	"""
+	Daily scheduled job.
+
+	Finds Loyalty Point Entries expiring within the configured warning window
+	(Loyalty Tier Upgrade Settings → expiry_warning_days) and sends SMS + Email
+	warning to each customer.
+	"""
+	from frappe.utils import add_days
+
+	try:
+		settings = frappe.get_single("Loyalty Tier Upgrade Settings")
+	except Exception:
+		frappe.log_error(
+			title="Loyalty Expiry Check Error",
+			message="Loyalty Tier Upgrade Settings not found. Please create the record via bench migrate.",
+		)
+		return
+
+	warning_days = int(settings.get("expiry_warning_days") or 7)
+	threshold_date = add_days(today(), warning_days)
+
+	expiring_entries = frappe.db.sql(
+		"""
+		SELECT
+			lpe.customer,
+			cust.customer_name,
+			cust.email_id,
+			cust.mobile_no,
+			lpe.loyalty_program,
+			COALESCE(SUM(lpe.loyalty_points), 0) AS expiring_points,
+			lpe.expiry_date
+		FROM `tabLoyalty Point Entry` lpe
+		JOIN `tabCustomer` cust ON cust.name = lpe.customer
+		WHERE lpe.expiry_date BETWEEN %(today)s AND %(threshold)s
+			AND lpe.loyalty_points > 0
+			AND lpe.docstatus = 1
+		GROUP BY lpe.customer, lpe.expiry_date, lpe.loyalty_program
+		ORDER BY lpe.expiry_date ASC
+		""",
+		{"today": today(), "threshold": threshold_date},
+		as_dict=True,
+	)
+
+	sent_count = 0
+	for entry in expiring_entries:
+		points = flt(entry.expiring_points)
+		if points <= 0:
+			continue
+
+		sms_msg = _(
+			"Dear {name}, your {points} loyalty points in {program} "
+			"will expire on {date}. Redeem before expiry!"
+		).format(
+			name=entry.customer_name,
+			points=int(points),
+			program=entry.loyalty_program,
+			date=entry.expiry_date,
+		)
+
+		html_msg = _(
+			"<p>Dear <b>{name}</b>,</p>"
+			"<p>Your <b>{points}</b> loyalty points in <b>{program}</b> "
+			"will expire on <b>{date}</b>.</p>"
+			"<p>Please redeem them before they expire!</p>"
+		).format(
+			name=entry.customer_name,
+			points=int(points),
+			program=entry.loyalty_program,
+			date=entry.expiry_date,
+		)
+
+		# SMS
+		if settings.get("enable_expiry_sms") and entry.mobile_no:
+			try:
+				from frappe.core.doctype.sms_settings.sms_settings import send_sms
+				send_sms(receiver_list=[entry.mobile_no], msg=sms_msg, success_msg=False)
+			except Exception:
+				frappe.log_error(
+					title="Loyalty Expiry SMS Error",
+					message=frappe.get_traceback(),
+				)
+
+		# Email
+		if settings.get("enable_expiry_email") and entry.email_id:
+			frappe.sendmail(
+				recipients=[entry.email_id],
+				subject=_(
+					"⚠️ Your {points} Loyalty Points Expire on {date}"
+				).format(points=int(points), date=entry.expiry_date),
+				message=html_msg,
+			)
+
+		sent_count += 1
+
+	frappe.logger("loyalty_expiry").info(
+		"Point Expiry Warning: {count} notification(s) sent (threshold: {days} days).".format(
+			count=sent_count,
+			days=warning_days,
+		)
+	)
+	return _("Point Expiry Warning: {0} notification(s) sent.").format(sent_count)

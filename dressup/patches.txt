@@ -7,3 +7,4 @@
 dressup.patches.add_pps_to_quality_inspection
 dressup.patches.remove_loyalty_custom_fields
 dressup.patches.setup_workflow_activity_report_roles
+dressup.patches.add_yearly_upgrade_amount_field
