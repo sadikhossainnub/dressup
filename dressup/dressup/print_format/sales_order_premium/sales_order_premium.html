@@ -602,7 +602,7 @@
 
                 {% if loyalty_program %}
                     {% set lp_entries = frappe.get_all("Loyalty Point Entry",
-                        filters={"customer": doc.customer, "docstatus": 1},
+                        filters={"customer": doc.customer},
                         fields=["loyalty_points"]) %}
                     
                     {% set pt = namespace(earned=0, redeemed=0) %}

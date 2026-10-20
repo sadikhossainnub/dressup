@@ -31,10 +31,13 @@
         margin: 0 !important;
         padding: 0 !important;
         background: #fff !important;
-        font-family: 'Liberation Sans', Arial, Helvetica, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif;
         color: #000;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+        -webkit-font-smoothing: none !important;
+        -moz-osx-font-smoothing: grayscale !important;
+        text-rendering: geometricPrecision !important;
     }
 
     .print-format,
@@ -73,7 +76,7 @@
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        border: 0.3mm solid #000;
+        border: 1px solid #000;
         overflow: hidden;
         background: #fff;
     }
@@ -86,7 +89,7 @@
     }
 
     .grid-row + .grid-row {
-        border-top: 0.3mm solid #000;
+        border-top: 1px solid #000;
     }
 
     /* Row 1: QR (left) + Item Code / SKU (right) */
@@ -98,7 +101,7 @@
         padding: 0.5mm;
         margin: 0;
         box-sizing: border-box;
-        border-right: 0.3mm solid #000;
+        border-right: 1px solid #000;
     }
 
     .qr-cell img {
@@ -107,6 +110,10 @@
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
     }
 
     .code-cell {
@@ -139,12 +146,13 @@
         justify-content: center;
         padding: 0 0 0 1mm;
         box-sizing: border-box;
-        border-right: 0.3mm solid #000;
+        border-right: 1px solid #000;
         overflow: hidden;
     }
 
     .attr-line {
         font-size: {{ template.attribute_font_size or ((template.font_size or 10) * 0.65) }}pt;
+        font-weight: 600;
         line-height: 1.2;
         white-space: nowrap;
         overflow: hidden;
@@ -165,6 +173,7 @@
     .attr-line.item-code-line .attr-label {
         flex: 0 0 auto;
         margin-right: 2px;
+        font-weight: 700;
     }
 
     .attr-line.item-code-line .code-val {
@@ -174,6 +183,7 @@
         text-overflow: ellipsis;
         direction: rtl;
         text-align: left;
+        font-weight: 700;
     }
 
     .price-cell {
@@ -188,13 +198,14 @@
 
     .price-label {
         font-size: {{ (template.price_font_size or ((template.font_size or 10) * 0.65)) }}pt;
-        font-weight: 500;
+        font-weight: 700;
         line-height: 1;
     }
 
     .price-value {
         font-size: {{ (template.price_font_size or ((template.font_size or 10) * 0.9)) }}pt;
         {{ get_font_style(template.price_font_style, '800') }}
+        font-weight: 800;
         line-height: 1.2;
         white-space: nowrap;
     }
@@ -203,6 +214,9 @@
         html, body {
             width: {{ page_w }}mm !important;
             background: #fff !important;
+            -webkit-font-smoothing: none !important;
+            -moz-osx-font-smoothing: grayscale !important;
+            text-rendering: geometricPrecision !important;
         }
         .label-page {
             box-shadow: none !important;

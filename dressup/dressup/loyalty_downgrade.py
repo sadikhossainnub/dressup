@@ -392,7 +392,6 @@ def check_loyalty_point_expiry():
 		JOIN `tabCustomer` cust ON cust.name = lpe.customer
 		WHERE lpe.expiry_date BETWEEN %(today)s AND %(threshold)s
 			AND lpe.loyalty_points > 0
-			AND lpe.docstatus = 1
 		GROUP BY lpe.customer, lpe.expiry_date, lpe.loyalty_program
 		ORDER BY lpe.expiry_date ASC
 		""",

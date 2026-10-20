@@ -196,7 +196,6 @@ def get_data(filters):
 			END) AS expiring_soon
 		FROM `tabLoyalty Point Entry` lpe
 		WHERE lpe.customer IN %(customer_names)s
-			AND lpe.docstatus = 1
 		GROUP BY lpe.customer
 		""",
 		{

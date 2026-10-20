@@ -34,10 +34,13 @@
         margin: 0 !important;
         padding: 0 !important;
         background: #fff !important;
-        font-family: 'Liberation Sans', Arial, Helvetica, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif;
         color: #000;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+        -webkit-font-smoothing: none !important;
+        -moz-osx-font-smoothing: grayscale !important;
+        text-rendering: geometricPrecision !important;
     }
 
     .print-format, .print-format-gutter, .frappe-control, .page-break {
@@ -83,10 +86,20 @@
         align-items: center;
     }
 
+    .render-el img {
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+    }
+
     @media print {
         html, body {
             width: {{ page_w }}mm !important;
             background: #fff !important;
+            -webkit-font-smoothing: none !important;
+            -moz-osx-font-smoothing: grayscale !important;
+            text-rendering: geometricPrecision !important;
         }
         .label-page { box-shadow: none !important; margin: 0 !important; }
         .print-heading, .letter-head, .page-break .page-number { display: none !important; }

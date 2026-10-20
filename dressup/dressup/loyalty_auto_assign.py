@@ -494,9 +494,14 @@ def create_custom_loyalty_point_entry(doc, method):
 	"""
 	Hook: Sales Invoice → on_submit
 
-	Creates a Loyalty Point Entry calculating points strictly on the
-	excess net_total above the monthly tier_enable_amount checkpoint.
-	Excludes shipping, taxes, and the checkpoint amount itself.
+	Loyalty Point Calculation Logic:
+	  1. Lifetime 1st Qualifying Invoice:
+	     When a customer reaches the activation checkpoint (e.g. 10,000 BDT) for the
+	     first time in their life, points are calculated ONLY on the EXCESS net_total
+	     above that checkpoint (e.g. 16,400 - 10,000 = 6,400 BDT).
+	  2. Subsequent Invoices:
+	     Once the customer has earned points at least once, every subsequent invoice
+	     earns points on its full eligible net_total (based on the tier's collection factor).
 	"""
 	if doc.is_return or doc.docstatus != 1 or not doc.loyalty_program:
 		return
@@ -516,31 +521,47 @@ def create_custom_loyalty_point_entry(doc, method):
 	if not lp_details:
 		return
 
+	collection_factor = flt(lp_details.get("collection_factor") or 0.0)
+	if collection_factor <= 0:
+		# Tier doesn't earn points (e.g. collection_factor = 0 in Silver)
+		_set_customer_tier(doc.customer, doc.loyalty_program, doc.company, current_doc=doc)
+		return
+
 	loyalty_program_doc = frappe.get_doc("Loyalty Program", doc.loyalty_program)
-	active_tier_name = lp_details.get("tier_name")
-
-	# Find collection rule for the active tier
-	matched_rule = None
-	for rule in loyalty_program_doc.collection_rules:
-		if rule.tier_name == active_tier_name:
-			matched_rule = rule
-			break
-
-	# tier_enable_amount checkpoint — points earned only on EXCESS above this
-	tier_enable_amount = flt(matched_rule.get("tier_enable_amount")) if matched_rule else 0.0
-
-	# Prior net spend in current month (excluding this invoice)
-	prior_net_spend = get_month_to_date_spend(doc.customer, doc.company, current_doc=None)
-	needed_checkpoint_amount = max(0.0, tier_enable_amount - prior_net_spend)
 
 	# Net amount of current invoice (after discounts, excluding tax and shipping)
 	current_invoice_net = flt(doc.net_total) - flt(doc.get("loyalty_amount") or 0)
 
-	# Excess net amount eligible for points
-	eligible_net_amount = max(0.0, current_invoice_net - needed_checkpoint_amount)
+	# Check if customer has ever earned loyalty points in any previous entry
+	has_prior_points = frappe.db.exists(
+		"Loyalty Point Entry",
+		{
+			"customer": doc.customer,
+			"loyalty_points": [">", 0],
+			"invoice": ["!=", doc.name],
+		},
+	)
+
+	if not has_prior_points:
+		# ── 1ST QUALIFYING INVOICE IN CUSTOMER'S LIFE ─────────────────────────
+		# Points are strictly earned on the EXCESS amount above the activation checkpoint
+		checkpoint_rules = [
+			flt(r.tier_enable_amount)
+			for r in loyalty_program_doc.collection_rules
+			if flt(r.tier_enable_amount) > 0
+		]
+		initial_checkpoint = min(checkpoint_rules) if checkpoint_rules else 0.0
+
+		if current_invoice_net >= initial_checkpoint:
+			eligible_net_amount = max(0.0, current_invoice_net - initial_checkpoint)
+		else:
+			eligible_net_amount = 0.0
+	else:
+		# ── SUBSEQUENT INVOICES ───────────────────────────────────────────────
+		# Once activated, customer earns points on full net spend of each purchase
+		eligible_net_amount = max(0.0, current_invoice_net)
 
 	if eligible_net_amount > 0:
-		collection_factor = flt(lp_details.get("collection_factor")) or 1.0
 		points_earned = cint(eligible_net_amount / collection_factor)
 
 		if points_earned > 0:
@@ -562,3 +583,4 @@ def create_custom_loyalty_point_entry(doc, method):
 
 	# Ensure customer tier is updated to active_tier after submission
 	_set_customer_tier(doc.customer, doc.loyalty_program, doc.company, current_doc=doc)
+
