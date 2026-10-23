@@ -13,6 +13,8 @@ def after_install():
 	add_yearly_upgrade_amount_custom_field()
 	create_loyalty_program_summary_report()
 	create_loyalty_tier_upgrade_settings()
+	add_item_description_template_custom_fields()
+	create_default_item_description_template()
 
 
 def after_migrate():
@@ -24,6 +26,8 @@ def after_migrate():
 	add_yearly_upgrade_amount_custom_field()
 	create_loyalty_program_summary_report()
 	create_loyalty_tier_upgrade_settings()
+	add_item_description_template_custom_fields()
+	create_default_item_description_template()
 
 
 def create_work_order_report():
@@ -179,3 +183,159 @@ def create_loyalty_tier_upgrade_settings():
 		doc.flags.ignore_permissions = True
 		doc.insert()
 		frappe.db.commit()
+
+
+def add_item_description_template_custom_fields():
+	"""Add custom fields on Item for Item Description Template."""
+	custom_fields = [
+		{
+			"dt": "Item",
+			"fieldname": "description_template",
+			"label": "Description Template",
+			"fieldtype": "Link",
+			"options": "Item Description Template",
+			"link_filters": '[["Item Description Template", "enabled", "=", 1]]',
+			"insert_after": "brand",
+			"module": "DressUp",
+		},
+		{
+			"dt": "Item",
+			"fieldname": "regenerate_description",
+			"label": "Regenerate description on save",
+			"fieldtype": "Check",
+			"default": "1",
+			"insert_after": "description_template",
+			"module": "DressUp",
+		},
+		{
+			"dt": "Item",
+			"fieldname": "description_values",
+			"label": "Description Values",
+			"fieldtype": "Table",
+			"options": "Item Description Value",
+			"insert_after": "regenerate_description",
+			"module": "DressUp",
+		},
+	]
+
+	for field_def in custom_fields:
+		cf_name = f"{field_def['dt']}-{field_def['fieldname']}"
+		if frappe.db.exists("Custom Field", cf_name):
+			frappe.db.set_value("Custom Field", cf_name, "insert_after", field_def["insert_after"])
+		elif not frappe.db.exists("Custom Field", {"dt": field_def["dt"], "fieldname": field_def["fieldname"]}):
+			cf = frappe.get_doc({
+				"doctype": "Custom Field",
+				**field_def,
+			})
+			cf.flags.ignore_permissions = True
+			cf.insert()
+
+	frappe.clear_cache(doctype="Item")
+	frappe.db.commit()
+
+
+DEFAULT_TEMPLATE_HTML = """<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.5; color: #1e293b;">
+
+<div style="text-align: center; margin-bottom: 12px;">
+<span style="display: inline-block; font-size: 11px; font-weight: 600; color: #475569; background-color: #f1f5f9; padding: 4px 10px; border-radius: 4px; border: 1px solid #e2e8f0;">
+Expected deviation +/- {{ deviation or "0.5" }} inch.
+</span>
+</div>
+
+<h4 style="margin: 0 0 4px 0; color: #0f172a; font-size: 15px; font-weight: bold; text-align: left;">
+Size Chart{% if size_title %} — {{ size_title }}{% endif %}{% if item_code %} ({{ item_code }}){% endif %}
+</h4>
+
+{% if size_type or size_fabric or size_value_addition %}
+<p style="margin: 0 0 14px 0; font-size: 12px; color: #64748b; line-height: 1.4; text-align: left;">
+{% if size_type %}<strong>Type:</strong> {{ size_type }}{% endif %}{% if size_fabric %}{% if size_type %} | {% endif %}<strong>Fabric:</strong> {{ size_fabric }}{% endif %}{% if size_value_addition %}{% if size_type or size_fabric %} | {% endif %}<strong>Value Addition:</strong> {{ size_value_addition }}{% endif %}
+</p>
+{% endif %}
+
+{% if kameez_body or kameez_length or kameez_sleeve %}
+<h4 style="margin: 12px 0 6px 0; color: #0f172a; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Kameez / Top Fabric Measurements</h4>
+<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 12px; border: 1px solid #cbd5e1; margin-bottom: 16px;">
+<tbody>
+<tr style="background-color: #f8fafc; color: #0f172a;">
+<td style="padding: 7px 4px; width: 34%; border: 1px solid #cbd5e1; font-size: 11px; font-weight: bold; text-transform: uppercase; text-align: center; background-color: #f8fafc;"><strong>BODY</strong></td>
+<td style="padding: 7px 4px; width: 33%; border: 1px solid #cbd5e1; font-size: 11px; font-weight: bold; text-transform: uppercase; text-align: center; background-color: #f8fafc;"><strong>LENGTH</strong></td>
+<td style="padding: 7px 4px; width: 33%; border: 1px solid #cbd5e1; font-size: 11px; font-weight: bold; text-transform: uppercase; text-align: center; background-color: #f8fafc;"><strong>SLEEVE</strong></td>
+</tr>
+<tr>
+<td style="padding: 8px 4px; border: 1px solid #cbd5e1; text-align: center;">{{ kameez_body }}{% if kameez_body and not kameez_body.endswith('"') %}"{% endif %}</td>
+<td style="padding: 8px 4px; border: 1px solid #cbd5e1; text-align: center;">{{ kameez_length }}{% if kameez_length and not kameez_length.endswith('"') %}"{% endif %}</td>
+<td style="padding: 8px 4px; border: 1px solid #cbd5e1; text-align: center;">{{ kameez_sleeve }}{% if kameez_sleeve and not kameez_sleeve.endswith('"') %}"{% endif %}</td>
+</tr>
+</tbody>
+</table>
+{% endif %}
+
+{% if salwar_length or salwar_width %}
+<h4 style="margin: 12px 0 6px 0; color: #0f172a; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Salwar / Bottom Fabric Measurements</h4>
+<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 12px; border: 1px solid #cbd5e1; margin-bottom: 16px;">
+<tbody>
+<tr style="background-color: #f8fafc; color: #0f172a;">
+<td style="padding: 7px 4px; width: 50%; border: 1px solid #cbd5e1; font-size: 11px; font-weight: bold; text-transform: uppercase; text-align: center; background-color: #f8fafc;"><strong>LENGTH</strong></td>
+<td style="padding: 7px 4px; width: 50%; border: 1px solid #cbd5e1; font-size: 11px; font-weight: bold; text-transform: uppercase; text-align: center; background-color: #f8fafc;"><strong>WIDTH</strong></td>
+</tr>
+<tr>
+<td style="padding: 8px 4px; border: 1px solid #cbd5e1; text-align: center;">{{ salwar_length }}{% if salwar_length and not salwar_length.endswith('"') %}"{% endif %}{% if (salwar_length | float) > 0 %} ({{ (salwar_length | float / 36) | round(2) }} Yds){% endif %}</td>
+<td style="padding: 8px 4px; border: 1px solid #cbd5e1; text-align: center;">{{ salwar_width }}{% if salwar_width and not salwar_width.endswith('"') %}"{% endif %}{% if (salwar_width | float) > 0 %} ({{ (salwar_width | float / 36) | round(2) }} Yds){% endif %}</td>
+</tr>
+</tbody>
+</table>
+{% endif %}
+
+{% if dupatta_length or dupatta_width %}
+<h4 style="margin: 12px 0 6px 0; color: #0f172a; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Dupatta Measurements</h4>
+<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 12px; border: 1px solid #cbd5e1; margin-bottom: 16px;">
+<tbody>
+<tr style="background-color: #f8fafc; color: #0f172a;">
+<td style="padding: 7px 4px; width: 50%; border: 1px solid #cbd5e1; font-size: 11px; font-weight: bold; text-transform: uppercase; text-align: center; background-color: #f8fafc;"><strong>LENGTH</strong></td>
+<td style="padding: 7px 4px; width: 50%; border: 1px solid #cbd5e1; font-size: 11px; font-weight: bold; text-transform: uppercase; text-align: center; background-color: #f8fafc;"><strong>WIDTH</strong></td>
+</tr>
+<tr>
+<td style="padding: 8px 4px; border: 1px solid #cbd5e1; text-align: center;">{{ dupatta_length }}{% if dupatta_length and not dupatta_length.endswith('"') %}"{% endif %}</td>
+<td style="padding: 8px 4px; border: 1px solid #cbd5e1; text-align: center;">{{ dupatta_width }}{% if dupatta_width and not dupatta_width.endswith('"') %}"{% endif %}</td>
+</tr>
+</tbody>
+</table>
+{% endif %}
+
+<small style="color: #64748b; display: block; margin-top: 8px; font-size: 11px;">* All measurements are in inches unless otherwise stated.</small>
+</div>"""
+
+
+def create_default_item_description_template():
+	"""Seed the default 'Unstitched Three Piece' template if it does not already exist."""
+	template_name = "Unstitched Three Piece"
+	if frappe.db.exists("Item Description Template", template_name):
+		return
+
+	fields = [
+		{"field_key": "size_title", "field_label": "Size Title", "default_value": ""},
+		{"field_key": "size_type", "field_label": "Size Type", "default_value": ""},
+		{"field_key": "size_fabric", "field_label": "Size Fabric", "default_value": ""},
+		{"field_key": "size_value_addition", "field_label": "Size Value Addition", "default_value": ""},
+		{"field_key": "deviation", "field_label": "Deviation", "default_value": "0.5"},
+		{"field_key": "kameez_body", "field_label": "Kameez Body", "default_value": ""},
+		{"field_key": "kameez_length", "field_label": "Kameez Length", "default_value": ""},
+		{"field_key": "kameez_sleeve", "field_label": "Kameez Sleeve", "default_value": ""},
+		{"field_key": "salwar_length", "field_label": "Salwar Length", "default_value": ""},
+		{"field_key": "salwar_width", "field_label": "Salwar Width", "default_value": ""},
+		{"field_key": "dupatta_length", "field_label": "Dupatta Length", "default_value": ""},
+		{"field_key": "dupatta_width", "field_label": "Dupatta Width", "default_value": ""},
+	]
+
+	doc = frappe.get_doc({
+		"doctype": "Item Description Template",
+		"template_name": template_name,
+		"enabled": 1,
+		"update_web_description": 1,
+		"template_html": DEFAULT_TEMPLATE_HTML,
+		"fields": fields,
+	})
+	doc.flags.ignore_permissions = True
+	doc.insert()
+	frappe.db.commit()
+

@@ -84,6 +84,7 @@ doctype_js = {
 	"Purchase Order": "public/js/purchase_order_approval.js",
 	"Shift Type": "public/js/shift_type.js",
 	"Attendance": "public/js/attendance.js",
+	"Item": "public/js/item.js",
 }
 doctype_list_js = {
 	"BOM": "public/js/bom_list.js",
@@ -235,7 +236,10 @@ doc_events = {
 	"Salary Slip": {
 		"before_validate": "dressup.payroll.calculate_late_entries",
 		"validate": "dressup.payroll.calculate_late_entries",
-	}
+	},
+	"Item": {
+		"before_save": "dressup.dressup.doctype.item_description_template.item_description_template.item_before_save",
+	},
 }
 
 

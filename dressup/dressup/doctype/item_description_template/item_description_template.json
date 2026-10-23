@@ -1,0 +1,139 @@
+{
+    "actions": [],
+    "allow_import": 1,
+    "allow_rename": 1,
+    "autoname": "field:template_name",
+    "creation": "2026-10-23 18:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "template_name",
+        "enabled",
+        "update_web_description",
+        "section_break_template",
+        "template_html",
+        "section_break_fields",
+        "fields"
+    ],
+    "fields": [
+        {
+            "fieldname": "template_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Template Name",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "default": "1",
+            "fieldname": "enabled",
+            "fieldtype": "Check",
+            "in_list_view": 1,
+            "label": "Enabled"
+        },
+        {
+            "default": "1",
+            "fieldname": "update_web_description",
+            "fieldtype": "Check",
+            "label": "Update Web Long Description",
+            "description": "Also write rendered HTML into Item's web_long_description"
+        },
+        {
+            "fieldname": "section_break_template",
+            "fieldtype": "Section Break",
+            "label": "Template HTML"
+        },
+        {
+            "fieldname": "template_html",
+            "fieldtype": "Code",
+            "label": "Template HTML",
+            "options": "HTML",
+            "reqd": 1,
+            "description": "Jinja HTML template with placeholders, e.g. {{ kameez_body }}"
+        },
+        {
+            "fieldname": "section_break_fields",
+            "fieldtype": "Section Break",
+            "label": "Template Placeholders / Fields"
+        },
+        {
+            "fieldname": "fields",
+            "fieldtype": "Table",
+            "label": "Fields",
+            "options": "Item Description Template Field"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2026-10-23 18:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "DressUp",
+    "name": "Item Description Template",
+    "naming_rule": "By fieldname",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Administrator",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Stock Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Item Manager",
+            "select": 1
+        },
+        {
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Stock User",
+            "select": 1
+        }
+    ],
+    "show_title_field_in_link": 1,
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "title_field": "template_name"
+}
+
