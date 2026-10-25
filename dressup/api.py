@@ -141,3 +141,56 @@ def preview_item_description(
 		item_doc=item_context,
 	)
 
+
+@frappe.whitelist()
+def parse_description_values_csv(file_url):
+	"""
+	Whitelisted method to parse uploaded CSV file for description values.
+	Returns list of dicts with field_key and value.
+	"""
+	import csv
+	from frappe.utils.file_manager import get_file_path
+
+	if not file_url:
+		frappe.throw(_("File URL is required."))
+
+	try:
+		# Get file path from URL
+		file_path = get_file_path(file_url)
+		
+		# Read and parse CSV
+		result = []
+		with open(file_path, 'r', encoding='utf-8-sig') as csvfile:
+			# Try to detect delimiter
+			sample = csvfile.read(1024)
+			csvfile.seek(0)
+			sniffer = csv.Sniffer()
+			try:
+				delimiter = sniffer.sniff(sample).delimiter
+			except:
+				delimiter = ','
+			
+			reader = csv.DictReader(csvfile, delimiter=delimiter)
+			
+			for row in reader:
+				# Support both formats: 'Field Key' and 'field_key'
+				field_key = row.get('Field Key') or row.get('field_key') or row.get('Field_Key')
+				value = row.get('Value') or row.get('value') or ''
+				
+				if field_key:
+					result.append({
+						'field_key': field_key.strip(),
+						'value': value.strip() if value else ''
+					})
+		
+		if not result:
+			frappe.throw(_("No valid data found in CSV file. Please ensure the file has 'Field Key' and 'Value' columns."))
+		
+		return result
+		
+	except FileNotFoundError:
+		frappe.throw(_("File not found. Please upload the file again."))
+	except Exception as e:
+		frappe.log_error(message=str(e), title="CSV Parse Error")
+		frappe.throw(_("Error parsing CSV file: {0}").format(str(e)))
+
