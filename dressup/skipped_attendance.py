@@ -222,12 +222,12 @@ def recheck_single_attendance(attendance_name: str, dry_run: int | bool = 1) -> 
 	att_date = att.attendance_date
 	emp = att.employee
 
-	# Fetch unlinked or skipped checkins for this employee on this date
+	# Fetch checkins for this employee on this date
+	# Include both unlinked and already linked to this attendance
 	logs = frappe.get_all(
 		"Employee Checkin",
 		filters={
 			"employee": emp,
-			"attendance": ("is", "not set"),
 			"time": (
 				"between",
 				[
@@ -250,14 +250,21 @@ def recheck_single_attendance(attendance_name: str, dry_run: int | bool = 1) -> 
 			"device_id",
 			"overtime_type",
 			"skip_auto_attendance",
+			"attendance",
 		],
 		order_by="time",
 	)
 
+	# Filter: Keep only unlinked OR linked to this specific attendance
+	logs = [
+		log for log in logs 
+		if not log.get("attendance") or log.get("attendance") == att.name
+	]
+
 	if not logs:
 		return {
 			"found": False,
-			"message": _("No unlinked or skipped check-in logs found for this employee on {0}.").format(
+			"message": _("No check-in logs found for this employee on {0}.").format(
 				att_date
 			),
 		}
@@ -485,12 +492,28 @@ def _is_auto_marked_absent(attendance: dict) -> bool:
 	if attendance.status != "Absent":
 		return False
 
+	# Check if there are linked checkins
 	has_linked_checkin = frappe.db.exists(
 		"Employee Checkin", {"attendance": attendance.name}
 	)
+	
+	# If checkins are linked, check if they were skipped initially
 	if has_linked_checkin:
+		# Check if any linked checkins had skip_auto_attendance flag set
+		skipped_checkins = frappe.db.count(
+			"Employee Checkin",
+			{
+				"attendance": attendance.name,
+				"skip_auto_attendance": 1
+			}
+		)
+		# If there were skipped checkins, allow update
+		# Otherwise, this is a normal absent that shouldn't be changed
+		if skipped_checkins > 0:
+			return True
 		return False
 
+	# Check for auto-marked comment
 	has_comment = frappe.db.exists(
 		"Comment",
 		{
