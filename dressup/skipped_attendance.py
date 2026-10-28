@@ -209,6 +209,234 @@ def recheck_skipped_attendance(
 
 
 @frappe.whitelist()
+def recheck_all_attendance(
+	from_date: str = "",
+	to_date: str = "",
+	employee: str | None = None,
+	department: str | None = None,
+	shift_type: str | None = None,
+	dry_run: int | bool = 1,
+) -> dict:
+	"""Recheck ALL attendance records (not just skipped) in date range and fix status based on checkins.
+	
+	This is more comprehensive than recheck_skipped_attendance:
+	- Checks ALL submitted attendance records in date range
+	- Looks for matching checkins (linked or unlinked)
+	- Recalculates status, working hours, times
+	- Updates if different from current status
+	- Works for Absent records that should be Present/Half Day
+	"""
+	dry_run = int(dry_run)
+	frappe.has_permission("Attendance", "write", throw=True)
+
+	# Build filters for attendance records
+	attendance_filters = {
+		"docstatus": 1,
+		"attendance_date": ("between", [from_date, to_date]),
+	}
+	if employee:
+		attendance_filters["employee"] = employee
+	if department:
+		attendance_filters["department"] = department
+	if shift_type:
+		attendance_filters["shift"] = shift_type
+
+	# Fetch all submitted attendance records in range
+	attendance_records = frappe.get_all(
+		"Attendance",
+		filters=attendance_filters,
+		fields=["name", "employee", "employee_name", "attendance_date", "status", "shift"],
+		order_by="attendance_date, employee",
+	)
+
+	if not attendance_records:
+		return {
+			"dry_run": dry_run,
+			"to_fix": [],
+			"untouched": [],
+			"failed": [],
+			"process_message": _("No attendance records found for the given filters."),
+		}
+
+	to_fix: list[dict] = []
+	untouched: list[dict] = []
+	failed: list[dict] = []
+
+	# Process each attendance record
+	for att_record in attendance_records:
+		emp = att_record.employee
+		emp_name = att_record.employee_name
+		att_date = att_record.attendance_date
+		att_name = att_record.name
+		current_status = att_record.status
+
+		try:
+			# Fetch all checkins for this employee on this date
+			logs = frappe.get_all(
+				"Employee Checkin",
+				filters={
+					"employee": emp,
+					"time": (
+						"between",
+						[
+							datetime.combine(getdate(att_date), datetime.min.time()),
+							datetime.combine(getdate(att_date), datetime.max.time()),
+						],
+					),
+				},
+				fields=[
+					"name",
+					"employee",
+					"employee_name",
+					"shift_start",
+					"shift_end",
+					"shift_actual_start",
+					"shift_actual_end",
+					"log_type",
+					"time",
+					"shift",
+					"device_id",
+					"overtime_type",
+					"skip_auto_attendance",
+					"attendance",
+				],
+				order_by="time",
+			)
+
+			# Filter: Keep only unlinked OR linked to this specific attendance
+			logs = [
+				log for log in logs
+				if not log.get("attendance") or log.get("attendance") == att_name
+			]
+
+			if not logs:
+				# No checkins found - skip this record
+				untouched.append(
+					_row(
+						emp,
+						emp_name,
+						att_date,
+						[],
+						att_name,
+						_("No checkins found - kept as {0}").format(current_status),
+					)
+				)
+				continue
+
+			# Resolve shift
+			resolved_shift = _resolve_shift(att_record.shift, logs, emp, att_date)
+			if not resolved_shift:
+				failed.append(
+					_row(
+						emp,
+						emp_name,
+						att_date,
+						[l.name for l in logs],
+						att_name,
+						_("Cannot determine Shift Type"),
+					)
+				)
+				continue
+
+			# Calculate attendance from checkins
+			(
+				calc_status,
+				working_hours,
+				late_entry,
+				early_exit,
+				in_time,
+				out_time,
+			) = _calculate_attendance(resolved_shift, emp, att_date, logs)
+
+			checkin_names = [l.name for l in logs]
+
+			# Check if status needs update
+			if calc_status == current_status:
+				# Status is already correct
+				untouched.append(
+					_row(
+						emp,
+						emp_name,
+						att_date,
+						checkin_names,
+						att_name,
+						_("Already correct ({0}, {1}h)").format(current_status, working_hours),
+					)
+				)
+				continue
+
+			# Status mismatch - needs update
+			target_remark = _("{0} → will update to {1} ({2}h)").format(
+				current_status, calc_status, working_hours
+			)
+			to_fix.append(
+				_row(emp, emp_name, att_date, checkin_names, att_name, target_remark)
+			)
+
+			if not dry_run:
+				try:
+					_update_attendance_in_place(
+						att_name,
+						resolved_shift,
+						calc_status,
+						working_hours,
+						late_entry,
+						early_exit,
+						in_time,
+						out_time,
+						checkin_names,
+						logs,
+					)
+				except Exception as exc:
+					failed.append(
+						_row(
+							emp,
+							emp_name,
+							att_date,
+							checkin_names,
+							att_name,
+							str(exc),
+						)
+					)
+
+		except Exception as exc:
+			failed.append(
+				_row(
+					emp,
+					emp_name,
+					att_date,
+					[],
+					att_name,
+					_("Error: {0}").format(str(exc)),
+				)
+			)
+
+	if not dry_run and not frappe.flags.in_test:
+		frappe.db.commit()  # nosemgrep
+
+	process_message = ""
+	if dry_run:
+		if to_fix:
+			process_message = _(
+				"{0} record(s) need status update based on checkins. Click 'Fix Now' to apply."
+			).format(len(to_fix))
+		else:
+			process_message = _("All attendance records are correct.")
+	else:
+		process_message = _(
+			"Successfully updated {0} attendance record(s) based on checkins."
+		).format(len(to_fix) - len(failed))
+
+	return {
+		"dry_run": dry_run,
+		"to_fix": to_fix,
+		"untouched": untouched,
+		"failed": failed,
+		"process_message": process_message,
+	}
+
+
+@frappe.whitelist()
 def recheck_single_attendance(attendance_name: str, dry_run: int | bool = 1) -> dict:
 	"""Recheck skipped checkins for a specific Attendance document and update it in-place."""
 	dry_run = int(dry_run)
