@@ -40,12 +40,17 @@ def recheck_skipped_attendance(
 	to_date: str = "",
 	employee: str | None = None,
 	dry_run: int | bool = 1,
+	check_all: int | bool = 0,  # New parameter: check all attendance records, not just skipped
 ) -> dict:
-	"""Bulk scan and update skipped checkins in-place without cancelling Attendance.
+	"""Bulk scan and update checkins in-place without cancelling Attendance.
 
 	Can be triggered from Shift Type or Attendance List View.
+	
+	Args:
+		check_all: If True, checks all Absent attendance records (not just skipped checkins)
 	"""
 	dry_run = int(dry_run)
+	check_all = int(check_all)
 
 	if shift_type:
 		shift_doc = frappe.get_doc("Shift Type", shift_type)
@@ -53,7 +58,13 @@ def recheck_skipped_attendance(
 	else:
 		frappe.has_permission("Attendance", "write", throw=True)
 
-	# 1. Fetch skipped checkins
+	# If check_all mode, fetch all Absent attendance records and their checkins
+	if check_all:
+		return _recheck_all_absent_attendance(
+			shift_type, from_date, to_date, employee, dry_run
+		)
+
+	# Original logic: Fetch only skipped checkins
 	logs = _get_skipped_checkins(shift_type, from_date, to_date, employee)
 	if not logs:
 		return {
@@ -560,6 +571,219 @@ def recheck_single_attendance(attendance_name: str, dry_run: int | bool = 1) -> 
 # ---------------------------------------------------------------------------
 # Internal Helpers
 # ---------------------------------------------------------------------------
+
+def _recheck_all_absent_attendance(
+	shift_type: str | None,
+	from_date: str,
+	to_date: str,
+	employee: str | None,
+	dry_run: int,
+) -> dict:
+	"""Check all Absent attendance records and fix based on checkins."""
+	
+	# Build filters for Absent attendance
+	attendance_filters = {
+		"docstatus": 1,
+		"status": "Absent",
+		"attendance_date": ("between", [from_date, to_date]),
+	}
+	if employee:
+		attendance_filters["employee"] = employee
+	if shift_type:
+		attendance_filters["shift"] = shift_type
+
+	# Fetch all Absent attendance records
+	attendance_records = frappe.get_all(
+		"Attendance",
+		filters=attendance_filters,
+		fields=["name", "employee", "employee_name", "attendance_date", "shift"],
+		order_by="attendance_date, employee",
+	)
+
+	if not attendance_records:
+		return {
+			"dry_run": dry_run,
+			"to_fix": [],
+			"untouched": [],
+			"failed": [],
+			"process_message": _("No Absent attendance records found for the given filters."),
+		}
+
+	to_fix: list[dict] = []
+	untouched: list[dict] = []
+	failed: list[dict] = []
+
+	for att_record in attendance_records:
+		emp = att_record.employee
+		emp_name = att_record.employee_name
+		att_date = att_record.attendance_date
+		att_name = att_record.name
+
+		try:
+			# Fetch all checkins for this employee on this date
+			logs = frappe.get_all(
+				"Employee Checkin",
+				filters={
+					"employee": emp,
+					"time": (
+						"between",
+						[
+							datetime.combine(getdate(att_date), datetime.min.time()),
+							datetime.combine(getdate(att_date), datetime.max.time()),
+						],
+					),
+				},
+				fields=[
+					"name",
+					"employee",
+					"employee_name",
+					"shift_start",
+					"shift_end",
+					"shift_actual_start",
+					"shift_actual_end",
+					"log_type",
+					"time",
+					"shift",
+					"device_id",
+					"overtime_type",
+					"skip_auto_attendance",
+					"attendance",
+				],
+				order_by="time",
+			)
+
+			# Filter: Keep only unlinked OR linked to this specific attendance
+			logs = [
+				log for log in logs
+				if not log.get("attendance") or log.get("attendance") == att_name
+			]
+
+			if not logs:
+				# No checkins found
+				untouched.append(
+					_row(
+						emp,
+						emp_name,
+						att_date,
+						[],
+						att_name,
+						_("No checkins - kept Absent"),
+					)
+				)
+				continue
+
+			# Resolve shift
+			resolved_shift = _resolve_shift(att_record.shift, logs, emp, att_date)
+			if not resolved_shift:
+				failed.append(
+					_row(
+						emp,
+						emp_name,
+						att_date,
+						[l.name for l in logs],
+						att_name,
+						_("Cannot determine Shift Type"),
+					)
+				)
+				continue
+
+			# Calculate attendance from checkins
+			(
+				calc_status,
+				working_hours,
+				late_entry,
+				early_exit,
+				in_time,
+				out_time,
+			) = _calculate_attendance(resolved_shift, emp, att_date, logs)
+
+			checkin_names = [l.name for l in logs]
+
+			# Check if status should change
+			if calc_status == "Absent":
+				# Still Absent - keep as-is
+				untouched.append(
+					_row(
+						emp,
+						emp_name,
+						att_date,
+						checkin_names,
+						att_name,
+						_("Correctly Absent ({0}h < threshold)").format(working_hours),
+					)
+				)
+				continue
+
+			# Status should change from Absent to Present/Half Day
+			target_remark = _("Absent → will update to {0} ({1}h)").format(
+				calc_status, working_hours
+			)
+			to_fix.append(
+				_row(emp, emp_name, att_date, checkin_names, att_name, target_remark)
+			)
+
+			if not dry_run:
+				try:
+					_update_attendance_in_place(
+						att_name,
+						resolved_shift,
+						calc_status,
+						working_hours,
+						late_entry,
+						early_exit,
+						in_time,
+						out_time,
+						checkin_names,
+						logs,
+					)
+				except Exception as exc:
+					failed.append(
+						_row(
+							emp,
+							emp_name,
+							att_date,
+							checkin_names,
+							att_name,
+							str(exc),
+						)
+					)
+
+		except Exception as exc:
+			failed.append(
+				_row(
+					emp,
+					emp_name,
+					att_date,
+					[],
+					att_name,
+					_("Error: {0}").format(str(exc)),
+				)
+			)
+
+	if not dry_run and not frappe.flags.in_test:
+		frappe.db.commit()  # nosemgrep
+
+	process_message = ""
+	if dry_run:
+		if to_fix:
+			process_message = _(
+				"{0} Absent record(s) can be updated to Present/Half Day. Click 'Fix Now' to apply."
+			).format(len(to_fix))
+		else:
+			process_message = _("All Absent records are correct - no checkins found or working hours below threshold.")
+	else:
+		process_message = _(
+			"Successfully updated {0} attendance record(s) from Absent to Present/Half Day."
+		).format(len(to_fix) - len(failed))
+
+	return {
+		"dry_run": dry_run,
+		"to_fix": to_fix,
+		"untouched": untouched,
+		"failed": failed,
+		"process_message": process_message,
+	}
+
 
 def _calculate_attendance(shift_doc, employee: str, attendance_date, logs: list):
 	"""Calculate attendance status and timings using Shift Type rules."""

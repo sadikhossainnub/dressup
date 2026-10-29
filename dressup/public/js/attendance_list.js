@@ -35,6 +35,36 @@ function _show_bulk_dialog(listview) {
 		title: __("Recheck Skipped Attendance"),
 		fields: [
 			{
+				fieldname: "mode_info",
+				fieldtype: "HTML",
+				options: `
+					<div style="padding: 8px; background: #e8f4fd; border-radius: 4px; margin-bottom: 12px;">
+						<p style="margin: 0; color: #1f4e78; font-size: 13px;">
+							<strong>💡 Two Modes Available:</strong><br>
+							<span style="font-size: 12px;">
+							• <strong>Skipped Checkins Only:</strong> Faster, only checks Employee Checkins with skip flag<br>
+							• <strong>All Absent Records:</strong> Comprehensive, checks all Absent attendance with any checkins
+							</span>
+						</p>
+					</div>
+				`
+			},
+			{
+				fieldname: "check_mode",
+				label: __("Check Mode"),
+				fieldtype: "Select",
+				options: [
+					"Skipped Checkins Only",
+					"All Absent Records"
+				],
+				default: "All Absent Records",
+				description: __("Choose which records to check")
+			},
+			{
+				fieldname: "section_break_1",
+				fieldtype: "Section Break"
+			},
+			{
 				fieldname: "from_date",
 				label: __("From Date"),
 				fieldtype: "Date",
@@ -49,6 +79,10 @@ function _show_bulk_dialog(listview) {
 				reqd: 1,
 			},
 			{
+				fieldname: "column_break_1",
+				fieldtype: "Column Break"
+			},
+			{
 				fieldname: "shift_type",
 				label: __("Shift Type"),
 				fieldtype: "Link",
@@ -61,6 +95,10 @@ function _show_bulk_dialog(listview) {
 				options: "Employee",
 			},
 			{
+				fieldname: "section_break_2",
+				fieldtype: "Section Break"
+			},
+			{
 				fieldname: "preview_only",
 				label: __("Preview only (dry run)"),
 				fieldtype: "Check",
@@ -70,13 +108,14 @@ function _show_bulk_dialog(listview) {
 		primary_action_label: __("Run"),
 		primary_action(values) {
 			dialog.hide();
-			_call_bulk_recheck(listview, values, values.preview_only ? 1 : 0);
+			const check_all = values.check_mode === "All Absent Records" ? 1 : 0;
+			_call_bulk_recheck(listview, values, values.preview_only ? 1 : 0, check_all);
 		},
 	});
 	dialog.show();
 }
 
-function _call_bulk_recheck(listview, values, dry_run) {
+function _call_bulk_recheck(listview, values, dry_run, check_all) {
 	frappe.call({
 		method: "dressup.skipped_attendance.recheck_skipped_attendance",
 		args: {
@@ -85,14 +124,15 @@ function _call_bulk_recheck(listview, values, dry_run) {
 			to_date: values.to_date,
 			employee: values.employee || undefined,
 			dry_run: dry_run,
+			check_all: check_all || 0,
 		},
 		freeze: true,
 		freeze_message: dry_run
-			? __("Scanning skipped checkins…")
+			? __("Scanning attendance records…")
 			: __("Updating attendance records in-place…"),
 		callback(r) {
 			if (!r.message) return;
-			_show_bulk_results(listview, r.message, values);
+			_show_bulk_results(listview, r.message, values, check_all);
 			if (!dry_run) {
 				listview.refresh();
 			}
@@ -100,7 +140,7 @@ function _call_bulk_recheck(listview, values, dry_run) {
 	});
 }
 
-function _show_bulk_results(listview, result, values) {
+function _show_bulk_results(listview, result, values, check_all) {
 	const esc = frappe.utils.escape_html;
 	let html = "";
 
@@ -132,13 +172,13 @@ function _show_bulk_results(listview, result, values) {
 	}
 
 	if (!html) {
-		html = `<p>${__("No skipped checkins found.")}</p>`;
+		html = `<p>${__("No records found to process.")}</p>`;
 	}
 
 	const msg_dialog = frappe.msgprint({
 		title: result.dry_run
-			? __("Preview — Skipped Attendance")
-			: __("Result — Skipped Attendance"),
+			? __("Preview — Recheck Attendance")
+			: __("Result — Recheck Attendance"),
 		message: html,
 		indicator: result.failed && result.failed.length ? "orange" : "green",
 		wide: true,
@@ -147,7 +187,7 @@ function _show_bulk_results(listview, result, values) {
 	if (result.dry_run && result.to_fix && result.to_fix.length) {
 		msg_dialog.set_primary_action(__("Fix Now (In-Place)"), () => {
 			msg_dialog.hide();
-			_call_bulk_recheck(listview, values, 0);
+			_call_bulk_recheck(listview, values, 0, check_all);
 		});
 	}
 }
