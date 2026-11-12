@@ -269,6 +269,7 @@ scheduler_events = {
 # so the call works regardless of client JS version vs ERPNext server version.
 # Ref: https://github.com/frappe/erpnext/issues/51345
 override_whitelisted_methods = {
+	"erpnext.stock.utils.scan_barcode": "dressup.overrides.scan_barcode_override.scan_barcode",
 	"erpnext.stock.get_item_details.get_item_details": "dressup.overrides.item_details_fix.get_item_details",
 	"erpnext.controllers.accounts_controller.update_child_qty_rate": "dressup.overrides.update_child_qty_rate_override.update_child_qty_rate",
 	"erpnext.accounts.doctype.loyalty_program.loyalty_program.get_loyalty_program_details_with_points": "dressup.dressup.loyalty_auto_assign.custom_get_loyalty_program_details_with_points",
