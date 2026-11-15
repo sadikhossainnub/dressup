@@ -18,8 +18,60 @@ class ItemSearch {
 	}
 
 	init() {
+		this.setup_page_filters();
 		this.make_ui();
 		this.bind_events();
+	}
+
+	setup_page_filters() {
+		this.warehouse_field = this.page.add_field({
+			label: __('Warehouse'),
+			fieldtype: 'Link',
+			fieldname: 'warehouse',
+			options: 'Warehouse',
+			placeholder: __('All Warehouses'),
+			change: () => {
+				this.on_warehouse_change();
+			}
+		});
+
+		if (frappe.route_options && frappe.route_options.warehouse) {
+			this.warehouse_field.set_value(frappe.route_options.warehouse);
+			frappe.route_options = null;
+		}
+	}
+
+	get_selected_warehouse() {
+		return this.warehouse_field ? (this.warehouse_field.get_value() || '') : '';
+	}
+
+	on_warehouse_change() {
+		this.update_search_hint();
+		if (this.last_barcode) {
+			this.search(this.last_barcode);
+		}
+	}
+
+	clear_warehouse_filter() {
+		if (this.warehouse_field) {
+			this.warehouse_field.set_value('');
+		}
+	}
+
+	update_search_hint() {
+		let wh = this.get_selected_warehouse();
+		if (this.$search_wh_pill) {
+			if (wh) {
+				this.$search_wh_pill.html(`
+					<span class="badge badge-light border text-primary p-2">
+						<i class="fa fa-filter mr-1"></i> Warehouse: <strong>${frappe.utils.escape_html(wh)}</strong>
+						<a href="#" class="btn-clear-warehouse text-danger ml-2 font-weight-bold" title="Clear filter">&times;</a>
+					</span>
+				`).show();
+			} else {
+				this.$search_wh_pill.empty().hide();
+			}
+		}
 	}
 
 	make_ui() {
@@ -35,6 +87,7 @@ class ItemSearch {
 					</div>
 				</div>
 				<div class="suggestions-container mx-auto" style="display: none;"></div>
+				<div class="search-warehouse-pill mx-auto mt-2" style="display: none;"></div>
 				<p class="mt-2 text-muted search-hint">Scan an item barcode, serial number, or batch to see stock details.</p>
 			</div>
 			<div class="result-section mt-3" style="display: none;">
@@ -51,9 +104,11 @@ class ItemSearch {
 
 		this.$barcode_input = this.wrapper.find('.barcode-input');
 		this.$suggestions_container = this.wrapper.find('.suggestions-container');
+		this.$search_wh_pill = this.wrapper.find('.search-warehouse-pill');
 		this.$result_section = this.wrapper.find('.result-section');
 		this.$empty_state = this.wrapper.find('.empty-state');
 
+		this.update_search_hint();
 		this.add_custom_css();
 	}
 
@@ -83,10 +138,35 @@ class ItemSearch {
 			}
 		});
 
+		// Warehouse filter handlers
+		this.wrapper.on('click', '.btn-clear-warehouse', (e) => {
+			e.preventDefault();
+			this.clear_warehouse_filter();
+		});
+
+		this.wrapper.on('click', '.filter-by-warehouse', (e) => {
+			e.preventDefault();
+			let wh = $(e.currentTarget).attr('data-warehouse');
+			if (wh && this.warehouse_field) {
+				this.warehouse_field.set_value(wh);
+			}
+		});
+
+		// Variant warehouse dropdown change
+		this.wrapper.on('change', '.variant-warehouse-select', (e) => {
+			let wh = $(e.currentTarget).val();
+			this.selected_variant_warehouse = wh;
+			if (this.current_item_data) {
+				let variants_html = this.build_variants_html(this.current_item_data, wh);
+				this.wrapper.find('.variants-container-wrapper').html(variants_html);
+			}
+		});
+
 		// Auto-focus input on page click (good for physical scanners)
-		// But don't focus if user is trying to select/copy text or clicking result section
+		// But don't focus if user is trying to select/copy text, clicking result section, or using controls/dropdowns
 		$(document).on('click', (event) => {
-			let is_input = $(event.target).is('input, textarea, select, .suggestion-item');
+			let is_input = $(event.target).is('input, textarea, select, .suggestion-item')
+				|| $(event.target).closest('.page-form, .frappe-control, .awesomplete, .modal, .modal-dialog, .dropdown-menu').length > 0;
 			let is_result = $(event.target).closest('.result-section').length > 0;
 			let has_selection = window.getSelection().toString().length > 0;
 
@@ -151,15 +231,21 @@ class ItemSearch {
 		});
 	}
 
-	search() {
-		let barcode = this.$barcode_input.val().trim();
+	search(barcode_to_search) {
+		let barcode = (barcode_to_search || this.$barcode_input.val() || '').trim();
 		if (!barcode) return;
+
+		this.last_barcode = barcode;
+		let warehouse = this.get_selected_warehouse();
 
 		frappe.dom.freeze(__('Searching...'));
 		
 		frappe.call({
 			method: 'dressup.dressup.page.item_search.item_search.get_item_details',
-			args: { barcode: barcode },
+			args: { 
+				barcode: barcode,
+				warehouse: warehouse || undefined
+			},
 			callback: (r) => {
 				frappe.dom.unfreeze();
 				this.$barcode_input.val('').focus();
@@ -177,15 +263,31 @@ class ItemSearch {
 		this.$empty_state.hide();
 		this.$result_section.empty().show();
 
+		this.current_item_data = data;
+		this.selected_variant_warehouse = data.warehouse || this.selected_variant_warehouse || '';
+
 		let stock_html = this.build_stock_html(data);
 		let batch_html = this.build_batch_html(data);
 		let price_html = this.build_price_html(data);
 		let reservation_html = this.build_reservation_html(data);
-		let variants_html = this.build_variants_html(data);
+		let variants_html = this.build_variants_html(data, this.selected_variant_warehouse);
+
+		let warehouse_badge = data.warehouse ? `
+			<div class="warehouse-filter-badge d-flex justify-content-between align-items-center mb-3 p-2 px-3 rounded">
+				<div class="d-flex align-items-center">
+					<i class="fa fa-filter text-primary mr-2"></i>
+					<span>Filtered by Warehouse: <strong>${frappe.utils.escape_html(data.warehouse)}</strong></span>
+				</div>
+				<button type="button" class="btn btn-xs btn-outline-danger btn-clear-warehouse">
+					<i class="fa fa-times mr-1"></i> Clear Filter
+				</button>
+			</div>
+		` : '';
 
 		let html = `
 			<div class="card item-card shadow-sm border-0">
 				<div class="card-body">
+					${warehouse_badge}
 					<div class="row">
 						<div class="col-12 col-md-4 text-center item-image-col">
 							${data.image ? `
@@ -211,7 +313,7 @@ class ItemSearch {
 									<strong>${data.uom}</strong>
 								</div>
 								<div class="col-6 col-sm-3">
-									<small class="text-muted d-block">Total Quantity</small>
+									<small class="text-muted d-block">${data.warehouse ? `Qty (${frappe.utils.escape_html(data.warehouse)})` : 'Total Quantity'}</small>
 									<strong class="text-primary">${data.total_qty || 0} ${data.uom}</strong>
 								</div>
 								${data.brand ? `
@@ -247,7 +349,9 @@ class ItemSearch {
 
 					${reservation_html}
 
-					${variants_html}
+					<div class="variants-container-wrapper">
+						${variants_html}
+					</div>
 				</div>
 			</div>
 		`;
@@ -261,10 +365,17 @@ class ItemSearch {
 	}
 
 	build_stock_html(data) {
+		let header_title = data.warehouse 
+			? `Warehouse Stock (${frappe.utils.escape_html(data.warehouse)})` 
+			: 'Warehouse Stock';
+
 		if (!data.stock || data.stock.length === 0) {
+			let msg = data.warehouse 
+				? `No stock available in <strong>${frappe.utils.escape_html(data.warehouse)}</strong>. <button class="btn btn-sm btn-link text-primary btn-clear-warehouse p-0 ml-1">View All Warehouses</button>`
+				: 'No stock available in any warehouse.';
 			return `
 				<div class="alert alert-warning mt-4">
-					No stock available in any warehouse.
+					${msg}
 				</div>
 			`;
 		}
@@ -273,11 +384,14 @@ class ItemSearch {
 		let total_reserved = data.total_reserved_qty || data.stock.reduce((sum, s) => sum + (s.reserved_qty || 0), 0);
 		let total_unreserved = data.total_unreserved_qty || data.stock.reduce((sum, s) => sum + (s.unreserved_qty || 0), 0);
 
-		let stock_cards_html = data.stock.map(s => `
+		let stock_cards_html = data.stock.map(s => {
+			let wh_html = data.warehouse
+				? `<span class="stock-status-dot ${s.qty > 0 ? 'green' : 'red'}"></span> ${s.warehouse}`
+				: `<a href="#" class="filter-by-warehouse text-dark font-weight-bold" data-warehouse="${s.warehouse}" title="Filter by ${s.warehouse}"><span class="stock-status-dot ${s.qty > 0 ? 'green' : 'red'}"></span> ${s.warehouse} <i class="fa fa-filter text-muted ml-1" style="font-size: 11px;"></i></a>`;
+			return `
 			<div class="stock-card">
 				<div class="stock-card-warehouse">
-					<span class="stock-status-dot ${s.qty > 0 ? 'green' : 'red'}"></span>
-					${s.warehouse}
+					${wh_html}
 				</div>
 				<div class="stock-card-details">
 					<div class="stock-card-detail">
@@ -300,12 +414,13 @@ class ItemSearch {
 					` : ''}
 				</div>
 			</div>
-		`).join('');
+			`;
+		}).join('');
 
 		return `
 			<div class="stock-section mt-2">
 				<div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
-					<h5 class="mb-0">Warehouse Stock</h5>
+					<h5 class="mb-0">${header_title}</h5>
 					<span class="badge badge-success p-2">
 						Total Available: <strong>${total_qty} ${data.uom}</strong> (Reserved: ${total_reserved} | Unreserved: ${total_unreserved})
 					</span>
@@ -323,19 +438,24 @@ class ItemSearch {
 							</tr>
 						</thead>
 						<tbody>
-							${data.stock.map(s => `
+							${data.stock.map(s => {
+								let wh_cell = data.warehouse
+									? `<span class="stock-status-dot ${s.qty > 0 ? 'green' : 'red'}"></span> ${s.warehouse}`
+									: `<a href="#" class="filter-by-warehouse text-dark font-weight-bold" data-warehouse="${s.warehouse}" title="Click to filter by ${s.warehouse}"><span class="stock-status-dot ${s.qty > 0 ? 'green' : 'red'}"></span> ${s.warehouse} <i class="fa fa-filter text-muted ml-1" style="font-size: 11px;"></i></a>`;
+								return `
 								<tr>
-									<td><span class="stock-status-dot ${s.qty > 0 ? 'green' : 'red'}"></span> ${s.warehouse}</td>
+									<td>${wh_cell}</td>
 									<td class="text-right font-weight-bold">${s.qty} ${data.uom}</td>
 									<td class="text-right">${s.reserved_qty || 0} ${data.uom}</td>
 									<td class="text-right">${s.unreserved_qty || 0} ${data.uom}</td>
 									${data.has_cost_access ? `<td class="text-right">${format_number(s.valuation_rate || 0)}</td>` : ''}
 								</tr>
-							`).join('')}
+								`;
+							}).join('')}
 						</tbody>
 						<tfoot>
 							<tr class="table-secondary font-weight-bold">
-								<td>Total Quantity</td>
+								<td>${data.warehouse ? `Total (${frappe.utils.escape_html(data.warehouse)})` : 'Total Quantity'}</td>
 								<td class="text-right text-success font-weight-bold">${total_qty} ${data.uom}</td>
 								<td class="text-right">${total_reserved} ${data.uom}</td>
 								<td class="text-right">${total_unreserved} ${data.uom}</td>
@@ -431,6 +551,9 @@ class ItemSearch {
 		}
 
 		let total_reserved = data.reservations.reduce((sum, r) => sum + (r.remaining_qty || 0), 0);
+		let res_title = data.warehouse
+			? `Reserved Stock (${frappe.utils.escape_html(data.warehouse)})`
+			: 'Reserved Stock';
 
 		// Desktop table
 		let table_rows = data.reservations.map(r => `
@@ -492,7 +615,7 @@ class ItemSearch {
 			<div class="reservation-section mt-2">
 				<div class="reservation-header">
 					<h5 class="mb-0">
-						<i class="fa fa-lock text-warning"></i> Reserved Stock
+						<i class="fa fa-lock text-warning"></i> ${res_title}
 					</h5>
 					<span class="badge badge-warning reservation-total-badge">
 						Total Pending: ${total_reserved} ${data.uom}
@@ -614,19 +737,77 @@ class ItemSearch {
 		return expiry_date_str < today;
 	}
 
-	build_variants_html(data) {
+	build_variants_html(data, filter_warehouse) {
 		if (!data.variants_stock || data.variants_stock.length === 0) {
 			return '';
 		}
 
+		let active_wh = (filter_warehouse !== undefined) 
+			? filter_warehouse 
+			: (this.selected_variant_warehouse || data.warehouse || '');
+
+		// Map total stock per warehouse across all variants
+		let wh_stock_map = {};
+		data.variants_stock.forEach(v => {
+			(v.warehouses || []).forEach(w => {
+				if (w.warehouse) {
+					wh_stock_map[w.warehouse] = (wh_stock_map[w.warehouse] || 0) + (w.qty || 0);
+				}
+			});
+		});
+
+		let stock_wh_list = Object.keys(wh_stock_map).sort();
+		let all_wh_list = data.all_warehouses || [];
+		let other_wh_list = all_wh_list.filter(wh => !(wh in wh_stock_map)).sort();
+
+		// Calculate total stock and reserved based on active_wh
+		let grand_total_qty = 0;
+		let grand_total_reserved = 0;
+
+		data.variants_stock.forEach(v => {
+			if (active_wh) {
+				let match = (v.warehouses || []).find(w => w.warehouse === active_wh);
+				if (match) {
+					grand_total_qty += (match.qty || 0);
+					grand_total_reserved += (match.reserved_qty || 0);
+				}
+			} else {
+				grand_total_qty += (v.total_qty || 0);
+				grand_total_reserved += (v.total_reserved || 0);
+			}
+		});
+
+		let all_stock_sum = Object.values(wh_stock_map).reduce((a, b) => a + b, 0);
+
+		// Build warehouse dropdown options
+		let options_html = `
+			<option value="" ${!active_wh ? 'selected' : ''}>All Warehouses (${all_stock_sum} ${data.uom})</option>
+		`;
+
+		if (stock_wh_list.length > 0) {
+			options_html += `<optgroup label="Warehouses with Stock">`;
+			stock_wh_list.forEach(wh => {
+				let qty = wh_stock_map[wh] || 0;
+				let is_selected = (wh === active_wh) ? 'selected' : '';
+				options_html += `<option value="${frappe.utils.escape_html(wh)}" ${is_selected}>${frappe.utils.escape_html(wh)} (${qty} ${data.uom})</option>`;
+			});
+			options_html += `</optgroup>`;
+		}
+
+		if (other_wh_list.length > 0) {
+			options_html += `<optgroup label="Other Warehouses (0 Stock)">`;
+			other_wh_list.forEach(wh => {
+				let is_selected = (wh === active_wh) ? 'selected' : '';
+				options_html += `<option value="${frappe.utils.escape_html(wh)}" ${is_selected}>${frappe.utils.escape_html(wh)} (0)</option>`;
+			});
+			options_html += `</optgroup>`;
+		}
+
 		let section_label = data.has_variants
-			? 'Variant Stock (All Variants)'
-			: `Variant Stock (Variants of ${data.variant_of})`;
+			? (active_wh ? `Variant Stock in ${frappe.utils.escape_html(active_wh)} (All Variants)` : 'Variant Stock (All Variants)')
+			: (active_wh ? `Variant Stock in ${frappe.utils.escape_html(active_wh)} (Variants of ${data.variant_of})` : `Variant Stock (Variants of ${data.variant_of})`);
 
-		let grand_total_qty = data.variants_stock.reduce((sum, v) => sum + (v.total_qty || 0), 0);
-		let grand_total_reserved = data.variants_stock.reduce((sum, v) => sum + (v.total_reserved || 0), 0);
-
-		// Desktop table rows (Flat per warehouse or showing primary warehouses)
+		// Desktop table rows
 		let table_rows = [];
 
 		data.variants_stock.forEach((v) => {
@@ -634,8 +815,13 @@ class ItemSearch {
 			let row_class = is_current ? 'table-info font-weight-bold' : '';
 			let current_badge = is_current ? '<span class="badge badge-info ml-2">Current</span>' : '';
 
-			if (v.warehouses && v.warehouses.length > 0) {
-				v.warehouses.forEach((w, w_idx) => {
+			let relevant_warehouses = v.warehouses || [];
+			if (active_wh) {
+				relevant_warehouses = relevant_warehouses.filter(w => w.warehouse === active_wh);
+			}
+
+			if (relevant_warehouses.length > 0) {
+				relevant_warehouses.forEach((w, w_idx) => {
 					let qty_class = w.qty > 0 ? 'text-success font-weight-bold' : 'text-muted';
 					table_rows.push(`
 						<tr class="${row_class}">
@@ -657,14 +843,15 @@ class ItemSearch {
 					`);
 				});
 			} else {
-				// No stock in any warehouse
+				// No stock in this warehouse
+				let no_stock_label = active_wh ? `No Stock in ${frappe.utils.escape_html(active_wh)}` : 'No Stock';
 				table_rows.push(`
 					<tr class="${row_class}">
 						<td>
 							<span class="stock-status-dot red"></span>
 							<strong>${v.item_code}</strong>${current_badge}
 						</td>
-						<td><span class="text-muted small">No Stock</span></td>
+						<td><span class="text-muted small">${no_stock_label}</span></td>
 						<td><small class="text-muted">${v.attributes || '-'}</small></td>
 						<td class="text-right text-danger font-weight-bold">0 ${data.uom}</td>
 						<td class="text-right">0 ${data.uom}</td>
@@ -685,9 +872,18 @@ class ItemSearch {
 				<span class="variant-attr-badge">${a.attribute}: <strong>${a.value}</strong></span>
 			`).join('');
 
+			let relevant_warehouses = v.warehouses || [];
+			if (active_wh) {
+				relevant_warehouses = relevant_warehouses.filter(w => w.warehouse === active_wh);
+			}
+
+			let card_total_qty = active_wh
+				? (relevant_warehouses[0] ? relevant_warehouses[0].qty : 0)
+				: (v.total_qty || 0);
+
 			let wh_details_html = '';
-			if (v.warehouses && v.warehouses.length > 0) {
-				wh_details_html = v.warehouses.map(w => `
+			if (relevant_warehouses.length > 0) {
+				wh_details_html = relevant_warehouses.map(w => `
 					<div class="variant-wh-item py-1 border-bottom">
 						<div class="d-flex justify-content-between align-items-center mb-1">
 							<span class="font-weight-semibold text-dark small">
@@ -703,17 +899,20 @@ class ItemSearch {
 					</div>
 				`).join('');
 			} else {
-				wh_details_html = `<div class="text-muted small py-1">No stock in any warehouse</div>`;
+				let no_stock_wh = active_wh 
+					? `No stock in ${frappe.utils.escape_html(active_wh)}` 
+					: 'No stock in any warehouse';
+				wh_details_html = `<div class="text-muted small py-1">${no_stock_wh}</div>`;
 			}
 
 			return `
 				<div class="variant-card ${card_class}">
 					<div class="variant-card-header d-flex justify-content-between align-items-center mb-1">
 						<div>
-							<span class="stock-status-dot ${v.total_qty > 0 ? 'green' : 'red'}"></span>
+							<span class="stock-status-dot ${card_total_qty > 0 ? 'green' : 'red'}"></span>
 							<strong>${v.item_code}</strong>${current_badge}
 						</div>
-						<span class="badge ${v.total_qty > 0 ? 'badge-primary' : 'badge-danger'} p-2">Total: ${v.total_qty} ${data.uom}</span>
+						<span class="badge ${card_total_qty > 0 ? 'badge-primary' : 'badge-danger'} p-2">Total: ${card_total_qty} ${data.uom}</span>
 					</div>
 					${attr_badges ? `<div class="variant-attr-row mb-2">${attr_badges}</div>` : ''}
 					<div class="variant-wh-section bg-light p-2 rounded">
@@ -728,12 +927,24 @@ class ItemSearch {
 			<hr class="my-2">
 			<div class="variant-section mt-2">
 				<div class="variant-header d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
-					<h5 class="mb-0">
-						<i class="fa fa-clone text-purple mr-1"></i> ${section_label}
-					</h5>
-					<span class="badge badge-primary variant-total-badge">
-						Total Stock: ${grand_total_qty} ${data.uom} (Reserved: ${grand_total_reserved})
-					</span>
+					<div class="d-flex align-items-center flex-wrap gap-2">
+						<h5 class="mb-0">
+							<i class="fa fa-clone text-purple mr-1"></i> ${section_label}
+						</h5>
+					</div>
+					<div class="d-flex align-items-center flex-wrap gap-2">
+						<div class="variant-wh-filter-box d-flex align-items-center bg-white px-2 py-1 rounded border shadow-sm">
+							<label class="mb-0 mr-2 text-muted font-weight-bold small text-nowrap">
+								<i class="fa fa-warehouse text-primary mr-1"></i> Warehouse:
+							</label>
+							<select class="form-control form-control-sm variant-warehouse-select" style="min-width: 170px; max-width: 250px; height: 30px; font-size: 13px; font-weight: 500;">
+								${options_html}
+							</select>
+						</div>
+						<span class="badge badge-primary variant-total-badge p-2">
+							Total Stock: ${grand_total_qty} ${data.uom} (Reserved: ${grand_total_reserved})
+						</span>
+					</div>
 				</div>
 
 				<!-- Desktop table -->
@@ -1269,6 +1480,63 @@ class ItemSearch {
 			}
 			.item-search-container .variant-wh-toggle:hover {
 				color: #333 !important;
+			}
+
+			/* ===== Warehouse Filter ===== */
+			.item-search-container .warehouse-filter-badge {
+				background-color: #e8f4fd;
+				border: 1px solid #b8daff;
+				color: #004085;
+			}
+			.item-search-container .filter-by-warehouse {
+				color: inherit;
+				text-decoration: none;
+				transition: color 0.15s ease-in-out;
+			}
+			.item-search-container .filter-by-warehouse:hover {
+				color: var(--primary-color, #2490EF) !important;
+				text-decoration: underline;
+			}
+			.item-search-container .search-warehouse-pill .badge {
+				font-size: 13px;
+				font-weight: 500;
+			}
+			.item-search-container .variant-wh-filter-box {
+				background: #ffffff;
+				border: 1px solid #ced4da;
+				border-radius: 6px;
+				box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+			}
+			.item-search-container .variant-warehouse-select {
+				border: none;
+				background: transparent;
+				box-shadow: none;
+				font-size: 13px;
+				font-weight: 500;
+				height: 28px;
+				padding: 2px 8px;
+				min-width: 170px;
+				max-width: 260px;
+				cursor: pointer;
+			}
+			.item-search-container .variant-warehouse-select:focus {
+				box-shadow: none;
+				outline: none;
+			}
+			.page-form .frappe-control[data-fieldname="warehouse"] {
+				min-width: 220px;
+			}
+			@media (max-width: 767.98px) {
+				.page-form .frappe-control[data-fieldname="warehouse"] {
+					min-width: 100%;
+				}
+				.item-search-container .variant-wh-filter-box {
+					width: 100%;
+				}
+				.item-search-container .variant-warehouse-select {
+					width: 100%;
+					max-width: 100%;
+				}
 			}
 
 			/* ===== Mobile Responsive ===== */

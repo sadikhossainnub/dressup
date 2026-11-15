@@ -2,7 +2,7 @@ import frappe
 from frappe import _
 
 @frappe.whitelist()
-def get_item_details(barcode):
+def get_item_details(barcode, warehouse=None):
     if not barcode:
         return None
 
@@ -71,22 +71,28 @@ def get_item_details(barcode):
     has_cost = has_cost_access()
     
     # Get reservation details
-    reservations = get_reservation_details(item_code)
+    reservations = get_reservation_details(item_code, warehouse=warehouse)
 
     # Get stock details
+    bin_filters = {"item_code": item_code}
+    if warehouse:
+        bin_filters["warehouse"] = warehouse
+
     stock_details = frappe.get_all(
         "Bin",
-        filters={"item_code": item_code},
+        filters=bin_filters,
         fields=["warehouse", "actual_qty as qty", "reserved_qty", "valuation_rate"],
     )
 
     # Reserved qty from live reservations (pending qty), grouped by warehouse.
     reserved_by_warehouse = {}
     for reservation in reservations:
-        warehouse = reservation.get("warehouse")
-        if not warehouse:
+        wh = reservation.get("warehouse")
+        if not wh:
             continue
-        reserved_by_warehouse[warehouse] = reserved_by_warehouse.get(warehouse, 0) + (
+        if warehouse and wh != warehouse:
+            continue
+        reserved_by_warehouse[wh] = reserved_by_warehouse.get(wh, 0) + (
             reservation.get("remaining_qty") or 0
         )
 
@@ -108,12 +114,13 @@ def get_item_details(barcode):
     # Add warehouses that have live reservations but no Bin entry
     for wh, live_res_qty in reserved_by_warehouse.items():
         if wh not in existing_warehouses and live_res_qty > 0:
-            filtered_stock.append({
-                "warehouse": wh,
-                "qty": 0,
-                "reserved_qty": live_res_qty,
-                "unreserved_qty": -live_res_qty,
-            })
+            if not warehouse or wh == warehouse:
+                filtered_stock.append({
+                    "warehouse": wh,
+                    "qty": 0,
+                    "reserved_qty": live_res_qty,
+                    "unreserved_qty": -live_res_qty,
+                })
 
     stock_details = filtered_stock
 
@@ -140,6 +147,14 @@ def get_item_details(barcode):
         # This is a variant — show sibling variants' stock (from same template)
         variants_stock = get_variant_stock(variant_of, has_cost)
 
+    # Fetch active leaf warehouses for dropdown list
+    all_warehouses = frappe.get_all(
+        "Warehouse",
+        filters={"is_group": 0, "disabled": 0},
+        pluck="name",
+        order_by="name asc"
+    )
+
     return {
         "item_code": item.item_code,
         "item_name": item.item_name,
@@ -161,6 +176,8 @@ def get_item_details(barcode):
         "has_variants": has_variants,
         "variant_of": variant_of,
         "variants_stock": variants_stock,
+        "warehouse": warehouse,
+        "all_warehouses": all_warehouses,
     }
 
 
@@ -307,20 +324,24 @@ def get_item_prices(item_code, has_cost):
     return prices
 
 
-def get_reservation_details(item_code):
+def get_reservation_details(item_code, warehouse=None):
     """Get stock reservation details for an item from Stock Reservation Entry and Sales Orders."""
     reservations = []
 
     # 1. Get from Stock Reservation Entry (if doctype exists)
     if frappe.db.exists("DocType", "Stock Reservation Entry"):
         try:
+            filters = {
+                "item_code": item_code,
+                "status": ["in", ["Reserved", "Partially Reserved", "Partially Delivered"]],
+                "docstatus": 1
+            }
+            if warehouse:
+                filters["warehouse"] = warehouse
+
             sre_list = frappe.get_all(
                 "Stock Reservation Entry",
-                filters={
-                    "item_code": item_code,
-                    "status": ["in", ["Reserved", "Partially Reserved", "Partially Delivered"]],
-                    "docstatus": 1
-                },
+                filters=filters,
                 fields=[
                     "name", "voucher_type", "voucher_no", "warehouse",
                     "reserved_qty", "delivered_qty", "status",
@@ -375,7 +396,18 @@ def get_reservation_details(item_code):
     # 2. If no Stock Reservation Entries, fall back to Sales Order Items with pending delivery
     if not reservations:
         try:
-            pending_so_items = frappe.db.sql("""
+            where_conditions = """
+                WHERE soi.item_code = %s
+                    AND so.docstatus = 1
+                    AND so.status NOT IN ('Completed', 'Cancelled', 'Closed')
+                    AND soi.delivered_qty < soi.qty
+            """
+            params = [item_code]
+            if warehouse:
+                where_conditions += " AND soi.warehouse = %s"
+                params.append(warehouse)
+
+            pending_so_items = frappe.db.sql(f"""
                 SELECT
                     so.name as sales_order,
                     so.customer_name,
@@ -388,12 +420,9 @@ def get_reservation_details(item_code):
                     soi.stock_reserved_qty
                 FROM `tabSales Order Item` soi
                 JOIN `tabSales Order` so ON so.name = soi.parent
-                WHERE soi.item_code = %s
-                    AND so.docstatus = 1
-                    AND so.status NOT IN ('Completed', 'Cancelled', 'Closed')
-                    AND soi.delivered_qty < soi.qty
+                {where_conditions}
                 ORDER BY so.transaction_date DESC
-            """, item_code, as_dict=True)
+            """, tuple(params), as_dict=True)
 
             for row in pending_so_items:
                 reserved_by = frappe.db.get_value("User", row.so_owner, "full_name") or row.so_owner or ""
