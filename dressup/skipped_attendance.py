@@ -20,7 +20,7 @@ from itertools import groupby
 
 import frappe
 from frappe import _
-from frappe.utils import cint, flt, getdate
+from frappe.utils import add_days, cint, flt, getdate, today
 
 from hrms.hr.doctype.employee_checkin.employee_checkin import (
 	get_overtime_data,
@@ -64,6 +64,19 @@ def recheck_skipped_attendance(
 			shift_type, from_date, to_date, employee, dry_run
 		)
 
+	return _recheck_skipped_checkins_internal(
+		shift_type, from_date, to_date, employee, dry_run
+	)
+
+
+def _recheck_skipped_checkins_internal(
+	shift_type: str | None,
+	from_date: str,
+	to_date: str,
+	employee: str | None,
+	dry_run: int,
+) -> dict:
+	"""Scan skipped Employee Checkins and update/create Attendance in-place."""
 	# Original logic: Fetch only skipped checkins
 	logs = _get_skipped_checkins(shift_type, from_date, to_date, employee)
 	if not logs:
@@ -566,6 +579,77 @@ def recheck_single_attendance(attendance_name: str, dry_run: int | bool = 1) -> 
 			"Attendance {0} updated to {1} ({2} hrs) and {3} checkin log(s) linked."
 		).format(att.name, calc_status, working_hours, len(logs)),
 	}
+
+
+# ---------------------------------------------------------------------------
+# Automatic Hooks & Scheduled Jobs
+# ---------------------------------------------------------------------------
+
+def on_checkin_insert(doc, method=None):
+	"""Hook on Employee Checkin `after_insert`: if an Absent Attendance already
+	exists for this employee + date, enqueue an in-place recheck in the background.
+	"""
+	if not doc.employee or not doc.time or cint(doc.offshift):
+		return
+
+	att_date = getdate(doc.shift_start or doc.time)
+	att_name = frappe.db.get_value(
+		"Attendance",
+		{
+			"employee": doc.employee,
+			"attendance_date": att_date,
+			"docstatus": 1,
+			"status": "Absent",
+		},
+		"name",
+	)
+	if att_name:
+		frappe.enqueue(
+			"dressup.skipped_attendance.recheck_single_attendance_bg",
+			attendance_name=att_name,
+			queue="short",
+			enqueue_after_commit=True,
+		)
+
+
+def recheck_single_attendance_bg(attendance_name: str):
+	"""Background worker wrapper to recheck a single Absent Attendance."""
+	try:
+		att = frappe.get_doc("Attendance", attendance_name)
+		if att.docstatus != 1 or att.status != "Absent":
+			return
+		recheck_single_attendance(attendance_name=attendance_name, dry_run=0)
+	except Exception:
+		frappe.log_error(
+			title=f"Auto-recheck failed for Attendance {attendance_name}",
+			message=frappe.get_traceback(),
+		)
+
+
+def auto_fix_skipped_attendance(lookback_days: int = 30):
+	"""Scheduled job (hourly): automatically fix Absent / skipped checkins
+	over the last `lookback_days` days (handles delayed biometric syncs).
+	"""
+	to_date = today()
+	from_date = add_days(to_date, -cint(lookback_days))
+
+	# 1. Fix any checkins explicitly flagged with skip_auto_attendance=1
+	_recheck_skipped_checkins_internal(
+		shift_type=None,
+		from_date=from_date,
+		to_date=to_date,
+		employee=None,
+		dry_run=0,
+	)
+
+	# 2. Fix any remaining Absent Attendance records that have valid checkins
+	_recheck_all_absent_attendance(
+		shift_type=None,
+		from_date=from_date,
+		to_date=to_date,
+		employee=None,
+		dry_run=0,
+	)
 
 
 # ---------------------------------------------------------------------------

@@ -237,6 +237,9 @@ doc_events = {
 		"before_validate": "dressup.payroll.calculate_late_entries",
 		"validate": "dressup.payroll.calculate_late_entries",
 	},
+	"Employee Checkin": {
+		"after_insert": "dressup.skipped_attendance.on_checkin_insert",
+	},
 	"Item": {
 		"before_save": "dressup.dressup.doctype.item_description_template.item_description_template.item_before_save",
 	},
@@ -247,6 +250,11 @@ doc_events = {
 # ---------------
 
 scheduler_events = {
+	"cron": {
+		"0 23 * * *": [
+			"dressup.skipped_attendance.auto_fix_skipped_attendance",
+		],
+	},
 	"daily": [
 		"dressup.dressup.loyalty_downgrade.check_loyalty_tier_downgrade",
 		"dressup.dressup.loyalty_downgrade.check_loyalty_point_expiry",
